@@ -54,6 +54,16 @@ export function GradeSheet({ groupId }: { groupId: string }) {
     setNote(response.ok ? "Baho saqlandi" : "Saqlanmadi");
   }
 
+  async function practice(enrollmentId: string) {
+    const response = await fetch("/api/v1/learning/practice", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ enrollment_id: enrollmentId, practice_score: 80 }),
+    });
+    setNote(response.ok ? "Amaliy baho 80 saqlandi" : "Avval nazariy sinov topshirilishi kerak");
+  }
+
   if (failed) {
     return <EmptyState title="Baholar ochilmadi" text="Sahifani yangilang." />;
   }
@@ -67,7 +77,12 @@ export function GradeSheet({ groupId }: { groupId: string }) {
     <div className="flex flex-col gap-4 p-4">
       {rows.map((row) => (
         <article key={row.enrollment_id} className="rounded-md border border-line bg-card p-3">
-          <h2 className="font-semibold">{row.name}</h2>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h2 className="font-semibold">{row.name}</h2>
+            <Button type="button" variant="secondary" onClick={() => void practice(row.enrollment_id)}>
+              Amaliy 80
+            </Button>
+          </div>
           <ul className="mt-2 flex flex-col gap-2">
             {modules.map((module) => (
               <li key={module.id} className="flex flex-wrap items-center gap-2">

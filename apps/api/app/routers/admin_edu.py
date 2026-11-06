@@ -213,3 +213,65 @@ async def grant_role(user_id: uuid.UUID, body: RoleIn, request: Request) -> JSON
             {"id": new_id(), "user_id": user_id, "role": body.role},
         )
     return JSONResponse({"status": "ok"})
+
+
+@router.get("/orders")
+async def orders(request: Request) -> JSONResponse:
+    gate = await _require_admin(request)
+    if isinstance(gate, JSONResponse):
+        return gate
+    engine = _engine(request)
+    async with engine.connect() as conn:
+        result = await conn.execute(
+            text(
+                """
+                SELECT o.id::text AS id, o.buyer_name, o.quantity, o.status::text AS status,
+                       p.name AS product_name
+                FROM order_requests o
+                JOIN products p ON p.id = o.product_id
+                ORDER BY o.created_at DESC
+                LIMIT 50
+                """
+            )
+        )
+    return JSONResponse(
+        [
+            {
+                "id": item["id"],
+                "buyer_name": item["buyer_name"],
+                "quantity": float(item["quantity"]),
+                "status": item["status"],
+                "product": item["product_name"]["uz-Latn"] if isinstance(item["product_name"], dict) else "",
+            }
+            for item in result.mappings()
+        ]
+    )
+
+
+class OrderStatusIn(BaseModel):
+    status: str
+
+
+@router.post("/orders/{order_id}/status")
+async def order_status(order_id: uuid.UUID, body: OrderStatusIn, request: Request) -> JSONResponse:
+    gate = await _require_admin(request)
+    if isinstance(gate, JSONResponse):
+        return gate
+    if body.status not in {"NEW", "CONTACTED", "DONE", "CANCELLED"}:
+        return problem(422, "VALIDATION", "Holat noto'g'ri", "NEW, CONTACTED, DONE yoki CANCELLED.")
+    engine = _engine(request)
+    async with engine.begin() as conn:
+        updated = await conn.execute(
+            text(
+                """
+                UPDATE order_requests
+                SET status = CAST(:status AS order_status)
+                WHERE id = :id
+                RETURNING id
+                """
+            ),
+            {"id": order_id, "status": body.status},
+        )
+        if updated.first() is None:
+            return problem(404, "NOT_FOUND", "Topilmadi", "Buyurtma yo'q.")
+    return JSONResponse({"status": body.status})

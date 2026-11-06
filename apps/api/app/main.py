@@ -25,6 +25,7 @@ from app.seed import seed_login_users
 from app.seed_certificates import seed_certificates
 from app.seed_education import seed_education
 from app.seed_exam import seed_exam
+from app.seed_followup import seed_followup
 from app.seed_learning import seed_learning
 from app.seed_market import seed_market
 from app.seed_portal import seed_portal
@@ -50,6 +51,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         await seed_vocab(conn)
         await seed_market(conn)
         await seed_exam(conn)
+        await seed_followup(conn)
     try:
         yield
     finally:

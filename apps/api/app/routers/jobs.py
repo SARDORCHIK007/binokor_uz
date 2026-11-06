@@ -1,11 +1,37 @@
 import uuid
+from typing import Literal
 
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel, Field
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
-from app.security import bearer_from_request, problem, read_access_token
+from app.security import bearer_from_request, new_id, problem, read_access_token
+
+RequestStatus = Literal[
+    "NEW",
+    "IN_REVIEW",
+    "VIA_AGENCY",
+    "SHORTLIST_SENT",
+    "EMPLOYER_APPROVED",
+    "CONTRACTING",
+    "MATCHED",
+    "CLOSED",
+    "CANCELLED",
+]
+
+
+class TransitionBody(BaseModel):
+    status: RequestStatus
+
+
+class ReviewBody(BaseModel):
+    quality: int = Field(ge=1, le=5)
+    discipline: int = Field(ge=1, le=5)
+    safety: int = Field(ge=1, le=5)
+    communication: int = Field(ge=1, le=5)
+    comment: str = ""
 
 router = APIRouter(prefix="/api/v1/jobs", tags=["jobs"])
 
@@ -71,10 +97,12 @@ async def board(request: Request) -> JSONResponse:
         placements = await conn.execute(
             text(
                 """
-                SELECT p.id::text AS id, u.full_name, e.name AS employer, p.kind::text AS kind
+                SELECT p.id::text AS id, u.full_name, e.name AS employer, p.kind::text AS kind,
+                       r.score_quality, r.score_discipline, r.score_safety, r.score_communication
                 FROM placements p
                 JOIN users u ON u.id = p.worker_user_id
                 JOIN employers e ON e.id = p.employer_id
+                LEFT JOIN reviews r ON r.placement_id = p.id
                 ORDER BY u.full_name
                 """
             )
@@ -86,6 +114,90 @@ async def board(request: Request) -> JSONResponse:
             "brigades": [
                 {**dict(item), "members": int(item["members"])} for item in brigades.mappings()
             ],
-            "placements": [dict(item) for item in placements.mappings()],
+            "placements": [
+                {
+                    "id": item["id"],
+                    "full_name": item["full_name"],
+                    "employer": item["employer"],
+                    "kind": item["kind"],
+                    "review": None
+                    if item["score_quality"] is None
+                    else {
+                        "quality": int(item["score_quality"]),
+                        "discipline": int(item["score_discipline"]),
+                        "safety": int(item["score_safety"]),
+                        "communication": int(item["score_communication"]),
+                    },
+                }
+                for item in placements.mappings()
+            ],
         }
     )
+
+
+@router.post("/requests/{request_id}/transition")
+async def transition(request_id: uuid.UUID, body: TransitionBody, request: Request) -> JSONResponse:
+    user_id = _user_id(request)
+    if user_id is None:
+        return problem(401, "UNAUTHORIZED", "Kirish talab qilinadi", "Avval tizimga kiring.")
+    engine = _engine(request)
+    async with engine.begin() as conn:
+        if not await _allowed(conn, user_id):
+            return problem(403, "FORBIDDEN", "Ruxsat yo'q", "So'rov holatini menejer o'zgartiradi.")
+        updated = await conn.execute(
+            text(
+                """
+                UPDATE demand_requests
+                SET status = CAST(:status AS request_status),
+                    first_response_at = coalesce(first_response_at, now())
+                WHERE id = :id
+                RETURNING id
+                """
+            ),
+            {"id": request_id, "status": body.status},
+        )
+        if updated.first() is None:
+            return problem(404, "NOT_FOUND", "Topilmadi", "So'rov yo'q.")
+    return JSONResponse({"status": body.status})
+
+
+@router.post("/placements/{placement_id}/review")
+async def review(placement_id: uuid.UUID, body: ReviewBody, request: Request) -> JSONResponse:
+    user_id = _user_id(request)
+    if user_id is None:
+        return problem(401, "UNAUTHORIZED", "Kirish talab qilinadi", "Avval tizimga kiring.")
+    engine = _engine(request)
+    async with engine.begin() as conn:
+        if not await _allowed(conn, user_id):
+            return problem(403, "FORBIDDEN", "Ruxsat yo'q", "Bahoni menejer yozadi.")
+        await conn.execute(
+            text(
+                """
+                INSERT INTO reviews (
+                  id, placement_id, score_quality, score_discipline, score_safety,
+                  score_communication, comment, author_id
+                )
+                VALUES (
+                  :id, :placement_id, :quality, :discipline, :safety, :communication, :comment, :user_id
+                )
+                ON CONFLICT (placement_id) DO UPDATE SET
+                  score_quality = EXCLUDED.score_quality,
+                  score_discipline = EXCLUDED.score_discipline,
+                  score_safety = EXCLUDED.score_safety,
+                  score_communication = EXCLUDED.score_communication,
+                  comment = EXCLUDED.comment,
+                  author_id = EXCLUDED.author_id
+                """
+            ),
+            {
+                "id": new_id(),
+                "placement_id": placement_id,
+                "quality": body.quality,
+                "discipline": body.discipline,
+                "safety": body.safety,
+                "communication": body.communication,
+                "comment": body.comment,
+                "user_id": user_id,
+            },
+        )
+    return JSONResponse({"saved": True})

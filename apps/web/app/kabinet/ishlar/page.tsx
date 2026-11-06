@@ -1,5 +1,6 @@
-import { EmptyState, StatusBadge } from "@uychibinokor/ui";
+import { EmptyState } from "@uychibinokor/ui";
 import { getTranslations } from "next-intl/server";
+import { PlacementReview, RequestMove } from "@/components/cabinet/JobActions";
 import { apiAuth } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
@@ -8,7 +9,13 @@ type Board = {
   employers: { id: string; name: string; kind: string; inn: string | null }[];
   requests: { id: string; employer: string; quantity: number; status: string; as_brigade: boolean }[];
   brigades: { id: string; name: string; status: string; members: number }[];
-  placements: { id: string; full_name: string; employer: string; kind: string }[];
+  placements: {
+    id: string;
+    full_name: string;
+    employer: string;
+    kind: string;
+    review: { quality: number; discipline: number; safety: number; communication: number } | null;
+  }[];
 };
 
 export default async function JobsPage() {
@@ -43,7 +50,7 @@ export default async function JobsPage() {
             {board.requests.map((item) => (
               <li key={item.id} className="rounded-md border border-line bg-card px-3 py-2">
                 {item.employer} · {item.quantity} kishi · {item.as_brigade ? "brigada" : "alohida"}
-                <StatusBadge tone="info">{item.status}</StatusBadge>
+                <RequestMove id={item.id} status={item.status} />
               </li>
             ))}
           </ul>
@@ -71,7 +78,15 @@ export default async function JobsPage() {
           <ul className="mt-2 flex flex-col gap-2">
             {board.placements.map((item) => (
               <li key={item.id} className="rounded-md border border-line bg-card px-3 py-2">
-                {item.full_name} · {item.employer} · {item.kind}
+                {item.full_name} · {item.employer} · {item.kind === "DIRECT" ? "To'g'ridan-to'g'ri" : item.kind}
+                {item.review ? (
+                  <p className="text-sm text-muted">
+                    Sifat {item.review.quality} · intizom {item.review.discipline} · xavfsizlik {item.review.safety} ·
+                    muloqot {item.review.communication}
+                  </p>
+                ) : (
+                  <PlacementReview id={item.id} saved={false} />
+                )}
               </li>
             ))}
           </ul>

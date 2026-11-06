@@ -15,9 +15,22 @@ type Site = {
   lon: number;
 };
 
-export default async function ObjectsPage() {
+const OBJECT_STATUS: Record<string, string> = {
+  PLANNED: "Rejada",
+  IN_PROGRESS: "Jarayonda",
+  COMPLETED: "Tugagan",
+  PAUSED: "To'xtagan",
+};
+
+export default async function ObjectsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ status?: string }>;
+}) {
   const t = await getTranslations("states");
-  const objects = await apiGet<Site[]>("/api/v1/public/objects");
+  const query = await searchParams;
+  const suffix = query.status ? `?status=${encodeURIComponent(query.status)}` : "";
+  const objects = await apiGet<Site[]>(`/api/v1/public/objects${suffix}`);
   if (!objects) {
     return (
       <div className="mx-auto max-w-xl px-4 py-16">
@@ -28,6 +41,17 @@ export default async function ObjectsPage() {
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-10">
       <h1 className="text-4xl font-semibold text-navy-900">Obyektlar</h1>
+      <div className="mt-4 flex gap-3 text-sm">
+        <a href="/obyektlar" className="text-primary">
+          Hammasi
+        </a>
+        <a href="/obyektlar?status=IN_PROGRESS" className="text-primary">
+          Jarayonda
+        </a>
+        <a href="/obyektlar?status=COMPLETED" className="text-primary">
+          Tugagan
+        </a>
+      </div>
       <div className="mt-6">
         <SiteMap sites={objects} />
       </div>
@@ -38,7 +62,9 @@ export default async function ObjectsPage() {
               <h2 className="text-xl font-semibold">{item.name}</h2>
               <StatusBadge tone="info">{item.progress}%</StatusBadge>
             </div>
-            <p className="mt-2 text-sm text-muted">{item.address}</p>
+            <p className="mt-2 text-sm text-muted">
+              {item.address} · {OBJECT_STATUS[item.status] ?? item.status}
+            </p>
             <p className="mt-1 text-sm tabular-nums text-muted">
               {item.lat.toFixed(3)}, {item.lon.toFixed(3)}
             </p>

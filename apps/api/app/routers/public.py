@@ -213,7 +213,7 @@ async def worker(slug: str, request: Request) -> JSONResponse:
 
 
 @router.get("/objects")
-async def objects(request: Request) -> JSONResponse:
+async def objects(request: Request, status: str | None = None) -> JSONResponse:
     engine = _engine(request)
     async with engine.connect() as conn:
         result = await conn.execute(
@@ -223,9 +223,11 @@ async def objects(request: Request) -> JSONResponse:
                        ST_Y(geom) AS lat, ST_X(geom) AS lon
                 FROM construction_objects
                 WHERE is_public
+                  AND (CAST(:status AS text) IS NULL OR status::text = CAST(:status AS text))
                 ORDER BY name->>'uz-Latn'
                 """
-            )
+            ),
+            {"status": status or None},
         )
     return JSONResponse(
         [
@@ -244,19 +246,24 @@ async def objects(request: Request) -> JSONResponse:
 
 
 @router.get("/products")
-async def products(request: Request) -> JSONResponse:
+async def products(request: Request, category: str | None = None) -> JSONResponse:
     engine = _engine(request)
     async with engine.connect() as conn:
         result = await conn.execute(
             text(
                 """
-                SELECT p.id::text AS id, p.name, p.unit, p.price, p.in_stock, pr.name AS producer
+                SELECT p.id::text AS id, p.name, p.unit, p.price, p.in_stock, pr.name AS producer,
+                       c.code AS category, c.name AS category_name,
+                       (p.price_updated_at IS NULL OR p.price_updated_at < now() - interval '30 days') AS stale
                 FROM products p
                 JOIN producers pr ON pr.id = p.producer_id
+                JOIN product_categories c ON c.id = p.category_id
                 WHERE p.is_published
+                  AND (CAST(:category AS text) IS NULL OR c.code = CAST(:category AS text))
                 ORDER BY p.name->>'uz-Latn'
                 """
-            )
+            ),
+            {"category": category or None},
         )
     return JSONResponse(
         [
@@ -267,6 +274,9 @@ async def products(request: Request) -> JSONResponse:
                 "price": None if item["price"] is None else str(item["price"]),
                 "in_stock": item["in_stock"],
                 "producer": item["producer"],
+                "category": item["category"],
+                "category_name": _title(item["category_name"]),
+                "stale": bool(item["stale"]),
             }
             for item in result.mappings()
         ]

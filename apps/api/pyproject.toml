@@ -27,6 +27,7 @@ select = ["E", "F", "I", "UP", "B"]
 "app/routers/jobs.py" = ["E501"]
 "app/seed_market.py" = ["E501"]
 "app/seed_exam.py" = ["E501"]
+"app/seed_followup.py" = ["E501"]
 "app/routers/exams.py" = ["E501"]
 "app/routers/curator.py" = ["E501"]
 

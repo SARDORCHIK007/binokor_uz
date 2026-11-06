@@ -14,6 +14,7 @@ const MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/lugat", key: "vocab" },
     { href: "/kabinet/ishlar", key: "jobs" },
     { href: "/kabinet/hisobot", key: "reports" },
+    { href: "/kabinet/buyurtmalar", key: "orders" },
   ],
   education_lead: [
     { href: "/kabinet", key: "panel" },
