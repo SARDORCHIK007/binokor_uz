@@ -23,13 +23,13 @@ export async function SiteHeader() {
   return (
     <header className="sticky top-0 z-20 border-b border-line bg-card">
       <div className="mx-auto max-w-[1200px] px-4 py-3">
-        <div className="flex items-center gap-3">
-          <Link href="/" className="text-sm font-bold tracking-wide text-navy-900">
+        <div className="flex flex-wrap items-center gap-2">
+          <Link href="/" className="shrink-0 text-sm font-bold tracking-wide text-navy-900">
             UYCHI BINOKOR
           </Link>
-          <div className="ml-auto flex items-center gap-2">
+          <div className="ml-auto flex max-w-full flex-wrap items-center justify-end gap-1">
             <LanguageSwitcher />
-            <Link href="/kabinet/panel" className="rounded-sm px-3 py-2 text-sm font-medium text-ink hover:bg-blue-50">
+            <Link href="/kabinet/panel" className="rounded-sm px-2 py-2 text-sm font-medium text-ink hover:bg-blue-50">
               {t("employers")}
             </Link>
             {session ? (

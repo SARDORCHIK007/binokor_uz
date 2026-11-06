@@ -7,6 +7,14 @@ body {
   font-feature-settings: "tnum" 1, "cv11" 1;
 }
 
+img,
+video,
+input,
+textarea,
+select {
+  max-width: 100%;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -12,7 +12,7 @@ export function AccountMenu({ name }: { name: string }) {
     <div className="relative">
       <button
         type="button"
-        className="min-h-11 rounded-sm bg-primary px-3 py-2 text-sm font-medium text-white hover:bg-primary-hover"
+        className="min-h-11 max-w-36 truncate rounded-sm bg-primary px-3 py-2 text-sm font-medium text-white hover:bg-primary-hover"
         aria-expanded={open}
         aria-haspopup="menu"
         onClick={() => setOpen((value) => !value)}

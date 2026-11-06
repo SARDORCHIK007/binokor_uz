@@ -50,7 +50,7 @@ export function CabinetShell({
     <div className="mx-auto grid max-w-[1440px] md:grid-cols-[220px_1fr]">
       <aside className="hidden bg-navy-900 p-4 text-blue-50 md:block md:min-h-[80vh]">{nav}</aside>
       <div className="min-w-0">
-        <div className="flex items-center gap-3 border-b border-line bg-card px-4 py-3">
+        <div className="flex flex-wrap items-center gap-3 border-b border-line bg-card px-4 py-3">
           <button type="button" className="min-h-11 rounded-sm border border-line px-3 text-sm md:hidden" onClick={() => setOpen(true)}>
             {c("menu")}
           </button>
@@ -79,7 +79,7 @@ export function CabinetShell({
       ) : null}
       <nav className="fixed inset-x-0 bottom-0 z-30 flex border-t border-line bg-card md:hidden" aria-label={t(role as "admin")}>
         {items.slice(0, 5).map((item) => (
-          <Link key={item.href} href={item.href} className="flex-1 px-1 py-3 text-center text-xs">
+          <Link key={item.href} href={item.href} className="min-w-0 flex-1 truncate px-1 py-3 text-center text-[11px] leading-tight">
             {item.label}
           </Link>
         ))}

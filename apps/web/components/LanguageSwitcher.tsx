@@ -15,11 +15,11 @@ export function LanguageSwitcher() {
     setNext(window.location.pathname + window.location.search);
   }, []);
   return (
-    <span className="flex gap-1 text-sm">
+    <span className="flex flex-wrap gap-0.5 text-sm">
       {LOCALES.map(([locale, label]) => (
         <a
           key={locale}
-          className="rounded-sm px-2 py-2 hover:bg-blue-50"
+          className="rounded-sm px-1.5 py-2 hover:bg-blue-50"
           href={`/til?locale=${locale}&next=${encodeURIComponent(next)}`}
         >
           {label}
