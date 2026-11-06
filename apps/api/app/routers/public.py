@@ -1,9 +1,11 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel, Field
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from app.security import problem
+from app.core.config import get_settings
+from app.security import new_id, problem
 
 router = APIRouter(prefix="/api/v1/public", tags=["public"])
 
@@ -358,3 +360,36 @@ async def search(request: Request, q: str = "") -> JSONResponse:
     return JSONResponse(
         [{"kind": item["kind"], "ref": item["ref"], "title": item["title"]} for item in result.mappings()]
     )
+
+
+class OrderBody(BaseModel):
+    product_id: str
+    buyer_name: str = Field(min_length=2, max_length=120)
+    buyer_phone: str = Field(pattern=r"^\+998\d{9}$")
+    quantity: float = Field(gt=0, le=100000)
+    comment: str = ""
+
+
+@router.post("/order-requests")
+async def create_order(body: OrderBody, request: Request) -> JSONResponse:
+    if get_settings().app_env != "local":
+        return problem(400, "CAPTCHA_REQUIRED", "Tekshiruv kerak", "Buyurtma uchun captcha yoqilmagan.")
+    engine = _engine(request)
+    async with engine.begin() as conn:
+        await conn.execute(
+            text(
+                """
+                INSERT INTO order_requests (id, product_id, buyer_name, buyer_phone, quantity, comment)
+                VALUES (:id, CAST(:product_id AS uuid), :buyer_name, :buyer_phone, :quantity, :comment)
+                """
+            ),
+            {
+                "id": new_id(),
+                "product_id": body.product_id,
+                "buyer_name": body.buyer_name,
+                "buyer_phone": body.buyer_phone,
+                "quantity": body.quantity,
+                "comment": body.comment,
+            },
+        )
+    return JSONResponse({"status": "NEW"})

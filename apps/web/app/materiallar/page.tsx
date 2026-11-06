@@ -1,5 +1,6 @@
 import { EmptyState, StatusBadge } from "@uychibinokor/ui";
 import { getTranslations } from "next-intl/server";
+import { OrderForm } from "@/components/materials/OrderForm";
 import { apiGet } from "@/lib/public";
 
 export const dynamic = "force-dynamic";
@@ -37,6 +38,7 @@ export default async function MaterialsPage() {
                 {item.in_stock ? "Omborda bor" : "Omborda yo'q"}
               </StatusBadge>
             </div>
+            {item.in_stock ? <OrderForm productId={item.id} name={item.name} /> : null}
           </li>
         ))}
       </ul>
