@@ -9,11 +9,13 @@ from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
 from app.core.config import get_settings
 from app.health import overall, probe_db, probe_minio, probe_redis
+from app.routers.admin_edu import router as admin_edu_router
 from app.routers.applications import router as applications_router
 from app.routers.auth import router as auth_router
 from app.routers.cabinet import router as cabinet_router
 from app.routers.public import router as public_router
 from app.seed import seed_login_users
+from app.seed_education import seed_education
 from app.seed_portal import seed_portal
 
 
@@ -28,6 +30,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     async with engine.begin() as conn:
         await seed_login_users(conn)
         await seed_portal(conn)
+        await seed_education(conn)
     try:
         yield
     finally:
@@ -38,6 +41,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 app = FastAPI(title="UYCHI BINOKOR API", lifespan=lifespan)
 app.include_router(auth_router)
 app.include_router(applications_router)
+app.include_router(admin_edu_router)
 app.include_router(cabinet_router)
 app.include_router(public_router)
 
