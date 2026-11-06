@@ -34,6 +34,12 @@ class AssessmentBody(BaseModel):
     score: int = Field(ge=0, le=100)
     passed: bool
     comment: str = ""
+    evidence_file_id: uuid.UUID | None = None
+
+
+class EvidenceBody(BaseModel):
+    content_type: str
+    data_base64: str = Field(max_length=8_000_000)
 
 
 def _engine(request: Request) -> AsyncEngine:
@@ -230,7 +236,7 @@ async def grades(group_id: uuid.UUID, request: Request) -> JSONResponse:
         modules = await conn.execute(
             text(
                 """
-                SELECT m.id::text AS id, m.title
+                SELECT m.id::text AS id, m.title, m.rubric
                 FROM modules m
                 JOIN groups g ON g.course_id = m.course_id
                 WHERE g.id = :group_id
@@ -243,7 +249,8 @@ async def grades(group_id: uuid.UUID, request: Request) -> JSONResponse:
             text(
                 """
                 SELECT e.id::text AS enrollment_id, u.full_name,
-                       a.module_id::text AS module_id, a.score, a.passed
+                       a.module_id::text AS module_id, a.score, a.passed, a.comment,
+                       coalesce(array_length(a.evidence_file_ids, 1), 0) AS evidence_count
                 FROM enrollments e
                 JOIN users u ON u.id = e.student_user_id
                 LEFT JOIN assessments a ON a.enrollment_id = e.id
@@ -264,10 +271,15 @@ async def grades(group_id: uuid.UUID, request: Request) -> JSONResponse:
             scores[str(item["module_id"])] = {
                 "score": item["score"],
                 "passed": item["passed"],
+                "comment": item["comment"] or "",
+                "evidence_count": int(item["evidence_count"]),
             }
     return JSONResponse(
         {
-            "modules": [{"id": item["id"], "title": _label(item["title"])} for item in modules.mappings()],
+            "modules": [
+                {"id": item["id"], "title": _label(item["title"]), "rubric": item["rubric"] or {"criteria": []}}
+                for item in modules.mappings()
+            ],
             "rows": list(packed.values()),
         }
     )
@@ -291,15 +303,23 @@ async def save_assessment(body: AssessmentBody, request: Request) -> JSONRespons
             text(
                 """
                 INSERT INTO assessments (
-                  id, enrollment_id, module_id, score, passed, comment, assessed_by
+                  id, enrollment_id, module_id, score, passed, comment, assessed_by, evidence_file_ids
                 )
-                VALUES (:id, :enrollment_id, :module_id, :score, :passed, :comment, :user_id)
+                VALUES (
+                  :id, :enrollment_id, :module_id, :score, :passed, :comment, :user_id,
+                  CASE WHEN CAST(:file_id AS text) IS NULL THEN '{}'::uuid[]
+                       ELSE ARRAY[CAST(:file_id AS uuid)] END
+                )
                 ON CONFLICT (enrollment_id, module_id) DO UPDATE SET
                   score = EXCLUDED.score,
                   passed = EXCLUDED.passed,
                   comment = EXCLUDED.comment,
                   assessed_by = EXCLUDED.assessed_by,
-                  assessed_at = now()
+                  assessed_at = now(),
+                  evidence_file_ids = CASE
+                    WHEN CAST(:file_id AS text) IS NULL THEN assessments.evidence_file_ids
+                    ELSE EXCLUDED.evidence_file_ids
+                  END
                 """
             ),
             {
@@ -310,9 +330,54 @@ async def save_assessment(body: AssessmentBody, request: Request) -> JSONRespons
                 "passed": body.passed,
                 "comment": body.comment,
                 "user_id": user_id,
+                "file_id": None if body.evidence_file_id is None else str(body.evidence_file_id),
             },
         )
     return JSONResponse({"saved": True})
+
+
+@router.post("/evidence")
+async def upload_evidence(body: EvidenceBody, request: Request) -> JSONResponse:
+    import base64
+    import hashlib
+    from pathlib import Path
+
+    user_id = _user_id(request)
+    if user_id is None:
+        return problem(401, "UNAUTHORIZED", "Kirish talab qilinadi", "Avval tizimga kiring.")
+    if body.content_type not in {"image/jpeg", "image/png", "image/webp"}:
+        return problem(422, "VALIDATION", "Rasm turi noto'g'ri", "JPEG, PNG yoki WebP yuboring.")
+    try:
+        raw = base64.b64decode(body.data_base64, validate=True)
+    except ValueError:
+        return problem(422, "VALIDATION", "Rasm o'qilmadi", "Fayl buzilgan.")
+    if len(raw) > 5_000_000:
+        return problem(422, "VALIDATION", "Rasm katta", "5 MB dan kichik rasm yuboring.")
+    file_id = new_id()
+    folder = Path("/app/data/evidence")
+    folder.mkdir(parents=True, exist_ok=True)
+    (folder / f"{file_id}.bin").write_bytes(raw)
+    engine = _engine(request)
+    async with engine.begin() as conn:
+        await conn.execute(
+            text(
+                """
+                INSERT INTO files (id, bucket, key, mime, size_bytes, sha256, scan_status, owner_id)
+                VALUES (
+                  :id, 'private', :key, :mime, :size, decode(:sha, 'hex'), 'CLEAN', :owner_id
+                )
+                """
+            ),
+            {
+                "id": file_id,
+                "key": f"evidence/{file_id}",
+                "mime": body.content_type,
+                "size": len(raw),
+                "sha": hashlib.sha256(raw).hexdigest(),
+                "owner_id": user_id,
+            },
+        )
+    return JSONResponse({"id": str(file_id)})
 
 
 @router.get("/mine")

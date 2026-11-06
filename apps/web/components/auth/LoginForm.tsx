@@ -17,6 +17,9 @@ export function LoginForm() {
   const [phone, setPhone] = useState("+998901000001");
   const [code, setCode] = useState("");
   const [devCode, setDevCode] = useState("");
+  const [needsTotp, setNeedsTotp] = useState(false);
+  const [totp, setTotp] = useState("");
+  const [devTotp, setDevTotp] = useState("");
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
 
@@ -30,13 +33,18 @@ export function LoginForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone }),
       });
-      const body = (await response.json()) as { dev_code?: string } & ErrorBody;
-      if (!response.ok || !body.dev_code) {
+      const body = (await response.json()) as { dev_code?: string; delivery?: string } & ErrorBody;
+      if (!response.ok) {
         setError(body.detail ?? t("failed"));
         return;
       }
-      setDevCode(body.dev_code);
-      setCode(body.dev_code);
+      if (body.dev_code) {
+        setDevCode(body.dev_code);
+        setCode(body.dev_code);
+      } else {
+        setDevCode("");
+        setError(body.delivery === "telegram" ? "Kod Telegramga yuborildi" : t("failed"));
+      }
     } finally {
       setPending(false);
     }
@@ -53,9 +61,15 @@ export function LoginForm() {
         credentials: "include",
         body: JSON.stringify({ phone, code }),
       });
-      const body = (await response.json()) as ErrorBody;
+      const body = (await response.json()) as { requires_2fa?: boolean; dev_totp?: string } & ErrorBody;
       if (!response.ok) {
         setError(body.detail ?? t("failed"));
+        return;
+      }
+      if (body.requires_2fa) {
+        setNeedsTotp(true);
+        setDevTotp(body.dev_totp ?? "");
+        setTotp(body.dev_totp ?? "");
         return;
       }
       window.location.assign("/kabinet");
@@ -100,6 +114,43 @@ export function LoginForm() {
           {t("enter")}
         </Button>
       </form>
+      {needsTotp ? (
+        <form
+          onSubmit={async (event) => {
+            event.preventDefault();
+            setPending(true);
+            setError("");
+            try {
+              const response = await fetch("/api/v1/auth/totp", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({ phone, code: totp }),
+              });
+              const body = (await response.json()) as ErrorBody;
+              if (!response.ok) {
+                setError(body.detail ?? t("failed"));
+                return;
+              }
+              window.location.assign("/kabinet");
+            } finally {
+              setPending(false);
+            }
+          }}
+          className="flex flex-col gap-4 rounded-md border border-line bg-card p-5 shadow-sh1"
+        >
+          <TextField label={t("totp")} name="totp" inputMode="numeric" value={totp} onChange={(event) => setTotp(event.target.value)} />
+          {devTotp ? (
+            <p className="rounded-sm bg-amber-100 px-3 py-3 text-ink" role="status">
+              {t("totpShown")}: <strong className="font-mono text-lg">{devTotp}</strong>
+            </p>
+          ) : null}
+          {error ? <p className="text-sm text-danger-600">{error}</p> : null}
+          <Button type="submit" disabled={pending || totp.length < 6}>
+            {t("enter")}
+          </Button>
+        </form>
+      ) : null}
     </div>
   );
 }

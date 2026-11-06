@@ -15,6 +15,15 @@ const MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/ishlar", key: "jobs" },
     { href: "/kabinet/hisobot", key: "reports" },
     { href: "/kabinet/buyurtmalar", key: "orders" },
+    { href: "/kabinet/ishberuvchi", key: "employer" },
+  ],
+  employer_local: [
+    { href: "/kabinet", key: "panel" },
+    { href: "/kabinet/ishberuvchi", key: "employer" },
+  ],
+  producer: [
+    { href: "/kabinet", key: "panel" },
+    { href: "/kabinet/mahsulotlar", key: "products" },
   ],
   education_lead: [
     { href: "/kabinet", key: "panel" },

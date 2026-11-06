@@ -1,0 +1,9 @@
+{
+  "name": "UYCHI BINOKOR",
+  "short_name": "BINOKOR",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4f7fb",
+  "theme_color": "#0b1f44",
+  "lang": "uz"
+}

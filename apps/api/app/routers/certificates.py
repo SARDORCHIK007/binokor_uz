@@ -321,14 +321,16 @@ async def verify_pdf(number: str, request: Request) -> Response:
 
 @router.get("/api/v1/public/keys")
 async def keys() -> JSONResponse:
+    from app.signing import KEY_ID, public_key_b64
+
     return JSONResponse(
         {
             "keys": [
                 {
-                    "kid": "local-2026",
-                    "alg": "HS256",
+                    "kid": KEY_ID,
+                    "alg": "Ed25519",
                     "use": "cert",
-                    "note": "Local demo key. The secret stays on the server.",
+                    "x": public_key_b64(),
                 }
             ]
         }

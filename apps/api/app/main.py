@@ -15,10 +15,13 @@ from app.routers.auth import router as auth_router
 from app.routers.cabinet import router as cabinet_router
 from app.routers.certificates import router as certificates_router
 from app.routers.curator import router as curator_router
+from app.routers.employers import router as employers_router
 from app.routers.exams import router as exams_router
 from app.routers.jobs import router as jobs_router
+from app.routers.producers import router as producers_router
 from app.routers.learning import router as learning_router
 from app.routers.public import router as public_router
+from app.routers.public import set_public_locale
 from app.routers.reports import router as reports_router
 from app.routers.vocab import router as vocab_router
 from app.seed import seed_login_users
@@ -72,6 +75,8 @@ app.include_router(public_router)
 app.include_router(reports_router)
 app.include_router(vocab_router)
 app.include_router(jobs_router)
+app.include_router(employers_router)
+app.include_router(producers_router)
 
 
 @app.middleware("http")
@@ -81,6 +86,7 @@ async def request_id(
 ) -> Response:
     incoming = request.headers.get("x-request-id")
     request_id_value = incoming if incoming else uuid.uuid4().hex
+    set_public_locale(request.headers.get("x-locale", "uz-Latn"))
     response = await call_next(request)
     response.headers["X-Request-Id"] = request_id_value
     return response

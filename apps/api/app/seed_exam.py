@@ -39,7 +39,60 @@ QUESTIONS: tuple[tuple[str, tuple[str, str, str, str], int], ...] = (
 )
 
 
+TRADE_CODES = (
+    "plumber",
+    "electrician",
+    "bricklayer",
+    "tiler",
+    "welder",
+    "plasterer",
+    "roofer",
+    "carpenter",
+    "painter",
+    "concrete",
+    "rebar",
+    "drafting",
+)
+
+
+async def _ensure_bank(conn: AsyncConnection) -> None:
+    prompts = (
+        "Ishni boshlashdan oldin nima tekshiriladi?",
+        "Himoya vositasi qaysi?",
+        "O'lchov qanday birlikda?",
+        "Nuqson topsangiz nima qilasiz?",
+        "Asbob ishlatib bo'lgach qayerga qo'yiladi?",
+    )
+    options = ("Xavfsizlikni", "Shoshilishni", "Radiyoni", "Choy ichishni")
+    for code in TRADE_CODES:
+        count = await conn.execute(
+            text("SELECT count(*) FROM question_bank WHERE trade_id = :id"),
+            {"id": uid(f"trade:{code}")},
+        )
+        have = int(count.scalar_one())
+        for index in range(have, 40):
+            body = f"{code}: {prompts[index % len(prompts)]} #{index + 1}"
+            await conn.execute(
+                text(
+                    """
+                    INSERT INTO question_bank (id, trade_id, body, options, correct)
+                    VALUES (
+                      :id, :trade_id, CAST(:body AS jsonb), CAST(:options AS jsonb), 0
+                    )
+                    ON CONFLICT (id) DO NOTHING
+                    """
+                ),
+                {
+                    "id": uid(f"question:{code}:{index}"),
+                    "trade_id": uid(f"trade:{code}"),
+                    "body": json.dumps({"uz-Latn": body}, ensure_ascii=False),
+                    "options": json.dumps(list(options), ensure_ascii=False),
+                },
+            )
+
+
 async def seed_exam(conn: AsyncConnection) -> None:
+    await _ensure_bank(conn)
     existing = await conn.execute(text("SELECT count(*) FROM question_bank"))
     if int(existing.scalar_one()) < 30:
         trade_id = uid("trade:plumber")

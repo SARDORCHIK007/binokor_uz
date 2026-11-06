@@ -94,18 +94,27 @@ async def exam(request: Request) -> JSONResponse:
                 FROM question_bank
                 WHERE trade_id = :trade_id AND is_active
                 ORDER BY random()
-                LIMIT 5
+                LIMIT 30
                 """
             ),
             {"trade_id": found["trade_id"]},
         )
+        questions = [
+            {"id": item["id"], "body": _text(item["body"]), "options": item["options"]}
+            for item in rows.mappings()
+        ]
+        enrollment_id = found["id"]
+    from datetime import UTC, datetime, timedelta
+
+    deadline = datetime.now(UTC) + timedelta(minutes=20)
+    redis = request.app.state.redis
+    await redis.set(f"exam:{enrollment_id}", deadline.isoformat(), ex=20 * 60)
     return JSONResponse(
         {
             "state": "open",
-            "questions": [
-                {"id": item["id"], "body": _text(item["body"]), "options": item["options"]}
-                for item in rows.mappings()
-            ],
+            "deadline": deadline.isoformat(),
+            "minutes": 20,
+            "questions": questions,
         }
     )
 
@@ -134,6 +143,17 @@ async def submit_exam(body: ExamBody, request: Request) -> JSONResponse:
         found = enrollment.mappings().first()
         if found is None:
             return problem(404, "NO_ENROLLMENT", "Guruh yo'q", "Faol o'qish topilmadi.")
+        redis = request.app.state.redis
+        deadline_raw = await redis.get(f"exam:{found['id']}")
+        if deadline_raw is None:
+            return problem(409, "EXAM_EXPIRED", "Vaqt tugagan", "Testni qaytadan boshlang. 20 daqiqa beriladi.")
+        from datetime import UTC, datetime
+
+        deadline_text = deadline_raw.decode() if isinstance(deadline_raw, bytes) else str(deadline_raw)
+        if datetime.now(UTC) > datetime.fromisoformat(deadline_text):
+            return problem(409, "EXAM_EXPIRED", "Vaqt tugagan", "20 daqiqa ichida topshirilmadi.")
+        if len(body.answers) < 30:
+            return problem(422, "EXAM_SHORT", "Savol yetarli emas", "30 ta savolning hammasi kerak.")
         correct = 0
         for answer in body.answers:
             row = await conn.execute(

@@ -1,3 +1,5 @@
+from contextvars import ContextVar
+
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
@@ -5,6 +7,8 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 from app.core.config import get_settings
+from app.notify import send_telegram
+from app.rules import public_stats
 from app.security import new_id, problem
 
 router = APIRouter(prefix="/api/v1/public", tags=["public"])
@@ -15,9 +19,18 @@ def _engine(request: Request) -> AsyncEngine:
     return engine
 
 
+_LOCALE: ContextVar[str] = ContextVar("ub_locale", default="uz-Latn")
+
+
+def set_public_locale(value: str) -> None:
+    if value in {"uz-Latn", "uz-Cyrl", "ru", "en", "de", "ar"}:
+        _LOCALE.set(value)
+
+
 def _title(value: object) -> str:
     if isinstance(value, dict):
-        text_value = value.get("uz-Latn")
+        locale = _LOCALE.get()
+        text_value = value.get(locale) or value.get("uz-Latn")
         return str(text_value) if text_value else ""
     return ""
 
@@ -59,7 +72,9 @@ async def home(request: Request) -> JSONResponse:
         )
     return JSONResponse(
         {
-            "stats": {key: int(row[key]) for key in ("listeners", "certified", "employed", "sites")},
+            "stats": public_stats(
+                {key: int(row[key]) for key in ("listeners", "certified", "employed", "sites")}
+            ),
             "trades": [
                 {
                     "code": item["code"],
@@ -439,4 +454,20 @@ async def create_order(body: OrderBody, request: Request) -> JSONResponse:
                 "comment": body.comment,
             },
         )
+        chat = await conn.execute(
+            text(
+                """
+                SELECT u.telegram_id
+                FROM products p
+                JOIN producer_members m ON m.producer_id = p.producer_id
+                JOIN users u ON u.id = m.user_id
+                WHERE p.id = CAST(:product_id AS uuid) AND u.telegram_id IS NOT NULL
+                LIMIT 1
+                """
+            ),
+            {"product_id": body.product_id},
+        )
+        chat_id = chat.scalar()
+    if chat_id is not None:
+        await send_telegram(int(chat_id), f"Yangi material buyurtmasi: {body.buyer_name}, {body.quantity}")
     return JSONResponse({"status": "NEW"})

@@ -1,7 +1,8 @@
 "use client";
 
-import { Button, EmptyState } from "@uychibinokor/ui";
+import { Button, EmptyState, OfflineBanner } from "@uychibinokor/ui";
 import { useEffect, useState } from "react";
+import { enqueueAttendance, flushAttendance } from "@/lib/attendanceQueue";
 
 type Row = {
   enrollment_id: string;
@@ -16,6 +17,7 @@ export function AttendanceSheet({ groupId }: { groupId: string }) {
   const [rows, setRows] = useState<Row[] | null>(null);
   const [failed, setFailed] = useState(false);
   const [note, setNote] = useState("");
+  const [offline, setOffline] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -41,6 +43,26 @@ export function AttendanceSheet({ groupId }: { groupId: string }) {
     };
   }, [groupId]);
 
+  useEffect(() => {
+    const sync = () => {
+      setOffline(!navigator.onLine);
+      if (navigator.onLine) {
+        void flushAttendance().then((count) => {
+          if (count > 0) {
+            setNote("Navbat yuborildi");
+          }
+        });
+      }
+    };
+    sync();
+    window.addEventListener("online", sync);
+    window.addEventListener("offline", sync);
+    return () => {
+      window.removeEventListener("online", sync);
+      window.removeEventListener("offline", sync);
+    };
+  }, []);
+
   function setStatus(enrollmentId: string, status: string) {
     setRows((current) =>
       current?.map((row) => (row.enrollment_id === enrollmentId ? { ...row, status } : row)) ?? null,
@@ -51,27 +73,38 @@ export function AttendanceSheet({ groupId }: { groupId: string }) {
     if (!rows) {
       return;
     }
-    const response = await fetch(`/api/v1/learning/groups/${groupId}/attendance`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        "Idempotency-Key": crypto.randomUUID(),
-      },
-      body: JSON.stringify({
-        date: new Date().toISOString().slice(0, 10),
-        default_status: "PRESENT",
-        default_site_hours: 4,
-        exceptions: rows
-          .filter((row) => row.status)
-          .map((row) => ({
-            enrollment_id: row.enrollment_id,
-            status: row.status,
-            site_hours: row.status === "PRESENT" || row.status === "LATE" ? 4 : 0,
-          })),
-      }),
+    const key = crypto.randomUUID();
+    const body = JSON.stringify({
+      date: new Date().toISOString().slice(0, 10),
+      default_status: "PRESENT",
+      default_site_hours: 4,
+      exceptions: rows
+        .filter((row) => row.status)
+        .map((row) => ({
+          enrollment_id: row.enrollment_id,
+          status: row.status,
+          site_hours: row.status === "PRESENT" || row.status === "LATE" ? 4 : 0,
+        })),
     });
-    setNote(response.ok ? "Saqlandi" : "Saqlanmadi");
+    if (!navigator.onLine) {
+      await enqueueAttendance({ id: key, groupId, body });
+      setOffline(true);
+      setNote("Qurilmada saqlandi. Internet qaytsa yuboriladi.");
+      return;
+    }
+    try {
+      const response = await fetch(`/api/v1/learning/groups/${groupId}/attendance`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json", "Idempotency-Key": key },
+        body,
+      });
+      setNote(response.ok ? "Saqlandi" : "Saqlanmadi");
+    } catch {
+      await enqueueAttendance({ id: key, groupId, body });
+      setOffline(true);
+      setNote("Qurilmada saqlandi. Internet qaytsa yuboriladi.");
+    }
   }
 
   if (failed) {
@@ -85,7 +118,8 @@ export function AttendanceSheet({ groupId }: { groupId: string }) {
   }
   return (
     <div className="p-4">
-      <ul className="flex flex-col gap-3">
+      {offline ? <OfflineBanner text="Internet yo'q. Davomat shu qurilmada navbatga yoziladi." /> : null}
+      <ul className="mt-3 flex flex-col gap-3">
         {rows.map((row) => (
           <li key={row.enrollment_id} className="rounded-md border border-line bg-card p-3">
             <p className="font-semibold">{row.name}</p>

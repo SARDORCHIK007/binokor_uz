@@ -4,7 +4,7 @@ import { Button, EmptyState } from "@uychibinokor/ui";
 import { useEffect, useState } from "react";
 
 type Question = { id: string; body: string; options: string[] };
-type OpenExam = { state: "open"; questions: Question[] };
+type OpenExam = { state: "open"; questions: Question[]; deadline: string; minutes: number };
 type DoneExam = { state: "done"; theory_score: number | null; practice_score: number | null };
 type EmptyExam = { state: "empty" };
 type Exam = OpenExam | DoneExam | EmptyExam;
@@ -14,6 +14,7 @@ export default function ExamPage() {
   const [failed, setFailed] = useState(false);
   const [choices, setChoices] = useState<Record<string, number>>({});
   const [score, setScore] = useState<number | null>(null);
+  const [left, setLeft] = useState<number | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -38,6 +39,17 @@ export default function ExamPage() {
       active = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (!exam || exam.state !== "open") {
+      return;
+    }
+    const end = new Date(exam.deadline).getTime();
+    const timer = window.setInterval(() => {
+      setLeft(Math.max(0, Math.floor((end - Date.now()) / 1000)));
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [exam]);
 
   async function submit() {
     if (!exam || exam.state !== "open") {
@@ -88,6 +100,9 @@ export default function ExamPage() {
   return (
     <div className="flex flex-col gap-4 p-4">
       <h1 className="text-2xl font-semibold">Yakuniy sinov</h1>
+      <p className="text-sm text-muted">
+        30 savol · qolgan vaqt {left === null ? "—" : `${Math.floor(left / 60)}:${String(left % 60).padStart(2, "0")}`}
+      </p>
       {exam.questions.map((question, index) => (
         <fieldset key={question.id} className="rounded-md border border-line bg-card p-4">
           <legend className="font-semibold">

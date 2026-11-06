@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { AccountMenu } from "@/components/auth/AccountMenu";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { readSession } from "@/lib/session";
 
 const links = [
@@ -27,7 +28,7 @@ export async function SiteHeader() {
             UYCHI BINOKOR
           </Link>
           <div className="ml-auto flex items-center gap-2">
-            <span className="hidden text-sm text-muted sm:inline">{t("language")}</span>
+            <LanguageSwitcher />
             <Link href="/kabinet/panel" className="rounded-sm px-3 py-2 text-sm font-medium text-ink hover:bg-blue-50">
               {t("employers")}
             </Link>

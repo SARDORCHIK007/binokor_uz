@@ -41,12 +41,14 @@ export async function HomePage() {
       </div>
     );
   }
-  const stats = [
-    ["listeners", home.stats.listeners],
-    ["certified", home.stats.certified],
-    ["employed", home.stats.employed],
-    ["sites", home.stats.sites],
-  ] as const;
+  const stats = (
+    [
+      ["listeners", home.stats.listeners ?? 0],
+      ["certified", home.stats.certified ?? 0],
+      ["employed", home.stats.employed ?? 0],
+      ["sites", home.stats.sites ?? 0],
+    ] as const
+  ).filter(([, value]) => value > 0);
   return (
     <div>
       <section className="bg-canvas">
@@ -96,7 +98,7 @@ export async function HomePage() {
         </div>
       </section>
 
-      <section className="bg-card py-14" aria-labelledby="raqamlar">
+      {stats.length > 0 ? <section className="bg-card py-14" aria-labelledby="raqamlar">
         <div className="mx-auto max-w-[1200px] px-4">
           <h2 id="raqamlar" className="text-3xl font-semibold text-navy-900">
             {t("home.statsTitle")}
@@ -111,7 +113,7 @@ export async function HomePage() {
             ))}
           </dl>
         </div>
-      </section>
+      </section> : null}
 
       <section id="loyiha" className="mx-auto max-w-[1200px] px-4 py-14">
         <h2 className="text-3xl font-semibold text-navy-900">{t("home.modelTitle")}</h2>

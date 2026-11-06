@@ -96,7 +96,12 @@ async def answers(body: AnswerBody, request: Request) -> JSONResponse:
                 )
                 ON CONFLICT (user_id, word_id) DO UPDATE SET
                   box = LEAST(5, GREATEST(1, vocab_progress.box + CASE WHEN :correct THEN 1 ELSE -1 END)),
-                  next_review_at = now() + interval '1 day',
+                  next_review_at = now() + (
+                    power(
+                      2,
+                      LEAST(5, GREATEST(1, vocab_progress.box + CASE WHEN :correct THEN 1 ELSE -1 END)) - 1
+                    )::int * interval '1 day'
+                  ),
                   correct_count = vocab_progress.correct_count + CASE WHEN :correct THEN 1 ELSE 0 END,
                   wrong_count = vocab_progress.wrong_count + CASE WHEN :correct THEN 0 ELSE 1 END,
                   last_answer_at = now()

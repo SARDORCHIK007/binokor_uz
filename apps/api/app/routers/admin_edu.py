@@ -275,3 +275,39 @@ async def order_status(order_id: uuid.UUID, body: OrderStatusIn, request: Reques
         if updated.first() is None:
             return problem(404, "NOT_FOUND", "Topilmadi", "Buyurtma yo'q.")
     return JSONResponse({"status": body.status})
+
+
+@router.get("/employers")
+async def employers(request: Request) -> JSONResponse:
+    gate = await _require_admin(request)
+    if isinstance(gate, JSONResponse):
+        return gate
+    engine = _engine(request)
+    async with engine.connect() as conn:
+        rows = await conn.execute(
+            text(
+                """
+                SELECT id::text AS id, name, inn, verified_at IS NOT NULL AS verified
+                FROM employers ORDER BY name
+                """
+            )
+        )
+    return JSONResponse([dict(item) for item in rows.mappings()])
+
+
+@router.post("/employers/{employer_id}/verify")
+async def verify_employer(employer_id: uuid.UUID, request: Request) -> JSONResponse:
+    gate = await _require_admin(request)
+    if isinstance(gate, JSONResponse):
+        return gate
+    engine = _engine(request)
+    async with engine.begin() as conn:
+        await conn.execute(
+            text(
+                """
+                UPDATE employers SET verified_at = now(), verified_by = :user_id WHERE id = :id
+                """
+            ),
+            {"id": employer_id, "user_id": gate},
+        )
+    return JSONResponse({"verified": True})

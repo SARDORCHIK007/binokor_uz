@@ -41,13 +41,9 @@ class ApplicationIn(BaseModel):
 
 
 def _matrix(experience: float, has_language: bool) -> str:
-    if experience > 0 and has_language:
-        return "D"
-    if experience > 0:
-        return "A"
-    if has_language:
-        return "B"
-    return "C"
+    from app.rules import matrix_class
+
+    return matrix_class(experience, has_language)
 
 
 @router.post("/applications")
