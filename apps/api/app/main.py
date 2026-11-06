@@ -14,6 +14,8 @@ from app.routers.applications import router as applications_router
 from app.routers.auth import router as auth_router
 from app.routers.cabinet import router as cabinet_router
 from app.routers.certificates import router as certificates_router
+from app.routers.curator import router as curator_router
+from app.routers.exams import router as exams_router
 from app.routers.jobs import router as jobs_router
 from app.routers.learning import router as learning_router
 from app.routers.public import router as public_router
@@ -22,6 +24,7 @@ from app.routers.vocab import router as vocab_router
 from app.seed import seed_login_users
 from app.seed_certificates import seed_certificates
 from app.seed_education import seed_education
+from app.seed_exam import seed_exam
 from app.seed_learning import seed_learning
 from app.seed_market import seed_market
 from app.seed_portal import seed_portal
@@ -46,6 +49,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         await seed_workers(conn)
         await seed_vocab(conn)
         await seed_market(conn)
+        await seed_exam(conn)
     try:
         yield
     finally:
@@ -59,6 +63,8 @@ app.include_router(applications_router)
 app.include_router(admin_edu_router)
 app.include_router(cabinet_router)
 app.include_router(learning_router)
+app.include_router(exams_router)
+app.include_router(curator_router)
 app.include_router(certificates_router)
 app.include_router(public_router)
 app.include_router(reports_router)

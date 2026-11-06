@@ -92,7 +92,14 @@ async def queue(request: Request, status: str = "PENDING_APPROVAL") -> JSONRespo
                 SELECT c.id::text AS id, c.number, c.status::text AS status,
                        p.first_name, p.last_name, t.name AS trade_name,
                        (SELECT count(*) FROM certificate_approvals a
-                         WHERE a.certificate_id = c.id AND a.decision = 'APPROVE') AS approvals
+                         WHERE a.certificate_id = c.id AND a.decision = 'APPROVE') AS approvals,
+                       (
+                         SELECT round(100.0 * count(*) FILTER (WHERE a2.status IN ('PRESENT','LATE'))
+                                      / NULLIF(count(*), 0))
+                         FROM attendance a2 WHERE a2.enrollment_id = c.enrollment_id
+                       ) AS attendance_pct,
+                       (SELECT f.theory_score FROM final_exams f WHERE f.enrollment_id = c.enrollment_id) AS theory_score,
+                       (SELECT f.practice_score FROM final_exams f WHERE f.enrollment_id = c.enrollment_id) AS practice_score
                 FROM certificates c
                 JOIN persons p ON p.id = c.person_id
                 JOIN trades t ON t.id = c.trade_id
@@ -112,6 +119,9 @@ async def queue(request: Request, status: str = "PENDING_APPROVAL") -> JSONRespo
                 "holder": f"{item['last_name']} {item['first_name']}",
                 "trade": _label(item["trade_name"]),
                 "approvals": int(item["approvals"]),
+                "attendance_pct": None if item["attendance_pct"] is None else int(item["attendance_pct"]),
+                "theory_score": item["theory_score"],
+                "practice_score": item["practice_score"],
             }
             for item in rows.mappings()
         ]

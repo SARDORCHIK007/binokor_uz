@@ -30,7 +30,7 @@ export default async function WorkerPage({ params }: { params: Promise<{ slug: s
     <article className="mx-auto max-w-3xl px-4 py-10">
       <h1 className="text-4xl font-semibold text-navy-900">{worker.name}</h1>
       <p className="mt-3 text-lg">
-        {worker.trade} · {worker.level}
+        {worker.trade} · {worker.level === "ASSISTANT" ? "Yordamchi" : worker.level === "MASTER" ? "Usta" : worker.level}
       </p>
       <p className="mt-2 text-muted">
         {worker.hours} soat · {worker.availability}

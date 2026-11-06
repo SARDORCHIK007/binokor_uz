@@ -208,15 +208,23 @@ async def _student(conn: AsyncConnection, user_id: uuid.UUID) -> dict[str, objec
         {"course_id": item["course_id"], "enrollment_id": item["enrollment_id"]},
     )
     exam = await conn.execute(
-        text("SELECT 1 FROM final_exams WHERE enrollment_id = :enrollment_id"),
+        text(
+            """
+            SELECT theory_score, practice_score
+            FROM final_exams WHERE enrollment_id = :enrollment_id
+            """
+        ),
         {"enrollment_id": item["enrollment_id"]},
     )
+    exam_row = exam.mappings().first()
+    theory = None if exam_row is None else exam_row["theory_score"]
+    practice = None if exam_row is None else exam_row["practice_score"]
     remaining: list[str] = []
     if percent is None or percent < 80:
         remaining.append("attendance")
     if int(open_modules.scalar_one()) > 0:
         remaining.append("modules")
-    if exam.first() is None:
+    if theory is None or int(theory) < 60 or practice is None or int(practice) < 70:
         remaining.append("exam")
     return {
         "enrollment": {

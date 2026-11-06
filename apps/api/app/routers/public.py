@@ -117,7 +117,7 @@ async def trade(code: str, request: Request) -> JSONResponse:
 
 
 @router.get("/workers")
-async def workers(request: Request) -> JSONResponse:
+async def workers(request: Request, trade: str | None = None, q: str | None = None) -> JSONResponse:
     engine = _engine(request)
     async with engine.connect() as conn:
         result = await conn.execute(
@@ -128,6 +128,7 @@ async def workers(request: Request) -> JSONResponse:
                          WHEN coalesce((wp.visibility->>'full_name')::boolean, false) THEN u.full_name
                          ELSE split_part(btrim(u.full_name), ' ', 1)
                        END AS name,
+                       t.code AS trade_code,
                        t.name AS trade_name,
                        wp.level::text AS level,
                        wp.availability::text AS availability,
@@ -136,9 +137,12 @@ async def workers(request: Request) -> JSONResponse:
                 FROM worker_profiles wp
                 JOIN users u ON u.id = wp.user_id
                 LEFT JOIN trades t ON t.id = wp.primary_trade_id
+                WHERE (CAST(:trade AS text) IS NULL OR t.code = CAST(:trade AS text))
+                  AND (CAST(:q AS text) IS NULL OR u.full_name ILIKE CAST(:like AS text))
                 ORDER BY u.full_name
                 """
-            )
+            ),
+            {"trade": trade or None, "q": q or None, "like": f"%{q}%" if q else None},
         )
     return JSONResponse(
         [
@@ -146,6 +150,7 @@ async def workers(request: Request) -> JSONResponse:
                 "slug": item["slug"],
                 "name": item["name"],
                 "trade": _title(item["trade_name"]),
+                "trade_code": item["trade_code"],
                 "level": item["level"],
                 "availability": item["availability"],
                 "rating": None if item["rating_avg"] is None else float(item["rating_avg"]),
@@ -359,6 +364,38 @@ async def search(request: Request, q: str = "") -> JSONResponse:
         )
     return JSONResponse(
         [{"kind": item["kind"], "ref": item["ref"], "title": item["title"]} for item in result.mappings()]
+    )
+
+
+@router.get("/brigades")
+async def brigades(request: Request) -> JSONResponse:
+    engine = _engine(request)
+    async with engine.connect() as conn:
+        result = await conn.execute(
+            text(
+                """
+                SELECT b.id::text AS id, b.name, b.status::text AS status, t.name AS trade_name,
+                       count(m.worker_user_id) FILTER (WHERE m.left_at IS NULL) AS members
+                FROM brigades b
+                JOIN trades t ON t.id = b.trade_id
+                LEFT JOIN brigade_members m ON m.brigade_id = b.id
+                WHERE b.status = 'READY'
+                GROUP BY b.id, t.name
+                ORDER BY b.name
+                """
+            )
+        )
+    return JSONResponse(
+        [
+            {
+                "id": item["id"],
+                "name": item["name"],
+                "trade": _title(item["trade_name"]),
+                "status": item["status"],
+                "members": int(item["members"]),
+            }
+            for item in result.mappings()
+        ]
     )
 
 

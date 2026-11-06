@@ -17,7 +17,8 @@
     "news": "Yangiliklar",
     "contact": "Aloqa",
     "directions": "Yo'nalishlar",
-    "partners": "Hamkorlar"
+    "partners": "Hamkorlar",
+    "brigades": "Brigadalar"
   },
   "auth": {
     "title": "Kirish",
@@ -64,6 +65,9 @@
     "attendance": "Davomat",
     "grades": "Baholar",
     "apply": "Ariza",
+    "exam": "Imtihon",
+    "curator": "Kurator",
+    "myApplication": "Arizam",
     "role": "Rol",
     "menu": "Menyu",
     "close": "Yopish",

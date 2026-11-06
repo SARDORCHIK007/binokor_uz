@@ -29,10 +29,17 @@ const MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/davomat", key: "attendance" },
     { href: "/kabinet/baholar", key: "grades" },
   ],
+  curator: [
+    { href: "/kabinet", key: "panel" },
+    { href: "/kabinet/kurator", key: "curator" },
+    { href: "/kabinet/lugat", key: "vocab" },
+  ],
   student: [
     { href: "/kabinet", key: "panel" },
     { href: "/kabinet/davomat", key: "attendance" },
     { href: "/kabinet/baholar", key: "grades" },
+    { href: "/kabinet/imtihon", key: "exam" },
+    { href: "/kabinet/arizam", key: "myApplication" },
     { href: "/kabinet/lugat", key: "vocab" },
     { href: "/ariza", key: "apply" },
   ],

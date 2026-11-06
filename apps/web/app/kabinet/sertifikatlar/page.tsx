@@ -12,6 +12,9 @@ type Item = {
   holder: string;
   trade: string;
   approvals: number;
+  attendance_pct: number | null;
+  theory_score: number | null;
+  practice_score: number | null;
 };
 
 export default async function CertificatesPage() {
@@ -33,7 +36,8 @@ export default async function CertificatesPage() {
               {item.holder} · {item.trade}
             </p>
             <p className="text-sm text-muted">
-              {item.status} · tasdiq {item.approvals}/2
+              {item.status} · tasdiq {item.approvals}/2 · davomat {item.attendance_pct ?? "—"}% · nazariya{" "}
+              {item.theory_score ?? "—"} · amaliy {item.practice_score ?? "—"}
             </p>
             <div className="mt-3">
               <CertificateDecision id={item.id} />

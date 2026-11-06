@@ -9,6 +9,7 @@ const links = [
   { href: "/yonalishlar", key: "directions" },
   { href: "/hamkorlar", key: "partners" },
   { href: "/ustalar", key: "workers" },
+  { href: "/brigadalar", key: "brigades" },
   { href: "/obyektlar", key: "objects" },
   { href: "/materiallar", key: "materials" },
   { href: "/yangiliklar", key: "news" },

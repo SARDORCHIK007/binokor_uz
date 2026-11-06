@@ -29,7 +29,7 @@ export default async function AttendancePage() {
         <ul className="mt-4 flex flex-col gap-2">
           {mine.attendance.map((item) => (
             <li key={item.date} className="rounded-md border border-line bg-card px-3 py-2">
-              {item.date} · {item.status} · {item.site_hours} soat
+              {item.date} · {item.status === "PRESENT" ? "Keldi" : item.status === "LATE" ? "Kechikdi" : item.status === "ABSENT_EXCUSED" ? "Sababli" : "Kelmadi"} · {item.site_hours} soat
             </li>
           ))}
         </ul>
