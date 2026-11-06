@@ -17,6 +17,8 @@ select = ["E", "F", "I", "UP", "B"]
 "app/routers/cabinet.py" = ["E501"]
 "app/routers/admin_edu.py" = ["E501"]
 "app/seed_education.py" = ["E501"]
+"app/seed_learning.py" = ["E501"]
+"app/routers/learning.py" = ["E501"]
 
 [tool.mypy]
 python_version = "3.12"

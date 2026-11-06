@@ -20,6 +20,7 @@ const MENUS: Record<string, { href: string; key: string }[]> = {
   student: [
     { href: "/kabinet", key: "panel" },
     { href: "/kabinet/davomat", key: "attendance" },
+    { href: "/kabinet/baholar", key: "grades" },
     { href: "/ariza", key: "apply" },
   ],
 };

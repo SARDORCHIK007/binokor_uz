@@ -174,15 +174,15 @@ async def _student(conn: AsyncConnection, user_id: uuid.UUID) -> dict[str, objec
     row = await conn.execute(
         text(
             """
-            SELECT c.title, g.code, g.schedule,
-                   count(a.id) FILTER (WHERE a.status = 'PRESENT') AS present_days,
+            SELECT e.id AS enrollment_id, c.id AS course_id, c.title, g.code, g.schedule,
+                   count(a.id) FILTER (WHERE a.status IN ('PRESENT','LATE')) AS present_days,
                    count(a.id) AS marked_days
             FROM enrollments e
             JOIN groups g ON g.id = e.group_id
             JOIN courses c ON c.id = g.course_id
             LEFT JOIN attendance a ON a.enrollment_id = e.id
             WHERE e.student_user_id = :id AND e.status = 'ACTIVE'
-            GROUP BY c.title, g.code, g.schedule
+            GROUP BY e.id, c.id, c.title, g.code, g.schedule
             LIMIT 1
             """
         ),
@@ -194,11 +194,30 @@ async def _student(conn: AsyncConnection, user_id: uuid.UUID) -> dict[str, objec
     marked = int(item["marked_days"])
     present = int(item["present_days"])
     percent = None if marked == 0 else round(present * 100 / marked)
+    open_modules = await conn.execute(
+        text(
+            """
+            SELECT count(*) FROM modules m
+            WHERE m.course_id = :course_id
+              AND NOT EXISTS (
+                SELECT 1 FROM assessments a
+                WHERE a.enrollment_id = :enrollment_id AND a.module_id = m.id AND a.passed
+              )
+            """
+        ),
+        {"course_id": item["course_id"], "enrollment_id": item["enrollment_id"]},
+    )
+    exam = await conn.execute(
+        text("SELECT 1 FROM final_exams WHERE enrollment_id = :enrollment_id"),
+        {"enrollment_id": item["enrollment_id"]},
+    )
     remaining: list[str] = []
     if percent is None or percent < 80:
         remaining.append("attendance")
-    remaining.append("modules")
-    remaining.append("exam")
+    if int(open_modules.scalar_one()) > 0:
+        remaining.append("modules")
+    if exam.first() is None:
+        remaining.append("exam")
     return {
         "enrollment": {
             "course": _label(item["title"]),
