@@ -5,6 +5,11 @@
 
 body {
   font-feature-settings: "tnum" 1, "cv11" 1;
+  letter-spacing: -0.011em;
+}
+
+main h1 {
+  letter-spacing: -0.03em;
 }
 
 img,

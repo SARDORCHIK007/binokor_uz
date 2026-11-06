@@ -36,7 +36,7 @@ export function CabinetShell({
           <Link
             key={item.href}
             href={item.href}
-            className={`rounded-sm px-3 py-2 text-sm ${active ? "bg-navy-800 text-white" : "hover:bg-navy-800"}`}
+            className={`rounded-lg px-3 py-2 text-sm ${active ? "bg-white text-navy-900" : "hover:bg-navy-800"}`}
             onClick={() => setOpen(false)}
           >
             {item.label}
@@ -47,8 +47,8 @@ export function CabinetShell({
   );
 
   return (
-    <div className="mx-auto grid max-w-[1440px] md:grid-cols-[220px_1fr]">
-      <aside className="hidden bg-navy-900 p-4 text-blue-50 md:block md:min-h-[80vh]">{nav}</aside>
+    <div className="mx-auto grid min-h-screen max-w-[1440px] bg-[#F4F6F9] md:grid-cols-[240px_1fr]">
+      <aside className="hidden bg-navy-900 p-5 text-blue-50 md:block">{nav}</aside>
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-3 border-b border-line bg-card px-4 py-3">
           <button type="button" className="min-h-11 rounded-sm border border-line px-3 text-sm md:hidden" onClick={() => setOpen(true)}>

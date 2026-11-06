@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     minio_endpoint: str
     app_env: str = "local"
     jwt_secret: str = "local-dev-change-me"
+    demo_mode: bool = False
 
 
 @lru_cache

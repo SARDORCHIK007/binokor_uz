@@ -1,4 +1,4 @@
-import { buttonClass, EmptyState, StatusBadge } from "@uychibinokor/ui";
+import { buttonClass, EmptyState } from "@uychibinokor/ui";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { apiGet } from "@/lib/public";
@@ -59,29 +59,27 @@ export default async function VerifyPage({ params, searchParams }: PageProps) {
   }
   const valid = data.result === "VALID" && data.signature_valid;
   return (
-    <div className="mx-auto max-w-lg px-4 py-6" dir={dir} lang={lang}>
-      <p className="mb-3 flex flex-wrap gap-2 text-sm">
-        {(Object.keys(COPY) as Lang[]).map((item) => (
-          <Link key={item} href={`/verify/${number}?lang=${item}`} className="rounded-sm border border-line px-2 py-1">
-            {item}
-          </Link>
-        ))}
-      </p>
-      <section className={`rounded-md p-5 ${valid ? "bg-success-100 text-success-600" : "bg-danger-100 text-danger-600"}`}>
-        <StatusBadge tone={valid ? "success" : "danger"}>{valid ? copy.ok : data.result}</StatusBadge>
-        <p className="mt-3 text-base font-semibold text-ink">№ {data.certificate?.number}</p>
-        <p className="text-sm">{data.holder?.display_name}</p>
-        <p className="text-sm">
-          {data.certificate?.trade} · {data.certificate?.level}
+    <div className="bg-[#F4F6F9] px-4 py-10" dir={dir} lang={lang}>
+      <article className="mx-auto max-w-3xl rounded-[20px] bg-white p-8 shadow-sh3">
+        <p className="mb-6 flex flex-wrap gap-2 text-xs">
+          {(Object.keys(COPY) as Lang[]).map((item) => (
+            <Link key={item} href={`/verify/${number}?lang=${item}`} className="rounded-full border border-line px-2 py-1">
+              {item}
+            </Link>
+          ))}
         </p>
-      </section>
-      <section className="mt-4 rounded-md border border-line bg-card p-5">
-        <p className="text-sm text-muted">{copy.check}</p>
-        <p className="mt-2 break-all font-mono text-sm">/verify/{number}</p>
-        <Link href={`/api/v1/public/verify/${number}/pdf`} className={`${buttonClass({ variant: "secondary" })} mt-4`}>
+        <div className={`flex size-40 items-center justify-center rounded-full border-8 text-center text-sm font-bold tracking-[0.18em] ${valid ? "border-teal-600 text-teal-700" : "border-danger-600 text-danger-600"}`}>
+          {valid ? (lang === "uz-Latn" || lang === "uz-Cyrl" ? "HAQIQIY" : copy.ok) : data.result}
+        </div>
+        <p className="mt-8 text-sm text-muted">{copy.check}</p>
+        <h1 className="mt-1 text-4xl font-bold tracking-[-0.03em] text-navy-900">№ {data.certificate?.number}</h1>
+        <p className="mt-4 text-xl">{data.holder?.display_name}</p>
+        <p className="text-muted">{data.certificate?.trade} · {data.certificate?.level}</p>
+        <p className="mt-2 text-sm text-muted">{data.certificate?.issuer}</p>
+        <Link href={`/api/v1/public/verify/${number}/pdf`} className={`${buttonClass({ variant: "secondary" })} mt-8`}>
           PDF
         </Link>
-      </section>
+      </article>
     </div>
   );
 }

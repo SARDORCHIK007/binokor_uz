@@ -1,5 +1,6 @@
-# Tungi qarorlar
+# Tun qarorlari
 
-- Ish beruvchi qidiruvi ism bo‘yicha qoldi. Kasb va daraja kartochkada ko‘rinadi. Telefon maydoni javobga qo‘shilmadi (BR-17).
-- Xorijiy ish beruvchi uchun alohida nemis kabineti ochilmadi. Ochiq sahifalar en/ru/uz, tekshiruv sahifasi de/ar. Bu hujjatdagi ochiq tillar tartibiga yaqinroq.
-- Telegram tokeni `.env` da bo‘sh. Token yozilmadi. Lokal rejimda kod sahifada qoladi.
+- Ish beruvchi qidiruvi ism bo'yicha. Telefon javobda yo'q.
+- Alohida nemis ish beruvchi kabineti yo'q. Kabinetda uz / en / de yozuv bor.
+- Lokal rejimda kirish kodi sahifada qoladi, chunki `BOT_TOKEN` bo'sh.
+- Taqdimot uchun `DEMO_MODE=true` bo'lsa `/api/v1/auth/demo` sessiya beradi va administrator uchun TOTP ni chetlab o'tadi. Bu faqat demo tugmasi. Oddiy kirishda 2FA qoladi.

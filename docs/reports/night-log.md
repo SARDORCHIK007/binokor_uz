@@ -40,6 +40,11 @@ Tekshiruv: http://localhost:8090/kirish
 Natija: pytest 27 o‘tdi, 0 yiqildi. Web test 1 o‘tdi.
 Tekshiruv: `apps/api/tests/test_rules.py`
 
+## 20:10 — taqdimot dizayni
+Natija: bosh sahifa, menyu, tekshiruv varaqasi, kabinet paneli va demo kirish yangilandi. API 35, web 3 test o'tdi. Sahifalar 200.
+Tekshiruv: http://localhost:8090 http://localhost:8090/kirish http://localhost:8090/verify/UB-2026-000001
+Orqaga: `git checkout pre-redesign`
+
 ## 19:40 — 1–10 qayta dalil
 Natija: har band uchun test yozildi va o‘tdi. Ishlab chiqaruvchida mahsulot o‘chirish qo‘shildi. Ish beruvchi qidiruvi kasb bo‘yicha filtrlandi, kabinetda uz/en/de yozuv bor.
 Tekshiruv: `docs/reports/morning-summary.md` dagi jadval.

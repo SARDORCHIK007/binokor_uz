@@ -16,12 +16,12 @@ export default async function TradesPage() {
     );
   }
   return (
-    <div className="mx-auto max-w-[1200px] px-4 py-10">
-      <h1 className="text-4xl font-semibold text-navy-900">{t("home.tradesTitle")}</h1>
-      <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="mx-auto max-w-[1200px] px-4 py-16">
+      <h1 className="text-5xl font-bold text-navy-900">{t("home.tradesTitle")}</h1>
+      <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {home.trades.map((trade) => (
           <li key={trade.code}>
-            <Link href={`/kasblar/${trade.code}`} className="block rounded-md border border-line bg-card p-4 shadow-sh1">
+            <Link href={`/kasblar/${trade.code}`} className="block rounded-[20px] bg-card p-5 shadow-sh2 transition-transform hover:-translate-y-1">
               <h2 className="text-xl font-semibold">{trade.name}</h2>
               <p className="mt-2 text-sm text-muted">
                 {t("home.domestic")}: {trade.domestic_months} {t("home.months")}

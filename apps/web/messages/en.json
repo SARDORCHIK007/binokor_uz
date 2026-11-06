@@ -18,7 +18,8 @@
     "contact": "Contact",
     "directions": "Directions",
     "partners": "Partners",
-    "brigades": "Brigades"
+    "brigades": "Brigades",
+    "more": "More"
   },
   "auth": {
     "title": "Sign in",
@@ -33,6 +34,11 @@
     "admin": "Admin",
     "mentor": "Mentor",
     "student": "Learner",
+    "employer": "Employer",
+    "producer": "Producer",
+    "hokimlik": "District office",
+    "demoTitle": "Demo sign-in",
+    "demoText": "One click for the presentation.",
     "failed": "The request failed. Try again."
   },
   "roles": {
@@ -128,7 +134,11 @@
     "searchAction": "Search",
     "apply": "Apply",
     "findWorker": "Find a craftsman",
-    "posterCaption": "A building under construction. A 3D scene comes later.",
+    "posterCaption": "The building rises floor by floor.",
+    "finalTitle": "Becoming a craftsman starts here",
+    "finalText": "The application is free. A person confirms the path.",
+    "scanTitle": "QR passport",
+    "scanText": "A phone camera opens the certificate. The signature matches the record.",
     "servicesTitle": "Services",
     "statsTitle": "Figures",
     "statsNote": "Figures come from the local database.",

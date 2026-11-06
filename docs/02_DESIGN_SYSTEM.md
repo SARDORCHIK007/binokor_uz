@@ -318,3 +318,7 @@ Mobil ko'rinishda 3D sahna sarlavha ostiga 56vh balandlikda tushadi. Qidiruv qat
 | D-4 | 12 ta kasb piktogrammasi (SVG) | 2-sprint |
 | D-5 | 3D sahnalar (hero, globus, 12 kasb) | 2–4-sprint |
 | D-6 | Sertifikat va pasport PDF shablonlari | 3-sprint |
+
+## 13. Taqdimot qatlami
+
+Bosh sahifa to'liq ekran: 72–88px sarlavha (telefonda 40px), harf oralig'i −0.03em. Qorong'i dengiz (`#0C1B33`) va och fon (`#F4F6F9`) almashadi. Qahrabo (`#C27A00`) faqat qurilish urg'usi uchun. Kartochka radiusi 20px, soyasi yengil, shisha va xira effekt yo'q. Harakat: paydo bo'lishda 16px ko'tarilish, raqamlar sanab chiqadi, kartochka hoverda ko'tariladi. `prefers-reduced-motion` da animatsiya o'chadi. 3D bino zaif qurilmada statik chizma bilan almashtiriladi. `public/media/real/` da surat bo'lsa, komponentlar shu suratlarni o'zi oladi.

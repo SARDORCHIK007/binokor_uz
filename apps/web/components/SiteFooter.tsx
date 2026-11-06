@@ -1,15 +1,33 @@
-import { getTranslations } from "next-intl/server";
+"use client";
 
-export async function SiteFooter() {
-  const t = await getTranslations("footer");
+import { useTranslations } from "next-intl";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+export function SiteFooter() {
+  const t = useTranslations("footer");
+  const nav = useTranslations("nav");
+  const home = useTranslations("home");
+  const path = usePathname();
+  if (path.startsWith("/kabinet")) {
+    return null;
+  }
   return (
-    <footer className="border-t border-line bg-navy-900 text-blue-50">
-      <div className="mx-auto grid max-w-[1200px] gap-3 px-4 py-10 text-sm sm:grid-cols-3">
-        <p className="font-semibold text-white">UYCHI BINOKOR</p>
-        <p>{t("contact")}</p>
-        <div className="space-y-2">
-          <p>{t("trust")}</p>
-          <p className="text-blue-100">{t("privacy")}</p>
+    <footer className="bg-navy-900 text-blue-50">
+      <div className="mx-auto grid max-w-[1200px] gap-8 px-4 py-16 sm:grid-cols-4">
+        <div className="sm:col-span-2">
+          <p className="text-sm font-bold tracking-[0.14em] text-white">UYCHI BINOKOR</p>
+          <p className="mt-4 max-w-sm text-sm leading-6 text-blue-100">{t("trust")}</p>
+        </div>
+        <div className="flex flex-col gap-2 text-sm">
+          <Link href="/kasblar">{nav("trades")}</Link>
+          <Link href="/ustalar">{nav("workers")}</Link>
+          <Link href="/ariza">{home("apply")}</Link>
+          <Link href="/aloqa">{nav("contact")}</Link>
+        </div>
+        <div className="space-y-2 text-sm text-blue-100">
+          <p>{t("contact")}</p>
+          <p>{t("privacy")}</p>
         </div>
       </div>
     </footer>

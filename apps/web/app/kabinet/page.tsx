@@ -1,4 +1,5 @@
 import { buttonClass, EmptyState } from "@uychibinokor/ui";
+import { FunnelChart } from "@/components/cabinet/FunnelChart";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { activeRole, apiAuth, readSession } from "@/lib/session";
@@ -73,26 +74,19 @@ async function AdminHome({ data }: { data: AdminDash }) {
   ] as const;
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-3xl font-bold text-navy-900">{t("panel")}</h1>
+      <h1 className="text-3xl font-bold tracking-[-0.03em] text-navy-900">{t("panel")}</h1>
       <dl className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {cards.map(([key, value]) => (
-          <div key={key} className="rounded-md border border-line bg-card p-4 shadow-sh1">
+          <div key={key} className="rounded-[20px] bg-card p-5 shadow-sh2">
             <dt className="text-sm text-muted">{t(key)}</dt>
-            <dd className="text-3xl font-bold tabular-nums">{value}</dd>
+            <dd className="mt-2 text-4xl font-bold tracking-[-0.03em] tabular-nums">{value}</dd>
           </div>
         ))}
       </dl>
       <div className="grid gap-4 lg:grid-cols-2">
-        <section className="rounded-md border border-line bg-card p-4 shadow-sh1">
+        <section className="rounded-[20px] bg-card p-5 shadow-sh2">
           <h2 className="font-semibold">{t("funnel")}</h2>
-          <ol className="mt-4 flex flex-wrap gap-2">
-            {data.funnel.map((item) => (
-              <li key={item.key} className="rounded-sm bg-blue-50 px-3 py-2">
-                <p className="text-lg font-bold tabular-nums">{item.value}</p>
-                <p className="text-xs text-muted">{t(item.key as "applied")}</p>
-              </li>
-            ))}
-          </ol>
+          <FunnelChart rows={data.funnel.map((item) => ({ name: t(item.key as "applied"), value: item.value }))} />
         </section>
         <section className="rounded-md border border-line bg-card p-4 shadow-sh1">
           <h2 className="font-semibold">{t("queue")}</h2>

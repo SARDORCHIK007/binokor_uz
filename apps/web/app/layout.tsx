@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
+import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { PwaRegister } from "@/components/PwaRegister";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -36,6 +37,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         </a>
         <NextIntlClientProvider messages={messages}>
           <PwaRegister />
+          <SmoothScroll />
           <SiteHeader />
           <main id="asosiy">{children}</main>
           <SiteFooter />

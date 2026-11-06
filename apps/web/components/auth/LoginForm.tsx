@@ -10,6 +10,9 @@ const DEMOS = [
   { phone: "+998901000003", labelKey: "student" },
 ] as const;
 
+const ONE_CLICK = ["admin", "mentor", "student", "employer", "producer", "hokimlik"] as const;
+const demoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+
 type ErrorBody = { detail?: string; title?: string };
 
 export function LoginForm() {
@@ -81,9 +84,46 @@ export function LoginForm() {
   return (
     <div className="mx-auto flex max-w-md flex-col gap-6 px-4 py-10">
       <div>
-        <h1 className="text-3xl font-semibold text-navy-900">{t("title")}</h1>
+        <h1 className="text-4xl font-bold tracking-[-0.03em] text-navy-900">{t("title")}</h1>
         <p className="mt-2 text-muted">{t("text")}</p>
       </div>
+      {demoMode ? (
+        <section className="rounded-[20px] bg-navy-900 p-5 text-white">
+          <h2 className="text-lg font-semibold">{t("demoTitle")}</h2>
+          <p className="mt-1 text-sm text-blue-100">{t("demoText")}</p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {ONE_CLICK.map((role) => (
+              <button
+                key={role}
+                type="button"
+                className="rounded-lg bg-white px-3 py-2 text-sm font-medium text-navy-900"
+                onClick={async () => {
+                  setPending(true);
+                  setError("");
+                  try {
+                    const response = await fetch("/api/v1/auth/demo", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      credentials: "include",
+                      body: JSON.stringify({ role }),
+                    });
+                    const body = (await response.json()) as { next?: string } & ErrorBody;
+                    if (!response.ok) {
+                      setError(body.detail ?? t("failed"));
+                      return;
+                    }
+                    window.location.assign(body.next ?? "/kabinet");
+                  } finally {
+                    setPending(false);
+                  }
+                }}
+              >
+                {t(role)}
+              </button>
+            ))}
+          </div>
+        </section>
+      ) : null}
       <form onSubmit={requestCode} className="flex flex-col gap-4 rounded-md border border-line bg-card p-5 shadow-sh1">
         <TextField label={t("phone")} name="phone" value={phone} onChange={(event) => setPhone(event.target.value)} autoComplete="tel" />
         <div className="flex flex-wrap gap-2">

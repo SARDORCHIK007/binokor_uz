@@ -18,7 +18,8 @@
     "contact": "Контакты",
     "directions": "Направления",
     "partners": "Партнёры",
-    "brigades": "Бригады"
+    "brigades": "Бригады",
+    "more": "Ещё"
   },
   "auth": {
     "title": "Вход",
@@ -33,6 +34,11 @@
     "admin": "Admin",
     "mentor": "Наставник",
     "student": "Слушатель",
+    "employer": "Работодатель",
+    "producer": "Производитель",
+    "hokimlik": "Хокимият",
+    "demoTitle": "Демо-вход",
+    "demoText": "Один клик для показа.",
     "failed": "So'rov bajarilmadi. Qayta urinib ko'ring."
   },
   "roles": {
@@ -128,7 +134,11 @@
     "searchAction": "Искать",
     "apply": "O'qishga ariza berish",
     "findWorker": "Usta topish",
-    "posterCaption": "Bino qurilishi. 3D sahna keyingi bosqichda qo'shiladi.",
+    "posterCaption": "Здание собирается этаж за этажом.",
+    "finalTitle": "Путь мастера начинается здесь",
+    "finalText": "Заявка бесплатная. Маршрут подтверждает сотрудник.",
+    "scanTitle": "QR-паспорт",
+    "scanText": "Камера телефона открывает сертификат. Подпись совпадает с записью.",
     "servicesTitle": "Услуги",
     "statsTitle": "Цифры",
     "statsNote": "Raqamlar mahalliy bazadan olinadi.",

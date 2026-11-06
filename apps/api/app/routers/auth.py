@@ -351,6 +351,179 @@ async def bot_link(body: BotLink, request: Request) -> JSONResponse:
     return JSONResponse({"linked": True})
 
 
+class DemoLogin(BaseModel):
+    role: str
+
+
+DEMO_NEXT = {
+    "admin": "/kabinet",
+    "mentor": "/kabinet/davomat",
+    "student": "/kabinet",
+    "employer": "/kabinet/ishberuvchi",
+    "producer": "/kabinet/mahsulotlar",
+    "hokimlik": "/kabinet/hisobot",
+}
+DEMO_PHONE = {
+    "admin": "+998901000001",
+    "mentor": "+998901200001",
+    "student": "+998901300002",
+    "hokimlik": "+998901000001",
+    "employer": "+998901770010",
+    "producer": "+998901770011",
+}
+
+
+@router.post("/auth/demo")
+async def demo_login(body: DemoLogin, request: Request) -> JSONResponse:
+    if not get_settings().demo_mode:
+        return problem(404, "NOT_FOUND", "Topilmadi", "Demo kirish o'chiq.")
+    phone = DEMO_PHONE.get(body.role)
+    nxt = DEMO_NEXT.get(body.role)
+    if phone is None or nxt is None:
+        return problem(400, "BAD_ROLE", "Rol noto'g'ri", "Demo ro'yxatidagi rolni tanlang.")
+    engine = _engine(request)
+    now = datetime.now(UTC)
+    async with engine.begin() as conn:
+        if body.role == "employer":
+            await _ensure_employer(conn, phone)
+        if body.role == "producer":
+            await _ensure_producer(conn, phone)
+        row = await conn.execute(
+            text("SELECT id, full_name FROM users WHERE phone = :phone"),
+            {"phone": phone},
+        )
+        account = row.mappings().first()
+        if account is None:
+            return problem(404, "NOT_FOUND", "Foydalanuvchi yo'q", "Namuna hisobi topilmadi.")
+        user_id = account["id"]
+        roles_result = await conn.execute(
+            text("SELECT role::text AS role FROM user_roles WHERE user_id = :id"),
+            {"id": user_id},
+        )
+        roles = [str(item["role"]) for item in roles_result.mappings()]
+        refresh = secrets.token_urlsafe(32)
+        await conn.execute(
+            text(
+                """
+                INSERT INTO sessions (id, user_id, refresh_hash, expires_at)
+                VALUES (:id, :user_id, :refresh_hash, :expires_at)
+                """
+            ),
+            {
+                "id": new_id(),
+                "user_id": user_id,
+                "refresh_hash": hash_secret(refresh),
+                "expires_at": now + timedelta(days=30),
+            },
+        )
+        full_name = str(account["full_name"])
+    token = issue_access_token(user_id, roles)
+    response = JSONResponse(
+        {"access_token": token, "next": nxt, "user": {"id": str(user_id), "full_name": full_name, "roles": roles}}
+    )
+    response.set_cookie("ub_access", token, httponly=True, samesite="lax", max_age=15 * 60, path="/")
+    response.set_cookie("ub_refresh", refresh, httponly=True, samesite="lax", max_age=30 * 24 * 3600, path="/")
+    return response
+
+
+async def _ensure_employer(conn: object, phone: str) -> None:
+    from sqlalchemy.ext.asyncio import AsyncConnection
+
+    db: AsyncConnection = conn  # type: ignore[assignment]
+    await db.execute(
+        text(
+            """
+            INSERT INTO users (id, phone, full_name, locale)
+            VALUES (:id, :phone, 'Jasur Toshmatov', 'uz-Latn')
+            ON CONFLICT (phone) DO NOTHING
+            """
+        ),
+        {"id": new_id(), "phone": phone},
+    )
+    user = await db.execute(text("SELECT id FROM users WHERE phone = :phone"), {"phone": phone})
+    user_id = user.scalar_one()
+    await db.execute(
+        text(
+            """
+            INSERT INTO user_roles (id, user_id, role)
+            SELECT :id, :user_id, 'employer_local'
+            WHERE NOT EXISTS (
+              SELECT 1 FROM user_roles WHERE user_id = :user_id AND role = 'employer_local'
+            )
+            """
+        ),
+        {"id": new_id(), "user_id": user_id},
+    )
+    existing = await db.execute(
+        text("SELECT employer_id FROM employer_members WHERE user_id = :id"),
+        {"id": user_id},
+    )
+    if existing.first() is None:
+        employer_id = new_id()
+        await db.execute(
+            text(
+                """
+                INSERT INTO employers (id, kind, name, country_code, inn, verified_at)
+                VALUES (:id, 'LOCAL', 'Uychi qurilish demo', 'UZ', '309770010', now())
+                """
+            ),
+            {"id": employer_id},
+        )
+        await db.execute(
+            text("INSERT INTO employer_members (employer_id, user_id, is_owner) VALUES (:employer_id, :user_id, true)"),
+            {"employer_id": employer_id, "user_id": user_id},
+        )
+
+
+async def _ensure_producer(conn: object, phone: str) -> None:
+    from sqlalchemy.ext.asyncio import AsyncConnection
+
+    db: AsyncConnection = conn  # type: ignore[assignment]
+    await db.execute(
+        text(
+            """
+            INSERT INTO users (id, phone, full_name, locale)
+            VALUES (:id, :phone, 'Nodira Karimova', 'uz-Latn')
+            ON CONFLICT (phone) DO NOTHING
+            """
+        ),
+        {"id": new_id(), "phone": phone},
+    )
+    user = await db.execute(text("SELECT id FROM users WHERE phone = :phone"), {"phone": phone})
+    user_id = user.scalar_one()
+    await db.execute(
+        text(
+            """
+            INSERT INTO user_roles (id, user_id, role)
+            SELECT :id, :user_id, 'producer'
+            WHERE NOT EXISTS (
+              SELECT 1 FROM user_roles WHERE user_id = :user_id AND role = 'producer'
+            )
+            """
+        ),
+        {"id": new_id(), "user_id": user_id},
+    )
+    existing = await db.execute(
+        text("SELECT producer_id FROM producer_members WHERE user_id = :id"),
+        {"id": user_id},
+    )
+    if existing.first() is None:
+        producer_id = new_id()
+        await db.execute(
+            text(
+                """
+                INSERT INTO producers (id, name, inn, address, verified_at)
+                VALUES (:id, 'Uychi g`isht', '409770011', 'Uychi tumani', now())
+                """
+            ),
+            {"id": producer_id},
+        )
+        await db.execute(
+            text("INSERT INTO producer_members (producer_id, user_id) VALUES (:producer_id, :user_id)"),
+            {"producer_id": producer_id, "user_id": user_id},
+        )
+
+
 @router.post("/auth/logout")
 async def logout() -> JSONResponse:
     response = JSONResponse({"status": "ok"})

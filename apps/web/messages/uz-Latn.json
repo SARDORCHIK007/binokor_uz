@@ -18,7 +18,8 @@
     "contact": "Aloqa",
     "directions": "Yo'nalishlar",
     "partners": "Hamkorlar",
-    "brigades": "Brigadalar"
+    "brigades": "Brigadalar",
+    "more": "Yana"
   },
   "auth": {
     "title": "Kirish",
@@ -30,9 +31,14 @@
     "code": "Kod",
     "codeShown": "Sinov kodi",
     "enter": "Kirish",
-    "admin": "Admin",
+    "admin": "Administrator",
     "mentor": "Ustoz",
     "student": "Tinglovchi",
+    "employer": "Ish beruvchi",
+    "producer": "Ishlab chiqaruvchi",
+    "hokimlik": "Hokimlik",
+    "demoTitle": "Demo kirish",
+    "demoText": "Taqdimot uchun bir bosishda kiring.",
     "failed": "So'rov bajarilmadi. Qayta urinib ko'ring."
   },
   "roles": {
@@ -128,7 +134,11 @@
     "searchAction": "Qidirish",
     "apply": "O'qishga ariza berish",
     "findWorker": "Usta topish",
-    "posterCaption": "Bino qurilishi. 3D sahna keyingi bosqichda qo'shiladi.",
+    "posterCaption": "Bino qavatma-qavat yig'iladi.",
+    "finalTitle": "Usta bo'lish shu yerdan boshlanadi",
+    "finalText": "Ariza bepul. Yo'lni tizim taklif qiladi, xodim tasdiqlaydi.",
+    "scanTitle": "QR pasport",
+    "scanText": "Telefon kamerasi sertifikatni ochadi. Imzo bazadagi ma'lumotga yopishgan.",
     "servicesTitle": "Xizmatlar",
     "statsTitle": "Raqamlar",
     "statsNote": "Raqamlar mahalliy bazadan olinadi.",
@@ -158,11 +168,11 @@
     "order": "Usta buyurtma",
     "orderText": "Kabinetdagi so'rovlar",
     "brigade": "Brigada so'rash",
-    "brigadeText": "Jamoa kartochkasi keyinroq",
+    "brigadeText": "Tayyor jamoa kartochkasi",
     "materials": "Materiallar",
-    "materialsText": "Katalog keyingi bosqichda",
+    "materialsText": "Narxi bilan katalog",
     "objects": "Obyektlar",
-    "objectsText": "Xarita keyingi bosqichda"
+    "objectsText": "Tumandagi obyektlar"
   },
   "steps": {
     "mahalla": "Mahalla",

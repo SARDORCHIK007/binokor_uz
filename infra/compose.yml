@@ -92,6 +92,7 @@ services:
       API_INTERNAL_URL: http://api:8000
       WATCHPACK_POLLING: "true"
       CHOKIDAR_USEPOLLING: "true"
+      NEXT_PUBLIC_DEMO_MODE: ${DEMO_MODE:-false}
     volumes:
       - ..:/src
       - web_modules:/src/apps/web/node_modules
