@@ -1,0 +1,67 @@
+:root {
+  --navy-900: #0c1b33;
+  --navy-800: #13294b;
+  --navy-700: #1c3a66;
+  --blue-700: #1d4f8a;
+  --blue-600: #2563a8;
+  --blue-500: #3b7bc4;
+  --blue-100: #e7eef7;
+  --blue-50: #f2f6fb;
+  --teal-700: #225e52;
+  --teal-600: #2f7d6d;
+  --teal-100: #e4f1ee;
+  --amber-600: #c27a00;
+  --amber-100: #fff3d6;
+
+  --ink-900: #0f172a;
+  --ink-800: #1e293b;
+  --ink-600: #475467;
+  --ink-500: #5f6b7d;
+  --ink-400: #98a2b3;
+  --line-200: #d9dfe8;
+  --line-100: #eaeef3;
+  --surface-0: #ffffff;
+  --surface-50: #f4f6f9;
+  --surface-100: #e9edf2;
+
+  --success-600: #1f8a4c;
+  --success-100: #e3f4ea;
+  --warning-600: #b26b00;
+  --warning-100: #fff1d6;
+  --danger-600: #b42318;
+  --danger-100: #fde7e5;
+  --info-600: #2563a8;
+  --info-100: #e7eef7;
+
+  --bg: var(--surface-50);
+  --card: var(--surface-0);
+  --text: var(--ink-800);
+  --text-muted: var(--ink-500);
+  --border: var(--line-200);
+  --primary: var(--blue-600);
+  --primary-hover: var(--blue-700);
+  --primary-contrast: #ffffff;
+  --focus-ring: 0 0 0 3px rgba(37, 99, 168, 0.35);
+
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 20px;
+
+  --sh-1: 0 1px 2px rgba(12, 27, 51, 0.06);
+  --sh-2: 0 1px 2px rgba(12, 27, 51, 0.06), 0 6px 20px rgba(12, 27, 51, 0.06);
+  --sh-3: 0 12px 40px rgba(12, 27, 51, 0.12);
+
+  --m-fast: 120ms;
+  --m-base: 200ms;
+  --m-slow: 320ms;
+}
+
+[data-theme="dark"] {
+  --bg: #0b1220;
+  --card: #111a2c;
+  --text: #e6eaf0;
+  --text-muted: #9aa6b8;
+  --border: #22304a;
+  --primary: #5b9be0;
+  --primary-hover: #7bb0e8;
+}

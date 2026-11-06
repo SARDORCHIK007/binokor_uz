@@ -1,0 +1,19 @@
+@import "tailwindcss";
+@import "@uychibinokor/ui/theme.css";
+@source "../";
+@source "../../../packages/ui/src";
+
+body {
+  font-feature-settings: "tnum" 1, "cv11" 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
