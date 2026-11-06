@@ -45,7 +45,7 @@ async def dashboard(request: Request, role: str = "student") -> JSONResponse:
         owned = [str(item["role"]) for item in roles.mappings()]
         if role not in owned:
             return problem(403, "FORBIDDEN", "Rol yo'q", "Bu rol sizga biriktirilmagan.")
-        if role == "admin":
+        if role in {"admin", "education_lead", "cert_officer", "placement_manager", "partner_viewer"}:
             return JSONResponse({"role": role, "admin": await _admin(conn)})
         if role == "mentor":
             return JSONResponse({"role": role, "mentor": await _mentor(conn, user_id)})

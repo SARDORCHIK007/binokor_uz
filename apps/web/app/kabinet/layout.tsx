@@ -10,6 +10,15 @@ const MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/kurslar", key: "courses" },
     { href: "/kabinet/guruhlar", key: "groups" },
     { href: "/kabinet/foydalanuvchilar", key: "users" },
+    { href: "/kabinet/sertifikatlar", key: "certificates" },
+  ],
+  education_lead: [
+    { href: "/kabinet", key: "panel" },
+    { href: "/kabinet/sertifikatlar", key: "certificates" },
+  ],
+  cert_officer: [
+    { href: "/kabinet", key: "panel" },
+    { href: "/kabinet/sertifikatlar", key: "certificates" },
   ],
   mentor: [
     { href: "/kabinet", key: "panel" },
