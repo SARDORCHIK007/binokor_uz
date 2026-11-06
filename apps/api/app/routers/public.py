@@ -171,7 +171,15 @@ async def worker(slug: str, request: Request) -> JSONResponse:
                        wp.level::text AS level,
                        wp.availability::text AS availability,
                        wp.rating_avg,
-                       wp.verified_hours
+                       wp.verified_hours,
+                       (
+                         SELECT c.number
+                         FROM certificates c
+                         JOIN persons p ON p.id = c.person_id
+                         WHERE p.user_id = wp.user_id AND c.status = 'ISSUED'
+                         ORDER BY c.issued_at DESC NULLS LAST
+                         LIMIT 1
+                       ) AS certificate_number
                 FROM worker_profiles wp
                 JOIN users u ON u.id = wp.user_id
                 LEFT JOIN trades t ON t.id = wp.primary_trade_id
@@ -192,6 +200,7 @@ async def worker(slug: str, request: Request) -> JSONResponse:
             "availability": item["availability"],
             "rating": None if item["rating_avg"] is None else float(item["rating_avg"]),
             "hours": item["verified_hours"],
+            "certificate_number": item["certificate_number"],
         }
     )
 

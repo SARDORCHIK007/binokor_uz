@@ -1,5 +1,6 @@
 import { EmptyState } from "@uychibinokor/ui";
 import { getTranslations } from "next-intl/server";
+import Link from "next/link";
 import { apiGet } from "@/lib/public";
 
 export const dynamic = "force-dynamic";
@@ -11,6 +12,7 @@ type Worker = {
   availability: string;
   rating: number | null;
   hours: number;
+  certificate_number?: string | null;
 };
 
 export default async function WorkerPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -34,6 +36,15 @@ export default async function WorkerPage({ params }: { params: Promise<{ slug: s
         {worker.hours} soat · {worker.availability}
         {worker.rating === null ? "" : ` · ${worker.rating}`}
       </p>
+      {worker.certificate_number ? (
+        <p className="mt-4">
+          <Link href={`/verify/${worker.certificate_number}`} className="text-primary">
+            QR pasport · {worker.certificate_number}
+          </Link>
+        </p>
+      ) : (
+        <p className="mt-4 text-sm text-muted">Platforma sertifikati hali bog'lanmagan.</p>
+      )}
     </article>
   );
 }

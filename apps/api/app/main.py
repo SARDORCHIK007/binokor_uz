@@ -21,6 +21,7 @@ from app.seed_certificates import seed_certificates
 from app.seed_education import seed_education
 from app.seed_learning import seed_learning
 from app.seed_portal import seed_portal
+from app.seed_workers import seed_workers
 
 
 @asynccontextmanager
@@ -37,6 +38,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         await seed_education(conn)
         await seed_learning(conn)
         await seed_certificates(conn)
+        await seed_workers(conn)
     try:
         yield
     finally:
