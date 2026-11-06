@@ -10,7 +10,9 @@ from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 from app.core.config import get_settings
 from app.health import overall, probe_db, probe_minio, probe_redis
 from app.routers.auth import router as auth_router
+from app.routers.public import router as public_router
 from app.seed import seed_login_users
+from app.seed_portal import seed_portal
 
 
 @asynccontextmanager
@@ -23,6 +25,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     app.state.minio_endpoint = settings.minio_endpoint
     async with engine.begin() as conn:
         await seed_login_users(conn)
+        await seed_portal(conn)
     try:
         yield
     finally:
@@ -32,6 +35,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
 app = FastAPI(title="UYCHI BINOKOR API", lifespan=lifespan)
 app.include_router(auth_router)
+app.include_router(public_router)
 
 
 @app.middleware("http")

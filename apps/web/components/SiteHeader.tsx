@@ -2,11 +2,15 @@ import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 
 const links = [
-  { href: "/#loyiha", key: "project" },
-  { href: "/#kasblar", key: "trades" },
-  { href: "/verify/UB-2026-000123", key: "workers" },
-  { href: "/tez-orada", key: "objects" },
-  { href: "/tez-orada", key: "materials" },
+  { href: "/loyiha", key: "project" },
+  { href: "/kasblar", key: "trades" },
+  { href: "/yonalishlar", key: "directions" },
+  { href: "/hamkorlar", key: "partners" },
+  { href: "/ustalar", key: "workers" },
+  { href: "/obyektlar", key: "objects" },
+  { href: "/materiallar", key: "materials" },
+  { href: "/yangiliklar", key: "news" },
+  { href: "/aloqa", key: "contact" },
 ] as const;
 
 export async function SiteHeader() {

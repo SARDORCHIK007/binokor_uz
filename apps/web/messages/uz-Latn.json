@@ -13,7 +13,11 @@
     "login": "Kirish",
     "cabinet": "Kabinet",
     "language": "O'zbekcha",
-    "skip": "Asosiy kontentga o'tish"
+    "skip": "Asosiy kontentga o'tish",
+    "news": "Yangiliklar",
+    "contact": "Aloqa",
+    "directions": "Yo'nalishlar",
+    "partners": "Hamkorlar"
   },
   "auth": {
     "title": "Kirish",
@@ -48,7 +52,7 @@
     "posterCaption": "Bino qurilishi. 3D sahna keyingi bosqichda qo'shiladi.",
     "servicesTitle": "Xizmatlar",
     "statsTitle": "Raqamlar",
-    "statsNote": "Namoyish raqamlari. Jonli raqamlar baza ulangach chiqadi.",
+    "statsNote": "Raqamlar mahalliy bazadan olinadi.",
     "listeners": "Tinglovchilar",
     "certified": "Sertifikatlangan",
     "employed": "Ishda",
