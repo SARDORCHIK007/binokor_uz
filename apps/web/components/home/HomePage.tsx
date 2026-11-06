@@ -5,7 +5,7 @@ import { apiGet, type HomePayload } from "@/lib/public";
 import { BuildingPoster } from "../BuildingPoster";
 
 const serviceLinks = [
-  { href: "/#balans", title: "apply", text: "applyText" },
+  { href: "/ariza", title: "apply", text: "applyText" },
   { href: "/ustalar", title: "verify", text: "verifyText" },
   { href: "/ustalar", title: "order", text: "orderText" },
   { href: "/ustalar", title: "brigade", text: "brigadeText" },
@@ -71,7 +71,7 @@ export async function HomePage() {
               </button>
             </form>
             <div className="mt-4 flex flex-wrap gap-3">
-              <Link href="/#balans" className={buttonClass({ size: "lg" })}>
+              <Link href="/ariza" className={buttonClass({ size: "lg" })}>
                 {t("home.apply")}
               </Link>
               <Link href="/verify/UB-2026-000123" className={buttonClass({ variant: "secondary", size: "lg" })}>

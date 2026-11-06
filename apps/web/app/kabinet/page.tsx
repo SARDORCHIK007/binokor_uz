@@ -48,6 +48,13 @@ export default async function CabinetPage() {
         {t("hello")}, {me.full_name}
       </p>
       <p className="mt-4 text-sm text-muted">{t("roles")}</p>
+      {me.roles.includes("admin") ? (
+        <p className="mt-4">
+          <Link href="/kabinet/arizalar" className="text-primary">
+            Arizalar
+          </Link>
+        </p>
+      ) : null}
       <ul className="mt-2 flex flex-wrap gap-2">
         {me.roles.map((role) => (
           <li key={role} className="rounded-sm bg-blue-50 px-3 py-1 text-sm font-medium text-navy-900">
