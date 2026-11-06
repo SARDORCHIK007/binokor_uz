@@ -14,6 +14,7 @@ from app.routers.applications import router as applications_router
 from app.routers.auth import router as auth_router
 from app.routers.cabinet import router as cabinet_router
 from app.routers.certificates import router as certificates_router
+from app.routers.jobs import router as jobs_router
 from app.routers.learning import router as learning_router
 from app.routers.public import router as public_router
 from app.routers.vocab import router as vocab_router
@@ -21,6 +22,7 @@ from app.seed import seed_login_users
 from app.seed_certificates import seed_certificates
 from app.seed_education import seed_education
 from app.seed_learning import seed_learning
+from app.seed_market import seed_market
 from app.seed_portal import seed_portal
 from app.seed_vocab import seed_vocab
 from app.seed_workers import seed_workers
@@ -42,6 +44,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         await seed_certificates(conn)
         await seed_workers(conn)
         await seed_vocab(conn)
+        await seed_market(conn)
     try:
         yield
     finally:
@@ -58,6 +61,7 @@ app.include_router(learning_router)
 app.include_router(certificates_router)
 app.include_router(public_router)
 app.include_router(vocab_router)
+app.include_router(jobs_router)
 
 
 @app.middleware("http")
