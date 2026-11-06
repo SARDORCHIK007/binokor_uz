@@ -14,6 +14,7 @@ select = ["E", "F", "I", "UP", "B"]
 "app/seed_portal.py" = ["E501"]
 "app/routers/public.py" = ["E501"]
 "app/routers/applications.py" = ["E501"]
+"app/routers/cabinet.py" = ["E501"]
 
 [tool.mypy]
 python_version = "3.12"

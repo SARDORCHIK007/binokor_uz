@@ -1,5 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
+import { AccountMenu } from "@/components/auth/AccountMenu";
+import { readSession } from "@/lib/session";
 
 const links = [
   { href: "/loyiha", key: "project" },
@@ -15,6 +17,7 @@ const links = [
 
 export async function SiteHeader() {
   const t = await getTranslations("nav");
+  const session = await readSession();
   return (
     <header className="sticky top-0 z-20 border-b border-line bg-card">
       <div className="mx-auto max-w-[1200px] px-4 py-3">
@@ -27,12 +30,16 @@ export async function SiteHeader() {
             <Link href="/kabinet/panel" className="rounded-sm px-3 py-2 text-sm font-medium text-ink hover:bg-blue-50">
               {t("employers")}
             </Link>
-            <Link
-              href="/kirish"
-              className="rounded-sm bg-primary px-3 py-2 text-sm font-medium text-white hover:bg-primary-hover"
-            >
-              {t("login")}
-            </Link>
+            {session ? (
+              <AccountMenu name={session.full_name} />
+            ) : (
+              <Link
+                href="/kirish"
+                className="rounded-sm bg-primary px-3 py-2 text-sm font-medium text-white hover:bg-primary-hover"
+              >
+                {t("login")}
+              </Link>
+            )}
           </div>
         </div>
         <nav className="mt-2 flex gap-4 overflow-x-auto text-sm text-ink" aria-label={t("project")}>
