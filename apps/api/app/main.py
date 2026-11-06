@@ -17,6 +17,7 @@ from app.routers.certificates import router as certificates_router
 from app.routers.jobs import router as jobs_router
 from app.routers.learning import router as learning_router
 from app.routers.public import router as public_router
+from app.routers.reports import router as reports_router
 from app.routers.vocab import router as vocab_router
 from app.seed import seed_login_users
 from app.seed_certificates import seed_certificates
@@ -60,6 +61,7 @@ app.include_router(cabinet_router)
 app.include_router(learning_router)
 app.include_router(certificates_router)
 app.include_router(public_router)
+app.include_router(reports_router)
 app.include_router(vocab_router)
 app.include_router(jobs_router)
 
