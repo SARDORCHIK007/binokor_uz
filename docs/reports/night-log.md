@@ -40,6 +40,10 @@ Tekshiruv: http://localhost:8090/kirish
 Natija: pytest 27 o‘tdi, 0 yiqildi. Web test 1 o‘tdi.
 Tekshiruv: `apps/api/tests/test_rules.py`
 
+## 19:40 — 1–10 qayta dalil
+Natija: har band uchun test yozildi va o‘tdi. Ishlab chiqaruvchida mahsulot o‘chirish qo‘shildi. Ish beruvchi qidiruvi kasb bo‘yicha filtrlandi, kabinetda uz/en/de yozuv bor.
+Tekshiruv: `docs/reports/morning-summary.md` dagi jadval.
+
 ## 19:25 — 11. 360px
 Natija: sarlavha, ism tugmasi va pastki menyu sig‘adigan qilindi.
 Tekshiruv: /, /materiallar, /obyektlar, /ariza, /kabinet/davomat, /kabinet/baholar. Barcha ochiq sahifalar HTTP 200.

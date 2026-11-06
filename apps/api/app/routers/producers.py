@@ -196,6 +196,30 @@ async def update_product(product_id: uuid.UUID, body: ProductBody, request: Requ
     return JSONResponse({"saved": True})
 
 
+@router.delete("/products/{product_id}")
+async def delete_product(product_id: uuid.UUID, request: Request) -> JSONResponse:
+    user_id = _user_id(request)
+    if user_id is None:
+        return problem(401, "UNAUTHORIZED", "Kirish talab qilinadi", "Avval tizimga kiring.")
+    engine = _engine(request)
+    async with engine.begin() as conn:
+        removed = await conn.execute(
+            text(
+                """
+                DELETE FROM products p
+                USING producer_members m
+                WHERE p.id = :id AND p.producer_id = m.producer_id AND m.user_id = :user_id
+                  AND NOT EXISTS (SELECT 1 FROM order_requests o WHERE o.product_id = p.id)
+                RETURNING p.id
+                """
+            ),
+            {"id": product_id, "user_id": user_id},
+        )
+        if removed.first() is None:
+            return problem(404, "NOT_FOUND", "O'chirilmadi", "Mahsulot yo'q yoki unga buyurtma bog'langan.")
+    return JSONResponse({"deleted": True})
+
+
 @router.get("/orders")
 async def orders(request: Request) -> JSONResponse:
     user_id = _user_id(request)

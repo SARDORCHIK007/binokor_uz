@@ -171,7 +171,7 @@ async def mine(request: Request) -> JSONResponse:
 
 
 @router.get("/workers")
-async def workers(request: Request, q: str = "") -> JSONResponse:
+async def workers(request: Request, q: str = "", trade: str = "") -> JSONResponse:
     user_id = _user_id(request)
     if user_id is None:
         return problem(401, "UNAUTHORIZED", "Kirish talab qilinadi", "Avval tizimga kiring.")
@@ -192,12 +192,13 @@ async def workers(request: Request, q: str = "") -> JSONResponse:
                 FROM worker_profiles wp
                 JOIN users u ON u.id = wp.user_id
                 LEFT JOIN trades t ON t.id = wp.primary_trade_id
-                WHERE CAST(:q AS text) = '' OR u.full_name ILIKE :like
+                WHERE (CAST(:q AS text) = '' OR u.full_name ILIKE :like)
+                  AND (CAST(:trade AS text) = '' OR t.code = :trade)
                 ORDER BY u.full_name
                 LIMIT 30
                 """
             ),
-            {"q": q, "like": f"%{q}%"},
+            {"q": q, "like": f"%{q}%", "trade": trade},
         )
     payload = [
         {

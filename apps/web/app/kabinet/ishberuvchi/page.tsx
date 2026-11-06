@@ -7,7 +7,15 @@ type Employer = { id: string; name: string; inn: string | null; verified: boolea
 type Demand = { id: string; quantity: number; status: string; track: string };
 type Worker = { user_id: string; name: string; trade: string; level: string };
 
+const COPY = {
+  uz: { title: "Ish beruvchi", search: "Ustalarni qidirish" },
+  en: { title: "Employer", search: "Search craftsmen" },
+  de: { title: "Arbeitgeber", search: "Handwerker suchen" },
+} as const;
+
 export default function EmployerPage() {
+  const [lang, setLang] = useState<keyof typeof COPY>("uz");
+  const copy = COPY[lang];
   const [employer, setEmployer] = useState<Employer | null>(null);
   const [requests, setRequests] = useState<Demand[]>([]);
   const [placements, setPlacements] = useState<{ id: string; name: string }[]>([]);
@@ -108,7 +116,14 @@ export default function EmployerPage() {
   }
   return (
     <div className="flex flex-col gap-4 p-4">
-      <h1 className="text-2xl font-semibold text-navy-900">Ish beruvchi</h1>
+      <div className="flex flex-wrap gap-2 text-sm">
+        {(Object.keys(COPY) as (keyof typeof COPY)[]).map((item) => (
+          <button key={item} type="button" className="rounded-sm border border-line px-2 py-1" onClick={() => setLang(item)}>
+            {item}
+          </button>
+        ))}
+      </div>
+      <h1 className="text-2xl font-semibold text-navy-900">{copy.title}</h1>
       {employer ? (
         <section className="rounded-md border border-line bg-card p-4">
           <p className="font-semibold">{employer.name}</p>
@@ -139,7 +154,7 @@ export default function EmployerPage() {
         </ul>
       </section>
       <section className="rounded-md border border-line bg-card p-4">
-        <h2 className="font-semibold">Ustalarni qidirish</h2>
+        <h2 className="font-semibold">{copy.search}</h2>
         <div className="mt-2 flex gap-2">
           <TextField label="Ism" name="q" value={query} onChange={(event) => setQuery(event.target.value)} />
           <Button type="button" onClick={() => void search()}>
