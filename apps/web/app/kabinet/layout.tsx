@@ -11,6 +11,9 @@ const MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/guruhlar", key: "groups" },
     { href: "/kabinet/foydalanuvchilar", key: "users" },
     { href: "/kabinet/sertifikatlar", key: "certificates" },
+    { href: "/kabinet/lugat", key: "vocab" },
+    { href: "/kabinet/ishlar", key: "jobs" },
+    { href: "/kabinet/hisobot", key: "reports" },
   ],
   education_lead: [
     { href: "/kabinet", key: "panel" },
@@ -30,6 +33,7 @@ const MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet", key: "panel" },
     { href: "/kabinet/davomat", key: "attendance" },
     { href: "/kabinet/baholar", key: "grades" },
+    { href: "/kabinet/lugat", key: "vocab" },
     { href: "/ariza", key: "apply" },
   ],
 };
