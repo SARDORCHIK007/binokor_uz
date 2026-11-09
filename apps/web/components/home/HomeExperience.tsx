@@ -56,12 +56,13 @@ export function HomeExperience({ home }: { home: HomePayload }) {
         />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-navy-900 via-navy-900/95 to-navy-900/40" />
 
-        {/* Hero worker portrait - yellow helmet */}
-        <div className="pointer-events-none absolute right-4 bottom-0 hidden h-[90%] w-[42%] max-w-[500px] overflow-hidden lg:block">
+        {/* Hero worker portrait — transparent PNG standing on the hero background */}
+        <div className="pointer-events-none absolute right-0 bottom-0 hidden h-[94%] w-[44%] max-w-[560px] lg:block xl:right-6">
+          <div className="absolute bottom-0 left-1/2 h-[70%] w-[85%] -translate-x-1/2 rounded-full bg-primary/25 blur-3xl" aria-hidden="true" />
           <img
-            src="/media/hero/hero-student.jpg"
+            src="/media/hero/hero-student.png"
             alt="Uychi binokor ustasi"
-            className="h-full w-full rounded-t-3xl object-cover object-top drop-shadow-2xl ring-4 ring-accent/30"
+            className="relative h-full w-full object-contain object-bottom drop-shadow-[0_20px_40px_rgba(0,0,0,0.45)]"
           />
         </div>
 

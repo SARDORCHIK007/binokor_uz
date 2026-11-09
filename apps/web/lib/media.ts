@@ -1,4 +1,4 @@
-export const HERO_IMAGE = "/media/hero/hero-foreman.jpg";
+export const HERO_IMAGE = "/media/hero/hero-foreman.png";
 export const HERO_TEAM = "/media/hero/hero-team.jpg";
 
 export const TRADE_IMAGES: Record<string, string> = {
