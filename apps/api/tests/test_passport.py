@@ -58,7 +58,7 @@ def test_languages_differ() -> None:
     from app.doc_i18n import lang_of, t  # noqa: PLC0415
 
     assert len({t(code, "cert_title") for code in ("uz-Latn", "uz-Cyrl", "ru", "en")}) == 4
-    assert lang_of("de") == "uz-Latn" and lang_of("ru-RU") == "ru" and lang_of(None) == "uz-Latn"
+    assert lang_of("de") == "en" and lang_of("tg") == "uz-Latn" and lang_of("ru-RU") == "ru" and lang_of(None) == "uz-Latn"
     assert make_signer("N", "s", "x", "GOV", "en").role == "Project leader"
 
 
