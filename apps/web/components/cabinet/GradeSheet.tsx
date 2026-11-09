@@ -121,7 +121,7 @@ export function GradeSheet({ groupId }: { groupId: string }) {
   return (
     <div className="flex flex-col gap-4 p-4">
       {rows.map((row) => (
-        <article key={row.enrollment_id} className="rounded-md border border-line bg-card p-3">
+        <article key={row.enrollment_id} className="rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm p-3">
           <h2 className="font-semibold">{row.name}</h2>
           <ul className="mt-3 flex flex-col gap-4">
             {modules.map((module) => {

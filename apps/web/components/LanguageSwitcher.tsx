@@ -15,7 +15,7 @@ export function LanguageSwitcher() {
     setNext(window.location.pathname + window.location.search);
   }, []);
   return (
-    <span className="flex flex-wrap gap-0.5 text-sm">
+    <span className="flex flex-nowrap gap-0.5 text-sm">
       {LOCALES.map(([locale, label]) => (
         <a
           key={locale}

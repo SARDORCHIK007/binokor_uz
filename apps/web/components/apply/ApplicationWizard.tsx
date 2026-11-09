@@ -67,92 +67,76 @@ export function ApplicationWizard() {
 
   if (result) {
     return (
-      <div className="rounded-md border border-line bg-card p-5">
-        <h1 className="text-2xl font-semibold text-navy-900">Ariza qabul qilindi</h1>
+      <div className="rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm p-5">
+        <h1 className="text-3xl font-extrabold text-[#071833]">Ariza qabul qilindi</h1>
         <p className="mt-2">{result}</p>
         <p className="mt-2 text-sm text-muted">Yo'lni tizim taklif qildi. Qarorni xodim tasdiqlaydi.</p>
       </div>
     );
   }
 
+  const stages = ["Shaxsiy ma'lumotlar", "Kasb tanlash", "Tasdiqlash"];
   return (
-    <div className="flex flex-col gap-4 rounded-md border border-line bg-card p-5">
-      <p className="text-sm text-muted">Qadam {step + 1} / 5</p>
+    <div className="rounded-[20px] bg-white p-6 shadow-[0_10px_30px_rgba(7,24,51,0.08)]">
+      <ol className="mb-6 flex items-center justify-between gap-2 rounded-full border border-[#e3e9f2] px-3 py-2" aria-label="Qadamlar">
+        {stages.map((label, index) => (
+          <li key={label} aria-current={index === step ? "step" : undefined} className={`flex items-center gap-2 text-xs font-semibold sm:text-sm ${index === step ? "text-[#071833]" : "text-[#5f6b7d]"}`}>
+            <span className={`grid size-7 shrink-0 place-items-center rounded-full text-xs text-white ${index <= step ? "bg-[#2F6BFF]" : "bg-[#c4cddb]"}`}>
+              {index < step ? "✓" : index + 1}
+            </span>
+            <span className="hidden sm:inline">{label}</span>
+          </li>
+        ))}
+      </ol>
       {step === 0 ? (
-        <fieldset className="flex flex-col gap-2">
-          <legend className="font-semibold">Kim sifatida ariza berasiz?</legend>
+        <div className="flex flex-col gap-3">
+          <p className="font-semibold text-[#071833]">Shaxsiy ma&apos;lumotlaringiz</p>
           {TYPES.map((item) => (
             <label key={item.id} className="flex min-h-11 items-center gap-2">
               <input type="radio" name="type" checked={type === item.id} onChange={() => setType(item.id)} />
               {item.label}
             </label>
           ))}
-        </fieldset>
+          <label className="flex flex-col gap-1">Familiya<input className="min-h-11 rounded-xl border border-line px-3" value={lastName} onChange={(event) => setLastName(event.target.value)} /></label>
+          <label className="flex flex-col gap-1">Ism<input className="min-h-11 rounded-xl border border-line px-3" value={firstName} onChange={(event) => setFirstName(event.target.value)} /></label>
+          <label className="flex flex-col gap-1">Tug&apos;ilgan sana<input type="date" className="min-h-11 rounded-xl border border-line px-3" value={birthDate} onChange={(event) => setBirthDate(event.target.value)} /></label>
+        </div>
       ) : null}
       {step === 1 ? (
-        <label className="flex flex-col gap-2 font-semibold">
-          Kasb
-          <select className="min-h-11 rounded-sm border border-line px-3 font-normal" value={trade} onChange={(event) => setTrade(event.target.value)}>
-            {trades.map((item) => (
-              <option key={item.code} value={item.code}>
-                {item.name}
-              </option>
-            ))}
-          </select>
-        </label>
+        <div className="flex flex-col gap-3">
+          <label className="flex flex-col gap-2 font-semibold">
+            Kasb
+            <select className="min-h-11 rounded-xl border border-line px-3 font-normal" value={trade} onChange={(event) => setTrade(event.target.value)}>
+              {trades.map((item) => (
+                <option key={item.code} value={item.code}>{item.name}</option>
+              ))}
+            </select>
+          </label>
+          <label className="flex min-h-11 items-center gap-2"><input type="radio" checked={track === "DOMESTIC"} onChange={() => setTrack("DOMESTIC")} /> Ichki trek</label>
+          <label className="flex min-h-11 items-center gap-2"><input type="radio" checked={track === "FOREIGN"} onChange={() => setTrack("FOREIGN")} /> Tashqi trek</label>
+          <label className="flex flex-col gap-1">Tajriba, yil<input className="min-h-11 rounded-xl border border-line px-3" value={experience} onChange={(event) => setExperience(event.target.value)} /></label>
+          <label className="flex min-h-11 items-center gap-2"><input type="checkbox" checked={hasLanguage} onChange={(event) => setHasLanguage(event.target.checked)} /> Chet tili bor</label>
+        </div>
       ) : null}
       {step === 2 ? (
         <div className="flex flex-col gap-3">
-          <label className="flex min-h-11 items-center gap-2">
-            <input type="radio" checked={track === "DOMESTIC"} onChange={() => setTrack("DOMESTIC")} /> Ichki trek
-          </label>
-          <label className="flex min-h-11 items-center gap-2">
-            <input type="radio" checked={track === "FOREIGN"} onChange={() => setTrack("FOREIGN")} /> Tashqi trek
-          </label>
-          <label className="flex flex-col gap-1">
-            Kasb tajribasi, yil
-            <input className="min-h-11 rounded-sm border border-line px-3" value={experience} onChange={(event) => setExperience(event.target.value)} />
-          </label>
-          <label className="flex min-h-11 items-center gap-2">
-            <input type="checkbox" checked={hasLanguage} onChange={(event) => setHasLanguage(event.target.checked)} />
-            Chet tili bor (B1 yoki undan yuqori)
-          </label>
+          <p className="font-semibold text-[#071833]">Tasdiqlash</p>
+          <ul className="text-sm text-[#5f6b7d]">
+            <li>Tez va qulay</li>
+            <li>Bepul o&apos;qish</li>
+            <li>Sertifikat va QR pasport</li>
+          </ul>
+          <label className="flex min-h-11 items-center gap-2"><input type="checkbox" checked={personal} onChange={(event) => setPersonal(event.target.checked)} /> Shaxsiy ma&apos;lumotlarni qayta ishlashga roziman</label>
+          <label className="flex min-h-11 items-center gap-2"><input type="checkbox" checked={telegram} onChange={(event) => setTelegram(event.target.checked)} /> Telegram orqali xabar olishga roziman</label>
         </div>
       ) : null}
-      {step === 3 ? (
-        <div className="flex flex-col gap-3">
-          <label className="flex flex-col gap-1">Familiya<input className="min-h-11 rounded-sm border border-line px-3" value={lastName} onChange={(event) => setLastName(event.target.value)} /></label>
-          <label className="flex flex-col gap-1">Ism<input className="min-h-11 rounded-sm border border-line px-3" value={firstName} onChange={(event) => setFirstName(event.target.value)} /></label>
-          <label className="flex flex-col gap-1">Tug'ilgan sana<input type="date" className="min-h-11 rounded-sm border border-line px-3" value={birthDate} onChange={(event) => setBirthDate(event.target.value)} /></label>
-        </div>
-      ) : null}
-      {step === 4 ? (
-        <div className="flex flex-col gap-3">
-          <label className="flex min-h-11 items-center gap-2">
-            <input type="checkbox" checked={personal} onChange={(event) => setPersonal(event.target.checked)} />
-            Shaxsiy ma'lumotlarni qayta ishlashga roziman
-          </label>
-          <label className="flex min-h-11 items-center gap-2">
-            <input type="checkbox" checked={telegram} onChange={(event) => setTelegram(event.target.checked)} />
-            Telegram orqali xabar olishga roziman
-          </label>
-        </div>
-      ) : null}
-      {error ? <p className="text-sm text-danger-600">{error}</p> : null}
-      <div className="flex gap-2">
-        {step > 0 ? (
-          <Button type="button" variant="secondary" onClick={() => setStep(step - 1)}>
-            Orqaga
-          </Button>
-        ) : null}
-        {step < 4 ? (
-          <Button type="button" onClick={() => setStep(step + 1)}>
-            Davom etish
-          </Button>
+      {error ? <p className="mt-3 text-sm text-danger-600">{error}</p> : null}
+      <div className="mt-6 flex flex-col gap-2 sm:flex-row">
+        {step > 0 ? <Button type="button" variant="secondary" onClick={() => setStep(step - 1)}>Orqaga</Button> : null}
+        {step < 2 ? (
+          <button type="button" className="min-h-12 flex-1 rounded-xl bg-[#2F6BFF] px-5 font-bold text-white hover:bg-[#1f55d6] disabled:opacity-50" onClick={() => setStep(step + 1)} disabled={step === 0 && (firstName.length < 2 || lastName.length < 2)}>Keyingi bosqich →</button>
         ) : (
-          <Button type="button" onClick={() => void submit()} disabled={!personal || !telegram || firstName.length < 2 || lastName.length < 2}>
-            Yuborish
-          </Button>
+          <button type="button" className="min-h-12 flex-1 rounded-xl bg-[#2F6BFF] px-5 font-bold text-white hover:bg-[#1f55d6] disabled:opacity-50" onClick={() => void submit()} disabled={!personal || !telegram}>Yuborish</button>
         )}
       </div>
     </div>

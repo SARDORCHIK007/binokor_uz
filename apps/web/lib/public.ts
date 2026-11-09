@@ -17,8 +17,14 @@ export async function apiGet<T>(path: string): Promise<T | null> {
 }
 
 export type HomePayload = {
-  stats: Partial<{ listeners: number; certified: number; employed: number; sites: number }>;
-  trades: { code: string; name: string; domestic_months: number; foreign_lang_months: number }[];
+  stats: Partial<{
+    applicants: number;
+    listeners: number;
+    certified: number;
+    employed: number;
+    foreign_employers: number;
+  }>;
+  trades: { code: string; name: string; domestic_months: number; foreign_lang_months: number; group_count?: number }[];
   destinations: { code: string; name: string; language: string; notes: string }[];
   partners: { name: string; status: "SIGNED" | "NEGOTIATING" | "PLANNED" | "ENDED"; show_logo: boolean }[];
 };

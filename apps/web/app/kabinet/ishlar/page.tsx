@@ -26,15 +26,15 @@ export default async function JobsPage() {
   }
   return (
     <div className="flex flex-col gap-6 p-4">
-      <h1 className="text-2xl font-semibold">Ishlar</h1>
+      <h1 className="text-3xl font-extrabold text-[#071833]">Ishlar</h1>
       <section>
         <h2 className="font-semibold">Ish beruvchilar</h2>
         {board.employers.length === 0 ? (
           <EmptyState title="Ish beruvchi yo'q" text="Hali ro'yxat bo'sh." />
         ) : (
-          <ul className="mt-2 flex flex-col gap-2">
+          <ul className="mt-3 flex flex-col gap-2.5">
             {board.employers.map((item) => (
-              <li key={item.id} className="rounded-md border border-line bg-card px-3 py-2">
+              <li key={item.id} className="rounded-2xl border border-[#e5eaf2] bg-white shadow-sm px-4 py-3">
                 {item.name} · STIR {item.inn}
               </li>
             ))}
@@ -46,9 +46,9 @@ export default async function JobsPage() {
         {board.requests.length === 0 ? (
           <EmptyState title="So'rov yo'q" text="Yangi buyurtma kelmagan." />
         ) : (
-          <ul className="mt-2 flex flex-col gap-2">
+          <ul className="mt-3 flex flex-col gap-2.5">
             {board.requests.map((item) => (
-              <li key={item.id} className="rounded-md border border-line bg-card px-3 py-2">
+              <li key={item.id} className="rounded-2xl border border-[#e5eaf2] bg-white shadow-sm px-4 py-3">
                 {item.employer} · {item.quantity} kishi · {item.as_brigade ? "brigada" : "alohida"}
                 <RequestMove id={item.id} status={item.status} />
               </li>
@@ -61,9 +61,9 @@ export default async function JobsPage() {
         {board.brigades.length === 0 ? (
           <EmptyState title="Brigada yo'q" text="Hali yig'ilmagan." />
         ) : (
-          <ul className="mt-2 flex flex-col gap-2">
+          <ul className="mt-3 flex flex-col gap-2.5">
             {board.brigades.map((item) => (
-              <li key={item.id} className="rounded-md border border-line bg-card px-3 py-2">
+              <li key={item.id} className="rounded-2xl border border-[#e5eaf2] bg-white shadow-sm px-4 py-3">
                 {item.name} · {item.members} a'zo · {item.status}
               </li>
             ))}
@@ -75,9 +75,9 @@ export default async function JobsPage() {
         {board.placements.length === 0 ? (
           <EmptyState title="Joylashtirish yo'q" text="Hali ishga biriktirilmagan." />
         ) : (
-          <ul className="mt-2 flex flex-col gap-2">
+          <ul className="mt-3 flex flex-col gap-2.5">
             {board.placements.map((item) => (
-              <li key={item.id} className="rounded-md border border-line bg-card px-3 py-2">
+              <li key={item.id} className="rounded-2xl border border-[#e5eaf2] bg-white shadow-sm px-4 py-3">
                 {item.full_name} · {item.employer} · {item.kind === "DIRECT" ? "To'g'ridan-to'g'ri" : item.kind}
                 {item.review ? (
                   <p className="text-sm text-muted">

@@ -25,10 +25,10 @@ export default async function MyApplicationPage() {
   }
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-semibold">Mening arizam</h1>
+      <h1 className="text-3xl font-extrabold text-[#071833]">Mening arizam</h1>
       <ul className="mt-4 flex flex-col gap-2">
         {rows.map((item) => (
-          <li key={item.id} className="rounded-md border border-line bg-card px-3 py-2">
+          <li key={item.id} className="rounded-2xl border border-[#e5eaf2] bg-white shadow-sm px-4 py-3">
             {item.trade} · {STATUS[item.status] ?? item.status} · toifa {item.matrix ?? "—"}
           </li>
         ))}

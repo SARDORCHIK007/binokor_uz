@@ -10,8 +10,8 @@ export function EmptyState({
   action?: ReactNode;
 }) {
   return (
-    <div className="rounded-md border border-dashed border-line bg-card px-6 py-10 text-center">
-      <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-sm bg-blue-50 text-primary" aria-hidden="true">
+    <div className="rounded-[20px] border border-dashed border-[#cfd8e6] bg-white px-6 py-10 text-center">
+      <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-2xl bg-[#eef3ff] text-primary" aria-hidden="true">
         <svg viewBox="0 0 24 24" className="size-6" fill="none" stroke="currentColor" strokeWidth="1.75">
           <rect x="4" y="5" width="16" height="14" rx="2" />
           <path d="M8 9h8M8 13h5" />

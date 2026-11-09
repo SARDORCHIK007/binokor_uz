@@ -121,7 +121,7 @@ export function AttendanceSheet({ groupId }: { groupId: string }) {
       {offline ? <OfflineBanner text="Internet yo'q. Davomat shu qurilmada navbatga yoziladi." /> : null}
       <ul className="mt-3 flex flex-col gap-3">
         {rows.map((row) => (
-          <li key={row.enrollment_id} className="rounded-md border border-line bg-card p-3">
+          <li key={row.enrollment_id} className="rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm p-3">
             <p className="font-semibold">{row.name}</p>
             <div className="mt-2 flex flex-wrap gap-2">
               {STATUSES.map((status) => (

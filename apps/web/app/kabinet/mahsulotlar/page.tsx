@@ -73,9 +73,9 @@ export default function ProductsPage() {
   }
   return (
     <div className="flex flex-col gap-4 p-4">
-      <h1 className="text-2xl font-semibold text-navy-900">Mahsulotlarim</h1>
+      <h1 className="text-3xl font-extrabold text-[#071833]">Mahsulotlarim</h1>
       {products.length === 0 ? (
-        <section className="flex flex-col gap-3 rounded-md border border-line bg-card p-4">
+        <section className="flex flex-col gap-3 rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm p-4">
           <TextField label="Korxona" name="company" value={company} onChange={(event) => setCompany(event.target.value)} />
           <TextField label="STIR" name="inn" value={inn} onChange={(event) => setInn(event.target.value)} />
           <Button type="button" onClick={() => void register()}>
@@ -83,7 +83,7 @@ export default function ProductsPage() {
           </Button>
         </section>
       ) : null}
-      <section className="flex flex-col gap-3 rounded-md border border-line bg-card p-4">
+      <section className="flex flex-col gap-3 rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm p-4">
         <TextField label="Mahsulot" name="name" value={name} onChange={(event) => setName(event.target.value)} />
         <TextField label="Narx" name="price" value={price} onChange={(event) => setPrice(event.target.value)} />
         <Button type="button" onClick={() => void create()}>
@@ -98,10 +98,10 @@ export default function ProductsPage() {
           ))}
         </ul>
       </section>
-      <section className="rounded-md border border-line bg-card p-4">
+      <section className="rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm p-4">
         <h2 className="font-semibold">Kelgan buyurtmalar</h2>
         {orders.length === 0 ? <p className="mt-2 text-sm text-muted">Buyurtma yo'q</p> : null}
-        <ul className="mt-2 flex flex-col gap-2">
+        <ul className="mt-3 flex flex-col gap-2.5">
           {orders.map((order) => (
             <li key={order.id} className="flex items-center justify-between gap-2">
               <span>

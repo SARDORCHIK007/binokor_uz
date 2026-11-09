@@ -6,7 +6,7 @@ export type ButtonSize = "sm" | "md" | "lg";
 
 const variants: Record<ButtonVariant, string> = {
   primary: "bg-primary text-white hover:bg-primary-hover border border-transparent",
-  secondary: "bg-card text-ink border border-line hover:bg-blue-50",
+  secondary: "bg-white text-[#071833] border border-[#cfd8e6] hover:border-[#2f6bff] hover:text-[#2f6bff]",
   ghost: "bg-transparent text-ink border border-transparent hover:bg-surface-100",
   danger: "bg-danger-600 text-white border border-transparent hover:opacity-90",
   link: "bg-transparent text-primary border border-transparent underline-offset-4 hover:underline px-0 min-h-0",
@@ -28,7 +28,7 @@ export function buttonClass({
   className?: string;
 } = {}): string {
   return cx(
-    "inline-flex items-center justify-center gap-2 rounded-sm font-medium",
+    "inline-flex items-center justify-center gap-2 rounded-xl font-semibold",
     "transition-[background-color,opacity] duration-150",
     "focus-visible:outline-none focus-visible:shadow-[var(--focus-ring)]",
     "disabled:pointer-events-none disabled:opacity-50",

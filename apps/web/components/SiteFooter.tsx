@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Logo } from "@/components/brand/Logo";
 
 export function SiteFooter() {
   const t = useTranslations("footer");
@@ -13,10 +14,10 @@ export function SiteFooter() {
     return null;
   }
   return (
-    <footer className="bg-navy-900 text-blue-50">
-      <div className="mx-auto grid max-w-[1200px] gap-8 px-4 py-16 sm:grid-cols-4">
+    <footer className="bg-[#071833] text-blue-50">
+      <div className="mx-auto grid max-w-[1200px] gap-8 px-4 py-14 sm:grid-cols-4">
         <div className="sm:col-span-2">
-          <p className="text-sm font-bold tracking-[0.14em] text-white">UYCHI BINOKOR</p>
+          <Logo />
           <p className="mt-4 max-w-sm text-sm leading-6 text-blue-100">{t("trust")}</p>
         </div>
         <div className="flex flex-col gap-2 text-sm">

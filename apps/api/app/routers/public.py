@@ -43,10 +43,11 @@ async def home(request: Request) -> JSONResponse:
             text(
                 """
                 SELECT
+                  (SELECT count(*) FROM applications WHERE status <> 'DRAFT') AS applicants,
                   (SELECT count(*) FROM enrollments WHERE status = 'ACTIVE') AS listeners,
                   (SELECT count(*) FROM certificates WHERE status = 'ISSUED') AS certified,
                   (SELECT count(*) FROM placements) AS employed,
-                  (SELECT count(*) FROM construction_objects WHERE is_public) AS sites
+                  (SELECT count(*) FROM employers WHERE country_code <> 'UZ') AS foreign_employers
                 """
             )
         )
@@ -54,8 +55,11 @@ async def home(request: Request) -> JSONResponse:
         trades = await conn.execute(
             text(
                 """
-                SELECT code, name, domestic_months, foreign_lang_months
-                FROM trades WHERE is_active ORDER BY code
+                SELECT t.code, t.name, t.domestic_months, t.foreign_lang_months,
+                       (SELECT count(*) FROM groups g
+                        JOIN courses c ON c.id = g.course_id
+                        WHERE c.trade_id = t.id) AS group_count
+                FROM trades t WHERE t.is_active ORDER BY t.code
                 """
             )
         )
@@ -73,7 +77,10 @@ async def home(request: Request) -> JSONResponse:
     return JSONResponse(
         {
             "stats": public_stats(
-                {key: int(row[key]) for key in ("listeners", "certified", "employed", "sites")}
+                {
+                    key: int(row[key])
+                    for key in ("applicants", "listeners", "certified", "employed", "foreign_employers")
+                }
             ),
             "trades": [
                 {
@@ -81,6 +88,7 @@ async def home(request: Request) -> JSONResponse:
                     "name": _title(item["name"]),
                     "domestic_months": item["domestic_months"],
                     "foreign_lang_months": item["foreign_lang_months"],
+                    "group_count": int(item["group_count"]),
                 }
                 for item in trades.mappings()
             ],

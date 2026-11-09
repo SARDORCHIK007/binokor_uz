@@ -31,10 +31,10 @@ export default async function OrdersPage() {
   }
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-semibold">Material buyurtmalari</h1>
+      <h1 className="text-3xl font-extrabold text-[#071833]">Material buyurtmalari</h1>
       <ul className="mt-4 flex flex-col gap-3">
         {rows.map((item) => (
-          <li key={item.id} className="rounded-md border border-line bg-card p-3">
+          <li key={item.id} className="rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm p-3">
             <p className="font-semibold">
               {item.product} · {item.quantity}
             </p>

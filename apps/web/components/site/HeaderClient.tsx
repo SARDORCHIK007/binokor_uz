@@ -1,87 +1,67 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 import { AccountMenu } from "@/components/auth/AccountMenu";
+import { Logo } from "@/components/brand/Logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
-const primary = [
-  { href: "/loyiha", key: "project" },
-  { href: "/kasblar", key: "trades" },
-  { href: "/ustalar", key: "workers" },
-  { href: "/kabinet/ishberuvchi", key: "employers" },
-] as const;
-
-const more = [
-  { href: "/yonalishlar", key: "directions" },
-  { href: "/hamkorlar", key: "partners" },
-  { href: "/brigadalar", key: "brigades" },
-  { href: "/obyektlar", key: "objects" },
-  { href: "/materiallar", key: "materials" },
-  { href: "/yangiliklar", key: "news" },
-  { href: "/aloqa", key: "contact" },
-] as const;
+const links = [
+  { href: "/", label: "Bosh sahifa" },
+  { href: "/kasblar", label: "Kasblar" },
+  { href: "/ustalar", label: "Ustalar" },
+  { href: "/ish-beruvchilar", label: "Ish beruvchilar" },
+  { href: "/hamkorlar", label: "Hamkorlar" },
+  { href: "/yangiliklar", label: "Yangiliklar" },
+];
 
 export function HeaderClient({ name }: { name: string | null }) {
-  const t = useTranslations("nav");
   const path = usePathname();
-  const [solid, setSolid] = useState(false);
-  const [open, setOpen] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setSolid(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
   if (path.startsWith("/kabinet")) {
     return null;
   }
   return (
-    <header className={`sticky top-0 z-30 transition-colors ${solid ? "bg-white shadow-sh2" : "bg-[#F4F6F9]/80"}`}>
-      <div className="mx-auto flex max-w-[1200px] items-center gap-3 px-4 py-3">
-        <Link href="/" className="shrink-0 text-sm font-bold tracking-[0.14em] text-navy-900">
-          UYCHI BINOKOR
+    <header className="sticky top-0 z-30 bg-[#071833] text-white shadow-[0_1px_0_rgba(255,255,255,0.08)]">
+      <div className="mx-auto flex max-w-[1200px] items-center gap-4 px-4 py-3">
+        <Link href="/" className="shrink-0" aria-label="UYCHI BINOKOR">
+          <Logo />
         </Link>
-        <nav className="ml-4 hidden items-center gap-5 text-sm font-medium text-navy-900 lg:flex" aria-label={t("project")}>
-          {primary.map((item) => (
-            <Link key={item.key} href={item.href} className="hover:text-primary">
-              {t(item.key)}
-            </Link>
-          ))}
-          <div className="relative">
-            <button type="button" className="hover:text-primary" aria-expanded={open} onClick={() => setOpen((value) => !value)}>
-              {t("more")}
-            </button>
-            {open ? (
-              <div className="absolute top-8 left-0 z-40 w-52 rounded-lg bg-white p-2 shadow-sh3">
-                {more.map((item) => (
-                  <Link key={item.key} href={item.href} className="block rounded-md px-3 py-2 hover:bg-blue-50" onClick={() => setOpen(false)}>
-                    {t(item.key)}
-                  </Link>
-                ))}
-              </div>
-            ) : null}
-          </div>
+        <nav className="ml-6 hidden items-center gap-6 text-sm font-medium lg:flex" aria-label="Asosiy">
+          {links.map((item) => {
+            const active = item.href === "/" ? path === "/" : path.startsWith(item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`border-b-2 py-1 ${active ? "border-[#F5B400] text-white" : "border-transparent text-white/80 hover:text-white"}`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
         <div className="ml-auto flex items-center gap-2">
-          <LanguageSwitcher />
+          <span className="hidden sm:block">
+            <LanguageSwitcher />
+          </span>
           {name ? (
             <AccountMenu name={name} />
           ) : (
-            <Link href="/kirish" className="rounded-lg bg-navy-900 px-4 py-2 text-sm font-medium text-white">
-              {t("login")}
+            <Link href="/kirish" className="rounded-xl bg-white px-5 py-2 text-sm font-bold text-[#071833] hover:bg-[#F5B400]">
+              Kirish
             </Link>
           )}
         </div>
       </div>
-      <nav className="flex gap-4 overflow-x-auto px-4 pb-3 text-sm lg:hidden" aria-label={t("project")}>
-        {[...primary, ...more].map((item) => (
-          <Link key={item.key} href={item.href} className="shrink-0 text-navy-900">
-            {t(item.key)}
+      <nav className="flex gap-4 overflow-x-auto px-4 pb-3 text-sm lg:hidden" aria-label="Asosiy">
+        {links.map((item) => (
+          <Link key={item.href} href={item.href} className={`shrink-0 ${path === item.href ? "text-[#F5B400]" : "text-white/85"}`}>
+            {item.label}
           </Link>
         ))}
+        <span className="ml-auto shrink-0 sm:hidden">
+          <LanguageSwitcher />
+        </span>
       </nav>
     </header>
   );

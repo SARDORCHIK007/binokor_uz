@@ -24,10 +24,10 @@ export default async function UsersPage() {
   }
   return (
     <div>
-      <h1 className="text-3xl font-bold text-navy-900">{t("users")}</h1>
+      <h1 className="text-3xl font-extrabold text-[#071833]">{t("users")}</h1>
       <ul className="mt-4 flex flex-col gap-2">
         {rows.map((row) => (
-          <li key={row.id} className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-line bg-card px-4 py-3">
+          <li key={row.id} className="flex flex-wrap items-center justify-between gap-2 rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm px-4 py-3">
             <span className="font-medium">{row.full_name}</span>
             <span className="text-sm text-muted">
               {row.roles.map((role) => (ROLE_KEY[role] ? roles(ROLE_KEY[role]) : role)).join(", ")}

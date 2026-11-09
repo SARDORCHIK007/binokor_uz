@@ -118,7 +118,23 @@ async def _admin(conn: AsyncConnection) -> dict[str, object]:
         "alerts": [
             {"name": item["full_name"], "days": int(item["days"])} for item in alerts.mappings()
         ],
+        "by_trade": await _applications_by_trade(conn),
     }
+
+
+async def _applications_by_trade(conn: AsyncConnection) -> list[dict[str, object]]:
+    rows = await conn.execute(
+        text(
+            """
+            SELECT t.name, count(a.id) AS total
+            FROM trades t
+            LEFT JOIN applications a ON a.desired_trade_id = t.id AND a.status <> 'DRAFT'
+            GROUP BY t.name
+            ORDER BY count(a.id) DESC, t.code
+            """
+        )
+    )
+    return [{"name": _label(item["name"]), "value": int(item["total"])} for item in rows.mappings()]
 
 
 async def _mentor(conn: AsyncConnection, user_id: uuid.UUID) -> dict[str, object]:

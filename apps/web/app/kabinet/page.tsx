@@ -1,16 +1,25 @@
 import { buttonClass, EmptyState } from "@uychibinokor/ui";
-import { FunnelChart } from "@/components/cabinet/FunnelChart";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
+import { Icon, type IconName } from "@/components/brand/Icon";
+import { AdminCharts } from "@/components/cabinet/AdminCharts";
 import { activeRole, apiAuth, readSession } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
+
+const KPI_TONES: { bg: string; fg: string; icon: IconName }[] = [
+  { bg: "#e4eeff", fg: "#2F6BFF", icon: "users" },
+  { bg: "#e3f5ea", fg: "#1f8a4c", icon: "cap" },
+  { bg: "#fff1d6", fg: "#b26b00", icon: "award" },
+  { bg: "#efe7fb", fg: "#7c5cbf", icon: "briefcase" },
+];
 
 type AdminDash = {
   kpi: { applications: number; enrolled: number; certified: number; employed: number };
   funnel: { key: string; value: number }[];
   queue: { id: string; status: string; trade: string }[];
   alerts: { name: string; days: number }[];
+  by_trade?: { name: string; value: number }[];
 };
 
 type MentorDash = {
@@ -73,22 +82,28 @@ async function AdminHome({ data }: { data: AdminDash }) {
     ["kpiEmployed", data.kpi.employed],
   ] as const;
   return (
-    <div className="flex flex-col gap-4">
-      <h1 className="text-3xl font-bold tracking-[-0.03em] text-navy-900">{t("panel")}</h1>
+    <div className="flex flex-col gap-4 p-4 sm:p-6">
+      <h1 className="text-3xl font-extrabold tracking-[-0.03em] text-[#071833]">{t("panel")}</h1>
       <dl className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        {cards.map(([key, value]) => (
-          <div key={key} className="rounded-[20px] bg-card p-5 shadow-sh2">
-            <dt className="text-sm text-muted">{t(key)}</dt>
-            <dd className="mt-2 text-4xl font-bold tracking-[-0.03em] tabular-nums">{value}</dd>
-          </div>
-        ))}
+        {cards.map(([key, value], index) => {
+          const tone = KPI_TONES[index];
+          return (
+            <div key={key} className="rounded-[20px] p-5 shadow-sh2" style={{ background: tone.bg }}>
+              <span className="grid size-10 place-items-center rounded-full bg-white/80" style={{ color: tone.fg }}>
+                <Icon name={tone.icon} className="size-5" />
+              </span>
+              <dd className="mt-3 text-4xl font-extrabold tracking-[-0.03em] text-[#071833] tabular-nums">{value}</dd>
+              <dt className="mt-1 text-sm font-medium text-[#33415c]">{t(key)}</dt>
+            </div>
+          );
+        })}
       </dl>
+      <AdminCharts
+        trend={data.funnel.map((item) => ({ name: t(item.key as "applied"), value: item.value }))}
+        trades={data.by_trade ?? []}
+      />
       <div className="grid gap-4 lg:grid-cols-2">
-        <section className="rounded-[20px] bg-card p-5 shadow-sh2">
-          <h2 className="font-semibold">{t("funnel")}</h2>
-          <FunnelChart rows={data.funnel.map((item) => ({ name: t(item.key as "applied"), value: item.value }))} />
-        </section>
-        <section className="rounded-md border border-line bg-card p-4 shadow-sh1">
+        <section className="rounded-[20px] border border-line bg-card p-4 shadow-sh1">
           <h2 className="font-semibold">{t("queue")}</h2>
           {data.queue.length === 0 ? (
             <div className="mt-3">
@@ -104,7 +119,7 @@ async function AdminHome({ data }: { data: AdminDash }) {
             </ul>
           )}
         </section>
-        <section className="rounded-md border border-line bg-card p-4 shadow-sh1 lg:col-span-2">
+        <section className="rounded-[20px] border border-line bg-card p-4 shadow-sh1">
           <h2 className="font-semibold">{t("alerts")}</h2>
           {data.alerts.length === 0 ? (
             <div className="mt-3">
@@ -128,14 +143,14 @@ async function AdminHome({ data }: { data: AdminDash }) {
 async function MentorHome({ data }: { data: MentorDash }) {
   const t = await getTranslations("cabinet");
   return (
-    <div className="flex flex-col gap-4">
-      <h1 className="text-3xl font-bold text-navy-900">{t("myGroups")}</h1>
+    <div className="flex flex-col gap-4 p-4 sm:p-6">
+      <h1 className="text-3xl font-extrabold text-[#071833]">{t("myGroups")}</h1>
       {data.groups.length === 0 ? (
         <EmptyState title={t("groupsEmpty")} text={t("groupsEmptyText")} />
       ) : (
         <ul className="grid gap-3 sm:grid-cols-2">
           {data.groups.map((group) => (
-            <li key={group.id} className="rounded-md border border-line bg-card p-4">
+            <li key={group.id} className="rounded-[20px] border border-line bg-card p-4">
               <p className="text-lg font-semibold">{group.code}</p>
               <p className="text-sm text-muted tabular-nums">
                 {group.students} / {group.max_students}
@@ -168,32 +183,71 @@ async function MentorHome({ data }: { data: MentorDash }) {
 async function StudentHome({ data }: { data: StudentDash }) {
   const t = await getTranslations("cabinet");
   if (!data.enrollment) {
-    return <EmptyState title={t("noCourse")} text={t("noCourseText")} />;
+    return (
+      <div className="p-4 sm:p-6">
+        <EmptyState title={t("noCourse")} text={t("noCourseText")} />
+      </div>
+    );
   }
   const labels: Record<string, string> = {
     attendance: t("remainingAttendance"),
     modules: t("remainingModules"),
     exam: t("remainingExam"),
   };
-  const schedule = JSON.stringify(data.enrollment.schedule);
+  const schedule = data.enrollment.schedule as { days?: string[]; time?: string } | null;
+  const days = ["Du", "Se", "Ch", "Pa", "Ju"];
+  const active = new Set(schedule?.days ?? []);
+  const percent = data.attendance_pct ?? 0;
   return (
-    <div className="flex flex-col gap-4">
-      <h1 className="text-3xl font-bold text-navy-900">{t("myCourse")}</h1>
-      <section className="rounded-md border border-line bg-card p-4">
-        <p className="text-lg font-semibold">{data.enrollment.course || data.enrollment.group}</p>
-        <p className="mt-1 text-sm text-muted">{data.enrollment.group}</p>
+    <div className="flex flex-col gap-4 p-4 sm:p-6">
+      <h1 className="text-3xl font-extrabold text-[#071833]">Mening o&apos;quv jarayonim</h1>
+      <section className="flex flex-wrap items-center justify-between gap-4 rounded-[20px] bg-white p-5 shadow-[0_10px_30px_rgba(7,24,51,0.06)]">
+        <div className="flex min-w-0 items-center gap-4">
+          <span className="grid size-20 shrink-0 place-items-center rounded-2xl bg-[#E7EEF7] text-[#071833]" aria-hidden="true">
+            <Icon name="cap" className="size-10" />
+          </span>
+          <div className="min-w-0">
+            <p className="text-lg font-bold text-[#071833]">{data.enrollment.course || data.enrollment.group}</p>
+            <span className="mt-1 inline-block rounded-full bg-[#1f8a4c] px-3 py-0.5 text-xs font-semibold text-white">O&apos;qish davom etmoqda</span>
+            <p className="mt-1 text-sm text-muted">Guruh: {data.enrollment.group}</p>
+          </div>
+        </div>
+        <div
+          className="grid size-28 shrink-0 place-items-center rounded-full"
+          style={{ background: `conic-gradient(#1f8a4c ${percent * 3.6}deg, #E7EEF7 0deg)` }}
+          role="img"
+          aria-label={`Davomat ${percent}%`}
+        >
+          <div className="grid size-20 place-items-center rounded-full bg-white text-center">
+            <span className="text-xl leading-none font-extrabold text-[#071833]">{percent}%</span>
+            <span className="-mt-3 text-[10px] text-muted">Davomat</span>
+          </div>
+        </div>
+        <div className="flex w-full flex-wrap gap-2 text-sm">
+          <Link href="/kabinet/lugat" className="rounded-full bg-[#F4F7FB] px-3 py-1.5 font-medium">Lug&apos;at (1000 so&apos;z)</Link>
+          <Link href="/kabinet/davomat" className="rounded-full bg-[#F4F7FB] px-3 py-1.5 font-medium">Davomat</Link>
+          <Link href="/kabinet/baholar" className="rounded-full bg-[#F4F7FB] px-3 py-1.5 font-medium">Baholar</Link>
+        </div>
       </section>
-      <section className="rounded-md border border-line bg-card p-4">
-        <h2 className="font-semibold">{t("schedule")}</h2>
-        <p className="mt-2 text-sm">{schedule}</p>
+      <section className="rounded-[20px] bg-white p-5 shadow-[0_10px_30px_rgba(7,24,51,0.06)]">
+        <h2 className="font-bold text-[#071833]">{t("schedule")}</h2>
+        <p className="text-sm text-muted">{schedule?.time ?? ""}</p>
+        <ol className="mt-3 grid grid-cols-5 gap-2">
+          {days.map((day) => (
+            <li
+              key={day}
+              className={`flex flex-col items-center gap-2 rounded-2xl border px-2 py-3 text-center text-sm font-semibold ${active.has(day) ? "border-[#2F6BFF] bg-[#eef3ff] text-[#071833]" : "border-[#e3e9f2] bg-white text-[#98a2b3]"}`}
+            >
+              {day}
+              <span className={`grid size-7 place-items-center rounded-full ${active.has(day) ? "bg-[#2F6BFF] text-white" : "border border-[#c4cddb]"}`}>
+                {active.has(day) ? <Icon name="check" className="size-4" /> : null}
+              </span>
+            </li>
+          ))}
+        </ol>
+        <p className="mt-2 text-xs text-muted">Belgilangan kunlar — dars jadvali.</p>
       </section>
-      <section className="rounded-md border border-line bg-card p-4">
-        <h2 className="font-semibold">{t("attendancePct")}</h2>
-        <p className="mt-2 text-3xl font-bold tabular-nums">
-          {data.attendance_pct === null ? "—" : `${data.attendance_pct}%`}
-        </p>
-      </section>
-      <section className="rounded-md border border-line bg-card p-4">
+      <section className="rounded-[20px] border border-line bg-card p-4">
         <h2 className="font-semibold">{t("remaining")}</h2>
         {data.remaining.length === 0 ? (
           <p className="mt-2 text-sm text-muted">—</p>

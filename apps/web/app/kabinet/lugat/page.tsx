@@ -1,91 +1,124 @@
 "use client";
 
-import { Button, EmptyState } from "@uychibinokor/ui";
-import { useEffect, useState } from "react";
+import { EmptyState } from "@uychibinokor/ui";
+import { useCallback, useEffect, useState } from "react";
 
-type Card = { id: string; word: string; translation: string; category: string };
-type Today = { new: Card[]; learned: number; total: number };
+type Word = { id: string; word: string; translation: string; category: string };
+type Today = { new: Word[]; learned: number; total: number };
 
 export default function VocabPage() {
   const [data, setData] = useState<Today | null>(null);
-  const [failed, setFailed] = useState(false);
+  const [state, setState] = useState<"loading" | "ready" | "guest" | "error">("loading");
   const [index, setIndex] = useState(0);
-  const [show, setShow] = useState(false);
+  const [shown, setShown] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
 
-  useEffect(() => {
-    let active = true;
-    void fetch("/api/v1/vocab/today", { credentials: "include" })
-      .then(async (response) => {
-        if (!response.ok) {
-          throw new Error("load");
-        }
-        return (await response.json()) as Today;
-      })
-      .then((payload) => {
-        if (active) {
-          setData(payload);
-        }
-      })
-      .catch(() => {
-        if (active) {
-          setFailed(true);
-        }
-      });
-    return () => {
-      active = false;
-    };
+  const load = useCallback(async () => {
+    try {
+      const response = await fetch("/api/v1/vocab/today", { credentials: "include" });
+      if (response.status === 401) {
+        setState("guest");
+        return;
+      }
+      if (!response.ok) {
+        throw new Error("load");
+      }
+      setData((await response.json()) as Today);
+      setIndex(0);
+      setShown(false);
+      setState("ready");
+    } catch {
+      setState("error");
+    }
   }, []);
 
-  async function answer(correct: boolean) {
-    if (!data) {
-      return;
+  useEffect(() => {
+    void load();
+  }, [load]);
+
+  async function answer(correct: boolean, word: Word) {
+    setSaving(true);
+    setError("");
+    try {
+      const response = await fetch("/api/v1/vocab/answers", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ word_id: word.id, correct }),
+      });
+      if (!response.ok) {
+        throw new Error("save");
+      }
+      setShown(false);
+      if (data && index + 1 >= data.new.length) {
+        await load();
+      } else {
+        setIndex(index + 1);
+      }
+    } catch {
+      setError("Javob saqlanmadi. Qayta urinib ko'ring.");
+    } finally {
+      setSaving(false);
     }
-    const card = data.new[index];
-    if (!card) {
-      return;
-    }
-    await fetch("/api/v1/vocab/answers", {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ word_id: card.id, correct }),
-    });
-    setShow(false);
-    setIndex((value) => value + 1);
   }
 
-  if (failed) {
-    return <EmptyState title="Lug'at ochilmadi" text="Sahifani yangilang." />;
+  if (state === "loading") {
+    return <div className="mx-auto max-w-xl animate-pulse rounded-3xl bg-white p-10 text-center text-[#5f6b7d]">Yuklanmoqda…</div>;
   }
-  if (!data) {
-    return <p className="p-4 text-sm text-muted">Yuklanmoqda</p>;
+  if (state === "guest") {
+    return <EmptyState title="Kirish kerak" text="Lug'atni ko'rish uchun tizimga kiring." />;
   }
-  const card = data.new[index];
+  if (state === "error" || !data) {
+    return <EmptyState title="Lug'at yuklanmadi" text="Birozdan keyin qayta urinib ko'ring." />;
+  }
+
+  const percent = data.total > 0 ? Math.round((data.learned / data.total) * 100) : 0;
+  const word = data.new[index];
+
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-semibold">Nemis tili</h1>
-      <p className="mt-1 text-sm text-muted">
-        O'rganilgan {data.learned} / {data.total}
-      </p>
-      {card ? (
-        <article className="mt-4 rounded-md border border-line bg-card p-5">
-          <p className="text-sm text-muted">{card.category}</p>
-          <p className="mt-2 text-3xl font-semibold">{card.word}</p>
-          {show ? <p className="mt-3 text-lg">{card.translation}</p> : null}
-          <div className="mt-4 flex flex-wrap gap-2">
-            <Button type="button" variant="secondary" onClick={() => setShow(true)}>
-              Tarjima
-            </Button>
-            <Button type="button" onClick={() => void answer(true)}>
-              Bildim
-            </Button>
-            <Button type="button" variant="danger" onClick={() => void answer(false)}>
-              Bilmadim
-            </Button>
-          </div>
-        </article>
+    <div className="mx-auto flex max-w-2xl flex-col gap-4 p-4 sm:p-6">
+      <h1 className="text-3xl font-extrabold text-[#071833]">Lug&apos;at (nemis tili)</h1>
+
+      <section className="rounded-3xl border border-[#e5eaf2] bg-white p-5 shadow-sm">
+        <div className="flex items-center justify-between text-sm font-semibold text-[#071833]">
+          <span>O&apos;zlashtirilgan (5 qutidan 3-qutiga yetgan)</span>
+          <span className="tabular-nums">{data.learned} / {data.total}</span>
+        </div>
+        <div className="mt-3 h-3 overflow-hidden rounded-full bg-[#e7eef7]" role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100}>
+          <div className="h-full rounded-full bg-[#1f8a4c]" style={{ width: `${percent}%` }} />
+        </div>
+      </section>
+
+      {data.total === 0 ? (
+        <EmptyState title="Lug'at hali tayyor emas" text="So'zlar muallif va muharrir tasdiqlagandan keyin chiqadi." />
+      ) : !word ? (
+        <EmptyState title="Bugungi so'zlar tugadi" text="Keyingi takrorlash vaqti kelganda yangi so'zlar chiqadi." />
       ) : (
-        <EmptyState title="Bugungi so'zlar tugadi" text="Ertaga yangi 20 tasi ochiladi." />
+        <section className="rounded-3xl border border-[#e5eaf2] bg-white p-6 text-center shadow-sm sm:p-10">
+          <p className="text-xs font-bold tracking-wider text-[#2F6BFF] uppercase">
+            {word.category} · {index + 1} / {data.new.length}
+          </p>
+          <p className="mt-4 text-4xl font-black text-[#071833]">{word.word}</p>
+          {shown ? (
+            <>
+              <p className="mt-4 text-3xl font-extrabold text-[#071833] text-[#1f8a4c]">{word.translation}</p>
+              <div className="mt-8 grid grid-cols-2 gap-3">
+                <button type="button" disabled={saving} onClick={() => void answer(false, word)} className="rounded-2xl border border-[#d9dfe8] py-3.5 text-sm font-bold text-[#b42318] hover:bg-[#fde7e5] disabled:opacity-50">
+                  Bilmadim
+                </button>
+                <button type="button" disabled={saving} onClick={() => void answer(true, word)} className="rounded-2xl bg-[#1f8a4c] py-3.5 text-sm font-bold text-white hover:bg-[#17703c] disabled:opacity-50">
+                  Bildim
+                </button>
+              </div>
+            </>
+          ) : (
+            <button type="button" onClick={() => setShown(true)} className="mt-8 w-full rounded-2xl bg-[#2F6BFF] py-3.5 text-sm font-bold text-white hover:bg-[#1f55d6]">
+              Tarjimani ko&apos;rsatish
+            </button>
+          )}
+          {error ? <p className="mt-3 text-sm text-[#b42318]">{error}</p> : null}
+        </section>
       )}
     </div>
   );

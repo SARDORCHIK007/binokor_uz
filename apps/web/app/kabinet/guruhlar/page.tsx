@@ -23,10 +23,10 @@ export default async function GroupsPage() {
   }
   return (
     <div>
-      <h1 className="text-3xl font-bold text-navy-900">{t("groups")}</h1>
+      <h1 className="text-3xl font-extrabold text-[#071833]">{t("groups")}</h1>
       <ul className="mt-4 grid gap-3 sm:grid-cols-2">
         {rows.map((row) => (
-          <li key={row.id} className="rounded-md border border-line bg-card p-4">
+          <li key={row.id} className="rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm p-4">
             <p className="font-semibold">{row.code}</p>
             <p className="text-sm text-muted">{row.mentor}</p>
             <p className="mt-2 tabular-nums">

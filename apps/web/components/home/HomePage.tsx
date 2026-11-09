@@ -1,18 +1,7 @@
 import { EmptyState } from "@uychibinokor/ui";
-import { readdirSync } from "node:fs";
-import path from "node:path";
 import { getTranslations } from "next-intl/server";
 import { HomeExperience } from "@/components/home/HomeExperience";
 import { apiGet, type HomePayload } from "@/lib/public";
-
-function realPhotos() {
-  try {
-    const folder = path.join(process.cwd(), "public", "media", "real");
-    return readdirSync(folder).filter((name) => /\.(jpe?g|png|webp|avif)$/i.test(name));
-  } catch {
-    return [];
-  }
-}
 
 export async function HomePage() {
   const t = await getTranslations();
@@ -24,5 +13,5 @@ export async function HomePage() {
       </div>
     );
   }
-  return <HomeExperience home={home} photos={realPhotos()} />;
+  return <HomeExperience home={home} />;
 }

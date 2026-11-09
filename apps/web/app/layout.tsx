@@ -1,20 +1,13 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { PwaRegister } from "@/components/PwaRegister";
-import { SiteFooter } from "@/components/SiteFooter";
-import { SiteHeader } from "@/components/SiteHeader";
+import { SiteLayoutShell, type ShellUser } from "@/components/site/SiteLayoutShell";
+import { CABINET_MENUS } from "@/lib/menus";
+import { activeRole, readSession } from "@/lib/session";
 import "./globals.css";
-
-const inter = Inter({
-  subsets: ["latin", "cyrillic"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-inter",
-  display: "swap",
-});
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("meta");
@@ -28,19 +21,31 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const locale = await getLocale();
   const messages = await getMessages();
-  const nav = await getTranslations("nav");
+  const session = await readSession();
+
+  let user: ShellUser | null = null;
+  if (session) {
+    const cabinet = await getTranslations("cabinet");
+    const roleNames = await getTranslations("roles");
+    const role = await activeRole(session.roles);
+    user = {
+      name: session.full_name,
+      role,
+      roles: session.roles.map((id) => ({ id, label: roleNames(id as "admin") })),
+      items: (CABINET_MENUS[role] ?? CABINET_MENUS.student).map((item) => ({
+        href: item.href,
+        label: cabinet(item.key as "panel"),
+      })),
+    };
+  }
+
   return (
-    <html lang={locale} className={inter.variable}>
+    <html lang={locale}>
       <body className="min-h-screen bg-canvas font-sans text-base text-ink antialiased">
-        <a href="#asosiy" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-card focus:p-3">
-          {nav("skip")}
-        </a>
         <NextIntlClientProvider messages={messages}>
           <PwaRegister />
           <SmoothScroll />
-          <SiteHeader />
-          <main id="asosiy">{children}</main>
-          <SiteFooter />
+          <SiteLayoutShell user={user}>{children}</SiteLayoutShell>
         </NextIntlClientProvider>
       </body>
     </html>

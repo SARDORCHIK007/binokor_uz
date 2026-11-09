@@ -21,3 +21,6 @@ storybook-static/
 .idea/
 .vscode/
 *.log
+
+# runtime uploads
+apps/api/data/

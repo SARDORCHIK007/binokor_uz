@@ -33,18 +33,18 @@
   --info-600: #2563a8;
   --info-100: #e7eef7;
 
-  --bg: var(--surface-50);
+  --bg: #f4f7fb;
   --card: var(--surface-0);
   --text: var(--ink-800);
   --text-muted: var(--ink-500);
-  --border: var(--line-200);
-  --primary: var(--blue-600);
-  --primary-hover: var(--blue-700);
+  --border: #e0e6f0;
+  --primary: #2f6bff;
+  --primary-hover: #1f55d6;
   --primary-contrast: #ffffff;
-  --focus-ring: 0 0 0 3px rgba(37, 99, 168, 0.35);
+  --focus-ring: 0 0 0 3px rgba(47, 107, 255, 0.35);
 
-  --r-sm: 8px;
-  --r-md: 12px;
+  --r-sm: 12px;
+  --r-md: 16px;
   --r-lg: 20px;
 
   --sh-1: 0 1px 2px rgba(12, 27, 51, 0.06);

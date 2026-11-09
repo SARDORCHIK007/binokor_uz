@@ -123,9 +123,9 @@ export default function EmployerPage() {
           </button>
         ))}
       </div>
-      <h1 className="text-2xl font-semibold text-navy-900">{copy.title}</h1>
+      <h1 className="text-3xl font-extrabold text-[#071833]">{copy.title}</h1>
       {employer ? (
-        <section className="rounded-md border border-line bg-card p-4">
+        <section className="rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm p-4">
           <p className="font-semibold">{employer.name}</p>
           <p className="text-sm text-muted">STIR {employer.inn}</p>
           <p className="text-sm">{employer.verified ? "Tasdiqlangan" : "Admin tasdig'i kutilmoqda"}</p>
@@ -134,7 +134,7 @@ export default function EmployerPage() {
           </Button>
         </section>
       ) : (
-        <section className="flex flex-col gap-3 rounded-md border border-line bg-card p-4">
+        <section className="flex flex-col gap-3 rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm p-4">
           <TextField label="Kompaniya nomi" name="name" value={name} onChange={(event) => setName(event.target.value)} />
           <TextField label="STIR" name="inn" value={inn} onChange={(event) => setInn(event.target.value)} />
           <Button type="button" onClick={() => void register()}>
@@ -142,10 +142,10 @@ export default function EmployerPage() {
           </Button>
         </section>
       )}
-      <section className="rounded-md border border-line bg-card p-4">
+      <section className="rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm p-4">
         <h2 className="font-semibold">So'rovlar</h2>
         {requests.length === 0 ? <p className="mt-2 text-sm text-muted">So'rov yo'q</p> : null}
-        <ul className="mt-2 flex flex-col gap-2">
+        <ul className="mt-3 flex flex-col gap-2.5">
           {requests.map((item) => (
             <li key={item.id}>
               {item.track} · {item.quantity} · {item.status}
@@ -153,7 +153,7 @@ export default function EmployerPage() {
           ))}
         </ul>
       </section>
-      <section className="rounded-md border border-line bg-card p-4">
+      <section className="rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm p-4">
         <h2 className="font-semibold">{copy.search}</h2>
         <div className="mt-2 flex gap-2">
           <TextField label="Ism" name="q" value={query} onChange={(event) => setQuery(event.target.value)} />
@@ -175,9 +175,9 @@ export default function EmployerPage() {
         </ul>
       </section>
       {placements.length > 0 ? (
-        <section className="rounded-md border border-line bg-card p-4">
+        <section className="rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm p-4">
           <h2 className="font-semibold">Joylashtirish bahosi</h2>
-          <ul className="mt-2 flex flex-col gap-2">
+          <ul className="mt-3 flex flex-col gap-2.5">
             {placements.map((item) => (
               <li key={item.id}>
                 <Button
@@ -199,9 +199,9 @@ export default function EmployerPage() {
         </section>
       ) : null}
       {pending.length > 0 ? (
-        <section className="rounded-md border border-line bg-card p-4">
+        <section className="rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm p-4">
           <h2 className="font-semibold">Tasdiq kutayotgan kompaniyalar</h2>
-          <ul className="mt-2 flex flex-col gap-2">
+          <ul className="mt-3 flex flex-col gap-2.5">
             {pending.map((item) => (
               <li key={item.id} className="flex items-center justify-between gap-2">
                 <span>
