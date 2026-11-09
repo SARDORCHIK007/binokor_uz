@@ -17,12 +17,6 @@ type Site = {
   lon: number;
 };
 
-const OBJECT_STATUS: Record<string, string> = {
-  PLANNED: "Rejada",
-  IN_PROGRESS: "Jarayonda",
-  COMPLETED: "Tugagan",
-  PAUSED: "To'xtagan",
-};
 
 export default async function ObjectsPage({
   searchParams,
@@ -30,6 +24,7 @@ export default async function ObjectsPage({
   searchParams: Promise<{ status?: string }>;
 }) {
   const t = await getTranslations("states");
+  const l = await getTranslations("lists");
   const query = await searchParams;
   const suffix = query.status ? `?status=${encodeURIComponent(query.status)}` : "";
   const objects = await apiGet<Site[]>(`/api/v1/public/objects${suffix}`);
@@ -42,12 +37,12 @@ export default async function ObjectsPage({
   }
   return (
     <div className={PAGE}>
-      <PageHeader title="Obyektlar" />
+      <PageHeader title={l("objects")} />
       <FilterTabs
         items={[
-          { href: "/obyektlar", label: "Hammasi", active: !query.status },
-          { href: "/obyektlar?status=IN_PROGRESS", label: "Jarayonda", active: query.status === "IN_PROGRESS" },
-          { href: "/obyektlar?status=COMPLETED", label: "Tugagan", active: query.status === "COMPLETED" },
+          { href: "/obyektlar", label: l("all"), active: !query.status },
+          { href: "/obyektlar?status=IN_PROGRESS", label: l("obj.IN_PROGRESS"), active: query.status === "IN_PROGRESS" },
+          { href: "/obyektlar?status=COMPLETED", label: l("obj.COMPLETED"), active: query.status === "COMPLETED" },
         ]}
       />
       <SiteMap sites={objects} />
@@ -57,7 +52,7 @@ export default async function ObjectsPage({
             <div className="flex items-start justify-between gap-3">
               <h2 className="text-lg font-bold text-navy-900">{item.name}</h2>
               <span className="shrink-0 rounded-full bg-blue-100 px-2.5 py-1 text-xs font-bold text-primary">
-                {OBJECT_STATUS[item.status] ?? item.status}
+                {l.has(`obj.${item.status}` as "obj.PLANNED") ? l(`obj.${item.status}` as "obj.PLANNED") : item.status}
               </span>
             </div>
             <p className="mt-2 inline-flex items-center gap-1.5 text-sm text-muted">

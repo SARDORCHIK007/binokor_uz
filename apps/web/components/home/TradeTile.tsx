@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { Icon } from "@/components/brand/Icon";
 import { tradeImage } from "@/lib/media";
@@ -6,6 +7,7 @@ export type TradeTileData = { code: string; name: string; domestic_months: numbe
 
 /** Compact horizontal trade tile: small photo thumb + name + chips + arrow. */
 export function TradeTile({ trade, about, index }: { trade: TradeTileData; about?: string; index?: number }) {
+  const l = useTranslations("lists");
   return (
     <Link
       href={`/kasblar/${trade.code}`}
@@ -30,12 +32,12 @@ export function TradeTile({ trade, about, index }: { trade: TradeTileData; about
         <span className="mt-2 flex flex-wrap gap-1.5 text-xs font-semibold">
           <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-primary">
             <Icon name="clock" className="size-3.5" />
-            {trade.domestic_months} oy
+            {l("months", { count: trade.domestic_months })}
           </span>
           {trade.group_count ? (
             <span className="inline-flex items-center gap-1 rounded-full bg-success-100 px-2 py-0.5 text-success-600">
               <Icon name="users" className="size-3.5" />
-              {trade.group_count} guruh
+              {l("groups", { count: trade.group_count })}
             </span>
           ) : null}
         </span>

@@ -10,6 +10,7 @@ type Brigade = { id: string; name: string; trade: string; status: string; member
 
 export default async function BrigadesPage() {
   const t = await getTranslations("states");
+  const l = await getTranslations("lists");
   const rows = await apiGet<Brigade[]>("/api/v1/public/brigades");
   if (!rows) {
     return (
@@ -21,13 +22,13 @@ export default async function BrigadesPage() {
   if (rows.length === 0) {
     return (
       <ErrorPage>
-        <EmptyState title="Tayyor brigada yo'q" text="Hozircha ochiq brigada yo'q." />
+        <EmptyState title={l("brigadesEmpty")} text={l("brigadesEmptyText")} />
       </ErrorPage>
     );
   }
   return (
     <div className={PAGE}>
-      <PageHeader title="Brigadalar" />
+      <PageHeader title={l("brigades")} />
       <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {rows.map((item) => (
           <li key={item.id} className={CARD}>
@@ -38,7 +39,7 @@ export default async function BrigadesPage() {
               <h2 className="text-lg font-bold text-navy-900">{item.name}</h2>
             </div>
             <p className="mt-4 text-sm text-muted">
-              {item.trade} · {item.members} a&apos;zo · tayyor
+              {item.trade} · {l("members", { count: item.members })}
             </p>
           </li>
         ))}

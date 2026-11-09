@@ -17,12 +17,6 @@ type Worker = {
   hours: number;
 };
 
-const LEVEL: Record<string, string> = {
-  APPRENTICE: "Shogird",
-  ASSISTANT: "Yordamchi",
-  MASTER: "Usta",
-  FOREMAN: "Brigadir",
-};
 const AVATAR = [
   "bg-blue-100 text-primary",
   "bg-success-100 text-success-600",
@@ -35,12 +29,6 @@ const DOT: Record<string, string> = {
   ABROAD: "bg-primary",
   INACTIVE: "bg-faint",
 };
-const AVAILABILITY: Record<string, string> = {
-  FREE: "Bo'sh",
-  BUSY: "Band",
-  ABROAD: "Xorijda",
-  INACTIVE: "Nofaol",
-};
 
 export default async function WorkersPage({
   searchParams,
@@ -48,6 +36,8 @@ export default async function WorkersPage({
   searchParams: Promise<{ trade?: string; q?: string }>;
 }) {
   const t = await getTranslations("states");
+  const l = await getTranslations("lists");
+  const w = await getTranslations("worker");
   const query = await searchParams;
   const params = new URLSearchParams();
   if (query.trade) {
@@ -68,24 +58,24 @@ export default async function WorkersPage({
   if (workers.length === 0) {
     return (
       <ErrorPage>
-        <EmptyState title="Ustalar yo'q" text="Hozircha ochiq profil yo'q." />
+        <EmptyState title={l("workersEmpty")} text={l("workersEmptyText")} />
       </ErrorPage>
     );
   }
   return (
     <div className={PAGE}>
-      <PageHeader title="Ustalar" />
+      <PageHeader title={l("workers")} />
       <form className={`${CARD} mb-6 grid gap-3 p-4 sm:grid-cols-[1fr_1fr_auto]`} method="get">
-        <input name="q" defaultValue={query.q ?? ""} placeholder="Ism" aria-label="Ism" className={FIELD} />
+        <input name="q" defaultValue={query.q ?? ""} placeholder={l("name")} aria-label={l("name")} className={FIELD} />
         <input
           name="trade"
           defaultValue={query.trade ?? ""}
-          placeholder="Kasb kodi, masalan plumber"
-          aria-label="Kasb kodi"
+          placeholder={l("tradeCode")}
+          aria-label={l("tradeCodeLabel")}
           className={FIELD}
         />
         <button type="submit" className="min-h-11 rounded-xl bg-primary px-6 text-sm font-bold text-white hover:bg-primary-hover">
-          Qidirish
+          {l("search")}
         </button>
       </form>
       <ul className="grid grid-cols-1 gap-3 lg:grid-cols-2">
@@ -109,11 +99,11 @@ export default async function WorkersPage({
                 <span className="block truncate font-bold text-navy-900 group-hover:text-primary">{worker.name}</span>
                 <span className="mt-0.5 block truncate text-xs text-muted">
                   <span className={`mr-1.5 inline-block size-2 rounded-full align-middle ${DOT[worker.availability] ?? "bg-faint"}`} aria-hidden="true" />
-                  {AVAILABILITY[worker.availability] ?? worker.availability}
+                  {w.has(`status.${worker.availability}` as "status.FREE") ? w(`status.${worker.availability}` as "status.FREE") : worker.availability}
                   {" · "}
                   {worker.trade}
                   {" · "}
-                  {LEVEL[worker.level] ?? worker.level}
+                  {w.has(`level.${worker.level}` as "level.MASTER") ? w(`level.${worker.level}` as "level.MASTER") : worker.level}
                 </span>
               </span>
               <span className="hidden shrink-0 items-center gap-1 text-xs font-semibold tabular-nums text-muted sm:inline-flex">

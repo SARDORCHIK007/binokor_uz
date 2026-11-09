@@ -1,22 +1,25 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
+import { getTranslations } from "next-intl/server";
 import { ApplicationWizard } from "@/components/apply/ApplicationWizard";
 import { Icon } from "@/components/brand/Icon";
 import { PAGE } from "@/components/site/PageHeader";
 
 export const dynamic = "force-dynamic";
 
-const perks = ["Tez va qulay", "Bepul o'qish", "Sertifikat va QR pasport", "Ishga yo'naltirish"];
 
 export default async function ApplyPage() {
   const token = (await cookies()).get("ub_access")?.value;
+  const t = await getTranslations("applyPage");
+  const shell = await getTranslations("shell");
+  const perks = [t("perk1"), t("perk2"), t("perk3"), t("perk4")];
   return (
     <div className={PAGE}>
       <div>
-        <nav aria-label="Yo'l" className="text-sm text-muted">
-          <Link href="/" className="hover:text-primary">Bosh sahifa</Link>
+        <nav aria-label="breadcrumb" className="text-sm text-muted">
+          <Link href="/" className="hover:text-primary">{shell("home")}</Link>
           <span className="mx-2 text-faint" aria-hidden="true">›</span>
-          <span className="font-semibold text-navy-900">Onlayn ariza</span>
+          <span className="font-semibold text-navy-900">{t("crumb")}</span>
         </nav>
         <div className="mt-6 grid items-start gap-6 lg:grid-cols-[380px_1fr]">
           <div className="rounded-2xl border border-line bg-card p-6 shadow-sh2 sm:p-8">
@@ -31,8 +34,8 @@ export default async function ApplyPage() {
                 <rect x="88" y="76" width="76" height="10" rx="5" fill="#e49f00" />
               </svg>
             </div>
-            <h1 className="mt-5 text-2xl font-extrabold text-navy-900">O&apos;qish uchun onlayn ariza bering</h1>
-            <p className="mt-2 text-sm leading-relaxed text-muted">Ariza 3 qadamda to&apos;ldiriladi. Kursning tavsiya etilgan yo&apos;lini tizim ko&apos;rsatadi, qarorni xodim tasdiqlaydi.</p>
+            <h1 className="mt-5 text-2xl font-extrabold text-navy-900">{t("title")}</h1>
+            <p className="mt-2 text-sm leading-relaxed text-muted">{t("text")}</p>
             <ul className="mt-6 space-y-3.5 border-t border-line pt-6">
               {perks.map((item) => (
                 <li key={item} className="flex items-center gap-3 text-sm font-semibold text-navy-900">
@@ -48,10 +51,10 @@ export default async function ApplyPage() {
             <ApplicationWizard />
           ) : (
             <div className="rounded-2xl border border-line bg-card p-6 shadow-sh2 sm:p-8">
-              <p className="font-semibold text-navy-900">Ariza berish uchun avval kiring.</p>
-              <p className="mt-1 text-sm text-muted">Telefon raqamingizga kod yuboriladi.</p>
+              <p className="font-semibold text-navy-900">{t("loginFirst")}</p>
+              <p className="mt-1 text-sm text-muted">{t("loginText")}</p>
               <Link href="/kirish" className="mt-4 block rounded-xl bg-primary px-5 py-3 text-center font-bold text-white hover:bg-primary-hover">
-                Kirish
+                {shell("login")}
               </Link>
             </div>
           )}

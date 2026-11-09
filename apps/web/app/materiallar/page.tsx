@@ -24,6 +24,7 @@ export default async function MaterialsPage({
   searchParams: Promise<{ category?: string }>;
 }) {
   const t = await getTranslations("states");
+  const l = await getTranslations("lists");
   const query = await searchParams;
   const suffix = query.category ? `?category=${encodeURIComponent(query.category)}` : "";
   const products = await apiGet<Product[]>(`/api/v1/public/products${suffix}`);
@@ -36,12 +37,12 @@ export default async function MaterialsPage({
   }
   return (
     <div className={PAGE}>
-      <PageHeader title="Materiallar" />
+      <PageHeader title={l("materials")} />
       <FilterTabs
         items={[
-          { href: "/materiallar", label: "Hammasi", active: !query.category },
-          { href: "/materiallar?category=plumbing", label: "Sement va g'isht", active: query.category === "plumbing" },
-          { href: "/materiallar?category=general", label: "Umumiy", active: query.category === "general" },
+          { href: "/materiallar", label: l("all"), active: !query.category },
+          { href: "/materiallar?category=plumbing", label: l("catPlumbing"), active: query.category === "plumbing" },
+          { href: "/materiallar?category=general", label: l("catGeneral"), active: query.category === "general" },
         ]}
       />
       <ul className="grid grid-cols-1 gap-3 lg:grid-cols-2">

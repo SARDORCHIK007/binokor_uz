@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icon, type IconName } from "@/components/brand/Icon";
@@ -10,16 +11,16 @@ import type { ShellUser } from "@/components/site/SiteLayoutShell";
 type NavItem = { href: string; label: string; icon: IconName; badge?: string };
 
 const PORTAL_LINKS: NavItem[] = [
-  { href: "/", label: "Bosh sahifa", icon: "grid" },
-  { href: "/kasblar", label: "12 ta kasb", icon: "briefcase" },
-  { href: "/ariza", label: "Onlayn ariza", icon: "doc" },
-  { href: "/ustalar", label: "Ustalar katalogi", icon: "users" },
-  { href: "/ish-beruvchilar", label: "Ish beruvchilar", icon: "globe" },
-  { href: "/obyektlar", label: "Qurilish obyektlari", icon: "pin" },
-  { href: "/materiallar", label: "Qurilish materiallari", icon: "grid" },
-  { href: "/hamkorlar", label: "Hamkorlar", icon: "award" },
-  { href: "/yangiliklar", label: "Yangiliklar", icon: "doc" },
-  { href: "/qidiruv", label: "Sertifikatni tekshirish", icon: "qr" },
+  { href: "/", label: "home", icon: "grid" },
+  { href: "/kasblar", label: "trades", icon: "briefcase" },
+  { href: "/ariza", label: "apply", icon: "doc" },
+  { href: "/ustalar", label: "workers", icon: "users" },
+  { href: "/ish-beruvchilar", label: "employers", icon: "globe" },
+  { href: "/obyektlar", label: "objects", icon: "pin" },
+  { href: "/materiallar", label: "materials", icon: "grid" },
+  { href: "/hamkorlar", label: "partners", icon: "award" },
+  { href: "/yangiliklar", label: "news", icon: "doc" },
+  { href: "/qidiruv", label: "verify", icon: "qr" },
 ];
 
 const CABINET_ICONS: [string, IconName][] = [
@@ -52,6 +53,7 @@ function linkClass(active: boolean, tone: "blue" | "green") {
 
 export function AppSidebar({ open, onClose, user }: { open: boolean; onClose: () => void; user: ShellUser | null }) {
   const path = usePathname();
+  const t = useTranslations("shell");
 
   function chooseRole(next: string) {
     document.cookie = `ub_role=${next}; path=/; max-age=2592000`;
@@ -75,7 +77,7 @@ export function AppSidebar({ open, onClose, user }: { open: boolean; onClose: ()
             type="button"
             onClick={onClose}
             className="grid size-8 place-items-center rounded-lg bg-white/10 text-white lg:hidden"
-            aria-label="Yopish"
+            aria-label={t("close")}
           >
             ✕
           </button>
@@ -83,7 +85,7 @@ export function AppSidebar({ open, onClose, user }: { open: boolean; onClose: ()
 
         {user && user.roles.length > 1 ? (
           <label className="block rounded-2xl bg-white/5 p-3 ring-1 ring-white/10">
-            <span className="mb-2 block text-[11px] font-bold tracking-wider text-accent uppercase">Faol rol</span>
+            <span className="mb-2 block text-[11px] font-bold tracking-wider text-accent uppercase">{t("activeRole")}</span>
             <select
               value={user.role}
               onChange={(event) => chooseRole(event.target.value)}
@@ -99,14 +101,14 @@ export function AppSidebar({ open, onClose, user }: { open: boolean; onClose: ()
         ) : null}
 
         <div>
-          <span className="px-3 text-[10px] font-extrabold tracking-widest text-white/50 uppercase">Platforma</span>
-          <nav className="mt-2 space-y-1" aria-label="Platforma">
+          <span className="px-3 text-[10px] font-extrabold tracking-widest text-white/50 uppercase">{t("platform")}</span>
+          <nav className="mt-2 space-y-1" aria-label={t("platform")}>
             {PORTAL_LINKS.map((item) => {
               const active = item.href === "/" ? path === "/" : path.startsWith(item.href);
               return (
                 <Link key={item.href} href={item.href} onClick={onClose} aria-current={active ? "page" : undefined} className={linkClass(active, "blue")}>
                   <Icon name={item.icon} className="size-4 shrink-0" />
-                  {item.label}
+                  {t(item.label as "home")}
                 </Link>
               );
             })}
@@ -115,8 +117,8 @@ export function AppSidebar({ open, onClose, user }: { open: boolean; onClose: ()
 
         {user ? (
           <div>
-            <span className="px-3 text-[10px] font-extrabold tracking-widest text-accent/80 uppercase">Shaxsiy kabinet</span>
-            <nav className="mt-2 space-y-1" aria-label="Kabinet">
+            <span className="px-3 text-[10px] font-extrabold tracking-widest text-accent/80 uppercase">{t("cabinet")}</span>
+            <nav className="mt-2 space-y-1" aria-label={t("cabinet")}>
               {user.items.map((item) => {
                 const active = path === item.href;
                 return (
@@ -145,12 +147,12 @@ export function AppSidebar({ open, onClose, user }: { open: boolean; onClose: ()
               <p className="truncate text-xs text-accent">{user.roles.find((r) => r.id === user.role)?.label}</p>
             </div>
             <button type="button" onClick={logout} className="rounded-xl bg-white/10 px-3 py-2 text-xs font-bold hover:bg-accent hover:text-navy-900">
-              Chiqish
+              {t("logout")}
             </button>
           </div>
         ) : (
           <Link href="/kirish" onClick={onClose} className="block rounded-xl bg-white px-4 py-3 text-center text-sm font-bold text-navy-900 hover:bg-accent">
-            Kirish
+            {t("login")}
           </Link>
         )}
       </div>
@@ -162,7 +164,7 @@ export function AppSidebar({ open, onClose, user }: { open: boolean; onClose: ()
       <aside className="hidden shadow-2xl lg:fixed lg:inset-y-0 lg:left-0 lg:z-40 lg:block lg:w-72">{content}</aside>
       {open ? (
         <div className="fixed inset-0 z-50 flex lg:hidden">
-          <button type="button" className="fixed inset-0 bg-black/70" onClick={onClose} aria-label="Yopish" />
+          <button type="button" className="fixed inset-0 bg-black/70" onClick={onClose} aria-label={t("close")} />
           <div className="relative flex w-full max-w-xs flex-1 flex-col">{content}</div>
         </div>
       ) : null}

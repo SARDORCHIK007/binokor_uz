@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Icon } from "@/components/brand/Icon";
 
@@ -27,6 +28,7 @@ function formatPrice(price: string | null): string {
 
 /** Compact product row: icon, name, producer, stock dot, price and a small order toggle. */
 export function ProductTile({ item }: { item: Product }) {
+  const l = useTranslations("lists");
   const [open, setOpen] = useState(false);
   const [note, setNote] = useState("");
   const [ok, setOk] = useState(false);
@@ -44,7 +46,7 @@ export function ProductTile({ item }: { item: Product }) {
       }),
     });
     setOk(response.ok);
-    setNote(response.ok ? "Buyurtma qabul qilindi" : "Buyurtma yuborilmadi");
+    setNote(response.ok ? l("orderOk") : l("orderFail"));
   }
 
   return (
@@ -64,21 +66,21 @@ export function ProductTile({ item }: { item: Product }) {
               className={`size-2 shrink-0 rounded-full ${item.in_stock ? "bg-success-600" : "bg-faint"}`}
               aria-hidden="true"
             />
-            {item.in_stock ? "Omborda bor" : "Omborda yo'q"}
+            {item.in_stock ? l("inStock") : l("outOfStock")}
             <span aria-hidden="true">·</span>
             <span className="truncate">{item.producer}</span>
           </p>
         </div>
         <div className="shrink-0 text-right">
           <p className="text-lg leading-tight font-extrabold tabular-nums text-navy-900">{formatPrice(item.price)}</p>
-          <p className="text-[11px] font-semibold text-muted">so&apos;m / {item.unit}</p>
+          <p className="text-[11px] font-semibold text-muted">{l("perUnit", { unit: item.unit })}</p>
         </div>
         {item.in_stock ? (
           <button
             type="button"
             onClick={() => setOpen(!open)}
             aria-expanded={open}
-            aria-label={`Buyurtma: ${item.name}`}
+            aria-label={l("orderFor", { name: item.name })}
             className={`grid size-10 shrink-0 place-items-center rounded-xl transition ${
               open ? "bg-primary text-white" : "bg-blue-100 text-primary hover:bg-primary hover:text-white"
             }`}
@@ -89,16 +91,16 @@ export function ProductTile({ item }: { item: Product }) {
       </div>
       {item.stale ? (
         <p className="mt-2 ml-[60px] inline-flex items-center gap-1 rounded-full bg-warning-100 px-2 py-0.5 text-[11px] font-semibold text-warning-600">
-          Narx eskirgan bo&apos;lishi mumkin
+          {l("stale")}
         </p>
       ) : null}
       {open ? (
         <form action={submit} className="mt-3 grid gap-2 border-t border-line pt-3 sm:grid-cols-[1fr_1fr_72px_auto]">
-          <input name="buyer_name" required placeholder="Ism" aria-label="Ism" className={FIELD} />
-          <input name="buyer_phone" required placeholder="+998901112233" aria-label="Telefon" className={FIELD} />
-          <input name="quantity" required type="number" min={1} defaultValue={1} aria-label="Soni" className={FIELD} />
+          <input name="buyer_name" required placeholder={l("name")} aria-label={l("name")} className={FIELD} />
+          <input name="buyer_phone" required placeholder="+998901112233" aria-label={l("phone")} className={FIELD} />
+          <input name="quantity" required type="number" min={1} defaultValue={1} aria-label={l("qty")} className={FIELD} />
           <button type="submit" className="min-h-10 rounded-xl bg-primary px-4 text-sm font-bold text-white hover:bg-primary-hover">
-            Buyurtma
+            {l("order")}
           </button>
           {note ? (
             <p className={`text-sm font-semibold sm:col-span-4 ${ok ? "text-success-600" : "text-danger-600"}`}>{note}</p>

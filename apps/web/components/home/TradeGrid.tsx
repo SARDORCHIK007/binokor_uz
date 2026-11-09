@@ -1,11 +1,13 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { TradeTile } from "@/components/home/TradeTile";
 
 export type TradeRow = { code: string; name: string; domestic_months: number; group_count?: number };
 
 export function TradeGrid({ trades, about }: { trades: TradeRow[]; about: Record<string, string> }) {
+  const l = useTranslations("lists");
   const [query, setQuery] = useState("");
   const needle = query.trim().toLowerCase();
   const filtered = trades.filter((item) => item.name.toLowerCase().includes(needle));
@@ -13,13 +15,13 @@ export function TradeGrid({ trades, about }: { trades: TradeRow[]; about: Record
   return (
     <div>
       <div className="w-full md:w-80">
-        <label className="sr-only" htmlFor="trade-search">Kasb nomini qidirish</label>
+        <label className="sr-only" htmlFor="trade-search">{l("tradeSearch")}</label>
         <input
           id="trade-search"
           type="search"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Kasb nomini qidirish..."
+          placeholder={l("tradeSearch")}
           className="w-full rounded-2xl border border-line-strong bg-white px-4 py-3 text-sm text-navy-900 shadow-sm placeholder:text-faint focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
         />
       </div>
@@ -34,8 +36,8 @@ export function TradeGrid({ trades, about }: { trades: TradeRow[]; about: Record
 
       {filtered.length === 0 ? (
         <div className="mt-6 rounded-2xl border border-dashed border-line-strong bg-white p-12 text-center">
-          <p className="text-lg font-bold text-navy-900">Mos keluvchi kasb topilmadi</p>
-          <p className="mt-1 text-sm text-muted">Qidiruv so&apos;zini o&apos;zgartirib ko&apos;ring</p>
+          <p className="text-lg font-bold text-navy-900">{l("tradeNone")}</p>
+          <p className="mt-1 text-sm text-muted">{l("tradeNoneText")}</p>
         </div>
       ) : null}
     </div>
