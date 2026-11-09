@@ -18,6 +18,7 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
 from app.core.config import get_settings
+from app.ratelimit import too_many
 from app.security import bearer_from_request, new_id, problem, read_access_token
 
 router = APIRouter(prefix="/api/v1", tags=["portfolio"])
@@ -169,6 +170,9 @@ async def add_portfolio(body: PortfolioIn, request: Request) -> JSONResponse:
     user_id = _user_id(request)
     if user_id is None:
         return problem(401, "UNAUTHORIZED", "Kirish talab qilinadi", "Avval tizimga kiring.")
+    limited = await too_many(request, "portfolio", str(user_id), limit=30, window_seconds=86400)
+    if limited is not None:
+        return limited
     if body.content_type not in IMAGE_TYPES:
         return problem(422, "VALIDATION", "Rasm turi noto'g'ri", "JPG, PNG yoki WebP yuklang.")
     try:

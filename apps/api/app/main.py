@@ -2,6 +2,7 @@ import uuid
 from collections.abc import AsyncIterator, Awaitable, Callable
 from contextlib import asynccontextmanager
 
+import structlog
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, Response
 from redis.asyncio import Redis
@@ -36,6 +37,8 @@ from app.seed_portal import seed_portal
 from app.seed_vocab import seed_vocab
 from app.seed_workers import seed_workers
 
+log = structlog.get_logger()
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
@@ -45,6 +48,19 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     app.state.engine = engine
     app.state.redis = redis
     app.state.minio_endpoint = settings.minio_endpoint
+    if settings.app_env == "production" and not settings.demo_mode:
+        log.warning("demo_seed_skipped", reason="production without DEMO_MODE")
+    else:
+        await _seed(engine)
+    try:
+        yield
+    finally:
+        await redis.aclose()
+        await engine.dispose()
+
+
+async def _seed(engine: AsyncEngine) -> None:
+    """Demo and reference data for local, CI and demo installs (never real users)."""
     async with engine.begin() as conn:
         await seed_login_users(conn)
         await seed_portal(conn)
@@ -56,11 +72,6 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         await seed_market(conn)
         await seed_exam(conn)
         await seed_followup(conn)
-    try:
-        yield
-    finally:
-        await redis.aclose()
-        await engine.dispose()
 
 
 app = FastAPI(title="UYCHI BINOKOR API", lifespan=lifespan)

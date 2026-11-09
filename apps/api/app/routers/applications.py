@@ -9,6 +9,7 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
 from app.notify import send_telegram
+from app.ratelimit import too_many
 from app.security import bearer_from_request, new_id, problem, read_access_token
 
 router = APIRouter(prefix="/api/v1", tags=["applications"])
@@ -53,6 +54,9 @@ async def create_application(body: ApplicationIn, request: Request) -> JSONRespo
     user_id = _user_id(request)
     if user_id is None:
         return problem(401, "UNAUTHORIZED", "Kirish talab qilinadi", "Avval tizimga kiring.")
+    limited = await too_many(request, "apply", str(user_id), limit=5, window_seconds=86400)
+    if limited is not None:
+        return limited
     if body.type not in {"YOUTH", "WORKER_UPSKILL", "UNIVERSITY_GRAD"}:
         return problem(422, "VALIDATION", "Tur noto'g'ri", "Ariza turini tanlang.")
     if body.track not in {"DOMESTIC", "FOREIGN"}:

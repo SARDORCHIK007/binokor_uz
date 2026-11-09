@@ -12,6 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 
 from app.core.config import get_settings
 from app.notify import notify_phone
+from app.ratelimit import client_ip, too_many
 from app.rules import PRIVILEGED_ROLES
 from app.security import (
     bearer_from_request,
@@ -78,6 +79,9 @@ def _engine(request: Request) -> AsyncEngine:
 
 @router.post("/auth/otp/request")
 async def request_otp(body: OtpRequest, request: Request) -> JSONResponse:
+    limited = await too_many(request, "otp-ip", client_ip(request), limit=10, window_seconds=600)
+    if limited is not None:
+        return limited
     engine = _engine(request)
     now = datetime.now(UTC)
     async with engine.begin() as conn:

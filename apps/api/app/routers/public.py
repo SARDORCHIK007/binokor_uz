@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 
 from app.core.config import get_settings
 from app.notify import send_telegram
+from app.ratelimit import client_ip, too_many
 from app.routers.portfolio import public_portfolio, reviews_summary
 from app.rules import public_stats
 from app.security import new_id, problem
@@ -500,6 +501,9 @@ class OrderBody(BaseModel):
 
 @router.post("/order-requests")
 async def create_order(body: OrderBody, request: Request) -> JSONResponse:
+    limited = await too_many(request, "order-ip", client_ip(request), limit=10, window_seconds=3600)
+    if limited is not None:
+        return limited
     if get_settings().app_env != "local":
         return problem(400, "CAPTCHA_REQUIRED", "Tekshiruv kerak", "Buyurtma uchun captcha yoqilmagan.")
     engine = _engine(request)
