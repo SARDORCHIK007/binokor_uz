@@ -241,7 +241,17 @@
     "title": "Qidiruv",
     "emptyTitle": "Natija topilmadi",
     "emptyText": "Boshqa so'z yozing yoki sertifikat raqamini UB-2026-000123 ko'rinishida kiriting.",
-    "back": "Bosh sahifaga"
+    "back": "Bosh sahifaga",
+    "placeholder": "Usta, kasb, material yoki obyekt",
+    "action": "Qidirish",
+    "count": "{count} ta natija",
+    "hint": "Kamida 2 ta harf yozing.",
+    "kind": {
+      "trade": "Kasblar",
+      "worker": "Ustalar",
+      "product": "Materiallar",
+      "object": "Obyektlar"
+    }
   },
   "verify": {
     "valid": "Haqiqiy sertifikat",

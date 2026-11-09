@@ -240,8 +240,18 @@
   "search": {
     "title": "Поиск",
     "emptyTitle": "Ничего не найдено",
-    "emptyText": "Boshqa so'z yozing yoki sertifikat raqamini UB-2026-000123 ko'rinishida kiriting.",
-    "back": "На главную"
+    "emptyText": "Попробуйте другое слово или введите номер сертификата в виде UB-2026-000123.",
+    "back": "На главную",
+    "placeholder": "Мастер, профессия, материал или объект",
+    "action": "Найти",
+    "count": "Найдено: {count}",
+    "hint": "Введите не меньше 2 букв.",
+    "kind": {
+      "trade": "Профессии",
+      "worker": "Мастера",
+      "product": "Материалы",
+      "object": "Объекты"
+    }
   },
   "verify": {
     "valid": "Действительный сертификат",

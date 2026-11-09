@@ -378,26 +378,76 @@ async def cms_page(slug: str, request: Request) -> JSONResponse:
 
 @router.get("/search")
 async def search(request: Request, q: str = "") -> JSONResponse:
+    """Live search over public data (FR-SEARCH). Workers match only on their *visible* name."""
     query = q.strip()
     if len(query) < 2:
         return JSONResponse([])
     engine = _engine(request)
+    like = f"%{query}%"
     async with engine.connect() as conn:
         result = await conn.execute(
             text(
                 """
-                SELECT kind, ref, title
-                FROM search_index
-                WHERE title ILIKE :like
-                ORDER BY title
-                LIMIT 20
+                WITH visible_workers AS (
+                    SELECT wp.slug,
+                           CASE
+                             WHEN coalesce((wp.visibility->>'full_name')::boolean, false) THEN u.full_name
+                             ELSE split_part(btrim(u.full_name), ' ', 1)
+                           END AS name,
+                           t.name AS trade_name
+                    FROM worker_profiles wp
+                    JOIN users u ON u.id = wp.user_id
+                    LEFT JOIN trades t ON t.id = wp.primary_trade_id
+                )
+                SELECT * FROM (
+                    SELECT 1 AS rank, 'trade' AS kind, t.code AS ref,
+                           t.name AS title_json, NULL::text AS title, NULL::jsonb AS sub_json
+                    FROM trades t
+                    WHERE EXISTS (SELECT 1 FROM jsonb_each_text(t.name) n WHERE n.value ILIKE :like)
+                       OR t.code ILIKE :like
+                    UNION ALL
+                    SELECT 2, 'worker', w.slug, NULL, w.name, w.trade_name
+                    FROM visible_workers w
+                    WHERE w.name ILIKE :like
+                       OR EXISTS (SELECT 1 FROM jsonb_each_text(w.trade_name) n WHERE n.value ILIKE :like)
+                    UNION ALL
+                    SELECT 3, 'product', p.id::text, p.name, NULL, NULL
+                    FROM products p
+                    WHERE p.is_published
+                      AND EXISTS (SELECT 1 FROM jsonb_each_text(p.name) n WHERE n.value ILIKE :like)
+                    UNION ALL
+                    SELECT 4, 'object', o.id::text, o.name, NULL, NULL
+                    FROM construction_objects o
+                    WHERE o.is_public
+                      AND (EXISTS (SELECT 1 FROM jsonb_each_text(o.name) n WHERE n.value ILIKE :like)
+                           OR o.address ILIKE :like)
+                ) hits
+                ORDER BY rank
+                LIMIT 30
                 """
             ),
-            {"like": f"%{query}%"},
+            {"like": like},
         )
-    return JSONResponse(
-        [{"kind": item["kind"], "ref": item["ref"], "title": item["title"]} for item in result.mappings()]
-    )
+        rows = list(result.mappings())
+    hrefs = {
+        "trade": "/kasblar/{ref}",
+        "worker": "/ustalar/{ref}",
+        "product": "/materiallar",
+        "object": "/obyektlar",
+    }
+    hits = []
+    for item in rows:
+        title = item["title"] if item["title"] is not None else _title(item["title_json"])
+        hits.append(
+            {
+                "kind": item["kind"],
+                "ref": item["ref"],
+                "title": title,
+                "subtitle": _title(item["sub_json"]) if item["sub_json"] is not None else "",
+                "href": hrefs[item["kind"]].format(ref=item["ref"]),
+            }
+        )
+    return JSONResponse(hits)
 
 
 @router.get("/brigades")

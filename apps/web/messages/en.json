@@ -240,8 +240,18 @@
   "search": {
     "title": "Search",
     "emptyTitle": "No results",
-    "emptyText": "Boshqa so'z yozing yoki sertifikat raqamini UB-2026-000123 ko'rinishida kiriting.",
-    "back": "Back home"
+    "emptyText": "Try another word or enter a certificate number like UB-2026-000123.",
+    "back": "Back home",
+    "placeholder": "Worker, trade, material or site",
+    "action": "Search",
+    "count": "{count} results",
+    "hint": "Type at least 2 letters.",
+    "kind": {
+      "trade": "Trades",
+      "worker": "Workers",
+      "product": "Materials",
+      "object": "Sites"
+    }
   },
   "verify": {
     "valid": "Valid certificate",
