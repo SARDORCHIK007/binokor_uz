@@ -105,27 +105,6 @@ async def seed_followup(conn: AsyncConnection) -> None:
         text("UPDATE modules SET rubric = CAST(:rubric AS jsonb) WHERE rubric IS NULL"),
         {"rubric": RUBRIC},
     )
-    category_id = uid("category:plumbing")
-    await conn.execute(
-        text(
-            """
-            INSERT INTO product_categories (id, code, name)
-            VALUES (:id, 'plumbing', CAST(:name AS jsonb))
-            ON CONFLICT (code) DO NOTHING
-            """
-        ),
-        {"id": category_id, "name": json.dumps({"uz-Latn": "Sement va g'isht"}, ensure_ascii=False)},
-    )
-    await conn.execute(
-        text(
-            """
-            UPDATE product_categories
-            SET name = CAST(:name AS jsonb)
-            WHERE code = 'plumbing'
-            """
-        ),
-        {"name": json.dumps({"uz-Latn": "Sement va g'isht"}, ensure_ascii=False)},
-    )
     await conn.execute(
         text(
             """
@@ -140,12 +119,11 @@ async def seed_followup(conn: AsyncConnection) -> None:
             text(
                 """
                 UPDATE products
-                SET category_id = :category_id,
-                    price_updated_at = now() - interval '40 days'
+                SET price_updated_at = now() - interval '40 days'
                 WHERE id = :id
                 """
             ),
-            {"category_id": category_id, "id": uid(f"product:{index}")},
+            {"id": uid(f"product:{index}")},
         )
     await conn.execute(
         text(

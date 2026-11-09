@@ -71,7 +71,8 @@ async def home(request: Request) -> JSONResponse:
         partners = await conn.execute(
             text(
                 """
-                SELECT name, status::text AS status, logo_permission
+                SELECT name, status::text AS status, logo_permission, kind::text AS kind, slug,
+                       role_description, signed_at::text AS signed_at
                 FROM partners ORDER BY sort_order, name->>'uz-Latn'
                 """
             )
@@ -108,6 +109,10 @@ async def home(request: Request) -> JSONResponse:
                     "name": _title(item["name"]),
                     "status": item["status"],
                     "show_logo": bool(item["logo_permission"]) and item["status"] == "SIGNED",
+                    "kind": item["kind"],
+                    "slug": item["slug"],
+                    "role": _title(item["role_description"]) if item["role_description"] else "",
+                    "signed_at": item["signed_at"],
                 }
                 for item in partners.mappings()
             ],

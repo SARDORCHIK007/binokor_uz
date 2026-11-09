@@ -20,6 +20,7 @@ from app.routers.employers import router as employers_router
 from app.routers.exams import router as exams_router
 from app.routers.jobs import router as jobs_router
 from app.routers.learning import router as learning_router
+from app.routers.market import router as market_router
 from app.routers.portfolio import router as portfolio_router
 from app.routers.producers import router as producers_router
 from app.routers.public import router as public_router
@@ -33,6 +34,7 @@ from app.seed_exam import seed_exam
 from app.seed_followup import seed_followup
 from app.seed_learning import seed_learning
 from app.seed_market import seed_market
+from app.seed_marketplace import seed_marketplace, seed_partner_info
 from app.seed_portal import seed_portal
 from app.seed_vocab import seed_vocab
 from app.seed_workers import seed_workers
@@ -72,6 +74,8 @@ async def _seed(engine: AsyncEngine) -> None:
         await seed_market(conn)
         await seed_exam(conn)
         await seed_followup(conn)
+        await seed_marketplace(conn)
+        await seed_partner_info(conn)
 
 
 app = FastAPI(title="UYCHI BINOKOR API", lifespan=lifespan)
@@ -85,6 +89,7 @@ app.include_router(curator_router)
 app.include_router(certificates_router)
 app.include_router(public_router)
 app.include_router(portfolio_router)
+app.include_router(market_router)
 app.include_router(reports_router)
 app.include_router(vocab_router)
 app.include_router(jobs_router)
