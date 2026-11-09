@@ -69,7 +69,7 @@ export default async function VerifyPage({ params, searchParams }: PageProps) {
   const label = valid ? copy.ok : (STATUS[data.result as keyof typeof STATUS]?.[lang] ?? STATUS.TAMPERED[lang]);
 
   return (
-    <div className="bg-[#F4F6F9] min-h-screen px-4 py-12" dir={dir} lang={lang}>
+    <div className="bg-canvas min-h-screen px-4 py-12" dir={dir} lang={lang}>
       <article className="mx-auto max-w-3xl overflow-hidden rounded-3xl bg-white shadow-sh3 border border-line">
         {/* Tillar paneli (6 tilda: TZ 22-sahifa) */}
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-surface-100 bg-canvas px-6 py-3 text-xs">

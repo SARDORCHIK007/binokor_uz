@@ -117,7 +117,7 @@ export function HomeExperience({ home }: { home: HomePayload }) {
           </div>
 
           {/* KPI tasmasi - Dizayndagi 5 ta ko'rsatkich */}
-          <div className="mt-14 rounded-2xl bg-[#0b1f3a]/90 p-5 shadow-2xl ring-1 ring-white/10 backdrop-blur lg:mt-20">
+          <div className="mt-14 rounded-2xl bg-navy-800/90 p-5 shadow-2xl ring-1 ring-white/10 backdrop-blur lg:mt-20">
             <dl className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 divide-y sm:divide-y-0 lg:divide-x divide-white/10">
               {stats.map((stat) => (
                 <div key={stat.key} className="pt-3 sm:pt-0 lg:px-4 first:pt-0">

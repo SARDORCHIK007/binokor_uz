@@ -93,7 +93,7 @@ async function AdminHome({ data }: { data: AdminDash }) {
                 <Icon name={tone.icon} className="size-5" />
               </span>
               <dd className="mt-3 text-4xl font-extrabold tracking-[-0.03em] text-navy-900 tabular-nums">{value}</dd>
-              <dt className="mt-1 text-sm font-medium text-[#33415c]">{t(key)}</dt>
+              <dt className="mt-1 text-sm font-medium text-body">{t(key)}</dt>
             </div>
           );
         })}

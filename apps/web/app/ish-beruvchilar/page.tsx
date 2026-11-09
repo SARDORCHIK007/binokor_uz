@@ -56,7 +56,7 @@ export default async function EmployersPortalPage() {
               </a>
             </div>
           </div>
-          <dl className="mt-12 grid grid-cols-3 gap-4 rounded-2xl bg-[#0b1f3a] p-5 ring-1 ring-white/10">
+          <dl className="mt-12 grid grid-cols-3 gap-4 rounded-2xl bg-navy-800 p-5 ring-1 ring-white/10">
             {stats.map(([label, value]) => (
               <div key={label}>
                 <dd className="text-3xl font-extrabold tabular-nums">{value ?? 0}</dd>
@@ -67,7 +67,7 @@ export default async function EmployersPortalPage() {
         </div>
       </section>
 
-      <div className="border-y border-[#d0dfff] bg-blue-50 px-4 py-3 text-center text-xs font-medium text-[#1e3a8a]">
+      <div className="border-y border-blue-200 bg-blue-50 px-4 py-3 text-center text-xs font-medium text-blue-700">
         Foreign recruitment is organised only through the Agency for External Labor Migration and its licensed partners. Candidates are never charged.
       </div>
 
