@@ -5,7 +5,6 @@ from sqlalchemy.ext.asyncio import AsyncConnection
 
 from app.seed import uid
 
-
 RUBRIC = json.dumps(
     {
         "criteria": [

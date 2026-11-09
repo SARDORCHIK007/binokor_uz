@@ -5,10 +5,6 @@ import uuid
 
 import httpx
 import pytest
-from sqlalchemy import text
-from sqlalchemy.exc import DBAPIError
-from sqlalchemy.ext.asyncio import create_async_engine
-
 from app.rules import (
     brigade_ready,
     cert_blockers,
@@ -26,6 +22,9 @@ from app.rules import (
 )
 from app.security import issue_access_token
 from app.signing import sign_payload, signature_matches
+from sqlalchemy import text
+from sqlalchemy.exc import DBAPIError
+from sqlalchemy.ext.asyncio import create_async_engine
 
 
 def test_matrix_classification() -> None:

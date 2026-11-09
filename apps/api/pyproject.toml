@@ -30,6 +30,11 @@ select = ["E", "F", "I", "UP", "B"]
 "app/seed_followup.py" = ["E501"]
 "app/routers/exams.py" = ["E501"]
 "app/routers/curator.py" = ["E501"]
+"app/routers/auth.py" = ["E501"]
+"app/routers/employers.py" = ["E501"]
+"app/routers/producers.py" = ["E501"]
+"app/seed_workers.py" = ["E501"]
+"tests/*" = ["E501"]
 
 [tool.mypy]
 python_version = "3.12"

@@ -73,7 +73,8 @@ def brigade_ready(members: list[dict[str, object]]) -> bool:
         return False
     for member in members:
         certified = bool(member.get("certified"))
-        vocab = float(member.get("vocab_ratio") or 0)
+        raw_vocab = member.get("vocab_ratio") or 0
+        vocab = float(raw_vocab) if isinstance(raw_vocab, (int, float, str)) else 0.0
         medical = bool(member.get("medical"))
         if not certified or vocab < 0.8 or not medical:
             return False
@@ -82,7 +83,7 @@ def brigade_ready(members: list[dict[str, object]]) -> bool:
 
 def leitner_days(box: int) -> int:
     clamped = min(5, max(1, box))
-    return 2 ** (clamped - 1)
+    return int(2 ** (clamped - 1))
 
 
 def curator_below_minimum(member_count: int) -> bool:

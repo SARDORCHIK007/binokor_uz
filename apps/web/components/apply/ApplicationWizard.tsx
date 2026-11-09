@@ -70,7 +70,7 @@ export function ApplicationWizard() {
       <div className="rounded-2xl border border-line bg-card shadow-sh1 p-5">
         <h1 className="text-3xl font-extrabold text-navy-900">Ariza qabul qilindi</h1>
         <p className="mt-2">{result}</p>
-        <p className="mt-2 text-sm text-muted">Yo'lni tizim taklif qildi. Qarorni xodim tasdiqlaydi.</p>
+        <p className="mt-2 text-sm text-muted">Yo&apos;lni tizim taklif qildi. Qarorni xodim tasdiqlaydi.</p>
       </div>
     );
   }

@@ -39,7 +39,7 @@ export default async function ReportPage() {
         <ul className="flex flex-col gap-2">
           {report.trades.map((item) => (
             <li key={item.trade} className="rounded-2xl border border-line bg-card shadow-sh1 px-4 py-3">
-              {item.trade} · o'qiyapti {item.enrolled} · sertifikat {item.certified}
+              {item.trade} · o&apos;qiyapti {item.enrolled} · sertifikat {item.certified}
             </li>
           ))}
         </ul>

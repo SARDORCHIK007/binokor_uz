@@ -130,7 +130,7 @@ export default function EmployerPage() {
           <p className="text-sm text-muted">STIR {employer.inn}</p>
           <p className="text-sm">{employer.verified ? "Tasdiqlangan" : "Admin tasdig'i kutilmoqda"}</p>
           <Button type="button" className="mt-3" onClick={() => void sendRequest()}>
-            Santexnik so'rash
+            Santexnik so&apos;rash
           </Button>
         </section>
       ) : (
@@ -138,13 +138,13 @@ export default function EmployerPage() {
           <TextField label="Kompaniya nomi" name="name" value={name} onChange={(event) => setName(event.target.value)} />
           <TextField label="STIR" name="inn" value={inn} onChange={(event) => setInn(event.target.value)} />
           <Button type="button" onClick={() => void register()}>
-            Ro'yxatdan o'tish
+            Ro&apos;yxatdan o&apos;tish
           </Button>
         </section>
       )}
       <section className="rounded-2xl border border-line bg-card shadow-sh1 p-4">
-        <h2 className="font-semibold">So'rovlar</h2>
-        {requests.length === 0 ? <p className="mt-2 text-sm text-muted">So'rov yo'q</p> : null}
+        <h2 className="font-semibold">So&apos;rovlar</h2>
+        {requests.length === 0 ? <p className="mt-2 text-sm text-muted">So&apos;rov yo&apos;q</p> : null}
         <ul className="mt-3 flex flex-col gap-2.5">
           {requests.map((item) => (
             <li key={item.id}>
@@ -168,7 +168,7 @@ export default function EmployerPage() {
                 {worker.name} · {worker.trade} · {worker.level}
               </span>
               <Button type="button" onClick={() => void shortlist(worker.user_id)}>
-                Ro'yxatga
+                Ro&apos;yxatga
               </Button>
             </li>
           ))}

@@ -5,12 +5,11 @@ import uuid
 
 import httpx
 import pytest
-from sqlalchemy import text
-from sqlalchemy.ext.asyncio import create_async_engine
-
 from app.notify import send_telegram
 from app.security import issue_access_token
 from app.totp import code_matches, current_code, new_secret
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import create_async_engine
 
 PNG = base64.b64encode(
     base64.b64decode(

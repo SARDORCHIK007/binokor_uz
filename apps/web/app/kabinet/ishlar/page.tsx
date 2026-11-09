@@ -42,7 +42,7 @@ export default async function JobsPage() {
         )}
       </section>
       <section>
-        <h2 className="font-semibold">So'rovlar</h2>
+        <h2 className="font-semibold">So&apos;rovlar</h2>
         {board.requests.length === 0 ? (
           <EmptyState title="So'rov yo'q" text="Yangi buyurtma kelmagan." />
         ) : (
@@ -64,7 +64,7 @@ export default async function JobsPage() {
           <ul className="mt-3 flex flex-col gap-2.5">
             {board.brigades.map((item) => (
               <li key={item.id} className="rounded-2xl border border-line bg-card shadow-sh1 px-4 py-3">
-                {item.name} · {item.members} a'zo · {item.status}
+                {item.name} · {item.members} a&apos;zo · {item.status}
               </li>
             ))}
           </ul>

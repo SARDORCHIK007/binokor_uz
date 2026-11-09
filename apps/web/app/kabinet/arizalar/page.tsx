@@ -38,7 +38,7 @@ export default async function AdminApplicationsPage() {
     <div>
       <h1 className="text-3xl font-extrabold tracking-tight text-navy-900">Arizalar</h1>
       {rows.length === 0 ? (
-        <p className="mt-4 text-muted">Hozircha ariza yo'q.</p>
+        <p className="mt-4 text-muted">Hozircha ariza yo&apos;q.</p>
       ) : (
         <ul className="mt-6 flex flex-col gap-3">
           {rows.map((row) => (

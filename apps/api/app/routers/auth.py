@@ -204,6 +204,7 @@ async def verify_otp(body: OtpVerify, request: Request) -> JSONResponse:
                     text("UPDATE users SET totp_secret_enc = :secret WHERE id = :id"),
                     {"id": user_id, "secret": secret},
                 )
+            assert secret is not None
             pending_secret = bytes(secret)
             pending_user = str(user_id)
             pending_name = full_name

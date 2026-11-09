@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useState } from "react";
 import type { HomePayload } from "@/lib/public";
-import { Icon } from "@/components/brand/Icon";
 import { TradeTile } from "@/components/home/TradeTile";
 
 const steps = [
@@ -49,6 +48,7 @@ export function HomeExperience({ home }: { home: HomePayload }) {
     <div className="bg-surface-100 text-navy-900">
       {/* 1. HERO BLOCK */}
       <section className="relative overflow-hidden bg-navy-900 text-white">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/media/hero/site.webp"
           alt=""
@@ -59,6 +59,7 @@ export function HomeExperience({ home }: { home: HomePayload }) {
         {/* Hero worker portrait — transparent PNG standing on the hero background */}
         <div className="pointer-events-none absolute right-0 bottom-0 hidden h-[94%] w-[44%] max-w-[560px] lg:block xl:right-6">
           <div className="absolute bottom-0 left-1/2 h-[70%] w-[85%] -translate-x-1/2 rounded-full bg-primary/25 blur-3xl" aria-hidden="true" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/media/hero/hero-student.webp"
             alt="Uychi binokor ustasi"

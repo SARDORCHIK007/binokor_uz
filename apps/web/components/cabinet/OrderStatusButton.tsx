@@ -16,7 +16,7 @@ export function OrderStatusButton({ id }: { id: string }) {
   }
   return (
     <Button type="button" variant="secondary" onClick={() => void mark()}>
-      Bog'lanildi
+      Bog&apos;lanildi
     </Button>
   );
 }

@@ -70,7 +70,7 @@ export function GradeSheet({ groupId }: { groupId: string }) {
       setNote("Ball 0 dan 100 gacha bo'lsin");
       return;
     }
-    let evidenceId: string | null = files[keyOf(enrollmentId, moduleId)] ?? null;
+    const evidenceId: string | null = files[keyOf(enrollmentId, moduleId)] ?? null;
     const response = await fetch("/api/v1/learning/assessments", {
       method: "POST",
       credentials: "include",

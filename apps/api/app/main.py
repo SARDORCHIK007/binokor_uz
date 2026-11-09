@@ -18,8 +18,8 @@ from app.routers.curator import router as curator_router
 from app.routers.employers import router as employers_router
 from app.routers.exams import router as exams_router
 from app.routers.jobs import router as jobs_router
-from app.routers.producers import router as producers_router
 from app.routers.learning import router as learning_router
+from app.routers.producers import router as producers_router
 from app.routers.public import router as public_router
 from app.routers.public import set_public_locale
 from app.routers.reports import router as reports_router

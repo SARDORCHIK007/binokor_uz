@@ -18,7 +18,7 @@ export default async function CuratorPage() {
   return (
     <div>
       <h1 className="text-3xl font-extrabold tracking-tight text-navy-900">Kurator</h1>
-      <p className="mt-1 text-sm text-muted">Nemis tili, 5-qutidagi so'zlar</p>
+      <p className="mt-1 text-sm text-muted">Nemis tili, 5-qutidagi so&apos;zlar</p>
       <ul className="mt-4 flex flex-col gap-2">
         {members.map((member) => (
           <li key={member.name} className="rounded-2xl border border-line bg-card shadow-sh1 px-4 py-3">

@@ -87,20 +87,20 @@ export default function ProductsPage() {
         <TextField label="Mahsulot" name="name" value={name} onChange={(event) => setName(event.target.value)} />
         <TextField label="Narx" name="price" value={price} onChange={(event) => setPrice(event.target.value)} />
         <Button type="button" onClick={() => void create()}>
-          Qo'shish
+          Qo&apos;shish
         </Button>
-        {products.length === 0 ? <p className="text-sm text-muted">Mahsulot yo'q</p> : null}
+        {products.length === 0 ? <p className="text-sm text-muted">Mahsulot yo&apos;q</p> : null}
         <ul className="flex flex-col gap-2">
           {products.map((item) => (
             <li key={item.id}>
-              {item.name} · {item.price} so'm · {item.in_stock ? "omborda" : "yo'q"}
+              {item.name} · {item.price} so&apos;m · {item.in_stock ? "omborda" : "yo'q"}
             </li>
           ))}
         </ul>
       </section>
       <section className="rounded-2xl border border-line bg-card shadow-sh1 p-4">
         <h2 className="font-semibold">Kelgan buyurtmalar</h2>
-        {orders.length === 0 ? <p className="mt-2 text-sm text-muted">Buyurtma yo'q</p> : null}
+        {orders.length === 0 ? <p className="mt-2 text-sm text-muted">Buyurtma yo&apos;q</p> : null}
         <ul className="mt-3 flex flex-col gap-2.5">
           {orders.map((order) => (
             <li key={order.id} className="flex items-center justify-between gap-2">
@@ -108,7 +108,7 @@ export default function ProductsPage() {
                 {order.product} · {order.buyer_name} · {order.quantity} · {order.status}
               </span>
               <Button type="button" onClick={() => void mark(order.id)}>
-                Bog'landi
+                Bog&apos;landi
               </Button>
             </li>
           ))}
