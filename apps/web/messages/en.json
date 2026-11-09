@@ -20,7 +20,9 @@
     "partners": "Partners",
     "brigades": "Brigades",
     "more": "More",
-    "home": "Home"
+    "home": "Home",
+    "menu": "Menu",
+    "apply": "Apply"
   },
   "auth": {
     "title": "Sign in",
@@ -327,7 +329,12 @@
   "states": {
     "loading": "Loading",
     "errorTitle": "Could not load",
-    "errorText": "Sahifani yangilang. Takrorlansa, administratorga yozing."
+    "errorText": "Sahifani yangilang. Takrorlansa, administratorga yozing.",
+    "notFoundTitle": "Page not found",
+    "notFoundText": "The link may be outdated or mistyped.",
+    "retry": "Try again",
+    "home": "Home",
+    "search": "Search"
   },
   "myApp": {
     "title": "My application",

@@ -20,7 +20,9 @@
     "partners": "Hamkorlar",
     "brigades": "Brigadalar",
     "more": "Yana",
-    "home": "Bosh sahifa"
+    "home": "Bosh sahifa",
+    "menu": "Menyu",
+    "apply": "Ariza"
   },
   "auth": {
     "title": "Kirish",
@@ -327,7 +329,12 @@
   "states": {
     "loading": "Yuklanmoqda",
     "errorTitle": "Ma'lumot ochilmadi",
-    "errorText": "Sahifani yangilang. Takrorlansa, administratorga yozing."
+    "errorText": "Sahifani yangilang. Takrorlansa, administratorga yozing.",
+    "notFoundTitle": "Sahifa topilmadi",
+    "notFoundText": "Havola eskirgan yoki noto'g'ri yozilgan bo'lishi mumkin.",
+    "retry": "Qayta urinish",
+    "home": "Bosh sahifa",
+    "search": "Qidiruv"
   },
   "myApp": {
     "title": "Mening arizam",

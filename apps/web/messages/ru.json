@@ -20,7 +20,9 @@
     "partners": "Партнёры",
     "brigades": "Бригады",
     "more": "Ещё",
-    "home": "Главная"
+    "home": "Главная",
+    "menu": "Меню",
+    "apply": "Заявка"
   },
   "auth": {
     "title": "Вход",
@@ -327,7 +329,12 @@
   "states": {
     "loading": "Загрузка",
     "errorTitle": "Ma'lumot ochilmadi",
-    "errorText": "Sahifani yangilang. Takrorlansa, administratorga yozing."
+    "errorText": "Sahifani yangilang. Takrorlansa, administratorga yozing.",
+    "notFoundTitle": "Страница не найдена",
+    "notFoundText": "Ссылка устарела или набрана с ошибкой.",
+    "retry": "Повторить",
+    "home": "На главную",
+    "search": "Поиск"
   },
   "myApp": {
     "title": "Моя заявка",

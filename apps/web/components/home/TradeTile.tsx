@@ -32,10 +32,12 @@ export function TradeTile({ trade, about, index }: { trade: TradeTileData; about
             <Icon name="clock" className="size-3.5" />
             {trade.domestic_months} oy
           </span>
-          <span className="inline-flex items-center gap-1 rounded-full bg-surface-100 px-2 py-0.5 text-muted">
-            <Icon name="users" className="size-3.5" />
-            {trade.group_count ?? 0} guruh
-          </span>
+          {trade.group_count ? (
+            <span className="inline-flex items-center gap-1 rounded-full bg-success-100 px-2 py-0.5 text-success-600">
+              <Icon name="users" className="size-3.5" />
+              {trade.group_count} guruh
+            </span>
+          ) : null}
         </span>
       </span>
       <span className="grid size-8 shrink-0 place-items-center rounded-full bg-blue-100 text-primary transition group-hover:translate-x-0.5 group-hover:bg-primary group-hover:text-white">
