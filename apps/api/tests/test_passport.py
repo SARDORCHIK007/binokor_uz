@@ -124,6 +124,19 @@ async def _flow() -> None:
         assert mine["enrolled"] is True and mine["number"].startswith("UB-P-")
         png = await client.get("/api/v1/me/passport/card.png", headers=headers)
         assert png.status_code == 200 and png.headers["content-type"] == "image/png"
+        import io as _io  # noqa: PLC0415
+
+        from PIL import Image as _Image  # noqa: PLC0415
+
+        buf = _io.BytesIO()
+        _Image.new("RGB", (900, 1200), (200, 40, 40)).save(buf, "PNG")
+        up = await client.put("/api/v1/me/passport/photo", content=buf.getvalue(), headers=headers)
+        assert up.status_code == 200
+        assert (await client.put("/api/v1/me/passport/photo", content=b"not an image", headers=headers)).status_code == 422
+        assert (await client.get("/api/v1/me/passport", headers=headers)).json()["has_photo"] is True
+        with_photo = await client.get("/api/v1/me/passport/card.png", headers=headers)
+        assert with_photo.status_code == 200 and with_photo.content != png.content
+        assert (await client.delete("/api/v1/me/passport/photo", headers=headers)).status_code == 200
         pdf = await client.get("/api/v1/me/passport/card.pdf", headers=headers)
         assert pdf.status_code == 200 and pdf.content.startswith(b"%PDF")
         async with httpx.AsyncClient(base_url=BASE, timeout=30) as anonymous:  # no login cookie

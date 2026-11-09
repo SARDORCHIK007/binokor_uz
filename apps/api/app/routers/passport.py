@@ -5,12 +5,14 @@ printable PDF) built on the card template; its QR opens a public check page that
 name, trade, group and status (BR-17: no phone, no personal documents).
 """
 
+import io
 import os
 import uuid
 from datetime import date
 
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse, Response
+from PIL import Image, ImageOps, UnidentifiedImageError
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
@@ -94,6 +96,7 @@ async def my_passport(request: Request, lang: str | None = None) -> JSONResponse
         return problem(401, "UNAUTHORIZED", "Kirish talab qilinadi", "Avval tizimga kiring.")
     async with _engine(request).connect() as conn:
         row = await _mine(conn, user_id)
+        has_photo = await _photo(conn, user_id) is not None
     if row is None:
         return JSONResponse({"enrolled": False})
     code = _lang(request, lang)
@@ -102,6 +105,7 @@ async def my_passport(request: Request, lang: str | None = None) -> JSONResponse
         {
             "enrolled": True,
             "lang": code,
+            "has_photo": has_photo,
             "id": str(row["id"]),
             "number": data.number,
             "name": data.name,
@@ -115,6 +119,61 @@ async def my_passport(request: Request, lang: str | None = None) -> JSONResponse
     )
 
 
+MAX_PHOTO = 4_000_000
+
+
+def _normalise(raw: bytes) -> bytes | None:
+    """Re-encode to a 600x760 JPEG: drops EXIF/GPS and anything that is not a plain picture."""
+    try:
+        Image.open(io.BytesIO(raw)).verify()
+        image = ImageOps.exif_transpose(Image.open(io.BytesIO(raw))).convert("RGB")
+    except (UnidentifiedImageError, OSError, SyntaxError):
+        return None
+    fitted = ImageOps.fit(image, (600, 760), Image.Resampling.LANCZOS, centering=(0.5, 0.35))
+    out = io.BytesIO()
+    fitted.save(out, "JPEG", quality=88)
+    return out.getvalue()
+
+
+@router.put("/me/passport/photo")
+async def put_photo(request: Request) -> JSONResponse:
+    user_id = _user_id(request)
+    if user_id is None:
+        return problem(401, "UNAUTHORIZED", "Kirish talab qilinadi", "Avval tizimga kiring.")
+    raw = await request.body()
+    if not raw or len(raw) > MAX_PHOTO:
+        return problem(413, "PHOTO_SIZE", "Rasm hajmi mos emas", "Rasm 4 MB dan oshmasligi kerak.")
+    photo = _normalise(raw)
+    if photo is None:
+        return problem(422, "PHOTO_INVALID", "Rasm o'qilmadi", "JPG yoki PNG rasm yuboring.")
+    async with _engine(request).begin() as conn:
+        await conn.execute(
+            text(
+                """
+                INSERT INTO passport_photos (user_id, content) VALUES (:id, :content)
+                ON CONFLICT (user_id) DO UPDATE SET content = EXCLUDED.content, updated_at = now()
+                """
+            ),
+            {"id": user_id, "content": photo},
+        )
+    return JSONResponse({"ok": True})
+
+
+@router.delete("/me/passport/photo")
+async def delete_photo(request: Request) -> JSONResponse:
+    user_id = _user_id(request)
+    if user_id is None:
+        return problem(401, "UNAUTHORIZED", "Kirish talab qilinadi", "Avval tizimga kiring.")
+    async with _engine(request).begin() as conn:
+        await conn.execute(text("DELETE FROM passport_photos WHERE user_id = :id"), {"id": user_id})
+    return JSONResponse({"ok": True})
+
+
+async def _photo(conn: AsyncConnection, user_id: uuid.UUID) -> bytes | None:
+    row = (await conn.execute(text("SELECT content FROM passport_photos WHERE user_id = :id"), {"id": user_id})).first()
+    return None if row is None else bytes(row[0])
+
+
 @router.get("/me/passport/card.{ext}", response_model=None)
 async def my_card(ext: str, request: Request, lang: str | None = None) -> Response | JSONResponse:
     if ext not in {"png", "pdf"}:
@@ -124,10 +183,11 @@ async def my_card(ext: str, request: Request, lang: str | None = None) -> Respon
         return problem(401, "UNAUTHORIZED", "Kirish talab qilinadi", "Avval tizimga kiring.")
     async with _engine(request).connect() as conn:
         row = await _mine(conn, user_id)
+        photo = await _photo(conn, user_id)
     if row is None:
         return problem(404, "NOT_FOUND", "Pasport yo'q", "Pasport o'qishga qabul qilingandan keyin beriladi.")
     code = _lang(request, lang)
-    png = render_card(_data(row, _base(request), code), lang=code)
+    png = render_card(_data(row, _base(request), code), photo, lang=code)
     if ext == "png":
         return Response(png, media_type="image/png", headers={"Cache-Control": "private, max-age=300"})
     return Response(

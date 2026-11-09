@@ -914,7 +914,7 @@
     "group": "Group",
     "enrolled": "Enrolled on",
     "signature": "Digital signature fingerprint",
-    "photoNote": "A silhouette stands in for the photo for now. Photo upload is coming.",
+    "photoNote": "The photo appears on the card. Upload a clear 3x4 photo of your face.",
     "publicTitle": "Passport check",
     "valid": "VALID PASSPORT",
     "invalid": "Passport not found or not valid",
@@ -927,7 +927,11 @@
       "TRANSFERRED": "Transferred"
     },
     "statusLabel": "Status",
-    "cardLang": "Card language"
+    "cardLang": "Card language",
+    "photoUpload": "Upload photo",
+    "photoChange": "Change photo",
+    "photoRemove": "Remove photo",
+    "photoFailed": "Upload failed. JPG or PNG, up to 4 MB."
   },
   "verifyPage": {
     "signers": "Digital signatures",

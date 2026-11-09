@@ -914,7 +914,7 @@
     "group": "Guruh",
     "enrolled": "Qabul sanasi",
     "signature": "Raqamli imzo izi",
-    "photoNote": "Kartadagi surat o'rniga hozircha belgi turibdi. Surat yuklash tez orada qo'shiladi.",
+    "photoNote": "Rasm kartada ko'rinadi. Yuz aniq ko'rinadigan, 3x4 shakldagi rasm yuklang.",
     "publicTitle": "Pasportni tekshirish",
     "valid": "HAQIQIY PASPORT",
     "invalid": "Pasport topilmadi yoki yaroqsiz",
@@ -927,7 +927,11 @@
       "TRANSFERRED": "Ko'chirilgan"
     },
     "statusLabel": "Holat",
-    "cardLang": "Karta tili"
+    "cardLang": "Karta tili",
+    "photoUpload": "Rasm yuklash",
+    "photoChange": "Rasmni almashtirish",
+    "photoRemove": "Rasmni o'chirish",
+    "photoFailed": "Rasm yuklanmadi. JPG yoki PNG, 4 MB gacha."
   },
   "verifyPage": {
     "signers": "Raqamli imzolar",

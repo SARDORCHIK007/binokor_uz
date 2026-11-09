@@ -1,6 +1,7 @@
 import { buttonClass, EmptyState } from "@uychibinokor/ui";
 import { getLocale, getTranslations } from "next-intl/server";
 import Link from "next/link";
+import { PassportPhoto } from "@/components/cabinet/PassportPhoto";
 import { apiAuth } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
@@ -9,6 +10,7 @@ type Passport =
   | { enrolled: false }
   | {
       enrolled: true;
+      has_photo: boolean;
       id: string;
       number: string;
       name: string;
@@ -109,6 +111,7 @@ export default async function PassportPage({ searchParams }: { searchParams: Pro
               {t("openPublic")} →
             </Link>
           </div>
+          <PassportPhoto hasPhoto={data.has_photo} />
           <p className="text-xs text-muted">{t("photoNote")}</p>
         </div>
       </div>
