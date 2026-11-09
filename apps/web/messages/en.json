@@ -547,7 +547,9 @@
     "login": "Sign in",
     "openMenu": "Open menu",
     "search": "Search",
-    "searchPlaceholder": "Worker, material or certificate number (UB-2026-000001)"
+    "searchPlaceholder": "Worker, material or certificate number (UB-2026-000001)",
+    "themeDark": "Dark mode",
+    "themeLight": "Light mode"
   },
   "applyPage": {
     "crumb": "Apply online",

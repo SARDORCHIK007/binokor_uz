@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Icon, type IconName } from "@/components/brand/Icon";
 import { Logo } from "@/components/brand/Logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import type { ShellUser } from "@/components/site/SiteLayoutShell";
 
 type NavItem = { href: string; label: string; icon: IconName; badge?: string };
@@ -157,6 +158,7 @@ export function AppSidebar({ open, onClose, user }: { open: boolean; onClose: ()
         <div className="rounded-xl bg-white/5 p-2 ring-1 ring-white/10">
           <LanguageSwitcher />
         </div>
+        <ThemeToggle />
         {user ? (
           <div className="flex items-center gap-3 rounded-2xl bg-white/10 p-3">
             <span className="grid size-9 shrink-0 place-items-center rounded-full bg-accent text-sm font-bold text-navy-900">

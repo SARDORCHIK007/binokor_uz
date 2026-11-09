@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -27,6 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const locale = await getLocale();
+  const theme = (await cookies()).get("ub_theme")?.value === "dark" ? "dark" : "light";
   const messages = await getMessages();
   const session = await readSession();
 
@@ -47,7 +49,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   }
 
   return (
-    <html lang={locale} className={inter.variable}>
+    <html lang={locale} className={inter.variable} data-theme={theme}>
       <body className="min-h-screen bg-canvas font-sans text-base text-ink antialiased">
         <NextIntlClientProvider messages={messages}>
           <PwaRegister />

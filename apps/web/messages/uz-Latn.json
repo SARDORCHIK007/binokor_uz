@@ -547,7 +547,9 @@
     "login": "Kirish",
     "openMenu": "Menyuni ochish",
     "search": "Qidiruv",
-    "searchPlaceholder": "Usta, material yoki sertifikat raqami (UB-2026-000001)"
+    "searchPlaceholder": "Usta, material yoki sertifikat raqami (UB-2026-000001)",
+    "themeDark": "Qorong'i rejim",
+    "themeLight": "Yorug' rejim"
   },
   "applyPage": {
     "crumb": "Onlayn ariza",

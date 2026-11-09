@@ -38,3 +38,22 @@ select {
     scroll-behavior: auto !important;
   }
 }
+
+/* Dark theme: utilities that hard-code a light value follow the tokens (navy-900 stays a dark surface). */
+[data-theme="dark"] .text-navy-900,
+[data-theme="dark"] .text-navy-700 {
+  color: var(--text);
+}
+
+[data-theme="dark"] .bg-white {
+  background-color: var(--card);
+}
+
+[data-theme="dark"] .bg-accent.text-navy-900,
+[data-theme="dark"] .bg-white.text-navy-900.hover\:bg-accent:hover {
+  color: var(--navy-900);
+}
+
+[data-theme="dark"] .bg-navy-900.text-navy-900 {
+  color: var(--text);
+}
