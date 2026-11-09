@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     app_env: str = "local"
     jwt_secret: str = "local-dev-change-me"
     demo_mode: bool = False
+    evidence_dir: str = "/app/data/evidence"
 
 
 @lru_cache

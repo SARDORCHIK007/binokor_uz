@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
+from app.core.config import get_settings
 from app.security import bearer_from_request, new_id, problem, read_access_token
 
 router = APIRouter(prefix="/api/v1/learning", tags=["learning"])
@@ -354,7 +355,7 @@ async def upload_evidence(body: EvidenceBody, request: Request) -> JSONResponse:
     if len(raw) > 5_000_000:
         return problem(422, "VALIDATION", "Rasm katta", "5 MB dan kichik rasm yuboring.")
     file_id = new_id()
-    folder = Path("/app/data/evidence")
+    folder = Path(get_settings().evidence_dir)
     folder.mkdir(parents=True, exist_ok=True)
     (folder / f"{file_id}.bin").write_bytes(raw)
     engine = _engine(request)

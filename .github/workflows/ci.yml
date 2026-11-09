@@ -54,6 +54,7 @@ jobs:
       JWT_SECRET: ci-only-secret-0123456789abcdef0123456789
       APP_ENV: ci
       DEMO_MODE: "true"
+      EVIDENCE_DIR: /tmp/evidence
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
