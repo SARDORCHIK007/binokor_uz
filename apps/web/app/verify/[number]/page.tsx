@@ -1,6 +1,7 @@
 import { buttonClass, EmptyState } from "@uychibinokor/ui";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { apiGet } from "@/lib/public";
 
 export const dynamic = "force-dynamic";
@@ -16,6 +17,7 @@ type VerifyPayload = {
     issued_at: string | null;
   };
   holder?: { display_name: string };
+  signers?: { slug: string; name: string; role: string; fingerprint: string }[];
 };
 
 const COPY = {
@@ -46,6 +48,7 @@ export default async function VerifyPage({ params, searchParams }: PageProps) {
   const lang: Lang = query.lang && query.lang in COPY ? (query.lang as Lang) : "uz-Latn";
   const copy = COPY[lang];
   const data = await apiGet<VerifyPayload>(`/api/v1/public/verify/${number}`);
+  const vt = await getTranslations("verifyPage");
 
   const dir = lang === "ar" ? "rtl" : "ltr";
 
@@ -141,6 +144,26 @@ export default async function VerifyPage({ params, searchParams }: PageProps) {
               <strong className="text-navy-900">uychibinokor.uz/verify/{data.certificate?.number}</strong>
             </div>
           </div>
+
+          {data.signers && data.signers.length > 0 ? (
+            <section className="mt-8 rounded-2xl border border-line bg-card p-5 text-left" aria-labelledby="signers-title">
+              <h2 id="signers-title" className="text-sm font-bold text-navy-900">{vt("signers")}</h2>
+              <p className="mt-1 text-xs text-muted">{vt("signersText")}</p>
+              <ul className="mt-3 divide-y divide-line text-sm">
+                {data.signers.map((signer) => (
+                  <li key={signer.slug} className="flex flex-wrap items-center justify-between gap-2 py-2.5">
+                    <span>
+                      <span className="block text-[11px] font-bold tracking-wider text-warning-600 uppercase">{signer.role}</span>
+                      <span className="font-semibold text-navy-900">{signer.name}</span>
+                    </span>
+                    <span className="rounded-full bg-success-100 px-2.5 py-1 font-mono text-xs font-bold text-success-600">
+                      ✓ {signer.fingerprint}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
 
           <div className="mt-8 flex flex-wrap gap-3 justify-center">
             {valid ? (

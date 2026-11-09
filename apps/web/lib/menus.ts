@@ -42,6 +42,7 @@ export const CABINET_MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/lugat", key: "vocab" },
   ],
   worker: [
+    { href: "/kabinet/pasport", key: "passport" },
     { href: "/kabinet/portfolio", key: "portfolio" },
     { href: "/kabinet/arizam", key: "myApplication" },
   ],
@@ -51,6 +52,7 @@ export const CABINET_MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/baholar", key: "grades" },
     { href: "/kabinet/imtihon", key: "exam" },
     { href: "/kabinet/arizam", key: "myApplication" },
+    { href: "/kabinet/pasport", key: "passport" },
     { href: "/kabinet/lugat", key: "vocab" },
   ],
 };

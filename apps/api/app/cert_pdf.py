@@ -1,29 +1,37 @@
-"""Printable certificate PDF with QR verification code (FR-CERT-PDF).
+"""Printable certificate on the project's certificate template, signed by QR codes (FR-CERT-PDF).
 
-A4 landscape, brand colors, DejaVu font (covers Uzbek Latin and Cyrillic), QR code that
-opens the public verify page, and a short fingerprint of the Ed25519 signature so a paper
-copy can be checked against the registry.
+The page is the 1536x1024 template. Text sits in the template's inner field. The certificate itself
+carries a QR to the public verify page; the project leader and each signed partner organisation
+"sign" with their own QR: an Ed25519 signature over (certificate number, signer) made with the
+platform key, shown as a fingerprint and checkable on the verify page.
 """
 
 import hashlib
 import io
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
 
 import segno
-from reportlab.lib.pagesizes import A4, landscape
-from reportlab.lib.units import mm
 from reportlab.lib.utils import ImageReader
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 
-FONTS = Path(__file__).parent / "assets" / "fonts"
+from app.signing import sign_payload
+
+ASSETS = Path(__file__).parent / "assets"
+FRAME = ASSETS / "certificate_frame.jpg"
+FONTS = ASSETS / "fonts"
+W_PX, H_PX = 1536, 1024
+PAGE_W = 841.89  # A4 landscape width in pt; height keeps the template proportions
+PAGE_H = PAGE_W * H_PX / W_PX
+S = PAGE_W / W_PX
+
 NAVY = (7 / 255, 24 / 255, 51 / 255)
-BLUE = (47 / 255, 107 / 255, 255 / 255)
-YELLOW = (245 / 255, 180 / 255, 0)
-MUTED = (95 / 255, 107 / 255, 125 / 255)
+BLUE = (31 / 255, 85 / 255, 214 / 255)
+GOLD = (176 / 255, 124 / 255, 0)
+MUTED = (80 / 255, 92 / 255, 112 / 255)
 
 LEVELS = {
     "APPRENTICE": "Shogird / Apprentice",
@@ -35,6 +43,7 @@ ISSUERS = {
     "UB_NAMDTU": "UYCHI BINOKOR va Namangan davlat texnika universiteti",
     "UB": "UYCHI BINOKOR o'quv markazi",
 }
+ROLES = {"GOV": "Loyiha rahbari", "EDU": "Ta'lim hamkori", "AGENCY": "Agentlik hamkori"}
 
 _registered = False
 
@@ -49,6 +58,18 @@ def _fonts() -> None:
 
 
 @dataclass(frozen=True)
+class Signer:
+    slug: str
+    name: str
+    role: str
+    signature: str  # full hex Ed25519 signature
+
+    @property
+    def fingerprint(self) -> str:
+        return " ".join(self.signature[i : i + 4].upper() for i in range(0, 16, 4))
+
+
+@dataclass(frozen=True)
 class CertificateData:
     number: str
     holder: str
@@ -58,6 +79,7 @@ class CertificateData:
     issued_at: date | None
     signature: bytes
     verify_url: str
+    signers: tuple[Signer, ...] = field(default_factory=tuple)
 
 
 def fingerprint(signature: bytes) -> str:
@@ -66,118 +88,110 @@ def fingerprint(signature: bytes) -> str:
     return " ".join(digest[i : i + 4] for i in range(0, 16, 4))
 
 
+def make_signer(number: str, slug: str, name: str, kind: str) -> Signer:
+    """Deterministic Ed25519 signature over (certificate number, signer) with the platform key."""
+    _, signature = sign_payload({"certificate": number, "signer": slug})
+    return Signer(slug=slug, name=name, role=ROLES.get(kind, "Hamkor"), signature=signature.hex())
+
+
+def _qr(url: str) -> ImageReader:
+    out = io.BytesIO()
+    segno.make(url, error="m").save(out, kind="png", scale=8, border=1, dark="#071833")
+    out.seek(0)
+    return ImageReader(out)
+
+
+def _fit(text: str, font: str, size: float, width: float, minimum: float = 7) -> float:
+    while size > minimum and pdfmetrics.stringWidth(text, font, size) > width:
+        size -= 0.5
+    return size
+
+
 def render(data: CertificateData) -> bytes:
     _fonts()
     buffer = io.BytesIO()
-    width, height = landscape(A4)
-    pdf = canvas.Canvas(buffer, pagesize=(width, height))
+    pdf = canvas.Canvas(buffer, pagesize=(PAGE_W, PAGE_H))
     pdf.setTitle(f"Sertifikat {data.number}")
     pdf.setAuthor("UYCHI BINOKOR")
     pdf.setSubject("Malaka sertifikati")
+    pdf.drawImage(ImageReader(str(FRAME)), 0, 0, PAGE_W, PAGE_H)
 
-    # Frame: navy outer, yellow inner line.
-    pdf.setFillColorRGB(1, 1, 1)
-    pdf.rect(0, 0, width, height, stroke=0, fill=1)
-    pdf.setStrokeColorRGB(*NAVY)
-    pdf.setLineWidth(6)
-    pdf.rect(12 * mm, 12 * mm, width - 24 * mm, height - 24 * mm)
-    pdf.setStrokeColorRGB(*YELLOW)
-    pdf.setLineWidth(1.5)
-    pdf.rect(16 * mm, 16 * mm, width - 32 * mm, height - 32 * mm)
+    def pos(x: float, y: float) -> tuple[float, float]:
+        return x * S, PAGE_H - y * S
 
-    # Header band with the house mark.
-    top = height - 34 * mm
-    pdf.setFillColorRGB(*YELLOW)
-    path = pdf.beginPath()
-    path.moveTo(28 * mm, top)
-    path.lineTo(36 * mm, top + 8 * mm)
-    path.lineTo(44 * mm, top)
-    path.close()
-    pdf.drawPath(path, stroke=0, fill=1)
-    pdf.setFillColorRGB(*NAVY)
-    pdf.rect(31 * mm, top - 7 * mm, 10 * mm, 7 * mm, stroke=0, fill=1)
-    pdf.setFont("DejaVu-Bold", 18)
-    pdf.drawString(48 * mm, top - 3 * mm, "UYCHI BINOKOR")
-    pdf.setFont("DejaVu", 9)
-    pdf.setFillColorRGB(*MUTED)
-    tagline = "Uychi tumani hokimligi loyihasi · Kasbiy malaka platformasi"
-    pdf.drawString(48 * mm, top - 8 * mm, tagline)
+    def centered(text: str, x: float, y: float, font: str, size: float, color: tuple[float, float, float]) -> None:
+        pdf.setFillColorRGB(*color)
+        pdf.setFont(font, size)
+        px, py = pos(x, y)
+        pdf.drawCentredString(px, py, text)
 
-    # Layout: QR panel on the right, text column centred in the remaining space.
-    qr_size = 52 * mm
-    qr_x = width - 32 * mm - qr_size
-    cx = 28 * mm + (qr_x - 12 * mm - 28 * mm) / 2
-    value_x = 28 * mm + 50 * mm
-    value_max = qr_x - 8 * mm - value_x
-
-    # Title.
-    pdf.setFillColorRGB(*BLUE)
-    pdf.setFont("DejaVu-Bold", 30)
-    pdf.drawCentredString(cx, height - 70 * mm, "MALAKA SERTIFIKATI")
-    pdf.setFillColorRGB(*MUTED)
-    pdf.setFont("DejaVu", 11)
-    pdf.drawCentredString(cx, height - 78 * mm, "Certificate of qualification")
-
-    # Holder and details.
-    pdf.setFillColorRGB(*MUTED)
-    pdf.setFont("DejaVu", 11)
-    intro = "Ushbu sertifikat egasi / This certifies that"
-    pdf.drawCentredString(cx, height - 94 * mm, intro)
-    pdf.setFillColorRGB(*NAVY)
-    pdf.setFont("DejaVu-Bold", 26)
-    pdf.drawCentredString(cx, height - 108 * mm, data.holder)
-    pdf.setStrokeColorRGB(*YELLOW)
-    pdf.setLineWidth(1)
-    pdf.line(cx - 70 * mm, height - 112 * mm, cx + 70 * mm, height - 112 * mm)
+    cx = 735  # centre of the inner field, left of the verification QR
+    centered("UYCHI BINOKOR", cx, 255, "DejaVu-Bold", 13, NAVY)
+    centered("Uychi tumani hokimligi loyihasi · Kasbiy malaka platformasi", cx, 275, "DejaVu", 8.5, MUTED)
+    centered("MALAKA SERTIFIKATI", cx, 345, "DejaVu-Bold", 30, BLUE)
+    centered("Certificate of qualification", cx, 372, "DejaVu", 10.5, MUTED)
+    centered("Ushbu sertifikat egasi / This certifies that", cx, 425, "DejaVu", 10.5, MUTED)
+    name_size = _fit(data.holder, "DejaVu-Bold", 25, 700 * S)
+    centered(data.holder, cx, 478, "DejaVu-Bold", name_size, NAVY)
+    pdf.setStrokeColorRGB(*GOLD)
+    pdf.setLineWidth(1.2)
+    x0, y0 = pos(cx - 330, 495)
+    x1, _ = pos(cx + 330, 495)
+    pdf.line(x0, y0, x1, y0)
 
     rows = [
         ("Kasb / Trade", data.trade),
         ("Daraja / Level", LEVELS.get(data.level, data.level)),
         ("Beruvchi / Issuer", ISSUERS.get(data.issuer, data.issuer)),
-        ("Berilgan sana / Issued", data.issued_at.isoformat() if data.issued_at else "—"),
+        ("Sana / Issued", data.issued_at.isoformat() if data.issued_at else "—"),
         ("Raqam / Number", data.number),
     ]
-    y = height - 126 * mm
+    y = 535
+    label_x, value_x = cx - 60, cx - 30
     for label, value in rows:
         pdf.setFillColorRGB(*MUTED)
-        pdf.setFont("DejaVu", 10)
-        pdf.drawRightString(value_x - 5 * mm, y, label)
+        pdf.setFont("DejaVu", 9.5)
+        lx, ly = pos(label_x, y)
+        pdf.drawRightString(lx, ly, label)
+        vx, vy = pos(value_x, y)
+        size = _fit(value, "DejaVu-Bold", 11.5, 372 * S)
         pdf.setFillColorRGB(*NAVY)
-        size = 12.0
-        while size > 7 and pdfmetrics.stringWidth(value, "DejaVu-Bold", size) > value_max:
-            size -= 0.5
         pdf.setFont("DejaVu-Bold", size)
-        pdf.drawString(value_x, y, value)
-        y -= 8.5 * mm
+        pdf.drawString(vx, vy, value)
+        y += 33
 
-    # QR panel on the right.
-    qr = segno.make(data.verify_url, error="m")
-    png = io.BytesIO()
-    qr.save(png, kind="png", scale=8, border=2, dark="#071833")
-    png.seek(0)
-    qr_y = height / 2 - qr_size / 2 - 6 * mm
-    pdf.drawImage(ImageReader(png), qr_x, qr_y, qr_size, qr_size)
-    pdf.setFillColorRGB(*NAVY)
-    pdf.setFont("DejaVu-Bold", 9)
-    pdf.drawCentredString(qr_x + qr_size / 2, qr_y - 6 * mm, "QR orqali tekshiring")
-    pdf.setFillColorRGB(*MUTED)
-    pdf.setFont("DejaVu", 7.5)
-    pdf.drawCentredString(qr_x + qr_size / 2, qr_y - 10.5 * mm, data.verify_url)
+    # verification QR (top right of the field)
+    qx, qy, qs = 1168, 352, 140
+    px, py = pos(qx, qy + qs)
+    pdf.drawImage(_qr(data.verify_url), px, py, qs * S, qs * S)
+    centered("QR orqali tekshiring", qx + qs / 2, qy + qs + 16, "DejaVu-Bold", 7, NAVY)
 
-    # Footer: signature fingerprint and note.
-    pdf.setFillColorRGB(*MUTED)
-    pdf.setFont("DejaVu", 8.5)
-    pdf.drawString(
-        28 * mm,
-        26 * mm,
-        f"Raqamli imzo (Ed25519) izi: {fingerprint(data.signature)}",
-    )
-    pdf.drawString(
-        28 * mm,
-        21 * mm,
-        "Haqiqiyligini QR yoki raqam orqali uychibinokor.uz/verify sahifasida tekshiring. "
-        "Bekor qilingan sertifikat ham reyestrda ko'rinadi.",
-    )
+    # signatures: leader first, then partner organisations
+    slot = 250
+    start = 335
+    top = 697
+    for index, signer in enumerate(data.signers[:3]):
+        sx = start + index * slot
+        url = f"{data.verify_url}?signer={signer.slug}&sig={signer.signature[:16]}"
+        px, py = pos(sx, top + 70)
+        pdf.drawImage(_qr(url), px, py, 70 * S, 70 * S)
+        tx = sx + 80
+        width = (slot - 92) * S
+        pdf.setFillColorRGB(*GOLD)
+        pdf.setFont("DejaVu-Bold", _fit(signer.role, "DejaVu-Bold", 7.5, width))
+        tpx, tpy = pos(tx, top + 14)
+        pdf.drawString(tpx, tpy, signer.role)
+        pdf.setFillColorRGB(*NAVY)
+        label = signer.name if len(signer.name) <= 34 else signer.name[:33] + "…"
+        pdf.setFont("DejaVu-Bold", _fit(label, "DejaVu-Bold", 7.5, width, 5.5))
+        npx, npy = pos(tx, top + 30)
+        pdf.drawString(npx, npy, label)
+        pdf.setFillColorRGB(*MUTED)
+        pdf.setFont("DejaVu", 6.5)
+        fpx, fpy = pos(tx, top + 46)
+        pdf.drawString(fpx, fpy, f"Ed25519 {signer.fingerprint[:9]}")
+        pdf.drawString(fpx, fpy - 9, "raqamli imzo")
+
     pdf.showPage()
     pdf.save()
     return buffer.getvalue()

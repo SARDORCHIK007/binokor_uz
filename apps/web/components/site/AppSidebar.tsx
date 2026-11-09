@@ -26,6 +26,7 @@ const PORTAL_LINKS: NavItem[] = [
 const CABINET_ICONS: [string, IconName][] = [
   ["arizalar", "doc"],
   ["arizam", "doc"],
+  ["pasport", "qr"],
   ["kurslar", "book"],
   ["guruhlar", "users"],
   ["foydalanuvchilar", "user"],

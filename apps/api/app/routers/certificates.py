@@ -9,7 +9,7 @@ from pydantic import BaseModel
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
-from app.cert_pdf import CertificateData, render
+from app.cert_pdf import CertificateData, Signer, make_signer, render
 from app.security import bearer_from_request, problem, read_access_token
 from app.signing import signature_matches
 
@@ -34,6 +34,23 @@ def _user_id(request: Request) -> uuid.UUID | None:
     if payload is None or "sub" not in payload:
         return None
     return uuid.UUID(str(payload["sub"]))
+
+
+async def signers_for(conn: AsyncConnection, number: str) -> list[Signer]:
+    """Project leader (government partner) first, then every partner with a SIGNED agreement."""
+    rows = await conn.execute(
+        text(
+            """
+            SELECT coalesce(slug, lower(regexp_replace(name->>'uz-Latn', '[^a-zA-Z0-9]+', '-', 'g'))) AS slug,
+                   name->>'uz-Latn' AS name, kind::text AS kind
+            FROM partners
+            WHERE status = 'SIGNED'
+            ORDER BY (kind = 'GOV') DESC, sort_order, name->>'uz-Latn'
+            LIMIT 3
+            """
+        )
+    )
+    return [make_signer(number, str(row["slug"]), str(row["name"]), str(row["kind"])) for row in rows.mappings()]
 
 
 async def _roles(conn: AsyncConnection, user_id: uuid.UUID) -> set[str]:
@@ -239,6 +256,8 @@ async def verify(number: str, request: Request) -> JSONResponse:
     raw = bytes(signature) if signature is not None else b""
     valid = bool(payload) and signature_matches(payload, raw)
     result = "VALID" if item["status"] == "ISSUED" and valid else "TAMPERED"
+    async with engine.connect() as conn:
+        signer_rows = await signers_for(conn, str(item["number"]))
     return JSONResponse(
         {
             "result": result,
@@ -251,6 +270,10 @@ async def verify(number: str, request: Request) -> JSONResponse:
                 "issued_at": None if item["issued_at"] is None else item["issued_at"].isoformat(),
             },
             "holder": {"display_name": f"{item['first_name']} {item['last_name']}"},
+            "signers": [
+                {"slug": signer.slug, "name": signer.name, "role": signer.role, "fingerprint": signer.fingerprint}
+                for signer in signer_rows
+            ],
             "checked_at": datetime.now(UTC).isoformat(),
         }
     )
@@ -275,6 +298,7 @@ async def verify_pdf(number: str, request: Request) -> Response:
             {"number": number},
         )
         item = row.mappings().first()
+        signers = await signers_for(conn, str(item["number"])) if item is not None else []
     if item is None:
         return problem(404, "NOT_FOUND", "Topilmadi", "Berilgan sertifikat yo'q.")
     base = str(request.headers.get("x-public-origin") or "https://uychibinokor.uz").rstrip("/")
@@ -287,6 +311,7 @@ async def verify_pdf(number: str, request: Request) -> Response:
         issued_at=None if item["issued_at"] is None else item["issued_at"].date(),
         signature=bytes(item["signature"] or b""),
         verify_url=f"{base}/verify/{item['number']}",
+        signers=tuple(signers),
     )
     return Response(
         content=render(data),

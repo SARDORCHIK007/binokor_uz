@@ -121,7 +121,8 @@
     "loadError": "Panel ochilmadi",
     "loadErrorText": "Sahifani yangilang.",
     "portfolio": "Portfolio",
-    "portfolioReview": "Portfolio tasdiqlash"
+    "portfolioReview": "Portfolio tasdiqlash",
+    "passport": "Pasportim"
   },
   "session": {
     "title": "Kabinet",
@@ -896,5 +897,38 @@
     "markCancel": "Bekor qilish",
     "total": "Taxminiy summa",
     "comment": "Izoh"
+  },
+  "passportPage": {
+    "title": "Talaba va usta pasporti",
+    "text": "O'qishga qabul qilingach beriladi. Kartadagi QR kod orqali istalgan kishi pasport haqiqiyligini tekshira oladi.",
+    "emptyTitle": "Pasport hali berilmagan",
+    "emptyText": "Ariza qabul qilinib, guruhga yozilganingizdan keyin pasportingiz shu yerda paydo bo'ladi.",
+    "apply": "Ariza berish",
+    "cardAlt": "Talaba pasporti kartasi",
+    "downloadPng": "Rasm (PNG)",
+    "downloadPdf": "Chop etish (PDF)",
+    "openPublic": "Ommaviy tekshiruv sahifasi",
+    "number": "Pasport raqami",
+    "trade": "Kasb",
+    "group": "Guruh",
+    "enrolled": "Qabul sanasi",
+    "signature": "Raqamli imzo izi",
+    "photoNote": "Kartadagi surat o'rniga hozircha belgi turibdi. Surat yuklash tez orada qo'shiladi.",
+    "publicTitle": "Pasportni tekshirish",
+    "valid": "HAQIQIY PASPORT",
+    "invalid": "Pasport topilmadi yoki yaroqsiz",
+    "privacy": "Shaxsiy ma'lumotlar (telefon, hujjatlar) ko'rsatilmaydi.",
+    "status": {
+      "ACTIVE": "O'qiyapti",
+      "COMPLETED": "O'qishni tugatgan",
+      "SUSPENDED": "To'xtatilgan",
+      "DROPPED": "Chiqib ketgan",
+      "TRANSFERRED": "Ko'chirilgan"
+    },
+    "statusLabel": "Holat"
+  },
+  "verifyPage": {
+    "signers": "Raqamli imzolar",
+    "signersText": "Sertifikatni loyiha rahbari va hamkor tashkilotlar raqamli imzo (QR) bilan tasdiqlagan."
   }
 }

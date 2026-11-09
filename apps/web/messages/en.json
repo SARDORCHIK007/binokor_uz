@@ -121,7 +121,8 @@
     "loadError": "Panel ochilmadi",
     "loadErrorText": "Sahifani yangilang.",
     "portfolio": "Portfolio",
-    "portfolioReview": "Portfolio review"
+    "portfolioReview": "Portfolio review",
+    "passport": "My passport"
   },
   "session": {
     "title": "Cabinet",
@@ -896,5 +897,38 @@
     "markCancel": "Cancel",
     "total": "Estimated total",
     "comment": "Comment"
+  },
+  "passportPage": {
+    "title": "Student and worker passport",
+    "text": "Issued once you are accepted to study. Anyone can check it with the QR code on the card.",
+    "emptyTitle": "No passport yet",
+    "emptyText": "Your passport appears here once your application is accepted and you join a group.",
+    "apply": "Apply",
+    "cardAlt": "Student passport card",
+    "downloadPng": "Image (PNG)",
+    "downloadPdf": "Print (PDF)",
+    "openPublic": "Public check page",
+    "number": "Passport number",
+    "trade": "Trade",
+    "group": "Group",
+    "enrolled": "Enrolled on",
+    "signature": "Digital signature fingerprint",
+    "photoNote": "A silhouette stands in for the photo for now. Photo upload is coming.",
+    "publicTitle": "Passport check",
+    "valid": "VALID PASSPORT",
+    "invalid": "Passport not found or not valid",
+    "privacy": "Personal data (phone, documents) is not shown.",
+    "status": {
+      "ACTIVE": "Studying",
+      "COMPLETED": "Completed",
+      "SUSPENDED": "Suspended",
+      "DROPPED": "Dropped",
+      "TRANSFERRED": "Transferred"
+    },
+    "statusLabel": "Status"
+  },
+  "verifyPage": {
+    "signers": "Digital signatures",
+    "signersText": "The certificate is confirmed by the project leader and partner organisations with a digital signature (QR)."
   }
 }

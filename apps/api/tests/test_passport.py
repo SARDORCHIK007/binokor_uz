@@ -1,0 +1,114 @@
+"""FR-PASSPORT and signed certificate: card on the template, public check page, signer QRs, persistent key."""
+
+import asyncio
+import os
+
+import httpx
+import pytest
+from app.cert_pdf import CertificateData, make_signer, render
+from app.passport_card import PassportData, card_pdf, render_card
+from app.routers.passport import passport_number
+from app.signing import KEY_PATH, sign_payload, signature_matches
+from PIL import Image
+
+BASE = "http://127.0.0.1:8000"
+
+
+def _data() -> PassportData:
+    return PassportData(
+        number="UB-P-2026-000123",
+        name="Азиз Каримов",  # Cyrillic must render too
+        trade="Santexnik",
+        group="Guruh SANT-2026-01",
+        status="O'qiyapti",
+        enrolled="Qabul: 2026-11-06",
+        fingerprint="A1B2 C3D4 E5F6 0718",
+        verify_url="https://uychibinokor.uz/pasport/x",
+    )
+
+
+def test_card_is_template_sized_png_and_pdf() -> None:
+    import io  # noqa: PLC0415
+
+    png = render_card(_data())
+    image = Image.open(io.BytesIO(png))
+    assert image.size == (1536, 1024)
+    assert image.mode == "RGBA"
+    assert card_pdf(png).startswith(b"%PDF")
+
+
+def test_passport_number_is_stable() -> None:
+    import uuid  # noqa: PLC0415
+    from datetime import date  # noqa: PLC0415
+
+    enrollment = uuid.UUID("3024aee0-d63d-5654-b607-ad2bd0b0cd93")
+    assert passport_number(enrollment, date(2026, 11, 6)) == passport_number(enrollment, date(2026, 12, 1)).replace(
+        "2026", "2026"
+    )
+    assert passport_number(enrollment, date(2026, 11, 6)).startswith("UB-P-2026-")
+
+
+def test_signer_signatures_are_deterministic_and_verifiable() -> None:
+    first = make_signer("UB-2026-000001", "namdtu", "NamDTU", "EDU")
+    again = make_signer("UB-2026-000001", "namdtu", "NamDTU", "EDU")
+    other = make_signer("UB-2026-000001", "uychi-hokimlik", "Hokimlik", "GOV")
+    assert first.signature == again.signature != other.signature
+    assert signature_matches({"certificate": "UB-2026-000001", "signer": "namdtu"}, bytes.fromhex(first.signature))
+    assert not signature_matches({"certificate": "UB-2026-000002", "signer": "namdtu"}, bytes.fromhex(first.signature))
+    assert other.role == "Loyiha rahbari"
+
+
+def test_certificate_pdf_with_signers() -> None:
+    signers = (make_signer("UB-2026-999999", "uychi-hokimlik", "Uychi tumani hokimligi", "GOV"),)
+    pdf = render(
+        CertificateData(
+            number="UB-2026-999999",
+            holder="Азиз Каримов",
+            trade="Santexnik",
+            level="MASTER",
+            issuer="UB_NAMDTU",
+            issued_at=None,
+            signature=b"\x01" * 64,
+            verify_url="https://uychibinokor.uz/verify/UB-2026-999999",
+            signers=signers,
+        )
+    )
+    assert pdf.startswith(b"%PDF") and len(pdf) > 100_000  # template image embedded
+
+
+def test_signing_key_is_not_in_tmp() -> None:
+    """A key in /tmp is lost when the container is re-created and breaks every issued certificate."""
+    sign_payload({"probe": 1})
+    assert not str(KEY_PATH).startswith("/tmp")
+    assert KEY_PATH.exists()
+
+
+def test_passport_endpoints() -> None:
+    if not os.environ.get("DATABASE_URL"):
+        pytest.skip("DATABASE_URL yo'q")
+    asyncio.run(_flow())
+
+
+async def _flow() -> None:
+    async with httpx.AsyncClient(base_url=BASE, timeout=30) as client:
+        login = await client.post("/api/v1/auth/demo", json={"role": "student"})
+        if login.status_code != 200:
+            pytest.skip("demo kirish o'chirilgan")
+        headers = {"Authorization": f"Bearer {login.json()['access_token']}"}
+        mine = (await client.get("/api/v1/me/passport", headers=headers)).json()
+        assert mine["enrolled"] is True and mine["number"].startswith("UB-P-")
+        png = await client.get("/api/v1/me/passport/card.png", headers=headers)
+        assert png.status_code == 200 and png.headers["content-type"] == "image/png"
+        pdf = await client.get("/api/v1/me/passport/card.pdf", headers=headers)
+        assert pdf.status_code == 200 and pdf.content.startswith(b"%PDF")
+        async with httpx.AsyncClient(base_url=BASE, timeout=30) as anonymous:  # no login cookie
+            assert (await anonymous.get("/api/v1/me/passport/card.png")).status_code == 401
+
+        public = (await client.get(f"/api/v1/public/passport/{mine['id']}")).json()
+        assert public["valid"] is True
+        assert public["name"].endswith(".") or " " not in public["name"]  # first name + initial only
+        assert "+998" not in str(public)  # BR-17
+        assert (await client.get("/api/v1/public/passport/00000000-0000-0000-0000-000000000000")).json()["valid"] is False
+
+        verify = (await client.get("/api/v1/public/verify/UB-2026-000001")).json()
+        assert verify["result"] == "VALID" and len(verify["signers"]) >= 1
