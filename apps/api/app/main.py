@@ -14,6 +14,7 @@ from app.routers.admin_edu import router as admin_edu_router
 from app.routers.applications import router as applications_router
 from app.routers.auth import router as auth_router
 from app.routers.cabinet import router as cabinet_router
+from app.routers.cabinet_extra import router as cabinet_extra_router
 from app.routers.certificates import router as certificates_router
 from app.routers.curator import router as curator_router
 from app.routers.employers import router as employers_router
@@ -97,6 +98,7 @@ app.include_router(vocab_router)
 app.include_router(jobs_router)
 app.include_router(employers_router)
 app.include_router(producers_router)
+app.include_router(cabinet_extra_router)
 
 
 @app.middleware("http")

@@ -28,7 +28,7 @@ export function SiteLayoutShell({ children, user }: { children: ReactNode; user:
       </a>
       <AppSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} user={user} />
       <div className="flex min-h-screen flex-col pb-16 lg:pb-0 lg:pl-72">
-        <AppTopbar onToggleSidebar={() => setSidebarOpen(true)} />
+        <AppTopbar onToggleSidebar={() => setSidebarOpen(true)} signedIn={user !== null} />
         <main id="asosiy" tabIndex={-1} className="flex-1 focus:outline-none">
           {children}
         </main>

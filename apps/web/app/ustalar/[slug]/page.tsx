@@ -1,3 +1,4 @@
+import { ShortlistButton } from "@/components/cabinet/ShortlistButton";
 import { EmptyState } from "@uychibinokor/ui";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
@@ -117,6 +118,7 @@ export default async function WorkerPage({ params }: { params: Promise<{ slug: s
                 </a>
               </div>
             ) : null}
+            <ShortlistButton slug={slug} />
           </div>
         </section>
       </div>

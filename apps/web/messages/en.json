@@ -123,7 +123,16 @@
     "portfolio": "Portfolio",
     "portfolioReview": "Portfolio review",
     "passport": "My passport",
-    "signing": "Signing"
+    "signing": "Signing",
+    "offers": "Offers",
+    "workerProfile": "My profile",
+    "shortlist": "Shortlist",
+    "producerStats": "Statistics",
+    "mahallas": "Mahallas",
+    "students": "Students",
+    "progress": "My progress",
+    "notifications": "Notifications",
+    "settings": "Settings"
   },
   "session": {
     "title": "Cabinet",
@@ -949,5 +958,163 @@
     "awaiting": "awaiting",
     "failed": "Could not sign. Please try again.",
     "sign": "Sign"
+  },
+  "offers": {
+    "title": "Job offers",
+    "text": "Offers employers sent you. If you accept, the employer is notified.",
+    "empty": "No offers yet",
+    "emptyText": "Employers will find you when your profile is complete and your status is Free.",
+    "salary": "Salary",
+    "start": "Start",
+    "months": "{n} months",
+    "accept": "Accept",
+    "decline": "Decline",
+    "failed": "Could not send the answer. Please try again.",
+    "status": {
+      "PROPOSED": "Awaiting your answer",
+      "WORKER_ACCEPTED": "You accepted",
+      "WORKER_DECLINED": "You declined",
+      "EMPLOYER_APPROVED": "Employer approved",
+      "EMPLOYER_REJECTED": "Employer declined",
+      "HIRED": "Hired"
+    }
+  },
+  "workerProfile": {
+    "title": "My craftsman profile",
+    "text": "Employers see you through this data. Your phone number is never public.",
+    "level": "Level",
+    "hours": "Verified hours",
+    "rating": "Rating",
+    "noRating": "No ratings yet",
+    "availability": "My status",
+    "path": "Level path",
+    "pathNote": "The system suggests the level, an administrator confirms it.",
+    "privacy": "What shows on your public profile",
+    "certs": "My certificates",
+    "certsEmpty": "No certificate issued yet.",
+    "signatures": "{done}/{all} signatures",
+    "pdf": "Download PDF",
+    "check": "Verify",
+    "jobs": "Work history",
+    "jobsEmpty": "No placements yet.",
+    "now": "ongoing",
+    "publicPage": "Open public profile",
+    "saved": "Saved",
+    "failed": "Not saved. Please try again.",
+    "availabilities": {
+      "FREE": "Free",
+      "BUSY": "Busy",
+      "INACTIVE": "Inactive"
+    },
+    "levels": {
+      "APPRENTICE": "Apprentice",
+      "ASSISTANT": "Assistant",
+      "MASTER": "Master",
+      "FOREMAN": "Foreman"
+    },
+    "privacyKeys": {
+      "photo": "My photo",
+      "ratings": "My ratings",
+      "full_name": "My full name",
+      "languages": "My languages",
+      "portfolio": "My portfolio"
+    }
+  },
+  "shortlist": {
+    "title": "Shortlisted craftsmen",
+    "text": "Craftsmen you saved to send an offer later.",
+    "empty": "Nobody shortlisted yet",
+    "emptyText": "Press Shortlist on a craftsman's page.",
+    "add": "Shortlist",
+    "added": "Shortlisted ✓",
+    "remove": "Remove",
+    "open": "Open profile",
+    "hours": "{n} h"
+  },
+  "producerStats": {
+    "title": "Sales statistics",
+    "text": "Real figures from your orders only.",
+    "products": "Products",
+    "outOfStock": "Out of stock",
+    "statusTitle": "Orders by status",
+    "monthsTitle": "By month",
+    "topTitle": "Most ordered products",
+    "empty": "No orders yet",
+    "orders": "{n} orders",
+    "sum": "{n} UZS",
+    "status": {
+      "NEW": "New",
+      "CONTACTED": "Contacted",
+      "DONE": "Done",
+      "CANCELLED": "Cancelled"
+    }
+  },
+  "mahallas": {
+    "title": "By mahalla",
+    "text": "How many participants live in each mahalla. No phones or personal data.",
+    "name": "Mahalla",
+    "people": "People",
+    "studying": "Studying",
+    "certified": "Certified",
+    "workers": "Craftsmen",
+    "export": "Download CSV",
+    "empty": "No data yet"
+  },
+  "students": {
+    "title": "My students",
+    "text": "Attendance and grades. Students below 70% attendance are flagged.",
+    "empty": "No students",
+    "attendance": "Attendance",
+    "average": "Average score",
+    "last": "Last lesson",
+    "risk": "Needs attention",
+    "lessons": "{n} lessons"
+  },
+  "progress": {
+    "title": "My progress",
+    "empty": "You are not enrolled in a group yet",
+    "emptyText": "Once your application is accepted, your lessons and progress appear here.",
+    "group": "Group",
+    "schedule": "Schedule",
+    "attendance": "Attendance",
+    "attendanceNote": "{present} / {lessons} lessons",
+    "average": "Average score",
+    "modules": "Modules",
+    "modulesNote": "{passed} / {modules} passed",
+    "hours": "Site hours",
+    "vocab": "Vocabulary days",
+    "noData": "No data yet",
+    "days": {
+      "Du": "Mon",
+      "Se": "Tue",
+      "Ch": "Wed",
+      "Pa": "Thu",
+      "Ju": "Fri",
+      "Sh": "Sat",
+      "Ya": "Sun"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "No new messages",
+    "markRead": "Mark all as read",
+    "bell": "Notifications",
+    "kind": {
+      "offer": "You have a new job offer",
+      "offer_answer": {
+        "yes": "A craftsman accepted your offer",
+        "no": "A craftsman declined your offer"
+      },
+      "other": "New message"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "account": "Account",
+    "name": "Name",
+    "roles": "My roles",
+    "language": "Language",
+    "appearance": "Appearance",
+    "privacyNote": "Your phone number is never shown on public pages."
   }
 }

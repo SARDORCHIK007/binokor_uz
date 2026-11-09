@@ -123,7 +123,16 @@
     "portfolio": "Portfolio",
     "portfolioReview": "Portfolio tasdiqlash",
     "passport": "Pasportim",
-    "signing": "Imzolash"
+    "signing": "Imzolash",
+    "offers": "Takliflar",
+    "workerProfile": "Mening profilim",
+    "shortlist": "Saralanganlar",
+    "producerStats": "Statistika",
+    "mahallas": "Mahallalar",
+    "students": "Tinglovchilar",
+    "progress": "Yutuqlarim",
+    "notifications": "Bildirishnomalar",
+    "settings": "Sozlamalar"
   },
   "session": {
     "title": "Kabinet",
@@ -949,5 +958,163 @@
     "awaiting": "imzo kutilmoqda",
     "failed": "Imzolab bo'lmadi. Qayta urinib ko'ring.",
     "sign": "Imzolash"
+  },
+  "offers": {
+    "title": "Ish takliflari",
+    "text": "Ish beruvchilar sizga yuborgan takliflar. Qabul qilsangiz, ish beruvchiga xabar boradi.",
+    "empty": "Hozircha taklif yo'q",
+    "emptyText": "Profilingiz to'ldirilgan va \"Bo'sh\" holatda bo'lsa, ish beruvchilar sizni topadi.",
+    "salary": "Maosh",
+    "start": "Boshlanishi",
+    "months": "{n} oy",
+    "accept": "Qabul qilaman",
+    "decline": "Rad etaman",
+    "failed": "Javob yuborilmadi. Qayta urinib ko'ring.",
+    "status": {
+      "PROPOSED": "Javob kutilmoqda",
+      "WORKER_ACCEPTED": "Siz qabul qildingiz",
+      "WORKER_DECLINED": "Siz rad etdingiz",
+      "EMPLOYER_APPROVED": "Ish beruvchi tasdiqladi",
+      "EMPLOYER_REJECTED": "Ish beruvchi rad etdi",
+      "HIRED": "Ishga olindi"
+    }
+  },
+  "workerProfile": {
+    "title": "Mening usta profilim",
+    "text": "Ish beruvchilar sizni shu ma'lumotlar bilan ko'radi. Telefon raqamingiz hech qachon ommaviy bo'lmaydi.",
+    "level": "Daraja",
+    "hours": "Tasdiqlangan soat",
+    "rating": "Baho",
+    "noRating": "Hali baho yo'q",
+    "availability": "Holatim",
+    "path": "Daraja yo'li",
+    "pathNote": "Darajani tizim taklif qiladi, administrator tasdiqlaydi.",
+    "privacy": "Ommaviy profilda nima ko'rinsin",
+    "certs": "Sertifikatlarim",
+    "certsEmpty": "Sertifikat hali berilmagan.",
+    "signatures": "{done}/{all} imzo",
+    "pdf": "PDF yuklash",
+    "check": "Tekshirish",
+    "jobs": "Ish tarixim",
+    "jobsEmpty": "Hozircha joylashuv yo'q.",
+    "now": "hozirgacha",
+    "publicPage": "Ommaviy profilni ochish",
+    "saved": "Saqlandi",
+    "failed": "Saqlanmadi. Qayta urinib ko'ring.",
+    "availabilities": {
+      "FREE": "Bo'sh",
+      "BUSY": "Band",
+      "INACTIVE": "Faol emas"
+    },
+    "levels": {
+      "APPRENTICE": "Shogird",
+      "ASSISTANT": "Usta yordamchisi",
+      "MASTER": "Usta",
+      "FOREMAN": "Brigadir"
+    },
+    "privacyKeys": {
+      "photo": "Rasmim",
+      "ratings": "Baholarim",
+      "full_name": "To'liq ismim",
+      "languages": "Tillarim",
+      "portfolio": "Portfolioim"
+    }
+  },
+  "shortlist": {
+    "title": "Saralangan ustalar",
+    "text": "Keyin taklif yuborish uchun saqlab qo'ygan ustalaringiz.",
+    "empty": "Hali hech kim saralanmagan",
+    "emptyText": "Ustalar sahifasida \"Saralash\" tugmasini bosing.",
+    "add": "Saralash",
+    "added": "Saralangan ✓",
+    "remove": "Olib tashlash",
+    "open": "Profilni ochish",
+    "hours": "{n} soat"
+  },
+  "producerStats": {
+    "title": "Savdo statistikasi",
+    "text": "Faqat sizning buyurtmalaringiz bo'yicha haqiqiy raqamlar.",
+    "products": "Mahsulotlar",
+    "outOfStock": "Tugagan",
+    "statusTitle": "Buyurtmalar holati",
+    "monthsTitle": "Oylar bo'yicha",
+    "topTitle": "Ko'p buyurtma qilingan mahsulotlar",
+    "empty": "Hozircha buyurtma yo'q",
+    "orders": "{n} ta buyurtma",
+    "sum": "{n} so'm",
+    "status": {
+      "NEW": "Yangi",
+      "CONTACTED": "Bog'lanildi",
+      "DONE": "Bajarildi",
+      "CANCELLED": "Bekor qilindi"
+    }
+  },
+  "mahallas": {
+    "title": "Mahallalar kesimi",
+    "text": "Qaysi mahallada nechta ishtirokchi bor. Telefon va shaxsiy ma'lumotlar ko'rsatilmaydi.",
+    "name": "Mahalla",
+    "people": "Ishtirokchi",
+    "studying": "O'qiyapti",
+    "certified": "Sertifikatli",
+    "workers": "Usta",
+    "export": "CSV yuklash",
+    "empty": "Hozircha ma'lumot yo'q"
+  },
+  "students": {
+    "title": "Tinglovchilarim",
+    "text": "Davomat va baholar bo'yicha holat. Davomati 70% dan past bo'lganlar belgilanadi.",
+    "empty": "Tinglovchi yo'q",
+    "attendance": "Davomat",
+    "average": "O'rtacha ball",
+    "last": "Oxirgi dars",
+    "risk": "Diqqat kerak",
+    "lessons": "{n} ta dars"
+  },
+  "progress": {
+    "title": "Mening yutuqlarim",
+    "empty": "Siz hali guruhga yozilmagansiz",
+    "emptyText": "Ariza qabul qilingach, darslar va yutuqlaringiz shu yerda ko'rinadi.",
+    "group": "Guruh",
+    "schedule": "Dars jadvali",
+    "attendance": "Davomat",
+    "attendanceNote": "{present} / {lessons} dars",
+    "average": "O'rtacha ball",
+    "modules": "Modullar",
+    "modulesNote": "{passed} / {modules} topshirildi",
+    "hours": "Obyektdagi soat",
+    "vocab": "Lug'at kunlari",
+    "noData": "Hali ma'lumot yo'q",
+    "days": {
+      "Du": "Du",
+      "Se": "Se",
+      "Ch": "Ch",
+      "Pa": "Pa",
+      "Ju": "Ju",
+      "Sh": "Sh",
+      "Ya": "Ya"
+    }
+  },
+  "notifications": {
+    "title": "Bildirishnomalar",
+    "empty": "Yangi xabar yo'q",
+    "markRead": "Hammasini o'qilgan deb belgilash",
+    "bell": "Bildirishnomalar",
+    "kind": {
+      "offer": "Sizga yangi ish taklifi keldi",
+      "offer_answer": {
+        "yes": "Usta taklifingizni qabul qildi",
+        "no": "Usta taklifingizni rad etdi"
+      },
+      "other": "Yangi xabar"
+    }
+  },
+  "settings": {
+    "title": "Sozlamalar",
+    "account": "Hisob",
+    "name": "Ism",
+    "roles": "Rollarim",
+    "language": "Til",
+    "appearance": "Ko'rinish",
+    "privacyNote": "Telefon raqamingiz ommaviy sahifalarda hech qachon ko'rsatilmaydi."
   }
 }

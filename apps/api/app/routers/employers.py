@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
+from app.inapp import notify
 from app.security import bearer_from_request, new_id, problem, read_access_token
 
 router = APIRouter(prefix="/api/v1/employers", tags=["employers"])
@@ -353,6 +354,8 @@ async def add_candidate(request_id: uuid.UUID, body: CandidateBody, request: Req
                 "brigade_id": body.brigade_id,
             },
         )
+        if body.worker_user_id is not None:
+            await notify(conn, body.worker_user_id, "offer", {"request_id": str(request_id)})
     return JSONResponse({"status": "PROPOSED"})
 
 
