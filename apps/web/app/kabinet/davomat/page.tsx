@@ -24,12 +24,26 @@ export default async function AttendancePage() {
       return <EmptyState title="Davomat yo'q" text="Hali belgi qo'yilmagan." />;
     }
     return (
-      <div className="p-4">
-        <h1 className="text-3xl font-extrabold text-[#071833]">Davomat</h1>
-        <ul className="mt-4 flex flex-col gap-2">
+      <div>
+        <h1 className="text-3xl font-extrabold tracking-tight text-navy-900">Davomat</h1>
+        <ul className="mt-6 divide-y divide-line overflow-hidden rounded-2xl border border-line bg-card shadow-sh1">
           {mine.attendance.map((item) => (
-            <li key={item.date} className="rounded-2xl border border-[#e5eaf2] bg-white shadow-sm px-4 py-3">
-              {item.date} · {item.status === "PRESENT" ? "Keldi" : item.status === "LATE" ? "Kechikdi" : item.status === "ABSENT_EXCUSED" ? "Sababli" : "Kelmadi"} · {item.site_hours} soat
+            <li key={item.date} className="flex items-center justify-between gap-4 px-5 py-3.5 text-sm">
+              <time dateTime={item.date} className="font-semibold tabular-nums text-navy-900">{item.date}</time>
+              <span className="flex items-center gap-4">
+                <span className="tabular-nums text-muted">{item.site_hours} soat</span>
+                <span
+                  className={`rounded-full px-2.5 py-1 text-xs font-bold ${
+                    item.status === "PRESENT"
+                      ? "bg-success-100 text-success-600"
+                      : item.status === "LATE" || item.status === "ABSENT_EXCUSED"
+                        ? "bg-warning-100 text-warning-600"
+                        : "bg-danger-100 text-danger-600"
+                  }`}
+                >
+                  {item.status === "PRESENT" ? "Keldi" : item.status === "LATE" ? "Kechikdi" : item.status === "ABSENT_EXCUSED" ? "Sababli" : "Kelmadi"}
+                </span>
+              </span>
             </li>
           ))}
         </ul>
@@ -45,7 +59,7 @@ export default async function AttendancePage() {
   }
   return (
     <div>
-      <h1 className="px-4 pt-4 text-3xl font-extrabold text-[#071833]">Bugungi davomat · {groups[0].code}</h1>
+      <h1 className="mb-6 text-3xl font-extrabold tracking-tight text-navy-900">Bugungi davomat · {groups[0].code}</h1>
       <AttendanceSheet groupId={groups[0].id} />
     </div>
   );

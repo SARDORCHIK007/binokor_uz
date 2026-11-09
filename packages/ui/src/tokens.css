@@ -1,55 +1,64 @@
 :root {
-  --navy-900: #0c1b33;
-  --navy-800: #13294b;
-  --navy-700: #1c3a66;
-  --blue-700: #1d4f8a;
-  --blue-600: #2563a8;
-  --blue-500: #3b7bc4;
-  --blue-100: #e7eef7;
-  --blue-50: #f2f6fb;
-  --teal-700: #225e52;
-  --teal-600: #2f7d6d;
-  --teal-100: #e4f1ee;
-  --amber-600: #c27a00;
-  --amber-100: #fff3d6;
+  /* Brand palette — single source of truth (navy + blue + yellow) */
+  --navy-900: #071833;
+  --navy-800: #0b2247;
+  --navy-700: #13305e;
+  --blue-700: #1f55d6;
+  --blue-600: #2f6bff;
+  --blue-500: #5b8cff;
+  --blue-200: #c9d8ff;
+  --blue-100: #e6eeff;
+  --blue-50: #f2f6ff;
+  --teal-700: #17703c;
+  --teal-600: #1f8a4c;
+  --teal-100: #e3f4ea;
+  --amber-600: #e49f00;
+  --amber-500: #f5b400;
+  --amber-100: #fff4d1;
 
-  --ink-900: #0f172a;
-  --ink-800: #1e293b;
-  --ink-600: #475467;
+  --ink-900: #071833;
+  --ink-800: #1b2b45;
+  --ink-600: #44526a;
   --ink-500: #5f6b7d;
   --ink-400: #98a2b3;
-  --line-200: #d9dfe8;
-  --line-100: #eaeef3;
+  --line-300: #d9dfe8;
+  --line-200: #e5eaf2;
+  --line-100: #eef2f7;
   --surface-0: #ffffff;
-  --surface-50: #f4f6f9;
-  --surface-100: #e9edf2;
+  --surface-50: #f4f7fb;
+  --surface-100: #eef2f7;
 
   --success-600: #1f8a4c;
   --success-100: #e3f4ea;
   --warning-600: #b26b00;
-  --warning-100: #fff1d6;
+  --warning-100: #fff4d1;
   --danger-600: #b42318;
   --danger-100: #fde7e5;
-  --info-600: #2563a8;
-  --info-100: #e7eef7;
+  --info-600: #2f6bff;
+  --info-100: #e6eeff;
 
-  --bg: #f4f7fb;
+  --bg: var(--surface-50);
   --card: var(--surface-0);
-  --text: var(--ink-800);
+  --text: var(--ink-900);
+  --text-body: var(--ink-800);
   --text-muted: var(--ink-500);
-  --border: #e0e6f0;
-  --primary: #2f6bff;
-  --primary-hover: #1f55d6;
+  --text-faint: var(--ink-400);
+  --border: var(--line-200);
+  --border-strong: var(--line-300);
+  --primary: var(--blue-600);
+  --primary-hover: var(--blue-700);
   --primary-contrast: #ffffff;
+  --accent: var(--amber-500);
+  --accent-hover: var(--amber-600);
   --focus-ring: 0 0 0 3px rgba(47, 107, 255, 0.35);
 
   --r-sm: 12px;
   --r-md: 16px;
   --r-lg: 20px;
 
-  --sh-1: 0 1px 2px rgba(12, 27, 51, 0.06);
-  --sh-2: 0 1px 2px rgba(12, 27, 51, 0.06), 0 6px 20px rgba(12, 27, 51, 0.06);
-  --sh-3: 0 12px 40px rgba(12, 27, 51, 0.12);
+  --sh-1: 0 1px 2px rgba(7, 24, 51, 0.05), 0 2px 8px rgba(7, 24, 51, 0.04);
+  --sh-2: 0 1px 2px rgba(7, 24, 51, 0.06), 0 10px 30px rgba(7, 24, 51, 0.08);
+  --sh-3: 0 16px 40px rgba(7, 24, 51, 0.14);
 
   --m-fast: 120ms;
   --m-base: 200ms;

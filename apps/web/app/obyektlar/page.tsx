@@ -1,6 +1,8 @@
-import { EmptyState, StatusBadge } from "@uychibinokor/ui";
+import { EmptyState } from "@uychibinokor/ui";
 import { getTranslations } from "next-intl/server";
 import { SiteMap } from "@/components/objects/SiteMap";
+import { Icon } from "@/components/brand/Icon";
+import { CARD, ErrorPage, FilterTabs, PAGE, PageHeader } from "@/components/site/PageHeader";
 import { apiGet } from "@/lib/public";
 
 export const dynamic = "force-dynamic";
@@ -33,41 +35,50 @@ export default async function ObjectsPage({
   const objects = await apiGet<Site[]>(`/api/v1/public/objects${suffix}`);
   if (!objects) {
     return (
-      <div className="mx-auto max-w-xl px-4 py-16">
+      <ErrorPage>
         <EmptyState title={t("errorTitle")} text={t("errorText")} />
-      </div>
+      </ErrorPage>
     );
   }
   return (
-    <div className="mx-auto max-w-[1200px] px-4 py-10">
-      <h1 className="text-4xl font-semibold text-navy-900">Obyektlar</h1>
-      <div className="mt-4 flex gap-3 text-sm">
-        <a href="/obyektlar" className="text-primary">
-          Hammasi
-        </a>
-        <a href="/obyektlar?status=IN_PROGRESS" className="text-primary">
-          Jarayonda
-        </a>
-        <a href="/obyektlar?status=COMPLETED" className="text-primary">
-          Tugagan
-        </a>
-      </div>
-      <div className="mt-6">
-        <SiteMap sites={objects} />
-      </div>
-      <ul className="mt-6 grid gap-4 sm:grid-cols-2">
+    <div className={PAGE}>
+      <PageHeader title="Obyektlar" />
+      <FilterTabs
+        items={[
+          { href: "/obyektlar", label: "Hammasi", active: !query.status },
+          { href: "/obyektlar?status=IN_PROGRESS", label: "Jarayonda", active: query.status === "IN_PROGRESS" },
+          { href: "/obyektlar?status=COMPLETED", label: "Tugagan", active: query.status === "COMPLETED" },
+        ]}
+      />
+      <SiteMap sites={objects} />
+      <ul className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {objects.map((item) => (
-          <li key={item.id} className="rounded-md border border-line bg-card p-4">
+          <li key={item.id} className={CARD}>
             <div className="flex items-start justify-between gap-3">
-              <h2 className="text-xl font-semibold">{item.name}</h2>
-              <StatusBadge tone="info">{item.progress}%</StatusBadge>
+              <h2 className="text-lg font-bold text-navy-900">{item.name}</h2>
+              <span className="shrink-0 rounded-full bg-blue-100 px-2.5 py-1 text-xs font-bold text-primary">
+                {OBJECT_STATUS[item.status] ?? item.status}
+              </span>
             </div>
-            <p className="mt-2 text-sm text-muted">
-              {item.address} · {OBJECT_STATUS[item.status] ?? item.status}
+            <p className="mt-2 inline-flex items-center gap-1.5 text-sm text-muted">
+              <Icon name="pin" className="size-4 shrink-0" />
+              {item.address}
             </p>
-            <p className="mt-1 text-sm tabular-nums text-muted">
-              {item.lat.toFixed(3)}, {item.lon.toFixed(3)}
-            </p>
+            <div className="mt-4">
+              <div className="flex justify-between text-xs font-semibold text-muted">
+                <span>{item.lat.toFixed(3)}, {item.lon.toFixed(3)}</span>
+                <span className="tabular-nums text-navy-900">{item.progress}%</span>
+              </div>
+              <div
+                className="mt-1.5 h-2 overflow-hidden rounded-full bg-surface-100"
+                role="progressbar"
+                aria-valuenow={item.progress}
+                aria-valuemin={0}
+                aria-valuemax={100}
+              >
+                <div className="h-full rounded-full bg-primary" style={{ width: `${item.progress}%` }} />
+              </div>
+            </div>
           </li>
         ))}
       </ul>

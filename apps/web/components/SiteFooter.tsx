@@ -14,7 +14,7 @@ export function SiteFooter() {
     return null;
   }
   return (
-    <footer className="bg-[#071833] text-blue-50">
+    <footer className="bg-navy-900 text-blue-50">
       <div className="mx-auto grid max-w-[1200px] gap-8 px-4 py-14 sm:grid-cols-4">
         <div className="sm:col-span-2">
           <Logo />

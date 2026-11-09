@@ -24,13 +24,22 @@ export default async function UsersPage() {
   }
   return (
     <div>
-      <h1 className="text-3xl font-extrabold text-[#071833]">{t("users")}</h1>
-      <ul className="mt-4 flex flex-col gap-2">
+      <h1 className="text-3xl font-extrabold tracking-tight text-navy-900">{t("users")}</h1>
+      <ul className="mt-6 divide-y divide-line overflow-hidden rounded-2xl border border-line bg-card shadow-sh1">
         {rows.map((row) => (
-          <li key={row.id} className="flex flex-wrap items-center justify-between gap-2 rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm px-4 py-3">
-            <span className="font-medium">{row.full_name}</span>
-            <span className="text-sm text-muted">
-              {row.roles.map((role) => (ROLE_KEY[role] ? roles(ROLE_KEY[role]) : role)).join(", ")}
+          <li key={row.id} className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 hover:bg-canvas">
+            <span className="flex items-center gap-3">
+              <span className="grid size-9 shrink-0 place-items-center rounded-full bg-blue-100 text-sm font-bold text-primary" aria-hidden="true">
+                {row.full_name.charAt(0)}
+              </span>
+              <span className="font-semibold text-navy-900">{row.full_name}</span>
+            </span>
+            <span className="flex flex-wrap gap-1.5">
+              {row.roles.map((role) => (
+                <span key={role} className="rounded-full bg-surface-100 px-2.5 py-1 text-xs font-semibold text-muted">
+                  {ROLE_KEY[role] ? roles(ROLE_KEY[role]) : role}
+                </span>
+              ))}
             </span>
           </li>
         ))}

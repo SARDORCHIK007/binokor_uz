@@ -129,7 +129,7 @@ async def _applications_by_trade(conn: AsyncConnection) -> list[dict[str, object
             SELECT t.name, count(a.id) AS total
             FROM trades t
             LEFT JOIN applications a ON a.desired_trade_id = t.id AND a.status <> 'DRAFT'
-            GROUP BY t.name
+            GROUP BY t.name, t.code
             ORDER BY count(a.id) DESC, t.code
             """
         )

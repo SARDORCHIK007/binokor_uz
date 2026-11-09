@@ -9,14 +9,14 @@ export function FunnelChart({ rows }: { rows: { name: string; value: number }[] 
         const heightPct = Math.max(10, Math.round((row.value / max) * 100));
         return (
           <div key={row.name} className="flex-1 flex flex-col items-center h-full justify-end group">
-            <span className="text-xs font-bold text-[#071833] mb-1.5 opacity-0 group-hover:opacity-100 transition">
+            <span className="text-xs font-bold text-navy-900 mb-1.5 opacity-0 group-hover:opacity-100 transition">
               {row.value}
             </span>
             <div
-              className="w-full max-w-[48px] rounded-t-xl bg-[#0C1B33] group-hover:bg-[#2F6BFF] transition-all duration-300"
+              className="w-full max-w-[48px] rounded-t-xl bg-navy-900 group-hover:bg-primary transition-all duration-300"
               style={{ height: `${heightPct}%` }}
             />
-            <span className="text-[11px] font-semibold text-[#5f6b7d] mt-2 truncate max-w-full">
+            <span className="text-[11px] font-semibold text-muted mt-2 truncate max-w-full">
               {row.name}
             </span>
           </div>

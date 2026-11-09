@@ -13,14 +13,21 @@ export function SiteMap({ sites }: { sites: Site[] }) {
   const spanLat = maxLat - minLat || 0.01;
   const spanLon = maxLon - minLon || 0.01;
   return (
-    <div className="relative h-80 rounded-md border border-line bg-teal-100">
+    <div
+      className="relative h-80 overflow-hidden rounded-2xl border border-line bg-blue-50 shadow-sh1"
+      style={{
+        backgroundImage:
+          "linear-gradient(var(--line-200) 1px, transparent 1px), linear-gradient(90deg, var(--line-200) 1px, transparent 1px)",
+        backgroundSize: "40px 40px",
+      }}
+    >
       {sites.map((site) => {
         const x = ((site.lon - minLon) / spanLon) * 90 + 5;
         const y = (1 - (site.lat - minLat) / spanLat) * 80 + 8;
         return (
           <span
             key={site.id}
-            className="absolute min-h-11 min-w-11 -translate-x-1/2 -translate-y-1/2 rounded-full bg-navy-900 px-2 text-xs leading-[44px] text-white"
+            className="absolute min-h-11 min-w-11 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-white bg-navy-900 px-2 text-center text-xs leading-[36px] font-bold text-white shadow-sh2"
             style={{ left: `${x}%`, top: `${y}%` }}
             title={site.name}
           >

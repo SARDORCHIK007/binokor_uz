@@ -27,11 +27,11 @@ export default async function CertificatesPage() {
     return <EmptyState title="Navbat bo'sh" text="Tasdiq kutayotgan sertifikat yo'q." />;
   }
   return (
-    <div className="p-4">
-      <h1 className="text-3xl font-extrabold text-[#071833]">Sertifikat navbati</h1>
+    <div>
+      <h1 className="text-3xl font-extrabold tracking-tight text-navy-900">Sertifikat navbati</h1>
       <ul className="mt-4 flex flex-col gap-3">
         {rows.map((item) => (
-          <li key={item.id} className="rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm p-4">
+          <li key={item.id} className="rounded-2xl border border-line bg-card shadow-sh1 p-4">
             <p className="font-semibold">
               {item.holder} · {item.trade}
             </p>

@@ -24,10 +24,10 @@ export default async function CoursesPage() {
   }
   return (
     <div>
-      <h1 className="text-3xl font-extrabold text-[#071833]">{t("courses")}</h1>
+      <h1 className="text-3xl font-extrabold tracking-tight text-navy-900">{t("courses")}</h1>
       <ul className="mt-4 flex flex-col gap-3">
         {rows.map((row) => (
-          <li key={row.id} className="rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm p-4">
+          <li key={row.id} className="rounded-2xl border border-line bg-card shadow-sh1 p-4">
             <p className="font-semibold">{row.title}</p>
             <p className="text-sm text-muted">
               {row.trade} · {row.track} · {row.start_date} — {row.end_date}

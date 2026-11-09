@@ -7,12 +7,12 @@ const tones: Record<StatusTone, string> = {
   success: "bg-success-100 text-success-600",
   warning: "bg-warning-100 text-warning-600",
   danger: "bg-danger-100 text-danger-600",
-  info: "bg-surface-100 text-ink",
+  info: "bg-blue-100 text-primary",
 };
 
 export function StatusBadge({ tone, children }: { tone: StatusTone; children: ReactNode }) {
   return (
-    <span className={cx("inline-flex items-center gap-1.5 rounded-sm px-2.5 py-1 text-xs font-medium", tones[tone])}>
+    <span className={cx("inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold", tones[tone])}>
       <StatusIcon tone={tone} />
       {children}
     </span>

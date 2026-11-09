@@ -13,7 +13,7 @@ export function TextField({ label, hint, error, icon, id, className, ...props }:
   const message = error ?? hint;
   return (
     <div className={cx("flex flex-col gap-1.5", className)}>
-      <label htmlFor={fieldId} className="text-sm font-medium text-ink">
+      <label htmlFor={fieldId} className="text-sm font-semibold text-navy-900">
         {label}
       </label>
       <div className="relative">
@@ -25,13 +25,13 @@ export function TextField({ label, hint, error, icon, id, className, ...props }:
           aria-invalid={error ? true : undefined}
           aria-describedby={message ? `${fieldId}-hint` : undefined}
           className={cx(
-            "min-h-11 w-full rounded-sm border bg-card text-base text-ink",
-            "placeholder:text-muted",
+            "min-h-11 w-full rounded-xl border bg-card text-base text-navy-900",
+            "placeholder:text-faint focus:border-primary",
             "focus-visible:outline-none focus-visible:shadow-[var(--focus-ring)]",
             "disabled:bg-surface-100 disabled:text-muted",
             "read-only:bg-surface-100",
             icon ? "pr-3 pl-10" : "px-3",
-            error ? "border-danger-600" : "border-line",
+            error ? "border-danger-600" : "border-line-strong",
           )}
           {...props}
         />

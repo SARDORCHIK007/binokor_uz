@@ -46,7 +46,7 @@ function cabinetIcon(href: string): IconName {
 }
 
 function linkClass(active: boolean, tone: "blue" | "green") {
-  const on = tone === "blue" ? "bg-[#2F6BFF] shadow-md shadow-[#2F6BFF]/30" : "bg-[#1f8a4c] shadow-md shadow-[#1f8a4c]/30";
+  const on = tone === "blue" ? "bg-primary shadow-md shadow-primary/30" : "bg-primary shadow-md shadow-primary/30";
   return `flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold transition ${active ? `${on} text-white` : "text-white/80 hover:bg-white/10 hover:text-white"}`;
 }
 
@@ -65,7 +65,7 @@ export function AppSidebar({ open, onClose, user }: { open: boolean; onClose: ()
   }
 
   const content = (
-    <div className="flex h-full flex-col justify-between overflow-y-auto bg-[#071833] p-4 text-white">
+    <div className="flex h-full flex-col justify-between overflow-y-auto bg-navy-900 p-4 text-white">
       <div className="space-y-6">
         <div className="flex items-center justify-between border-b border-white/10 pb-4">
           <Link href="/" onClick={onClose} aria-label="UYCHI BINOKOR">
@@ -83,11 +83,11 @@ export function AppSidebar({ open, onClose, user }: { open: boolean; onClose: ()
 
         {user && user.roles.length > 1 ? (
           <label className="block rounded-2xl bg-white/5 p-3 ring-1 ring-white/10">
-            <span className="mb-2 block text-[11px] font-bold tracking-wider text-[#F5B400] uppercase">Faol rol</span>
+            <span className="mb-2 block text-[11px] font-bold tracking-wider text-accent uppercase">Faol rol</span>
             <select
               value={user.role}
               onChange={(event) => chooseRole(event.target.value)}
-              className="w-full rounded-xl border border-white/15 bg-[#0b1f3a] px-3 py-2 text-sm font-semibold text-white focus:border-[#F5B400] focus:outline-none"
+              className="w-full rounded-xl border border-white/15 bg-navy-800 px-3 py-2 text-sm font-semibold text-white focus:border-accent focus:outline-none"
             >
               {user.roles.map((item) => (
                 <option key={item.id} value={item.id}>
@@ -115,7 +115,7 @@ export function AppSidebar({ open, onClose, user }: { open: boolean; onClose: ()
 
         {user ? (
           <div>
-            <span className="px-3 text-[10px] font-extrabold tracking-widest text-[#F5B400]/80 uppercase">Shaxsiy kabinet</span>
+            <span className="px-3 text-[10px] font-extrabold tracking-widest text-accent/80 uppercase">Shaxsiy kabinet</span>
             <nav className="mt-2 space-y-1" aria-label="Kabinet">
               {user.items.map((item) => {
                 const active = path === item.href;
@@ -137,19 +137,19 @@ export function AppSidebar({ open, onClose, user }: { open: boolean; onClose: ()
         </div>
         {user ? (
           <div className="flex items-center gap-3 rounded-2xl bg-white/10 p-3">
-            <span className="grid size-9 shrink-0 place-items-center rounded-full bg-[#F5B400] text-sm font-bold text-[#071833]">
+            <span className="grid size-9 shrink-0 place-items-center rounded-full bg-accent text-sm font-bold text-navy-900">
               {user.name.trim().charAt(0).toUpperCase()}
             </span>
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-bold">{user.name}</p>
-              <p className="truncate text-xs text-[#F5B400]">{user.roles.find((r) => r.id === user.role)?.label}</p>
+              <p className="truncate text-xs text-accent">{user.roles.find((r) => r.id === user.role)?.label}</p>
             </div>
-            <button type="button" onClick={logout} className="rounded-xl bg-white/10 px-3 py-2 text-xs font-bold hover:bg-[#F5B400] hover:text-[#071833]">
+            <button type="button" onClick={logout} className="rounded-xl bg-white/10 px-3 py-2 text-xs font-bold hover:bg-accent hover:text-navy-900">
               Chiqish
             </button>
           </div>
         ) : (
-          <Link href="/kirish" onClick={onClose} className="block rounded-xl bg-white px-4 py-3 text-center text-sm font-bold text-[#071833] hover:bg-[#F5B400]">
+          <Link href="/kirish" onClick={onClose} className="block rounded-xl bg-white px-4 py-3 text-center text-sm font-bold text-navy-900 hover:bg-accent">
             Kirish
           </Link>
         )}

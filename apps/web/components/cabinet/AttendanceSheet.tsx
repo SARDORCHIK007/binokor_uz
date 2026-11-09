@@ -121,14 +121,14 @@ export function AttendanceSheet({ groupId }: { groupId: string }) {
       {offline ? <OfflineBanner text="Internet yo'q. Davomat shu qurilmada navbatga yoziladi." /> : null}
       <ul className="mt-3 flex flex-col gap-3">
         {rows.map((row) => (
-          <li key={row.enrollment_id} className="rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm p-3">
+          <li key={row.enrollment_id} className="rounded-2xl border border-line bg-card shadow-sh1 p-3">
             <p className="font-semibold">{row.name}</p>
             <div className="mt-2 flex flex-wrap gap-2">
               {STATUSES.map((status) => (
                 <button
                   key={status}
                   type="button"
-                  className={`min-h-11 rounded-sm border px-3 text-sm ${row.status === status ? "border-navy-900 bg-navy-900 text-white" : "border-line"}`}
+                  className={`min-h-10 rounded-xl border px-3.5 text-sm font-semibold transition ${row.status === status ? "border-primary bg-primary text-white" : "border-line-strong bg-card text-navy-900 hover:border-primary hover:text-primary"}`}
                   onClick={() => setStatus(row.enrollment_id, status)}
                 >
                   {status === "PRESENT"

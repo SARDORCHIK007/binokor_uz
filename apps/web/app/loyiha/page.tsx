@@ -1,5 +1,6 @@
 import { EmptyState } from "@uychibinokor/ui";
 import { getTranslations } from "next-intl/server";
+import { CARD, ErrorPage, PAGE, PageHeader } from "@/components/site/PageHeader";
 import { apiGet } from "@/lib/public";
 
 export const dynamic = "force-dynamic";
@@ -9,15 +10,17 @@ export default async function ProjectPage() {
   const page = await apiGet<{ title: string; body: string }>("/api/v1/public/pages/loyiha");
   if (!page) {
     return (
-      <div className="mx-auto max-w-xl px-4 py-16">
+      <ErrorPage>
         <EmptyState title={t("errorTitle")} text={t("errorText")} />
-      </div>
+      </ErrorPage>
     );
   }
   return (
-    <article className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="text-4xl font-semibold text-navy-900">{page.title}</h1>
-      <p className="mt-4 text-lg text-ink">{page.body}</p>
+    <article className={PAGE}>
+      <PageHeader title={page.title} />
+      <div className={`${CARD} max-w-3xl p-6 sm:p-8`}>
+        <p className="text-lg leading-relaxed whitespace-pre-line text-body">{page.body}</p>
+      </div>
     </article>
   );
 }

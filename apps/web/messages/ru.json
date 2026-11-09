@@ -19,7 +19,8 @@
     "directions": "Направления",
     "partners": "Партнёры",
     "brigades": "Бригады",
-    "more": "Ещё"
+    "more": "Ещё",
+    "home": "Главная"
   },
   "auth": {
     "title": "Вход",

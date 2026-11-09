@@ -6,16 +6,16 @@ export type ButtonSize = "sm" | "md" | "lg";
 
 const variants: Record<ButtonVariant, string> = {
   primary: "bg-primary text-white hover:bg-primary-hover border border-transparent",
-  secondary: "bg-white text-[#071833] border border-[#cfd8e6] hover:border-[#2f6bff] hover:text-[#2f6bff]",
+  secondary: "bg-white text-navy-900 border border-line-strong hover:border-primary hover:text-primary",
   ghost: "bg-transparent text-ink border border-transparent hover:bg-surface-100",
   danger: "bg-danger-600 text-white border border-transparent hover:opacity-90",
   link: "bg-transparent text-primary border border-transparent underline-offset-4 hover:underline px-0 min-h-0",
 };
 
 const sizes: Record<ButtonSize, string> = {
-  sm: "min-h-11 px-3 text-sm",
-  md: "min-h-11 px-4 text-base",
-  lg: "min-h-14 px-5 text-base",
+  sm: "min-h-10 px-3.5 text-sm",
+  md: "min-h-11 px-5 text-sm",
+  lg: "min-h-12 px-6 text-base",
 };
 
 export function buttonClass({
@@ -28,8 +28,8 @@ export function buttonClass({
   className?: string;
 } = {}): string {
   return cx(
-    "inline-flex items-center justify-center gap-2 rounded-xl font-semibold",
-    "transition-[background-color,opacity] duration-150",
+    "inline-flex items-center justify-center gap-2 rounded-xl font-bold",
+    "transition-colors duration-150",
     "focus-visible:outline-none focus-visible:shadow-[var(--focus-ring)]",
     "disabled:pointer-events-none disabled:opacity-50",
     variants[variant],

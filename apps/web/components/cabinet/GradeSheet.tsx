@@ -121,7 +121,7 @@ export function GradeSheet({ groupId }: { groupId: string }) {
   return (
     <div className="flex flex-col gap-4 p-4">
       {rows.map((row) => (
-        <article key={row.enrollment_id} className="rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm p-3">
+        <article key={row.enrollment_id} className="rounded-2xl border border-line bg-card shadow-sh1 p-3">
           <h2 className="font-semibold">{row.name}</h2>
           <ul className="mt-3 flex flex-col gap-4">
             {modules.map((module) => {
@@ -129,7 +129,7 @@ export function GradeSheet({ groupId }: { groupId: string }) {
               const value = current(row.enrollment_id, module.id, criteria);
               const saved = row.scores[module.id];
               return (
-                <li key={module.id} className="rounded-sm border border-line p-3">
+                <li key={module.id} className="rounded-xl border border-line p-3">
                   <p className="font-medium">{module.title}</p>
                   {saved ? (
                     <p className="text-sm text-muted">
@@ -165,7 +165,7 @@ export function GradeSheet({ groupId }: { groupId: string }) {
                           [keyOf(row.enrollment_id, module.id)]: { ...value, score: event.target.value },
                         }))
                       }
-                      className="mt-1 min-h-11 w-28 rounded-sm border border-line px-3"
+                      className="mt-1 min-h-11 w-28 rounded-xl border border-line-strong bg-card px-3.5"
                     />
                   </label>
                   <label className="mt-2 block text-sm">
@@ -178,7 +178,7 @@ export function GradeSheet({ groupId }: { groupId: string }) {
                           [keyOf(row.enrollment_id, module.id)]: { ...value, comment: event.target.value },
                         }))
                       }
-                      className="mt-1 min-h-20 w-full rounded-sm border border-line px-3 py-2"
+                      className="mt-1 min-h-20 w-full rounded-xl border border-line-strong bg-card px-3.5 py-2"
                     />
                   </label>
                   <label className="mt-2 block text-sm">

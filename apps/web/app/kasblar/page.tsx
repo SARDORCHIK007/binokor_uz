@@ -1,7 +1,7 @@
 import { EmptyState } from "@uychibinokor/ui";
 import { getTranslations } from "next-intl/server";
-import Link from "next/link";
 import { TradeGrid } from "@/components/home/TradeGrid";
+import { ErrorPage, PAGE, PageHeader } from "@/components/site/PageHeader";
 import { apiGet, type HomePayload } from "@/lib/public";
 
 export const dynamic = "force-dynamic";
@@ -26,27 +26,18 @@ export default async function TradesPage() {
   const home = await apiGet<HomePayload>("/api/v1/public/home");
   if (!home) {
     return (
-      <div className="mx-auto max-w-xl px-4 py-16">
+      <ErrorPage>
         <EmptyState title={t("states.errorTitle")} text={t("states.errorText")} />
-      </div>
+      </ErrorPage>
     );
   }
   return (
-    <div className="min-h-screen bg-[#F4F7FB] py-10">
-      <div className="mx-auto max-w-[1200px] px-4">
-        <nav aria-label="Yo'l" className="text-sm text-[#5f6b7d]">
-          <Link href="/" className="hover:text-[#2F6BFF]">Bosh sahifa</Link>
-          <span className="mx-2 text-[#98a2b3]" aria-hidden="true">›</span>
-          <span className="font-semibold text-[#071833]">Kasblar</span>
-        </nav>
-        <div className="mt-6">
-          <div>
-            <h1 className="text-3xl font-extrabold text-[#071833] sm:text-4xl">{home.trades.length} ta ustalik kasbi</h1>
-            <p className="mt-2 text-sm text-[#5f6b7d] sm:text-base">Ichki va xorijiy mehnat bozori uchun eng talabgir qurilish kasblari</p>
-          </div>
-        </div>
-        <TradeGrid trades={home.trades} about={about} />
-      </div>
+    <div className={PAGE}>
+      <PageHeader
+        title={`${home.trades.length} ta ustalik kasbi`}
+        text="Ichki va xorijiy mehnat bozori uchun eng talabgir qurilish kasblari"
+      />
+      <TradeGrid trades={home.trades} about={about} />
     </div>
   );
 }

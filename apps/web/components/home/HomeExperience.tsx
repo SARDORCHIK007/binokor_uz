@@ -46,35 +46,35 @@ export function HomeExperience({ home }: { home: HomePayload }) {
   ];
 
   return (
-    <div className="bg-[#eef3f9] text-[#071833]">
+    <div className="bg-surface-100 text-navy-900">
       {/* 1. HERO BLOCK */}
-      <section className="relative overflow-hidden bg-[#071833] text-white">
+      <section className="relative overflow-hidden bg-navy-900 text-white">
         <img
           src="/media/hero/site.jpg"
           alt=""
           className="pointer-events-none absolute inset-y-0 right-0 hidden h-full w-[60%] object-cover object-center opacity-40 lg:block"
         />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#071833] via-[#071833]/95 to-[#071833]/40" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-navy-900 via-navy-900/95 to-navy-900/40" />
 
         {/* Hero worker portrait - yellow helmet */}
         <div className="pointer-events-none absolute right-4 bottom-0 hidden h-[90%] w-[42%] max-w-[500px] overflow-hidden lg:block">
           <img
             src="/media/hero/hero-student.jpg"
             alt="Uychi binokor ustasi"
-            className="h-full w-full rounded-t-3xl object-cover object-top drop-shadow-2xl ring-4 ring-[#F5B400]/30"
+            className="h-full w-full rounded-t-3xl object-cover object-top drop-shadow-2xl ring-4 ring-accent/30"
           />
         </div>
 
-        <div className="relative mx-auto max-w-[1200px] px-4 pt-14 pb-12 lg:pt-20 lg:pb-16">
+        <div className="relative mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8 pt-14 pb-12 lg:pt-20 lg:pb-16">
           <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 rounded-full bg-[#13294b] px-4 py-1.5 text-xs font-semibold text-[#F5B400] ring-1 ring-[#F5B400]/30">
-              <span className="size-2 rounded-full bg-[#F5B400] animate-pulse" />
+            <span className="inline-flex items-center gap-2 rounded-full bg-navy-800 px-4 py-1.5 text-xs font-semibold text-accent ring-1 ring-accent/30">
+              <span className="size-2 rounded-full bg-accent animate-pulse" />
               Uychi tumani hokimligi rasmiy loyihasi
             </span>
 
             <h1 className="mt-4 text-[38px] leading-[1.08] font-extrabold tracking-[-0.03em] sm:text-[48px] lg:text-[56px]">
               Uychida zamonaviy usta kasbini egallang,{" "}
-              <span className="text-[#F5B400]">ish va daromadga</span> ega bo&apos;ling!
+              <span className="text-accent">ish va daromadga</span> ega bo&apos;ling!
             </h1>
 
             <p className="mt-5 max-w-xl text-base text-white/85 sm:text-lg">
@@ -89,11 +89,11 @@ export function HomeExperience({ home }: { home: HomePayload }) {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Usta, sertifikat raqami (masalan: UB-2026-000001) yoki kasb..."
-                className="h-12 flex-1 rounded-xl bg-white px-4 text-sm font-medium text-[#071833] placeholder:text-[#5f6b7d] focus:outline-none focus:ring-2 focus:ring-[#2F6BFF]"
+                className="h-12 flex-1 rounded-xl bg-white px-4 text-sm font-medium text-navy-900 placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary"
               />
               <button
                 type="submit"
-                className="h-12 shrink-0 rounded-xl bg-[#2F6BFF] px-6 text-sm font-bold text-white hover:bg-[#1f55d6] transition"
+                className="h-12 shrink-0 rounded-xl bg-primary px-6 text-sm font-bold text-white hover:bg-primary-hover transition"
               >
                 Qidirish
               </button>
@@ -102,7 +102,7 @@ export function HomeExperience({ home }: { home: HomePayload }) {
             <div className="mt-6 flex flex-wrap items-center gap-4">
               <Link
                 href="/ariza"
-                className="inline-flex items-center gap-2 rounded-full bg-[#F5B400] px-7 py-3.5 text-base font-bold text-[#071833] shadow-lg shadow-[#F5B400]/20 hover:bg-[#e49f00] transition transform hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 text-base font-bold text-navy-900 shadow-lg shadow-accent/20 hover:bg-accent-hover transition transform hover:-translate-y-0.5"
               >
                 Onlayn ariza berish →
               </Link>
@@ -123,7 +123,7 @@ export function HomeExperience({ home }: { home: HomePayload }) {
                   <dd className="text-3xl font-extrabold text-white tracking-tight tabular-nums sm:text-4xl">
                     {stat.value.toLocaleString()} {stat.suffix}
                   </dd>
-                  <dt className="mt-1 text-xs font-medium text-[#98a2b3] uppercase tracking-wider">{stat.label}</dt>
+                  <dt className="mt-1 text-xs font-medium text-faint uppercase tracking-wider">{stat.label}</dt>
                 </div>
               ))}
             </dl>
@@ -132,18 +132,18 @@ export function HomeExperience({ home }: { home: HomePayload }) {
       </section>
 
       {/* 2. KASBLAR KATALOGI PREVIEW */}
-      <section className="mx-auto max-w-[1200px] px-4 py-16">
+      <section className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8 py-16">
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-[#2F6BFF]">Bo&apos;lajak kasbingiz</span>
-            <h2 className="mt-1 text-3xl font-extrabold text-[#071833] sm:text-4xl">12 ta ustalik kasbi</h2>
-            <p className="mt-2 text-sm text-[#5f6b7d] sm:text-base">
+            <span className="text-xs font-bold uppercase tracking-wider text-primary">Bo&apos;lajak kasbingiz</span>
+            <h2 className="mt-1 text-3xl font-extrabold text-navy-900 sm:text-4xl">12 ta ustalik kasbi</h2>
+            <p className="mt-2 text-sm text-muted sm:text-base">
               Ichki va xorijiy mehnat bozori uchun eng talabgir qurilish kasblari
             </p>
           </div>
           <Link
             href="/kasblar"
-            className="inline-flex items-center gap-1 text-sm font-bold text-[#2F6BFF] hover:underline"
+            className="inline-flex items-center gap-1 text-sm font-bold text-primary hover:underline"
           >
             Barcha 12 ta kasb →
           </Link>
@@ -154,7 +154,7 @@ export function HomeExperience({ home }: { home: HomePayload }) {
             <Link
               key={trade.code}
               href={`/kasblar/${trade.code}`}
-              className="group relative overflow-hidden rounded-2xl bg-white shadow-[0_8px_24px_rgba(7,24,51,0.08)] transition duration-200 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(7,24,51,0.14)]"
+              className="group relative overflow-hidden rounded-2xl bg-white shadow-sh2 transition duration-200 hover:-translate-y-1 hover:shadow-sh3"
             >
               <div className="h-44 overflow-hidden bg-[#0b1f3a]">
                 <img
@@ -165,17 +165,17 @@ export function HomeExperience({ home }: { home: HomePayload }) {
               </div>
               <div className="flex items-end justify-between gap-3 p-5">
                 <div>
-                  <h3 className="text-xl font-bold text-[#071833] group-hover:text-[#2F6BFF] transition">{trade.name}</h3>
-                  <div className="mt-2 flex items-center gap-2 text-sm text-[#5f6b7d]">
-                    <span className="inline-flex items-center gap-1 font-medium text-[#071833]">
-                      <Icon name="users" className="size-4 text-[#2F6BFF]" />
+                  <h3 className="text-xl font-bold text-navy-900 group-hover:text-primary transition">{trade.name}</h3>
+                  <div className="mt-2 flex items-center gap-2 text-sm text-muted">
+                    <span className="inline-flex items-center gap-1 font-medium text-navy-900">
+                      <Icon name="users" className="size-4 text-primary" />
                       {trade.group_count ?? 0} guruh
                     </span>
                     <span>·</span>
                     <span>{trade.domestic_months} oy o&apos;qish</span>
                   </div>
                 </div>
-                <span className="grid size-10 shrink-0 place-items-center rounded-full bg-[#2F6BFF] text-white shadow transition group-hover:bg-[#1f55d6] group-hover:translate-x-1">
+                <span className="grid size-10 shrink-0 place-items-center rounded-full bg-primary text-white shadow transition group-hover:bg-primary-hover group-hover:translate-x-1">
                   →
                 </span>
               </div>
@@ -185,12 +185,12 @@ export function HomeExperience({ home }: { home: HomePayload }) {
       </section>
 
       {/* 3. PLATFORMA ISHLASH JARAYONI (7 QADAM) */}
-      <section className="bg-white py-16 border-y border-[#e5eaf2]">
-        <div className="mx-auto max-w-[1200px] px-4">
+      <section className="bg-white py-16 border-y border-line">
+        <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-xl mx-auto">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#2F6BFF]">Boshidan oxirigacha</span>
-            <h2 className="mt-1 text-3xl font-extrabold text-[#071833] sm:text-4xl">Platforma ishlash jarayoni</h2>
-            <p className="mt-2 text-sm text-[#5f6b7d]">
+            <span className="text-xs font-bold uppercase tracking-wider text-primary">Boshidan oxirigacha</span>
+            <h2 className="mt-1 text-3xl font-extrabold text-navy-900 sm:text-4xl">Platforma ishlash jarayoni</h2>
+            <p className="mt-2 text-sm text-muted">
               Mahalladan boshlanib, rasmiy ish o&apos;rnigacha bo&apos;lgan har bir qadam raqamlashtirilgan
             </p>
           </div>
@@ -199,17 +199,17 @@ export function HomeExperience({ home }: { home: HomePayload }) {
             {steps.map((st) => (
               <div
                 key={st.id}
-                className="relative flex flex-col justify-between rounded-2xl border border-[#e5eaf2] bg-[#f8fafc] p-5 transition hover:border-[#2F6BFF] hover:bg-white hover:shadow-lg"
+                className="relative flex flex-col justify-between rounded-2xl border border-line bg-canvas p-5 transition hover:border-primary hover:bg-white hover:shadow-lg"
               >
                 <div className="flex items-center justify-between">
-                  <span className="grid size-9 place-items-center rounded-xl bg-[#2F6BFF]/10 font-bold text-[#2F6BFF]">
+                  <span className="grid size-9 place-items-center rounded-xl bg-primary/10 font-bold text-primary">
                     {st.id}
                   </span>
-                  <span className="size-2 rounded-full bg-[#1f8a4c]" />
+                  <span className="size-2 rounded-full bg-success-600" />
                 </div>
                 <div className="mt-4">
-                  <h3 className="font-bold text-[#071833] text-base">{st.title}</h3>
-                  <p className="mt-1 text-xs text-[#5f6b7d] leading-relaxed">{st.desc}</p>
+                  <h3 className="font-bold text-navy-900 text-base">{st.title}</h3>
+                  <p className="mt-1 text-xs text-muted leading-relaxed">{st.desc}</p>
                 </div>
               </div>
             ))}
@@ -218,10 +218,10 @@ export function HomeExperience({ home }: { home: HomePayload }) {
       </section>
 
       {/* 4. BALANS TAMOYILI (2x2 MATRITSA) */}
-      <section className="mx-auto max-w-[1200px] px-4 py-16">
-        <div className="rounded-3xl bg-[#071833] p-8 sm:p-12 text-white">
+      <section className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8 py-16">
+        <div className="rounded-3xl bg-navy-900 p-8 sm:p-12 text-white">
           <div className="max-w-2xl">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#F5B400]">Adolatli taqsimot</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-accent">Adolatli taqsimot</span>
             <h2 className="mt-2 text-3xl font-extrabold sm:text-4xl">Balans tamoyili: Kasb va Til integratsiyasi</h2>
             <p className="mt-3 text-sm text-white/80 sm:text-base">
               Til bilganga hunar o&apos;rgatamiz, hunar bilganga til o&apos;rgatamiz. Hech bir yosh e&apos;tibordan chetda qolmaydi.
@@ -236,13 +236,13 @@ export function HomeExperience({ home }: { home: HomePayload }) {
                 onClick={() => setActiveMatrix(item.key)}
                 className={`text-left rounded-2xl p-5 transition border text-sm ${
                   activeMatrix === item.key
-                    ? "border-[#F5B400] bg-white/15 shadow-lg"
+                    ? "border-accent bg-white/15 shadow-lg"
                     : "border-white/10 bg-white/5 hover:bg-white/10"
                 }`}
               >
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-white text-base">{item.title}</span>
-                  <span className="rounded-full bg-[#F5B400] px-2.5 py-0.5 text-xs font-bold text-[#071833]">
+                  <span className="rounded-full bg-accent px-2.5 py-0.5 text-xs font-bold text-navy-900">
                     {item.time}
                   </span>
                 </div>
@@ -254,23 +254,23 @@ export function HomeExperience({ home }: { home: HomePayload }) {
       </section>
 
       {/* 5. ASOSIY AFZALLIKLAR VA TIZIM IMKONIYATLARI */}
-      <section className="bg-white py-16 border-t border-[#e5eaf2]">
-        <div className="mx-auto max-w-[1200px] px-4">
+      <section className="bg-white py-16 border-t border-line">
+        <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
           <div className="grid items-center gap-12 lg:grid-cols-2">
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-[#2F6BFF]">Ekotizim afzalliklari</span>
-              <h2 className="mt-2 text-3xl font-extrabold text-[#071833] sm:text-4xl">
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">Ekotizim afzalliklari</span>
+              <h2 className="mt-2 text-3xl font-extrabold text-navy-900 sm:text-4xl">
                 Kasb, malaka va ish — yagona raqamli ekotizim
               </h2>
-              <p className="mt-3 text-sm text-[#5f6b7d] sm:text-base leading-relaxed">
+              <p className="mt-3 text-sm text-muted sm:text-base leading-relaxed">
                 Platforma Uychi tumani yoshlarining mahalladan boshlab, xalqaro maydondagi nufuzli ob&apos;ektlargacha
                 bo&apos;lgan yo&apos;lini to&apos;liq shaffof va ishonchli ta&apos;minlaydi.
               </p>
 
               <ul className="mt-8 space-y-3.5">
                 {highlights.map((item) => (
-                  <li key={item} className="flex items-center gap-3 text-sm sm:text-base font-semibold text-[#071833]">
-                    <span className="grid size-6 shrink-0 place-items-center rounded-full bg-[#1f8a4c] text-white text-xs">
+                  <li key={item} className="flex items-center gap-3 text-sm sm:text-base font-semibold text-navy-900">
+                    <span className="grid size-6 shrink-0 place-items-center rounded-full bg-success-600 text-white text-xs">
                       ✓
                     </span>
                     {item}
@@ -281,13 +281,13 @@ export function HomeExperience({ home }: { home: HomePayload }) {
               <div className="mt-8 flex flex-wrap gap-4">
                 <Link
                   href="/ariza"
-                  className="rounded-xl bg-[#2F6BFF] px-6 py-3 text-sm font-bold text-white hover:bg-[#1f55d6] transition"
+                  className="rounded-xl bg-primary px-6 py-3 text-sm font-bold text-white hover:bg-primary-hover transition"
                 >
                   Hoziroq ariza topshiring
                 </Link>
                 <Link
                   href="/ish-beruvchilar"
-                  className="rounded-xl border border-[#071833] px-6 py-3 text-sm font-bold text-[#071833] hover:bg-[#071833] hover:text-white transition"
+                  className="rounded-xl border border-navy-900 px-6 py-3 text-sm font-bold text-navy-900 hover:bg-navy-900 hover:text-white transition"
                 >
                   Ish beruvchilar uchun
                 </Link>
@@ -295,7 +295,7 @@ export function HomeExperience({ home }: { home: HomePayload }) {
             </div>
 
             {/* Platforma qurilmalardagi preview */}
-            <div className="relative rounded-3xl bg-[#071833] p-8 text-white shadow-2xl">
+            <div className="relative rounded-3xl bg-navy-900 p-8 text-white shadow-2xl">
               <div className="flex items-center justify-between border-b border-white/10 pb-4">
                 <div className="flex items-center gap-2">
                   <span className="size-3 rounded-full bg-red-500" />
@@ -313,12 +313,12 @@ export function HomeExperience({ home }: { home: HomePayload }) {
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-xl bg-[#1f8a4c]/20 p-4 border border-[#1f8a4c]/40">
+                  <div className="rounded-xl bg-success-600/20 p-4 border border-success-600/40">
                     <span className="text-2xl font-extrabold text-[#2fe67d]">100%</span>
                     <p className="text-xs text-white/80 mt-1">QR tekshiruv shaffofligi</p>
                   </div>
-                  <div className="rounded-xl bg-[#F5B400]/20 p-4 border border-[#F5B400]/40">
-                    <span className="text-2xl font-extrabold text-[#F5B400]">0 so&apos;m</span>
+                  <div className="rounded-xl bg-accent/20 p-4 border border-accent/40">
+                    <span className="text-2xl font-extrabold text-accent">0 so&apos;m</span>
                     <p className="text-xs text-white/80 mt-1">Ish izlovchidan to&apos;lov olinmaydi</p>
                   </div>
                 </div>
@@ -329,20 +329,20 @@ export function HomeExperience({ home }: { home: HomePayload }) {
       </section>
 
       {/* 6. HAMKORLAR TASMASI */}
-      <section className="mx-auto max-w-[1200px] px-4 py-16">
+      <section className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#2F6BFF]">Rasmiy hamkorlik</span>
-          <h2 className="mt-1 text-2xl font-extrabold text-[#071833] sm:text-3xl">Davlat va ta&apos;lim muassasalari hamkorligi</h2>
+          <span className="text-xs font-bold uppercase tracking-wider text-primary">Rasmiy hamkorlik</span>
+          <h2 className="mt-1 text-2xl font-extrabold text-navy-900 sm:text-3xl">Davlat va ta&apos;lim muassasalari hamkorligi</h2>
         </div>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
           {home.partners.map((p) => (
             <div
               key={p.name}
-              className="flex items-center gap-2 rounded-2xl bg-white px-5 py-3 shadow-[0_4px_16px_rgba(7,24,51,0.06)] border border-[#e5eaf2]"
+              className="flex items-center gap-2 rounded-2xl bg-white px-5 py-3 shadow-sh2 border border-line"
             >
-              <span className="size-2 rounded-full bg-[#1f8a4c]" />
-              <span className="text-sm font-semibold text-[#071833]">{p.name}</span>
+              <span className="size-2 rounded-full bg-success-600" />
+              <span className="text-sm font-semibold text-navy-900">{p.name}</span>
             </div>
           ))}
         </div>

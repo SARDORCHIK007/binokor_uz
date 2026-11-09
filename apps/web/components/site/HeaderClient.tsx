@@ -21,7 +21,7 @@ export function HeaderClient({ name }: { name: string | null }) {
     return null;
   }
   return (
-    <header className="sticky top-0 z-30 bg-[#071833] text-white shadow-[0_1px_0_rgba(255,255,255,0.08)]">
+    <header className="sticky top-0 z-30 bg-navy-900 text-white shadow-[0_1px_0_rgba(255,255,255,0.08)]">
       <div className="mx-auto flex max-w-[1200px] items-center gap-4 px-4 py-3">
         <Link href="/" className="shrink-0" aria-label="UYCHI BINOKOR">
           <Logo />
@@ -33,7 +33,7 @@ export function HeaderClient({ name }: { name: string | null }) {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`border-b-2 py-1 ${active ? "border-[#F5B400] text-white" : "border-transparent text-white/80 hover:text-white"}`}
+                className={`border-b-2 py-1 ${active ? "border-accent text-white" : "border-transparent text-white/80 hover:text-white"}`}
               >
                 {item.label}
               </Link>
@@ -47,7 +47,7 @@ export function HeaderClient({ name }: { name: string | null }) {
           {name ? (
             <AccountMenu name={name} />
           ) : (
-            <Link href="/kirish" className="rounded-xl bg-white px-5 py-2 text-sm font-bold text-[#071833] hover:bg-[#F5B400]">
+            <Link href="/kirish" className="rounded-xl bg-white px-5 py-2 text-sm font-bold text-navy-900 hover:bg-accent">
               Kirish
             </Link>
           )}
@@ -55,7 +55,7 @@ export function HeaderClient({ name }: { name: string | null }) {
       </div>
       <nav className="flex gap-4 overflow-x-auto px-4 pb-3 text-sm lg:hidden" aria-label="Asosiy">
         {links.map((item) => (
-          <Link key={item.href} href={item.href} className={`shrink-0 ${path === item.href ? "text-[#F5B400]" : "text-white/85"}`}>
+          <Link key={item.href} href={item.href} className={`shrink-0 ${path === item.href ? "text-accent" : "text-white/85"}`}>
             {item.label}
           </Link>
         ))}

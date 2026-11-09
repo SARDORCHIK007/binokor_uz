@@ -10,14 +10,14 @@ export function EmptyState({
   action?: ReactNode;
 }) {
   return (
-    <div className="rounded-[20px] border border-dashed border-[#cfd8e6] bg-white px-6 py-10 text-center">
-      <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-2xl bg-[#eef3ff] text-primary" aria-hidden="true">
+    <div className="rounded-2xl border border-dashed border-line-strong bg-white px-6 py-10 text-center">
+      <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-2xl bg-blue-50 text-primary" aria-hidden="true">
         <svg viewBox="0 0 24 24" className="size-6" fill="none" stroke="currentColor" strokeWidth="1.75">
           <rect x="4" y="5" width="16" height="14" rx="2" />
           <path d="M8 9h8M8 13h5" />
         </svg>
       </div>
-      <h2 className="text-xl font-semibold text-ink">{title}</h2>
+      <h2 className="text-xl font-bold text-navy-900">{title}</h2>
       <p className="mx-auto mt-2 max-w-md text-base text-muted">{text}</p>
       {action ? <div className="mt-5">{action}</div> : null}
     </div>

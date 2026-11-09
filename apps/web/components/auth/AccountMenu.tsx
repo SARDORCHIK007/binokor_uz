@@ -20,7 +20,7 @@ export function AccountMenu({ name }: { name: string }) {
         {name}
       </button>
       {open ? (
-        <div role="menu" className="absolute right-0 z-30 mt-2 w-48 rounded-md border border-line bg-card py-1 shadow-sh2">
+        <div role="menu" className="absolute right-0 z-30 mt-2 w-48 rounded-2xl border border-line bg-card py-1 shadow-sh2">
           <Link role="menuitem" href="/kabinet" className="block px-3 py-2 text-sm hover:bg-blue-50" onClick={() => setOpen(false)}>
             {t("title")}
           </Link>

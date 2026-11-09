@@ -64,7 +64,7 @@ export default function VocabPage() {
   }
 
   if (state === "loading") {
-    return <div className="mx-auto max-w-xl animate-pulse rounded-3xl bg-white p-10 text-center text-[#5f6b7d]">Yuklanmoqda…</div>;
+    return <div className="max-w-2xl animate-pulse rounded-3xl bg-white p-10 text-center text-muted">Yuklanmoqda…</div>;
   }
   if (state === "guest") {
     return <EmptyState title="Kirish kerak" text="Lug'atni ko'rish uchun tizimga kiring." />;
@@ -77,16 +77,16 @@ export default function VocabPage() {
   const word = data.new[index];
 
   return (
-    <div className="mx-auto flex max-w-2xl flex-col gap-4 p-4 sm:p-6">
-      <h1 className="text-3xl font-extrabold text-[#071833]">Lug&apos;at (nemis tili)</h1>
+    <div className="flex max-w-2xl flex-col gap-4">
+      <h1 className="text-3xl font-extrabold tracking-tight text-navy-900">Lug&apos;at (nemis tili)</h1>
 
-      <section className="rounded-3xl border border-[#e5eaf2] bg-white p-5 shadow-sm">
-        <div className="flex items-center justify-between text-sm font-semibold text-[#071833]">
+      <section className="rounded-2xl border border-line bg-card p-5 shadow-sm">
+        <div className="flex items-center justify-between text-sm font-semibold text-navy-900">
           <span>O&apos;zlashtirilgan (5 qutidan 3-qutiga yetgan)</span>
           <span className="tabular-nums">{data.learned} / {data.total}</span>
         </div>
-        <div className="mt-3 h-3 overflow-hidden rounded-full bg-[#e7eef7]" role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100}>
-          <div className="h-full rounded-full bg-[#1f8a4c]" style={{ width: `${percent}%` }} />
+        <div className="mt-3 h-3 overflow-hidden rounded-full bg-blue-100" role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100}>
+          <div className="h-full rounded-full bg-success-600" style={{ width: `${percent}%` }} />
         </div>
       </section>
 
@@ -95,29 +95,29 @@ export default function VocabPage() {
       ) : !word ? (
         <EmptyState title="Bugungi so'zlar tugadi" text="Keyingi takrorlash vaqti kelganda yangi so'zlar chiqadi." />
       ) : (
-        <section className="rounded-3xl border border-[#e5eaf2] bg-white p-6 text-center shadow-sm sm:p-10">
-          <p className="text-xs font-bold tracking-wider text-[#2F6BFF] uppercase">
+        <section className="rounded-2xl border border-line bg-card p-6 text-center shadow-sm sm:p-10">
+          <p className="text-xs font-bold tracking-wider text-primary uppercase">
             {word.category} · {index + 1} / {data.new.length}
           </p>
-          <p className="mt-4 text-4xl font-black text-[#071833]">{word.word}</p>
+          <p className="mt-4 text-4xl font-black text-navy-900">{word.word}</p>
           {shown ? (
             <>
-              <p className="mt-4 text-3xl font-extrabold text-[#071833] text-[#1f8a4c]">{word.translation}</p>
+              <p className="mt-4 text-3xl font-extrabold text-navy-900 text-success-600">{word.translation}</p>
               <div className="mt-8 grid grid-cols-2 gap-3">
-                <button type="button" disabled={saving} onClick={() => void answer(false, word)} className="rounded-2xl border border-[#d9dfe8] py-3.5 text-sm font-bold text-[#b42318] hover:bg-[#fde7e5] disabled:opacity-50">
+                <button type="button" disabled={saving} onClick={() => void answer(false, word)} className="rounded-2xl border border-line-strong py-3.5 text-sm font-bold text-danger-600 hover:bg-danger-100 disabled:opacity-50">
                   Bilmadim
                 </button>
-                <button type="button" disabled={saving} onClick={() => void answer(true, word)} className="rounded-2xl bg-[#1f8a4c] py-3.5 text-sm font-bold text-white hover:bg-[#17703c] disabled:opacity-50">
+                <button type="button" disabled={saving} onClick={() => void answer(true, word)} className="rounded-2xl bg-success-600 py-3.5 text-sm font-bold text-white hover:bg-teal-700 disabled:opacity-50">
                   Bildim
                 </button>
               </div>
             </>
           ) : (
-            <button type="button" onClick={() => setShown(true)} className="mt-8 w-full rounded-2xl bg-[#2F6BFF] py-3.5 text-sm font-bold text-white hover:bg-[#1f55d6]">
+            <button type="button" onClick={() => setShown(true)} className="mt-8 w-full rounded-2xl bg-primary py-3.5 text-sm font-bold text-white hover:bg-primary-hover">
               Tarjimani ko&apos;rsatish
             </button>
           )}
-          {error ? <p className="mt-3 text-sm text-[#b42318]">{error}</p> : null}
+          {error ? <p className="mt-3 text-sm text-danger-600">{error}</p> : null}
         </section>
       )}
     </div>

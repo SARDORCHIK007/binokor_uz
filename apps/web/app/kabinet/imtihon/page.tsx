@@ -87,8 +87,8 @@ export default function ExamPage() {
     const theory = score ?? (exam.state === "done" ? exam.theory_score : 0);
     const practice = exam.state === "done" ? exam.practice_score : null;
     return (
-      <div className="p-4">
-        <h1 className="text-3xl font-extrabold text-[#071833]">Yakuniy sinov</h1>
+      <div>
+        <h1 className="text-3xl font-extrabold tracking-tight text-navy-900">Yakuniy sinov</h1>
         <p className="mt-3">Nazariya: {theory}</p>
         <p>Amaliy: {practice ?? "Ustoz bahosi kutilmoqda"}</p>
       </div>
@@ -99,12 +99,12 @@ export default function ExamPage() {
   }
   return (
     <div className="flex flex-col gap-4 p-4">
-      <h1 className="text-3xl font-extrabold text-[#071833]">Yakuniy sinov</h1>
+      <h1 className="text-3xl font-extrabold tracking-tight text-navy-900">Yakuniy sinov</h1>
       <p className="text-sm text-muted">
         30 savol · qolgan vaqt {left === null ? "—" : `${Math.floor(left / 60)}:${String(left % 60).padStart(2, "0")}`}
       </p>
       {exam.questions.map((question, index) => (
-        <fieldset key={question.id} className="rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm p-4">
+        <fieldset key={question.id} className="rounded-2xl border border-line bg-card shadow-sh1 p-4">
           <legend className="font-semibold">
             {index + 1}. {question.body}
           </legend>

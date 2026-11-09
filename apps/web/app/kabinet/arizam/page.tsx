@@ -24,11 +24,11 @@ export default async function MyApplicationPage() {
     return <EmptyState title="Ariza yo'q" text="Hali ariza yubormagansiz." />;
   }
   return (
-    <div className="p-4">
-      <h1 className="text-3xl font-extrabold text-[#071833]">Mening arizam</h1>
+    <div>
+      <h1 className="text-3xl font-extrabold tracking-tight text-navy-900">Mening arizam</h1>
       <ul className="mt-4 flex flex-col gap-2">
         {rows.map((item) => (
-          <li key={item.id} className="rounded-2xl border border-[#e5eaf2] bg-white shadow-sm px-4 py-3">
+          <li key={item.id} className="rounded-2xl border border-line bg-card shadow-sh1 px-4 py-3">
             {item.trade} · {STATUS[item.status] ?? item.status} · toifa {item.matrix ?? "—"}
           </li>
         ))}

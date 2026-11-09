@@ -35,14 +35,14 @@ export default async function AdminApplicationsPage() {
   }
   const rows = (await response.json()) as Row[];
   return (
-    <div className="mx-auto max-w-[1100px] px-4 py-10">
-      <h1 className="text-3xl font-extrabold text-[#071833]">Arizalar</h1>
+    <div>
+      <h1 className="text-3xl font-extrabold tracking-tight text-navy-900">Arizalar</h1>
       {rows.length === 0 ? (
         <p className="mt-4 text-muted">Hozircha ariza yo'q.</p>
       ) : (
         <ul className="mt-6 flex flex-col gap-3">
           {rows.map((row) => (
-            <li key={row.id} className="rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm p-4">
+            <li key={row.id} className="rounded-2xl border border-line bg-card shadow-sh1 p-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <p className="font-semibold">{row.name}</p>

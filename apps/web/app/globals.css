@@ -3,9 +3,17 @@
 @source "../";
 @source "../../../packages/ui/src";
 
-body {
-  font-feature-settings: "tnum" 1, "cv11" 1;
-  letter-spacing: -0.011em;
+@layer base {
+  body {
+    font-feature-settings: "cv11" 1;
+    letter-spacing: -0.011em;
+  }
+
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.02em;
+  }
 }
 
 main h1 {

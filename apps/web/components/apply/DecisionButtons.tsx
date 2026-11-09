@@ -21,7 +21,7 @@ export function DecisionButtons({ id }: { id: string }) {
   return (
     <div className="flex flex-wrap items-center gap-2">
       <input
-        className="min-h-11 rounded-sm border border-line px-3"
+        className="min-h-11 rounded-xl border border-line-strong bg-card px-3.5"
         placeholder="Rad sababi"
         value={note}
         onChange={(event) => setNote(event.target.value)}

@@ -26,7 +26,7 @@ export default async function JobsPage() {
   }
   return (
     <div className="flex flex-col gap-6 p-4">
-      <h1 className="text-3xl font-extrabold text-[#071833]">Ishlar</h1>
+      <h1 className="text-3xl font-extrabold tracking-tight text-navy-900">Ishlar</h1>
       <section>
         <h2 className="font-semibold">Ish beruvchilar</h2>
         {board.employers.length === 0 ? (
@@ -34,7 +34,7 @@ export default async function JobsPage() {
         ) : (
           <ul className="mt-3 flex flex-col gap-2.5">
             {board.employers.map((item) => (
-              <li key={item.id} className="rounded-2xl border border-[#e5eaf2] bg-white shadow-sm px-4 py-3">
+              <li key={item.id} className="rounded-2xl border border-line bg-card shadow-sh1 px-4 py-3">
                 {item.name} · STIR {item.inn}
               </li>
             ))}
@@ -48,7 +48,7 @@ export default async function JobsPage() {
         ) : (
           <ul className="mt-3 flex flex-col gap-2.5">
             {board.requests.map((item) => (
-              <li key={item.id} className="rounded-2xl border border-[#e5eaf2] bg-white shadow-sm px-4 py-3">
+              <li key={item.id} className="rounded-2xl border border-line bg-card shadow-sh1 px-4 py-3">
                 {item.employer} · {item.quantity} kishi · {item.as_brigade ? "brigada" : "alohida"}
                 <RequestMove id={item.id} status={item.status} />
               </li>
@@ -63,7 +63,7 @@ export default async function JobsPage() {
         ) : (
           <ul className="mt-3 flex flex-col gap-2.5">
             {board.brigades.map((item) => (
-              <li key={item.id} className="rounded-2xl border border-[#e5eaf2] bg-white shadow-sm px-4 py-3">
+              <li key={item.id} className="rounded-2xl border border-line bg-card shadow-sh1 px-4 py-3">
                 {item.name} · {item.members} a'zo · {item.status}
               </li>
             ))}
@@ -77,7 +77,7 @@ export default async function JobsPage() {
         ) : (
           <ul className="mt-3 flex flex-col gap-2.5">
             {board.placements.map((item) => (
-              <li key={item.id} className="rounded-2xl border border-[#e5eaf2] bg-white shadow-sm px-4 py-3">
+              <li key={item.id} className="rounded-2xl border border-line bg-card shadow-sh1 px-4 py-3">
                 {item.full_name} · {item.employer} · {item.kind === "DIRECT" ? "To'g'ridan-to'g'ri" : item.kind}
                 {item.review ? (
                   <p className="text-sm text-muted">

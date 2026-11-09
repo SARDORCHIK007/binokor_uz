@@ -67,8 +67,8 @@ export function ApplicationWizard() {
 
   if (result) {
     return (
-      <div className="rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm p-5">
-        <h1 className="text-3xl font-extrabold text-[#071833]">Ariza qabul qilindi</h1>
+      <div className="rounded-2xl border border-line bg-card shadow-sh1 p-5">
+        <h1 className="text-3xl font-extrabold text-navy-900">Ariza qabul qilindi</h1>
         <p className="mt-2">{result}</p>
         <p className="mt-2 text-sm text-muted">Yo'lni tizim taklif qildi. Qarorni xodim tasdiqlaydi.</p>
       </div>
@@ -77,11 +77,11 @@ export function ApplicationWizard() {
 
   const stages = ["Shaxsiy ma'lumotlar", "Kasb tanlash", "Tasdiqlash"];
   return (
-    <div className="rounded-[20px] bg-white p-6 shadow-[0_10px_30px_rgba(7,24,51,0.08)]">
-      <ol className="mb-6 flex items-center justify-between gap-2 rounded-full border border-[#e3e9f2] px-3 py-2" aria-label="Qadamlar">
+    <div className="rounded-2xl bg-white p-6 shadow-sh2">
+      <ol className="mb-6 flex items-center justify-between gap-2 rounded-full border border-line px-3 py-2" aria-label="Qadamlar">
         {stages.map((label, index) => (
-          <li key={label} aria-current={index === step ? "step" : undefined} className={`flex items-center gap-2 text-xs font-semibold sm:text-sm ${index === step ? "text-[#071833]" : "text-[#5f6b7d]"}`}>
-            <span className={`grid size-7 shrink-0 place-items-center rounded-full text-xs text-white ${index <= step ? "bg-[#2F6BFF]" : "bg-[#c4cddb]"}`}>
+          <li key={label} aria-current={index === step ? "step" : undefined} className={`flex items-center gap-2 text-xs font-semibold sm:text-sm ${index === step ? "text-navy-900" : "text-muted"}`}>
+            <span className={`grid size-7 shrink-0 place-items-center rounded-full text-xs text-white ${index <= step ? "bg-primary" : "bg-line-strong"}`}>
               {index < step ? "✓" : index + 1}
             </span>
             <span className="hidden sm:inline">{label}</span>
@@ -90,7 +90,7 @@ export function ApplicationWizard() {
       </ol>
       {step === 0 ? (
         <div className="flex flex-col gap-3">
-          <p className="font-semibold text-[#071833]">Shaxsiy ma&apos;lumotlaringiz</p>
+          <p className="font-semibold text-navy-900">Shaxsiy ma&apos;lumotlaringiz</p>
           {TYPES.map((item) => (
             <label key={item.id} className="flex min-h-11 items-center gap-2">
               <input type="radio" name="type" checked={type === item.id} onChange={() => setType(item.id)} />
@@ -120,8 +120,8 @@ export function ApplicationWizard() {
       ) : null}
       {step === 2 ? (
         <div className="flex flex-col gap-3">
-          <p className="font-semibold text-[#071833]">Tasdiqlash</p>
-          <ul className="text-sm text-[#5f6b7d]">
+          <p className="font-semibold text-navy-900">Tasdiqlash</p>
+          <ul className="text-sm text-muted">
             <li>Tez va qulay</li>
             <li>Bepul o&apos;qish</li>
             <li>Sertifikat va QR pasport</li>
@@ -134,9 +134,9 @@ export function ApplicationWizard() {
       <div className="mt-6 flex flex-col gap-2 sm:flex-row">
         {step > 0 ? <Button type="button" variant="secondary" onClick={() => setStep(step - 1)}>Orqaga</Button> : null}
         {step < 2 ? (
-          <button type="button" className="min-h-12 flex-1 rounded-xl bg-[#2F6BFF] px-5 font-bold text-white hover:bg-[#1f55d6] disabled:opacity-50" onClick={() => setStep(step + 1)} disabled={step === 0 && (firstName.length < 2 || lastName.length < 2)}>Keyingi bosqich →</button>
+          <button type="button" className="min-h-12 flex-1 rounded-xl bg-primary px-5 font-bold text-white hover:bg-primary-hover disabled:opacity-50" onClick={() => setStep(step + 1)} disabled={step === 0 && (firstName.length < 2 || lastName.length < 2)}>Keyingi bosqich →</button>
         ) : (
-          <button type="button" className="min-h-12 flex-1 rounded-xl bg-[#2F6BFF] px-5 font-bold text-white hover:bg-[#1f55d6] disabled:opacity-50" onClick={() => void submit()} disabled={!personal || !telegram}>Yuborish</button>
+          <button type="button" className="min-h-12 flex-1 rounded-xl bg-primary px-5 font-bold text-white hover:bg-primary-hover disabled:opacity-50" onClick={() => void submit()} disabled={!personal || !telegram}>Yuborish</button>
         )}
       </div>
     </div>

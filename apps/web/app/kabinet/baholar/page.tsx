@@ -24,12 +24,22 @@ export default async function GradesPage() {
       return <EmptyState title="Baho yo'q" text="Ustoz hali baho qo'ymagan." />;
     }
     return (
-      <div className="p-4">
-        <h1 className="text-3xl font-extrabold text-[#071833]">Baholar</h1>
-        <ul className="mt-4 flex flex-col gap-2">
+      <div>
+        <h1 className="text-3xl font-extrabold tracking-tight text-navy-900">Baholar</h1>
+        <ul className="mt-6 divide-y divide-line overflow-hidden rounded-2xl border border-line bg-card shadow-sh1">
           {mine.grades.map((item) => (
-            <li key={item.module} className="rounded-2xl border border-[#e5eaf2] bg-white shadow-sm px-4 py-3">
-              {item.module} · {item.score} · {item.passed ? "O'tdi" : "O'tmadi"}
+            <li key={item.module} className="flex items-center justify-between gap-4 px-5 py-3.5 text-sm">
+              <span className="font-semibold text-navy-900">{item.module}</span>
+              <span className="flex items-center gap-4">
+                <span className="text-lg font-extrabold tabular-nums text-navy-900">{item.score}</span>
+                <span
+                  className={`rounded-full px-2.5 py-1 text-xs font-bold ${
+                    item.passed ? "bg-success-100 text-success-600" : "bg-danger-100 text-danger-600"
+                  }`}
+                >
+                  {item.passed ? "O'tdi" : "O'tmadi"}
+                </span>
+              </span>
             </li>
           ))}
         </ul>
@@ -45,7 +55,7 @@ export default async function GradesPage() {
   }
   return (
     <div>
-      <h1 className="px-4 pt-4 text-3xl font-extrabold text-[#071833]">Baholar · {groups[0].code}</h1>
+      <h1 className="mb-6 text-3xl font-extrabold tracking-tight text-navy-900">Baholar · {groups[0].code}</h1>
       <GradeSheet groupId={groups[0].id} />
     </div>
   );

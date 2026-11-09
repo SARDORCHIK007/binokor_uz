@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
@@ -8,6 +9,12 @@ import { SiteLayoutShell, type ShellUser } from "@/components/site/SiteLayoutShe
 import { CABINET_MENUS } from "@/lib/menus";
 import { activeRole, readSession } from "@/lib/session";
 import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin", "latin-ext", "cyrillic"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("meta");
@@ -40,7 +47,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   }
 
   return (
-    <html lang={locale}>
+    <html lang={locale} className={inter.variable}>
       <body className="min-h-screen bg-canvas font-sans text-base text-ink antialiased">
         <NextIntlClientProvider messages={messages}>
           <PwaRegister />

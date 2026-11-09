@@ -82,21 +82,21 @@ export function LoginForm() {
   }
 
   return (
-    <div className="mx-auto flex max-w-md flex-col gap-6 px-4 py-10">
+    <div className="mx-auto flex w-full max-w-md flex-col gap-5 px-4 py-10 sm:py-14">
       <div>
-        <h1 className="text-4xl font-bold tracking-[-0.03em] text-navy-900">{t("title")}</h1>
-        <p className="mt-2 text-muted">{t("text")}</p>
+        <h1 className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">{t("title")}</h1>
+        <p className="mt-2 leading-relaxed text-muted">{t("text")}</p>
       </div>
       {demoMode ? (
-        <section className="rounded-[20px] bg-navy-900 p-5 text-white">
-          <h2 className="text-lg font-semibold">{t("demoTitle")}</h2>
+        <section className="rounded-2xl bg-navy-900 p-5 text-white shadow-sh2">
+          <h2 className="text-lg font-bold">{t("demoTitle")}</h2>
           <p className="mt-1 text-sm text-blue-100">{t("demoText")}</p>
           <div className="mt-4 flex flex-wrap gap-2">
             {ONE_CLICK.map((role) => (
               <button
                 key={role}
                 type="button"
-                className="rounded-lg bg-white px-3 py-2 text-sm font-medium text-navy-900"
+                className="rounded-full bg-white/10 px-3.5 py-2 text-sm font-semibold text-white ring-1 ring-white/20 transition hover:bg-accent hover:text-navy-900 hover:ring-accent"
                 onClick={async () => {
                   setPending(true);
                   setError("");
@@ -124,14 +124,14 @@ export function LoginForm() {
           </div>
         </section>
       ) : null}
-      <form onSubmit={requestCode} className="flex flex-col gap-4 rounded-md border border-line bg-card p-5 shadow-sh1">
+      <form onSubmit={requestCode} className="flex flex-col gap-4 rounded-2xl border border-line bg-card p-5 shadow-sh1 sm:p-6">
         <TextField label={t("phone")} name="phone" value={phone} onChange={(event) => setPhone(event.target.value)} autoComplete="tel" />
         <div className="flex flex-wrap gap-2">
           {DEMOS.map((item) => (
             <button
               key={item.phone}
               type="button"
-              className="rounded-sm border border-line bg-canvas px-3 py-2 text-sm"
+              className={`rounded-full border px-3.5 py-1.5 text-sm font-semibold transition ${phone === item.phone ? "border-primary bg-blue-100 text-primary" : "border-line bg-canvas text-navy-900 hover:border-primary"}`}
               onClick={() => setPhone(item.phone)}
             >
               {t(item.labelKey)}
@@ -142,12 +142,12 @@ export function LoginForm() {
           {t("send")}
         </Button>
         {devCode ? (
-          <p className="rounded-sm bg-amber-100 px-3 py-3 text-ink" role="status">
+          <p className="rounded-xl bg-amber-100 px-3 py-3 text-navy-900" role="status">
             {t("codeShown")}: <strong className="font-mono text-lg">{devCode}</strong>
           </p>
         ) : null}
       </form>
-      <form onSubmit={verifyCode} className="flex flex-col gap-4 rounded-md border border-line bg-card p-5 shadow-sh1">
+      <form onSubmit={verifyCode} className="flex flex-col gap-4 rounded-2xl border border-line bg-card p-5 shadow-sh1 sm:p-6">
         <TextField label={t("code")} name="code" inputMode="numeric" value={code} onChange={(event) => setCode(event.target.value)} autoComplete="one-time-code" />
         {error ? <p className="text-sm text-danger-600">{error}</p> : null}
         <Button type="submit" disabled={pending || code.length < 6}>
@@ -177,11 +177,11 @@ export function LoginForm() {
               setPending(false);
             }
           }}
-          className="flex flex-col gap-4 rounded-md border border-line bg-card p-5 shadow-sh1"
+          className="flex flex-col gap-4 rounded-2xl border border-line bg-card p-5 shadow-sh1 sm:p-6"
         >
           <TextField label={t("totp")} name="totp" inputMode="numeric" value={totp} onChange={(event) => setTotp(event.target.value)} />
           {devTotp ? (
-            <p className="rounded-sm bg-amber-100 px-3 py-3 text-ink" role="status">
+            <p className="rounded-xl bg-amber-100 px-3 py-3 text-navy-900" role="status">
               {t("totpShown")}: <strong className="font-mono text-lg">{devTotp}</strong>
             </p>
           ) : null}

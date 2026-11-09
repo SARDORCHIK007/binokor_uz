@@ -16,7 +16,7 @@ export function SiteLayoutShell({ children, user }: { children: ReactNode; user:
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#F4F7FB] text-[#071833]">
+    <div className="min-h-screen bg-canvas text-navy-900">
       <AppSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} user={user} />
       <div className="flex min-h-screen flex-col lg:pl-72">
         <AppTopbar onToggleSidebar={() => setSidebarOpen(true)} />

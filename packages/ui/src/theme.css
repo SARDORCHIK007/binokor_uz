@@ -7,16 +7,23 @@
   --color-blue-700: var(--blue-700);
   --color-blue-600: var(--blue-600);
   --color-blue-500: var(--blue-500);
+  --color-blue-200: var(--blue-200);
   --color-blue-100: var(--blue-100);
   --color-blue-50: var(--blue-50);
   --color-teal-700: var(--teal-700);
   --color-teal-600: var(--teal-600);
   --color-teal-100: var(--teal-100);
   --color-amber-600: var(--amber-600);
+  --color-amber-500: var(--amber-500);
   --color-amber-100: var(--amber-100);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
   --color-ink: var(--text);
+  --color-body: var(--text-body);
   --color-muted: var(--text-muted);
+  --color-faint: var(--text-faint);
   --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
   --color-canvas: var(--bg);
   --color-card: var(--card);
   --color-primary: var(--primary);
@@ -34,5 +41,5 @@
   --shadow-sh1: var(--sh-1);
   --shadow-sh2: var(--sh-2);
   --shadow-sh3: var(--sh-3);
-  --font-sans: var(--font-inter), "Inter", sans-serif;
+  --font-sans: var(--font-inter), "Inter", "Segoe UI", system-ui, sans-serif;
 }

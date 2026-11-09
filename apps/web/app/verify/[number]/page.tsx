@@ -70,17 +70,17 @@ export default async function VerifyPage({ params, searchParams }: PageProps) {
 
   return (
     <div className="bg-[#F4F6F9] min-h-screen px-4 py-12" dir={dir} lang={lang}>
-      <article className="mx-auto max-w-3xl overflow-hidden rounded-3xl bg-white shadow-[0_16px_48px_rgba(7,24,51,0.08)] border border-[#e5eaf2]">
+      <article className="mx-auto max-w-3xl overflow-hidden rounded-3xl bg-white shadow-sh3 border border-line">
         {/* Tillar paneli (6 tilda: TZ 22-sahifa) */}
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#f0f3f8] bg-[#f8fafc] px-6 py-3 text-xs">
-          <span className="font-semibold text-[#5f6b7d]">{copy.check}</span>
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-surface-100 bg-canvas px-6 py-3 text-xs">
+          <span className="font-semibold text-muted">{copy.check}</span>
           <div className="flex flex-wrap gap-1">
             {(Object.keys(COPY) as Lang[]).map((item) => (
               <Link
                 key={item}
                 href={`/verify/${number}?lang=${item}`}
                 className={`rounded-lg px-2.5 py-1 font-semibold transition ${
-                  lang === item ? "bg-[#2F6BFF] text-white" : "text-[#5f6b7d] hover:bg-white"
+                  lang === item ? "bg-primary text-white" : "text-muted hover:bg-white"
                 }`}
               >
                 {item}
@@ -95,57 +95,57 @@ export default async function VerifyPage({ params, searchParams }: PageProps) {
             <div
               className={`flex size-44 items-center justify-center rounded-full border-8 shadow-lg text-center transition ${
                 valid
-                  ? "border-[#1f8a4c] bg-[#e8f7ee] text-[#1f8a4c]"
-                  : "border-[#b42318] bg-[#fde7e5] text-[#b42318]"
+                  ? "border-success-600 bg-success-100 text-success-600"
+                  : "border-danger-600 bg-danger-100 text-danger-600"
               }`}
             >
               <div>
                 <span className="text-3xl block">{valid ? "✓" : "✕"}</span>
                 <span className="px-3 text-lg font-black tracking-wider block mt-1">{label}</span>
-                {valid ? <span className="text-[10px] uppercase tracking-wider block font-bold text-[#1f8a4c]/80">Ed25519</span> : null}
+                {valid ? <span className="text-[10px] uppercase tracking-wider block font-bold text-success-600/80">Ed25519</span> : null}
               </div>
             </div>
           </div>
 
           <div className="mt-8">
-            <span className="font-mono text-sm font-bold text-[#2F6BFF] bg-[#eef3ff] px-3.5 py-1 rounded-full">
+            <span className="font-mono text-sm font-bold text-primary bg-blue-50 px-3.5 py-1 rounded-full">
               № {data.certificate?.number}
             </span>
-            <h1 className="mt-3 text-3xl sm:text-4xl font-black text-[#071833]">
+            <h1 className="mt-3 text-3xl sm:text-4xl font-black text-navy-900">
               {data.holder?.display_name}
             </h1>
-            <p className="mt-2 text-lg font-bold text-[#2F6BFF]">
+            <p className="mt-2 text-lg font-bold text-primary">
               {data.certificate?.trade}
             </p>
-            <p className="text-sm font-semibold text-[#5f6b7d] mt-1">
-              Malaka toifasi: <span className="text-[#071833]">{data.certificate?.level}</span>
+            <p className="text-sm font-semibold text-muted mt-1">
+              Malaka toifasi: <span className="text-navy-900">{data.certificate?.level}</span>
             </p>
           </div>
 
           {/* Sertifikat beruvchi va parametrlar */}
-          <div className="mt-8 rounded-2xl bg-[#f8fafc] p-6 text-left text-xs sm:text-sm space-y-3 border border-[#e5eaf2]">
+          <div className="mt-8 rounded-2xl bg-canvas p-6 text-left text-xs sm:text-sm space-y-3 border border-line">
             <div className="flex justify-between">
-              <span className="text-[#5f6b7d]">Beruvchi tashkilot:</span>
-              <strong className="text-[#071833] text-right">{data.certificate?.issuer}</strong>
+              <span className="text-muted">Beruvchi tashkilot:</span>
+              <strong className="text-navy-900 text-right">{data.certificate?.issuer}</strong>
             </div>
             <div className="flex justify-between">
-              <span className="text-[#5f6b7d]">Berilgan sana:</span>
-              <strong className="text-[#071833]">{data.certificate?.issued_at ?? "—"}</strong>
+              <span className="text-muted">Berilgan sana:</span>
+              <strong className="text-navy-900">{data.certificate?.issued_at ?? "—"}</strong>
             </div>
             <div className="flex justify-between">
-              <span className="text-[#5f6b7d]">Raqamli imzo holati:</span>
-              <strong className={valid ? "text-[#1f8a4c]" : "text-[#b42318]"}>{valid ? "✓ Ed25519" : "✕ Ed25519"}</strong>
+              <span className="text-muted">Raqamli imzo holati:</span>
+              <strong className={valid ? "text-success-600" : "text-danger-600"}>{valid ? "✓ Ed25519" : "✕ Ed25519"}</strong>
             </div>
             <div className="flex justify-between">
-              <span className="text-[#5f6b7d]">QR havola holati:</span>
-              <strong className="text-[#071833]">uychibinokor.uz/v/{data.certificate?.number}</strong>
+              <span className="text-muted">QR havola holati:</span>
+              <strong className="text-navy-900">uychibinokor.uz/v/{data.certificate?.number}</strong>
             </div>
           </div>
 
           <div className="mt-8 flex flex-wrap gap-4 justify-center">
             <Link
               href="/"
-              className="rounded-xl border border-[#d9dfe8] px-6 py-3 text-sm font-bold text-[#071833] hover:bg-gray-50 transition"
+              className="rounded-xl border border-line-strong px-6 py-3 text-sm font-bold text-navy-900 hover:bg-gray-50 transition"
             >
               Bosh sahifa
             </Link>

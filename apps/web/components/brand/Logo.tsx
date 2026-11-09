@@ -8,7 +8,7 @@ export function LogoMark({ className = "h-9 w-11" }: { className?: string }) {
 }
 
 export function Logo({ tone = "light" }: { tone?: "light" | "dark" }) {
-  const text = tone === "light" ? "text-white" : "text-[#071833]";
+  const text = tone === "light" ? "text-white" : "text-navy-900";
   return (
     <span className="flex items-center gap-2">
       <LogoMark />

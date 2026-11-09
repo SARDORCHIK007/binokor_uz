@@ -24,12 +24,12 @@ export default async function ReportPage() {
   ] as const;
   return (
     <div className="flex flex-col gap-4 p-4">
-      <h1 className="text-3xl font-extrabold text-[#071833]">Hokimlik hisoboti</h1>
+      <h1 className="text-3xl font-extrabold tracking-tight text-navy-900">Hokimlik hisoboti</h1>
       <dl className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {cards.map(([key, value]) => (
-          <div key={key} className="rounded-[20px] border border-[#e5eaf2] bg-white shadow-sm p-4">
+          <div key={key} className="rounded-2xl border border-line bg-card shadow-sh1 p-4">
             <dt className="text-sm text-muted">{t(key)}</dt>
-            <dd className="text-3xl font-extrabold text-[#071833] tabular-nums">{value}</dd>
+            <dd className="text-3xl font-extrabold text-navy-900 tabular-nums">{value}</dd>
           </div>
         ))}
       </dl>
@@ -38,7 +38,7 @@ export default async function ReportPage() {
       ) : (
         <ul className="flex flex-col gap-2">
           {report.trades.map((item) => (
-            <li key={item.trade} className="rounded-2xl border border-[#e5eaf2] bg-white shadow-sm px-4 py-3">
+            <li key={item.trade} className="rounded-2xl border border-line bg-card shadow-sh1 px-4 py-3">
               {item.trade} · o'qiyapti {item.enrolled} · sertifikat {item.certified}
             </li>
           ))}
