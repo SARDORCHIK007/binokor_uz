@@ -826,5 +826,75 @@
     "join": "Want to partner with us?",
     "joinText": "Contact us to learn the terms of cooperation.",
     "contact": "Contact us"
+  },
+  "roleHome": {
+    "welcome": "Welcome, {name}",
+    "quick": "Quick links",
+    "employer": {
+      "sub": "Company cabinet: requests, candidates and ratings."
+    },
+    "producer": {
+      "sub": "Producer cabinet: products and orders."
+    },
+    "worker": {
+      "sub": "Worker cabinet: portfolio, ratings and application status."
+    },
+    "other": {
+      "sub": "Choose one of the sections below."
+    },
+    "stat": {
+      "requests": "Requests",
+      "candidates": "Invited",
+      "verified": "Status",
+      "products": "Products",
+      "inStock": "In stock",
+      "orders": "Orders",
+      "works": "Works",
+      "confirmed": "Confirmed",
+      "reviews": "Reviews"
+    },
+    "verified": "Verified",
+    "unverified": "Pending",
+    "open": "Open"
+  },
+  "producerCab": {
+    "title": "Producer cabinet",
+    "registerTitle": "Register your company",
+    "company": "Company name",
+    "inn": "Tax ID",
+    "register": "Register",
+    "addTitle": "New product",
+    "name": "Product name",
+    "category": "Category",
+    "unit": "Unit",
+    "price": "Price, UZS",
+    "minOrder": "Minimum order",
+    "inStock": "In stock",
+    "add": "Add",
+    "added": "Product added",
+    "saved": "Saved",
+    "failed": "Not saved. Check the fields.",
+    "products": "My products",
+    "noProducts": "No products yet. Add one with the form above.",
+    "save": "Save",
+    "delete": "Delete",
+    "deleteFailed": "Not deleted: the product has orders. Mark it out of stock instead.",
+    "orders": "Incoming orders",
+    "noOrders": "No orders yet. Orders from the materials market arrive here.",
+    "person": "Individual",
+    "companyBuyer": "Company",
+    "pickup": "Pickup",
+    "delivery": "Delivery",
+    "status": {
+      "NEW": "New",
+      "CONTACTED": "Contacted",
+      "DONE": "Done",
+      "CANCELLED": "Cancelled"
+    },
+    "markContacted": "Contacted",
+    "markDone": "Mark done",
+    "markCancel": "Cancel",
+    "total": "Estimated total",
+    "comment": "Comment"
   }
 }

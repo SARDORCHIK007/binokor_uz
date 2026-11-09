@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { Icon, type IconName } from "@/components/brand/Icon";
 import { AdminCharts } from "@/components/cabinet/AdminCharts";
+import { RoleHome } from "@/components/cabinet/RoleHome";
 import { activeRole, apiAuth, readSession } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
@@ -60,6 +61,9 @@ export default async function CabinetHome() {
     );
   }
   const role = await activeRole(session.roles);
+  if (!["admin", "mentor", "student"].includes(role)) {
+    return <RoleHome role={role} name={session.full_name} />;
+  }
   const data = await apiAuth<Payload>(`/api/v1/cabinet/dashboard?role=${role}`);
   if (!data) {
     return <EmptyState title={t("loadError")} text={t("loadErrorText")} />;

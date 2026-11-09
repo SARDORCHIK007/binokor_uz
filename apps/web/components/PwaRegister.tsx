@@ -5,7 +5,8 @@ import { useEffect } from "react";
 export function PwaRegister() {
   useEffect(() => {
     if ("serviceWorker" in navigator) {
-      void navigator.serviceWorker.register("/sw.js");
+      // Offline support is optional: ignore browsers/panels that refuse the worker.
+      navigator.serviceWorker.register("/sw.js").catch(() => undefined);
     }
   }, []);
   return null;

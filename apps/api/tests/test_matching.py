@@ -6,6 +6,8 @@ import os
 import httpx
 import pytest
 from app.routers.employers import match_score
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import create_async_engine
 
 BASE = "http://127.0.0.1:8000"
 
@@ -70,3 +72,9 @@ async def _flow() -> None:
             f"/api/v1/employers/requests/{request_id}/candidates", headers=headers, json={}
         )
         assert neither.status_code == 422
+    # leave the demo data as we found it
+    engine = create_async_engine(os.environ["DATABASE_URL"])
+    async with engine.begin() as conn:
+        await conn.execute(text("DELETE FROM request_candidates WHERE request_id = CAST(:id AS uuid)"), {"id": request_id})
+        await conn.execute(text("DELETE FROM demand_requests WHERE id = CAST(:id AS uuid)"), {"id": request_id})
+    await engine.dispose()

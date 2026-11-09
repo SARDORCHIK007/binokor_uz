@@ -81,11 +81,23 @@ async def courses(request: Request) -> JSONResponse:
 
 @router.get("/groups")
 async def groups(request: Request) -> JSONResponse:
-    gate = await _require_admin(request)
-    if isinstance(gate, JSONResponse):
-        return gate
+    """Admin sees every group; a mentor sees only their own."""
+    user_id = _user_id(request)
+    if user_id is None:
+        return problem(401, "UNAUTHORIZED", "Kirish talab qilinadi", "Avval tizimga kiring.")
     engine = _engine(request)
     async with engine.connect() as conn:
+        roles = {
+            str(row["role"])
+            for row in (
+                await conn.execute(
+                    text("SELECT role::text AS role FROM user_roles WHERE user_id = :id"), {"id": user_id}
+                )
+            ).mappings()
+        }
+        if not roles & {"admin", "mentor"}:
+            return problem(403, "FORBIDDEN", "Ruxsat yo'q", "Bu bo'lim ustoz yoki admin uchun.")
+        only_mine = "admin" not in roles
         result = await conn.execute(
             text(
                 """
@@ -94,10 +106,12 @@ async def groups(request: Request) -> JSONResponse:
                 FROM groups g
                 JOIN users u ON u.id = g.mentor_user_id
                 LEFT JOIN enrollments e ON e.group_id = g.id
+                WHERE (NOT CAST(:only_mine AS boolean) OR g.mentor_user_id = :id)
                 GROUP BY g.id, u.full_name
                 ORDER BY g.code
                 """
-            )
+            ),
+            {"only_mine": only_mine, "id": user_id},
         )
     return JSONResponse(
         [

@@ -22,6 +22,8 @@ class ProductBody(BaseModel):
     unit: str = "dona"
     price: float = Field(ge=0)
     in_stock: bool = True
+    category: str | None = Field(default=None, max_length=40)
+    min_order: float | None = Field(default=None, ge=0)
 
 
 class OrderStatusBody(BaseModel):
@@ -106,8 +108,10 @@ async def list_products(request: Request) -> JSONResponse:
         rows = await conn.execute(
             text(
                 """
-                SELECT id::text AS id, name, unit, price, in_stock, is_published
-                FROM products WHERE producer_id = :id ORDER BY name->>'uz-Latn'
+                SELECT p.id::text AS id, p.name, p.unit, p.price, p.min_order, p.in_stock, p.is_published,
+                       c.code AS category
+                FROM products p JOIN product_categories c ON c.id = p.category_id
+                WHERE p.producer_id = :id ORDER BY p.name->>'uz-Latn'
                 """
             ),
             {"id": producer_id},
@@ -121,6 +125,8 @@ async def list_products(request: Request) -> JSONResponse:
                 "price": None if item["price"] is None else str(item["price"]),
                 "in_stock": item["in_stock"],
                 "is_published": item["is_published"],
+                "category": item["category"],
+                "min_order": None if item["min_order"] is None else float(item["min_order"]),
             }
             for item in rows.mappings()
         ]
@@ -137,17 +143,30 @@ async def create_product(body: ProductBody, request: Request) -> JSONResponse:
         producer_id = await _producer_id(conn, user_id)
         if producer_id is None:
             return problem(403, "FORBIDDEN", "Ruxsat yo'q", "Ishlab chiqaruvchi profili yo'q.")
-        category = await conn.execute(text("SELECT id FROM product_categories ORDER BY code LIMIT 1"))
+        category = await conn.execute(
+            text(
+                """
+                SELECT id FROM product_categories
+                WHERE code = coalesce(CAST(:code AS text), code)
+                ORDER BY sort, code LIMIT 1
+                """
+            ),
+            {"code": body.category},
+        )
         category_id = category.scalar()
+        if category_id is None:
+            return problem(422, "VALIDATION", "Toifa noto'g'ri", "Mavjud toifani tanlang.")
         product_id = new_id()
         await conn.execute(
             text(
                 """
                 INSERT INTO products (
-                  id, producer_id, category_id, name, unit, price, in_stock, is_published, price_updated_at
+                  id, producer_id, category_id, name, unit, price, min_order, in_stock, is_published,
+                  price_updated_at
                 )
                 VALUES (
-                  :id, :producer_id, :category_id, CAST(:name AS jsonb), :unit, :price, :in_stock, true, now()
+                  :id, :producer_id, :category_id, CAST(:name AS jsonb), :unit, :price, :min_order, :in_stock,
+                  true, now()
                 )
                 """
             ),
@@ -158,6 +177,7 @@ async def create_product(body: ProductBody, request: Request) -> JSONResponse:
                 "name": json.dumps({"uz-Latn": body.name}, ensure_ascii=False),
                 "unit": body.unit,
                 "price": body.price,
+                "min_order": body.min_order,
                 "in_stock": body.in_stock,
             },
         )
@@ -176,7 +196,12 @@ async def update_product(product_id: uuid.UUID, body: ProductBody, request: Requ
                 """
                 UPDATE products p
                 SET name = CAST(:name AS jsonb), unit = :unit, price = :price,
-                    in_stock = :in_stock, price_updated_at = now()
+                    in_stock = :in_stock, price_updated_at = now(),
+                    min_order = :min_order,
+                    category_id = coalesce(
+                      (SELECT c.id FROM product_categories c WHERE c.code = CAST(:category AS text)),
+                      p.category_id
+                    )
                 FROM producer_members m
                 WHERE p.id = :id AND p.producer_id = m.producer_id AND m.user_id = :user_id
                 RETURNING p.id
@@ -189,6 +214,8 @@ async def update_product(product_id: uuid.UUID, body: ProductBody, request: Requ
                 "unit": body.unit,
                 "price": body.price,
                 "in_stock": body.in_stock,
+                "min_order": body.min_order,
+                "category": body.category,
             },
         )
         if updated.first() is None:
@@ -220,6 +247,19 @@ async def delete_product(product_id: uuid.UUID, request: Request) -> JSONRespons
     return JSONResponse({"deleted": True})
 
 
+@router.get("/categories")
+async def categories(request: Request) -> JSONResponse:
+    """All product categories, for the producer's add/edit form."""
+    async with _engine(request).connect() as conn:
+        rows = await conn.execute(text("SELECT code, name FROM product_categories ORDER BY sort, code"))
+    return JSONResponse(
+        [
+            {"code": item["code"], "name": item["name"].get("uz-Latn", "") if isinstance(item["name"], dict) else ""}
+            for item in rows.mappings()
+        ]
+    )
+
+
 @router.get("/orders")
 async def orders(request: Request) -> JSONResponse:
     user_id = _user_id(request)
@@ -230,12 +270,14 @@ async def orders(request: Request) -> JSONResponse:
         rows = await conn.execute(
             text(
                 """
-                SELECT o.id::text AS id, o.buyer_name, o.quantity, o.status::text AS status, p.name
+                SELECT o.id::text AS id, o.order_no, o.buyer_name, o.buyer_phone, o.buyer_type, o.company_name,
+                       o.company_inn, o.delivery, o.address, o.comment, o.quantity, o.status::text AS status,
+                       o.created_at, p.name, p.unit, p.price
                 FROM order_requests o
                 JOIN products p ON p.id = o.product_id
                 JOIN producer_members m ON m.producer_id = p.producer_id
                 WHERE m.user_id = :id
-                ORDER BY o.created_at DESC
+                ORDER BY o.created_at DESC, o.order_no
                 """
             ),
             {"id": user_id},
@@ -244,9 +286,20 @@ async def orders(request: Request) -> JSONResponse:
         [
             {
                 "id": item["id"],
+                "order_no": item["order_no"] or item["id"][:8],
                 "buyer_name": item["buyer_name"],
+                "buyer_phone": item["buyer_phone"],
+                "buyer_type": item["buyer_type"],
+                "company_name": item["company_name"],
+                "company_inn": item["company_inn"],
+                "delivery": item["delivery"],
+                "address": item["address"],
+                "comment": item["comment"],
                 "quantity": float(item["quantity"]),
+                "unit": item["unit"],
+                "price": None if item["price"] is None else float(item["price"]),
                 "status": item["status"],
+                "created_at": item["created_at"].isoformat(),
                 "product": item["name"]["uz-Latn"] if isinstance(item["name"], dict) else "",
             }
             for item in rows.mappings()

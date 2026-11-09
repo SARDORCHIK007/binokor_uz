@@ -63,7 +63,7 @@ async def _flow() -> None:
     assert [event["status"] for event in app["events"]][-1] == "SCREENING"
     assert app["rejection_reason"] is None
 
-    async with engine.connect() as conn:
+    async with engine.begin() as conn:
         note = (
             await conn.execute(
                 text(
@@ -75,6 +75,15 @@ async def _flow() -> None:
                 {"id": app_id},
             )
         ).scalar()
+        # leave the demo data as we found it
+        await conn.execute(
+            text("DELETE FROM notifications WHERE payload->>'application_id' = :id"), {"id": app_id}
+        )
+        await conn.execute(text("DELETE FROM application_events WHERE application_id = CAST(:id AS uuid)"), {"id": app_id})
+        await conn.execute(text("DELETE FROM applications WHERE id = CAST(:id AS uuid)"), {"id": app_id})
+        await conn.execute(
+            text("DELETE FROM persons WHERE first_name = 'Test' AND last_name = 'Arizachi' AND id NOT IN (SELECT person_id FROM applications WHERE person_id IS NOT NULL)")
+        )
     await engine.dispose()
     assert note in {"SENT", "SKIPPED"}
 

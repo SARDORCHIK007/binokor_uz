@@ -826,5 +826,75 @@
     "join": "Hamkor bo'lishni istaysizmi?",
     "joinText": "Tashkilotingiz uchun hamkorlik shartlarini bilish uchun biz bilan bog'laning.",
     "contact": "Bog'lanish"
+  },
+  "roleHome": {
+    "welcome": "Xush kelibsiz, {name}",
+    "quick": "Tezkor havolalar",
+    "employer": {
+      "sub": "Kompaniya kabineti: so'rovlar, nomzodlar va baholar."
+    },
+    "producer": {
+      "sub": "Ishlab chiqaruvchi kabineti: mahsulotlar va buyurtmalar."
+    },
+    "worker": {
+      "sub": "Usta kabineti: portfolio, baholar va ariza holati."
+    },
+    "other": {
+      "sub": "Quyidagi bo'limlardan birini tanlang."
+    },
+    "stat": {
+      "requests": "So'rovlar",
+      "candidates": "Taklif qilinganlar",
+      "verified": "Holat",
+      "products": "Mahsulotlar",
+      "inStock": "Omborda",
+      "orders": "Buyurtmalar",
+      "works": "Ishlar",
+      "confirmed": "Tasdiqlangan",
+      "reviews": "Baholar"
+    },
+    "verified": "Tasdiqlangan",
+    "unverified": "Tasdiq kutilmoqda",
+    "open": "Ochish"
+  },
+  "producerCab": {
+    "title": "Ishlab chiqaruvchi kabineti",
+    "registerTitle": "Korxonani ro'yxatdan o'tkazing",
+    "company": "Korxona nomi",
+    "inn": "STIR",
+    "register": "Ro'yxatdan o'tish",
+    "addTitle": "Yangi mahsulot",
+    "name": "Mahsulot nomi",
+    "category": "Toifa",
+    "unit": "O'lchov birligi",
+    "price": "Narx, so'm",
+    "minOrder": "Minimal buyurtma",
+    "inStock": "Omborda bor",
+    "add": "Qo'shish",
+    "added": "Mahsulot qo'shildi",
+    "saved": "Saqlandi",
+    "failed": "Saqlanmadi. Maydonlarni tekshiring.",
+    "products": "Mahsulotlarim",
+    "noProducts": "Hali mahsulot yo'q. Yuqoridagi shakl orqali qo'shing.",
+    "save": "Saqlash",
+    "delete": "O'chirish",
+    "deleteFailed": "O'chirilmadi: bu mahsulotga buyurtma bog'langan. Uni omborda yo'q qilib qo'ying.",
+    "orders": "Kelgan buyurtmalar",
+    "noOrders": "Hali buyurtma yo'q. Buyurtmalar materiallar bozoridan shu yerga tushadi.",
+    "person": "Jismoniy shaxs",
+    "companyBuyer": "Tashkilot",
+    "pickup": "Olib ketadi",
+    "delivery": "Yetkazib berish",
+    "status": {
+      "NEW": "Yangi",
+      "CONTACTED": "Bog'lanildi",
+      "DONE": "Bajarildi",
+      "CANCELLED": "Bekor qilindi"
+    },
+    "markContacted": "Bog'landim",
+    "markDone": "Bajarildi",
+    "markCancel": "Bekor qilish",
+    "total": "Taxminiy summa",
+    "comment": "Izoh"
   }
 }
