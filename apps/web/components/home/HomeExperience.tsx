@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { tradeImage } from "@/lib/media";
 import type { HomePayload } from "@/lib/public";
 import { Icon } from "@/components/brand/Icon";
+import { TradeTile } from "@/components/home/TradeTile";
 
 const steps = [
   { id: 1, title: "Mahalla ro'yxati va tavsiyasi", desc: "Mahalla yoshlari va ishsiz fuqarolar reyestri", icon: "users" as const },
@@ -149,39 +149,13 @@ export function HomeExperience({ home }: { home: HomePayload }) {
           </Link>
         </div>
 
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {home.trades.slice(0, 6).map((trade) => (
-            <Link
-              key={trade.code}
-              href={`/kasblar/${trade.code}`}
-              className="group relative overflow-hidden rounded-2xl bg-white shadow-sh2 transition duration-200 hover:-translate-y-1 hover:shadow-sh3"
-            >
-              <div className="h-44 overflow-hidden bg-[#0b1f3a]">
-                <img
-                  src={tradeImage(trade.code)}
-                  alt={trade.name}
-                  className="h-full w-full object-cover object-top transition duration-300 group-hover:scale-105"
-                />
-              </div>
-              <div className="flex items-end justify-between gap-3 p-5">
-                <div>
-                  <h3 className="text-xl font-bold text-navy-900 group-hover:text-primary transition">{trade.name}</h3>
-                  <div className="mt-2 flex items-center gap-2 text-sm text-muted">
-                    <span className="inline-flex items-center gap-1 font-medium text-navy-900">
-                      <Icon name="users" className="size-4 text-primary" />
-                      {trade.group_count ?? 0} guruh
-                    </span>
-                    <span>·</span>
-                    <span>{trade.domestic_months} oy o&apos;qish</span>
-                  </div>
-                </div>
-                <span className="grid size-10 shrink-0 place-items-center rounded-full bg-primary text-white shadow transition group-hover:bg-primary-hover group-hover:translate-x-1">
-                  →
-                </span>
-              </div>
-            </Link>
+        <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {home.trades.slice(0, 6).map((trade, index) => (
+            <li key={trade.code}>
+              <TradeTile trade={trade} index={index} />
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
       {/* 3. PLATFORMA ISHLASH JARAYONI (7 QADAM) */}
@@ -219,11 +193,11 @@ export function HomeExperience({ home }: { home: HomePayload }) {
 
       {/* 4. BALANS TAMOYILI (2x2 MATRITSA) */}
       <section className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8 py-16">
-        <div className="rounded-3xl bg-navy-900 p-8 sm:p-12 text-white">
+        <div className="rounded-3xl border border-blue-200 bg-blue-50 p-8 sm:p-12">
           <div className="max-w-2xl">
-            <span className="text-xs font-bold uppercase tracking-wider text-accent">Adolatli taqsimot</span>
-            <h2 className="mt-2 text-3xl font-extrabold sm:text-4xl">Balans tamoyili: Kasb va Til integratsiyasi</h2>
-            <p className="mt-3 text-sm text-white/80 sm:text-base">
+            <span className="text-xs font-bold uppercase tracking-wider text-primary">Adolatli taqsimot</span>
+            <h2 className="mt-2 text-3xl font-extrabold text-navy-900 sm:text-4xl">Balans tamoyili: Kasb va Til integratsiyasi</h2>
+            <p className="mt-3 text-sm text-muted sm:text-base">
               Til bilganga hunar o&apos;rgatamiz, hunar bilganga til o&apos;rgatamiz. Hech bir yosh e&apos;tibordan chetda qolmaydi.
             </p>
           </div>
@@ -236,17 +210,17 @@ export function HomeExperience({ home }: { home: HomePayload }) {
                 onClick={() => setActiveMatrix(item.key)}
                 className={`text-left rounded-2xl p-5 transition border text-sm ${
                   activeMatrix === item.key
-                    ? "border-accent bg-white/15 shadow-lg"
-                    : "border-white/10 bg-white/5 hover:bg-white/10"
+                    ? "border-primary bg-white shadow-sh2 ring-2 ring-primary/15"
+                    : "border-line bg-white/70 hover:border-primary/40 hover:bg-white"
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-white text-base">{item.title}</span>
+                  <span className="font-bold text-navy-900 text-base">{item.title}</span>
                   <span className="rounded-full bg-accent px-2.5 py-0.5 text-xs font-bold text-navy-900">
                     {item.time}
                   </span>
                 </div>
-                <p className="mt-3 text-white/80 text-xs sm:text-sm leading-relaxed">{item.action}</p>
+                <p className="mt-3 text-muted text-xs sm:text-sm leading-relaxed">{item.action}</p>
               </button>
             ))}
           </div>
@@ -295,31 +269,31 @@ export function HomeExperience({ home }: { home: HomePayload }) {
             </div>
 
             {/* Platforma qurilmalardagi preview */}
-            <div className="relative rounded-3xl bg-navy-900 p-8 text-white shadow-2xl">
-              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+            <div className="relative rounded-3xl border border-line bg-canvas p-8 shadow-sh2">
+              <div className="flex items-center justify-between border-b border-line pb-4">
                 <div className="flex items-center gap-2">
-                  <span className="size-3 rounded-full bg-red-500" />
-                  <span className="size-3 rounded-full bg-yellow-500" />
-                  <span className="size-3 rounded-full bg-green-500" />
+                  <span className="size-3 rounded-full bg-danger-600/70" />
+                  <span className="size-3 rounded-full bg-accent" />
+                  <span className="size-3 rounded-full bg-success-600/70" />
                 </div>
-                <span className="text-xs font-mono text-white/60">uychibinokor.uz/kabinet</span>
+                <span className="text-xs font-mono text-faint">uychibinokor.uz/kabinet</span>
               </div>
 
               <div className="mt-6 space-y-4">
-                <div className="rounded-xl bg-white/10 p-4 backdrop-blur">
-                  <p className="text-xs text-white/60">Jonli holat</p>
-                  <p className="text-lg font-bold text-white mt-1">QR Ishchi pasporti tizimi faol</p>
-                  <p className="text-xs text-white/70 mt-1">Har bir bitiruvchi uchun Ed25519 raqamli imzo va tekshirish kodi yaratiladi.</p>
+                <div className="rounded-xl border border-line bg-card p-4">
+                  <p className="text-xs font-semibold text-primary">Jonli holat</p>
+                  <p className="text-lg font-bold text-navy-900 mt-1">QR Ishchi pasporti tizimi faol</p>
+                  <p className="text-xs text-muted mt-1">Har bir bitiruvchi uchun Ed25519 raqamli imzo va tekshirish kodi yaratiladi.</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-xl bg-success-600/20 p-4 border border-success-600/40">
-                    <span className="text-2xl font-extrabold text-[#2fe67d]">100%</span>
-                    <p className="text-xs text-white/80 mt-1">QR tekshiruv shaffofligi</p>
+                  <div className="rounded-xl border border-success-600/25 bg-success-100 p-4">
+                    <span className="text-2xl font-extrabold text-success-600">100%</span>
+                    <p className="text-xs text-muted mt-1">QR tekshiruv shaffofligi</p>
                   </div>
-                  <div className="rounded-xl bg-accent/20 p-4 border border-accent/40">
-                    <span className="text-2xl font-extrabold text-accent">0 so&apos;m</span>
-                    <p className="text-xs text-white/80 mt-1">Ish izlovchidan to&apos;lov olinmaydi</p>
+                  <div className="rounded-xl border border-accent/40 bg-amber-100 p-4">
+                    <span className="text-2xl font-extrabold text-warning-600">0 so&apos;m</span>
+                    <p className="text-xs text-muted mt-1">Ish izlovchidan to&apos;lov olinmaydi</p>
                   </div>
                 </div>
               </div>

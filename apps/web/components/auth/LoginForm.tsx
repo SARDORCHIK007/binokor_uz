@@ -88,15 +88,15 @@ export function LoginForm() {
         <p className="mt-2 leading-relaxed text-muted">{t("text")}</p>
       </div>
       {demoMode ? (
-        <section className="rounded-2xl bg-navy-900 p-5 text-white shadow-sh2">
-          <h2 className="text-lg font-bold">{t("demoTitle")}</h2>
-          <p className="mt-1 text-sm text-blue-100">{t("demoText")}</p>
+        <section className="rounded-2xl border border-blue-200 bg-blue-50 p-5">
+          <h2 className="text-lg font-bold text-navy-900">{t("demoTitle")}</h2>
+          <p className="mt-1 text-sm text-muted">{t("demoText")}</p>
           <div className="mt-4 flex flex-wrap gap-2">
             {ONE_CLICK.map((role) => (
               <button
                 key={role}
                 type="button"
-                className="rounded-full bg-white/10 px-3.5 py-2 text-sm font-semibold text-white ring-1 ring-white/20 transition hover:bg-accent hover:text-navy-900 hover:ring-accent"
+                className="rounded-full bg-card px-3.5 py-2 text-sm font-semibold text-navy-900 ring-1 ring-line transition hover:bg-primary hover:text-white hover:ring-primary"
                 onClick={async () => {
                   setPending(true);
                   setError("");

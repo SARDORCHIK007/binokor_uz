@@ -1,9 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
-import { Icon } from "@/components/brand/Icon";
-import { tradeImage } from "@/lib/media";
+import { TradeTile } from "@/components/home/TradeTile";
 
 export type TradeRow = { code: string; name: string; domestic_months: number; group_count?: number };
 
@@ -26,37 +24,13 @@ export function TradeGrid({ trades, about }: { trades: TradeRow[]; about: Record
         />
       </div>
 
-      <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {filtered.map((trade) => (
-          <Link
-            key={trade.code}
-            href={`/kasblar/${trade.code}`}
-            className="group block overflow-hidden rounded-2xl border border-line bg-white shadow-sh2 transition duration-200 hover:-translate-y-1 hover:shadow-sh3"
-          >
-            <div className="h-44 overflow-hidden bg-[#0b1f3a]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={tradeImage(trade.code)} alt={trade.name} className="h-full w-full object-cover object-top transition duration-300 group-hover:scale-105" />
-            </div>
-            <div className="flex items-end justify-between gap-3 p-5">
-              <div className="min-w-0 flex-1">
-                <h2 className="truncate text-xl font-extrabold text-navy-900 transition group-hover:text-primary">{trade.name}</h2>
-                <div className="mt-2 flex items-center gap-3 text-sm text-muted">
-                  <span className="inline-flex items-center gap-1.5 font-semibold text-navy-900">
-                    <Icon name="users" className="size-4 text-primary" />
-                    {trade.group_count ?? 0} guruh
-                  </span>
-                  <span aria-hidden="true">·</span>
-                  <span>{trade.domestic_months} oy</span>
-                </div>
-                {about[trade.code] ? <p className="mt-2 line-clamp-2 text-xs text-muted">{about[trade.code]}</p> : null}
-              </div>
-              <span className="grid size-10 shrink-0 place-items-center rounded-full bg-primary text-white shadow transition group-hover:translate-x-0.5 group-hover:bg-primary-hover">
-                <Icon name="arrow" className="size-5" />
-              </span>
-            </div>
-          </Link>
+          <li key={trade.code}>
+            <TradeTile trade={trade} about={about[trade.code]} index={trades.indexOf(trade)} />
+          </li>
         ))}
-      </div>
+      </ul>
 
       {filtered.length === 0 ? (
         <div className="mt-6 rounded-2xl border border-dashed border-line-strong bg-white p-12 text-center">

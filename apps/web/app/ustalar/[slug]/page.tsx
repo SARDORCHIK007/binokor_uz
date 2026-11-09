@@ -48,7 +48,7 @@ export default async function WorkerPage({ params }: { params: Promise<{ slug: s
         <div className="grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
           <section className="rounded-2xl border border-line bg-card p-6 shadow-sh1">
             <div className="flex items-center gap-4">
-              <span className="grid size-20 shrink-0 place-items-center rounded-full bg-navy-900 text-3xl font-extrabold text-accent" aria-hidden="true">
+              <span className="grid size-20 shrink-0 place-items-center rounded-2xl bg-blue-100 text-3xl font-extrabold text-primary ring-1 ring-blue-200" aria-hidden="true">
                 {worker.name.charAt(0).toUpperCase()}
               </span>
               <div className="min-w-0">
@@ -80,7 +80,7 @@ export default async function WorkerPage({ params }: { params: Promise<{ slug: s
                 {verifyPath ? <QrMark value={`https://uychibinokor.uz${verifyPath}`} /> : <p className="py-10 text-sm text-muted">Sertifikat hali yo&apos;q</p>}
               </div>
               {verifyPath ? (
-                <Link href={verifyPath} className="mt-5 block rounded-xl bg-navy-900 px-4 py-3 text-sm font-bold text-white">
+                <Link href={verifyPath} className="mt-5 block rounded-xl bg-primary px-4 py-3 text-center text-sm font-bold text-white hover:bg-primary-hover">
                   Sertifikatni tekshirish: {worker.certificate_number}
                 </Link>
               ) : null}

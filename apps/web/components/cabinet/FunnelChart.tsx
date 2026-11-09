@@ -13,7 +13,7 @@ export function FunnelChart({ rows }: { rows: { name: string; value: number }[] 
               {row.value}
             </span>
             <div
-              className="w-full max-w-[48px] rounded-t-xl bg-navy-900 group-hover:bg-primary transition-all duration-300"
+              className="w-full max-w-[48px] rounded-t-xl bg-blue-200 group-hover:bg-primary transition-all duration-300"
               style={{ height: `${heightPct}%` }}
             />
             <span className="text-[11px] font-semibold text-muted mt-2 truncate max-w-full">

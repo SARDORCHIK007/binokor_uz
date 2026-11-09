@@ -2,7 +2,7 @@ import { EmptyState } from "@uychibinokor/ui";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { Icon } from "@/components/brand/Icon";
-import { CARD, CARD_LINK, ErrorPage, FIELD, PAGE, PageHeader } from "@/components/site/PageHeader";
+import { CARD, ErrorPage, FIELD, PAGE, PageHeader } from "@/components/site/PageHeader";
 import { apiGet } from "@/lib/public";
 
 export const dynamic = "force-dynamic";
@@ -23,6 +23,12 @@ const LEVEL: Record<string, string> = {
   MASTER: "Usta",
   FOREMAN: "Brigadir",
 };
+const AVATAR = [
+  "bg-blue-100 text-primary",
+  "bg-success-100 text-success-600",
+  "bg-amber-100 text-warning-600",
+  "bg-surface-100 text-navy-700",
+];
 const DOT: Record<string, string> = {
   FREE: "bg-success-600",
   BUSY: "bg-accent",
@@ -82,40 +88,45 @@ export default async function WorkersPage({
           Qidirish
         </button>
       </form>
-      <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {workers.map((worker) => (
-          <li key={worker.slug}>
-            <Link href={`/ustalar/${worker.slug}`} className={`${CARD_LINK} group`}>
-              <div className="flex items-center gap-3">
-                <span className="grid size-12 shrink-0 place-items-center rounded-full bg-navy-900 text-base font-bold text-white">
-                  {worker.name
-                    .split(" ")
-                    .map((part) => part[0])
-                    .join("")
-                    .slice(0, 2)}
-                </span>
-                <div className="min-w-0">
-                  <h2 className="truncate text-lg font-bold text-navy-900 group-hover:text-primary">{worker.name}</h2>
-                  <p className="truncate text-sm text-muted">{worker.trade}</p>
-                </div>
-              </div>
-              <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-semibold">
-                <span className="rounded-full bg-blue-100 px-2.5 py-1 text-primary">{LEVEL[worker.level] ?? worker.level}</span>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-surface-100 px-2.5 py-1 text-navy-900">
-                  <span className={`size-2 rounded-full ${DOT[worker.availability] ?? "bg-faint"}`} aria-hidden="true" />
+      <ul className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+        {workers.map((worker, index) => (
+          <li key={worker.slug} className="min-w-0">
+            <Link
+              href={`/ustalar/${worker.slug}`}
+              className="group flex items-center gap-3 rounded-2xl border border-line bg-card p-3 pr-4 shadow-sh1 transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-sh2"
+            >
+              <span
+                className={`grid size-12 shrink-0 place-items-center rounded-xl text-sm font-bold ${AVATAR[index % AVATAR.length]}`}
+                aria-hidden="true"
+              >
+                {worker.name
+                  .split(" ")
+                  .map((part) => part[0])
+                  .join("")
+                  .slice(0, 2)}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate font-bold text-navy-900 group-hover:text-primary">{worker.name}</span>
+                <span className="mt-0.5 block truncate text-xs text-muted">
+                  <span className={`mr-1.5 inline-block size-2 rounded-full align-middle ${DOT[worker.availability] ?? "bg-faint"}`} aria-hidden="true" />
                   {AVAILABILITY[worker.availability] ?? worker.availability}
+                  {" · "}
+                  {worker.trade}
+                  {" · "}
+                  {LEVEL[worker.level] ?? worker.level}
                 </span>
-              </div>
-              <div className="mt-4 flex items-center justify-between border-t border-line pt-3 text-sm tabular-nums text-muted">
-                <span className="inline-flex items-center gap-1.5">
-                  <Icon name="clock" className="size-4" />
-                  {worker.hours} soat
-                </span>
-                <span className="inline-flex items-center gap-1.5 font-semibold text-navy-900">
-                  <Icon name="star" className="size-4 text-accent" />
-                  {worker.rating ?? "—"}
-                </span>
-              </div>
+              </span>
+              <span className="hidden shrink-0 items-center gap-1 text-xs font-semibold tabular-nums text-muted sm:inline-flex">
+                <Icon name="clock" className="size-3.5" />
+                {worker.hours}
+              </span>
+              <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-bold tabular-nums text-warning-600">
+                <Icon name="star" className="size-3.5" />
+                {worker.rating ?? "—"}
+              </span>
+              <span className="grid size-8 shrink-0 place-items-center rounded-full bg-blue-100 text-primary transition group-hover:bg-primary group-hover:text-white">
+                <Icon name="arrow" className="size-4" />
+              </span>
             </Link>
           </li>
         ))}

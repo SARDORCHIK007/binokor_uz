@@ -41,7 +41,7 @@ export default async function TradePage({ params }: { params: Promise<{ code: st
       </nav>
 
       <div className="mt-6 grid items-stretch gap-6 lg:grid-cols-[1.1fr_1fr]">
-        <div className="overflow-hidden rounded-2xl bg-navy-900 shadow-sh2">
+        <div className="overflow-hidden rounded-2xl border border-line bg-blue-50 shadow-sh1">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={tradeImage(trade.code)} alt={trade.name} className="h-64 w-full object-cover object-top sm:h-80 lg:h-full lg:max-h-[440px]" />
         </div>
