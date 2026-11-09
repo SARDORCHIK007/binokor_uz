@@ -1,3 +1,4 @@
+import json
 import uuid
 from datetime import date
 
@@ -5,8 +6,9 @@ from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 from sqlalchemy import text
-from sqlalchemy.ext.asyncio import AsyncEngine
+from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
+from app.notify import send_telegram
 from app.security import bearer_from_request, new_id, problem, read_access_token
 
 router = APIRouter(prefix="/api/v1", tags=["applications"])
@@ -141,6 +143,7 @@ async def create_application(body: ApplicationIn, request: Request) -> JSONRespo
 
 @router.get("/applications/mine")
 async def mine(request: Request) -> JSONResponse:
+    """FR-APP-STATUS: the applicant's applications with their status history."""
     user_id = _user_id(request)
     if user_id is None:
         return problem(401, "UNAUTHORIZED", "Kirish talab qilinadi", "Avval tizimga kiring.")
@@ -150,7 +153,8 @@ async def mine(request: Request) -> JSONResponse:
             text(
                 """
                 SELECT a.id::text AS id, a.status::text AS status, a.matrix_suggested::text AS matrix,
-                       t.name AS trade_name
+                       a.desired_track::text AS track, a.rejection_reason, a.created_at,
+                       t.name AS trade_name, t.code AS trade_code
                 FROM applications a
                 JOIN persons p ON p.id = a.person_id
                 JOIN trades t ON t.id = a.desired_trade_id
@@ -160,16 +164,90 @@ async def mine(request: Request) -> JSONResponse:
             ),
             {"user_id": user_id},
         )
+        apps = list(result.mappings())
+        events: dict[str, list[dict[str, str]]] = {}
+        if apps:
+            rows = await conn.execute(
+                text(
+                    """
+                    SELECT application_id::text AS app_id, to_status::text AS status, created_at
+                    FROM application_events
+                    WHERE application_id = ANY(CAST(:ids AS uuid[]))
+                    ORDER BY created_at, id
+                    """
+                ),
+                {"ids": [item["id"] for item in apps]},
+            )
+            for row in rows.mappings():
+                events.setdefault(row["app_id"], []).append(
+                    {"status": row["status"], "at": row["created_at"].isoformat()}
+                )
     return JSONResponse(
         [
             {
                 "id": item["id"],
                 "status": item["status"],
                 "matrix": item["matrix"],
+                "track": item["track"],
                 "trade": item["trade_name"]["uz-Latn"] if isinstance(item["trade_name"], dict) else "",
+                "trade_code": item["trade_code"],
+                "created_at": item["created_at"].isoformat(),
+                "rejection_reason": item["rejection_reason"] if item["status"] == "REJECTED" else None,
+                "events": events.get(item["id"])
+                or [{"status": "SUBMITTED", "at": item["created_at"].isoformat()}],
             }
-            for item in result.mappings()
+            for item in apps
         ]
+    )
+
+
+STATUS_MESSAGE = {
+    "SCREENING": "Arizangiz ko'rib chiqilmoqda.",
+    "ACCEPTED": "Tabriklaymiz! Arizangiz qabul qilindi. Guruhga yozilish haqida xabar beramiz.",
+    "WAITLIST": "Arizangiz navbatga qo'yildi. Joy bo'shashi bilan xabar beramiz.",
+    "REJECTED": "Arizangiz bo'yicha qaror: rad etildi. Sabab kabinetingizda ko'rsatilgan.",
+}
+
+
+async def _notify_applicant(conn: AsyncConnection, application_id: uuid.UUID, status: str) -> None:
+    """Tell the applicant about a decision: in-app row always, Telegram when linked (FR-NOTIF)."""
+    row = (
+        await conn.execute(
+            text(
+                """
+                SELECT u.id AS user_id, u.telegram_id
+                FROM applications a
+                JOIN persons p ON p.id = a.person_id
+                JOIN users u ON u.id = p.user_id
+                WHERE a.id = :id
+                """
+            ),
+            {"id": application_id},
+        )
+    ).mappings().first()
+    if row is None:
+        return
+    message = STATUS_MESSAGE.get(status, "Arizangiz holati o'zgardi.")
+    payload = json.dumps({"application_id": str(application_id), "status": status, "text": message})
+    sent = False
+    if row["telegram_id"] is not None:
+        sent = await send_telegram(int(row["telegram_id"]), f"UYCHI BINOKOR: {message}")
+    await conn.execute(
+        text(
+            """
+            INSERT INTO notifications (id, user_id, kind, channel, payload, status, attempts, sent_at)
+            VALUES (:id, :user_id, 'application_status', 'telegram', CAST(:payload AS jsonb),
+                    :status, :attempts, CASE WHEN :sent THEN now() END)
+            """
+        ),
+        {
+            "id": new_id(),
+            "user_id": row["user_id"],
+            "payload": payload,
+            "status": "SENT" if sent else "SKIPPED",
+            "attempts": 1 if row["telegram_id"] is not None else 0,
+            "sent": sent,
+        },
     )
 
 
@@ -274,4 +352,5 @@ async def decide(application_id: uuid.UUID, body: DecisionIn, request: Request) 
                 "note": body.reason,
             },
         )
+        await _notify_applicant(conn, application_id, body.status)
     return JSONResponse({"id": str(application_id), "status": body.status})

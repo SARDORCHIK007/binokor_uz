@@ -325,5 +325,41 @@
     "loading": "Yuklanmoqda",
     "errorTitle": "Ma'lumot ochilmadi",
     "errorText": "Sahifani yangilang. Takrorlansa, administratorga yozing."
+  },
+  "myApp": {
+    "title": "Mening arizam",
+    "emptyTitle": "Ariza yo'q",
+    "emptyText": "Hali ariza yubormagansiz.",
+    "apply": "Ariza berish",
+    "submitted": "Yuborilgan sana",
+    "track": "Yo'nalish",
+    "matrix": "Tavsiya etilgan toifa",
+    "reason": "Rad etish sababi",
+    "history": "Holatlar tarixi",
+    "next": "Keyingi qadam",
+    "notify": "Holat o'zgarganda Telegram orqali xabar olasiz.",
+    "track_DOMESTIC": "Ichki trek",
+    "track_FOREIGN": "Tashqi trek",
+    "step": {
+      "SUBMITTED": "Yuborildi",
+      "SCREENING": "Ko'rib chiqilmoqda",
+      "INTERVIEW": "Suhbat",
+      "ACCEPTED": "Qabul qilindi",
+      "ENROLLED": "Guruhga yozildi",
+      "WAITLIST": "Navbatda",
+      "REJECTED": "Rad etildi",
+      "WITHDRAWN": "Qaytarib olindi",
+      "VOUCHER_CHECK": "Vaucher tekshiruvi",
+      "TRIAL": "Sinov kuni"
+    },
+    "hint": {
+      "SUBMITTED": "Xodim arizangizni 3 ish kunida ko'rib chiqadi.",
+      "SCREENING": "Ma'lumotlaringiz tekshirilmoqda. Kerak bo'lsa siz bilan bog'lanamiz.",
+      "INTERVIEW": "Suhbat vaqti Telegram orqali yuboriladi.",
+      "ACCEPTED": "Guruh shakllangach, darslar jadvali kabinetda chiqadi.",
+      "ENROLLED": "O'qish boshlandi. Davomat va baholar kabinetda.",
+      "WAITLIST": "Joy bo'shashi bilan xabar beramiz.",
+      "REJECTED": "Boshqa kasb yoki keyingi qabulga qayta ariza berishingiz mumkin."
+    }
   }
 }

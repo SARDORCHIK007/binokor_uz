@@ -325,5 +325,41 @@
     "loading": "Loading",
     "errorTitle": "Could not load",
     "errorText": "Sahifani yangilang. Takrorlansa, administratorga yozing."
+  },
+  "myApp": {
+    "title": "My application",
+    "emptyTitle": "No applications",
+    "emptyText": "You have not applied yet.",
+    "apply": "Apply",
+    "submitted": "Submitted",
+    "track": "Track",
+    "matrix": "Suggested category",
+    "reason": "Reason",
+    "history": "Status history",
+    "next": "Next step",
+    "notify": "You get a Telegram message when the status changes.",
+    "track_DOMESTIC": "Domestic",
+    "track_FOREIGN": "Abroad",
+    "step": {
+      "SUBMITTED": "Submitted",
+      "SCREENING": "In review",
+      "INTERVIEW": "Interview",
+      "ACCEPTED": "Accepted",
+      "ENROLLED": "Enrolled",
+      "WAITLIST": "Waitlist",
+      "REJECTED": "Rejected",
+      "WITHDRAWN": "Withdrawn",
+      "VOUCHER_CHECK": "Voucher check",
+      "TRIAL": "Trial day"
+    },
+    "hint": {
+      "SUBMITTED": "Staff will review it within 3 working days.",
+      "SCREENING": "We are checking your details and will contact you if needed.",
+      "INTERVIEW": "The interview time will arrive in Telegram.",
+      "ACCEPTED": "Once the group forms, your schedule appears in the cabinet.",
+      "ENROLLED": "Training has started. Attendance and grades are in the cabinet.",
+      "WAITLIST": "We will tell you as soon as a place opens.",
+      "REJECTED": "You can apply for another trade or the next intake."
+    }
   }
 }
