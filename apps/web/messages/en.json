@@ -122,7 +122,8 @@
     "loadErrorText": "Sahifani yangilang.",
     "portfolio": "Portfolio",
     "portfolioReview": "Portfolio review",
-    "passport": "My passport"
+    "passport": "My passport",
+    "signing": "Signing"
   },
   "session": {
     "title": "Cabinet",
@@ -930,6 +931,17 @@
   },
   "verifyPage": {
     "signers": "Digital signatures",
-    "signersText": "The certificate is confirmed by the project leader and partner organisations with a digital signature (QR)."
+    "signersText": "The certificate is confirmed by the project leader and partner organisations with a digital signature (QR).",
+    "awaiting": "awaiting signature"
+  },
+  "signing": {
+    "title": "Sign certificates",
+    "text": "A signature QR appears on the certificate only after the leader and each partner organisation has signed. Every organisation signs separately in its own name.",
+    "empty": "No certificates to sign.",
+    "signAs": "Sign as {name}",
+    "signed": "signed",
+    "awaiting": "awaiting",
+    "failed": "Could not sign. Please try again.",
+    "sign": "Sign"
   }
 }

@@ -122,7 +122,8 @@
     "loadErrorText": "Sahifani yangilang.",
     "portfolio": "Portfolio",
     "portfolioReview": "Portfolio tasdiqlash",
-    "passport": "Pasportim"
+    "passport": "Pasportim",
+    "signing": "Imzolash"
   },
   "session": {
     "title": "Kabinet",
@@ -930,6 +931,17 @@
   },
   "verifyPage": {
     "signers": "Raqamli imzolar",
-    "signersText": "Sertifikatni loyiha rahbari va hamkor tashkilotlar raqamli imzo (QR) bilan tasdiqlagan."
+    "signersText": "Sertifikatni loyiha rahbari va hamkor tashkilotlar raqamli imzo (QR) bilan tasdiqlagan.",
+    "awaiting": "imzo kutilmoqda"
+  },
+  "signing": {
+    "title": "Sertifikatlarni imzolash",
+    "text": "Sertifikatdagi imzo QR kodi faqat rahbar va hamkor tashkilot imzolagandan keyin paydo bo'ladi. Har bir tashkilot o'z nomidan alohida imzolaydi.",
+    "empty": "Imzolanadigan sertifikat yo'q.",
+    "signAs": "{name} nomidan imzolash",
+    "signed": "imzolangan",
+    "awaiting": "imzo kutilmoqda",
+    "failed": "Imzolab bo'lmadi. Qayta urinib ko'ring.",
+    "sign": "Imzolash"
   }
 }

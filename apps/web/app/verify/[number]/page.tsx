@@ -17,7 +17,7 @@ type VerifyPayload = {
     issued_at: string | null;
   };
   holder?: { display_name: string };
-  signers?: { slug: string; name: string; role: string; fingerprint: string }[];
+  signers?: { slug: string; name: string; role: string; signed: boolean; fingerprint: string }[];
 };
 
 const COPY = {
@@ -156,9 +156,13 @@ export default async function VerifyPage({ params, searchParams }: PageProps) {
                       <span className="block text-[11px] font-bold tracking-wider text-warning-600 uppercase">{signer.role}</span>
                       <span className="font-semibold text-navy-900">{signer.name}</span>
                     </span>
-                    <span className="rounded-full bg-success-100 px-2.5 py-1 font-mono text-xs font-bold text-success-600">
-                      ✓ {signer.fingerprint}
-                    </span>
+                    {signer.signed ? (
+                      <span className="rounded-full bg-success-100 px-2.5 py-1 font-mono text-xs font-bold text-success-600">
+                        ✓ {signer.fingerprint}
+                      </span>
+                    ) : (
+                      <span className="rounded-full bg-warning-100 px-2.5 py-1 text-xs font-bold text-warning-600">{vt("awaiting")}</span>
+                    )}
                   </li>
                 ))}
               </ul>

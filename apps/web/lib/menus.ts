@@ -6,6 +6,7 @@ export const CABINET_MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/guruhlar", key: "groups" },
     { href: "/kabinet/foydalanuvchilar", key: "users" },
     { href: "/kabinet/sertifikatlar", key: "certificates" },
+    { href: "/kabinet/imzolash", key: "signing" },
     { href: "/kabinet/lugat", key: "vocab" },
     { href: "/kabinet/ishlar", key: "jobs" },
     { href: "/kabinet/hisobot", key: "reports" },
@@ -24,10 +25,12 @@ export const CABINET_MENUS: Record<string, { href: string; key: string }[]> = {
   education_lead: [
     { href: "/kabinet", key: "panel" },
     { href: "/kabinet/sertifikatlar", key: "certificates" },
+    { href: "/kabinet/imzolash", key: "signing" },
   ],
   cert_officer: [
     { href: "/kabinet", key: "panel" },
     { href: "/kabinet/sertifikatlar", key: "certificates" },
+    { href: "/kabinet/imzolash", key: "signing" },
   ],
   mentor: [
     { href: "/kabinet", key: "panel" },

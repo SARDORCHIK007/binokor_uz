@@ -10,11 +10,15 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
 from app.cert_pdf import CertificateData, Signer, make_signer, render
-from app.doc_i18n import lang_of, pick
+from app.doc_i18n import lang_of, pick, t
 from app.security import bearer_from_request, problem, read_access_token
 from app.signing import signature_matches
 
 router = APIRouter(tags=["certificates"])
+
+
+class SignBody(BaseModel):
+    partner: str  # slug of the organisation the caller signs for
 
 
 class DecisionBody(BaseModel):
@@ -38,23 +42,123 @@ def _user_id(request: Request) -> uuid.UUID | None:
 
 
 async def signers_for(conn: AsyncConnection, number: str, lang: str = "uz-Latn") -> list[Signer]:
-    """Project leader (government partner) first, then every partner with a SIGNED agreement."""
+    """Expected signers: project leader (GOV) first, then partners with a SIGNED agreement.
+
+    A signer's signature stays empty until that signer has signed the certificate.
+    """
     rows = await conn.execute(
         text(
             """
-            SELECT coalesce(slug, lower(regexp_replace(name->>'uz-Latn', '[^a-zA-Z0-9]+', '-', 'g'))) AS slug,
-                   name AS name, kind::text AS kind
-            FROM partners
-            WHERE status = 'SIGNED'
-            ORDER BY (kind = 'GOV') DESC, sort_order, name->>'uz-Latn'
+            SELECT coalesce(p.slug, lower(regexp_replace(p.name->>'uz-Latn', '[^a-zA-Z0-9]+', '-', 'g'))) AS slug,
+                   p.name AS name, p.kind::text AS kind, coalesce(cs.signature, '') AS signature
+            FROM partners p
+            LEFT JOIN certificates c ON c.number = :number
+            LEFT JOIN certificate_signatures cs ON cs.certificate_id = c.id AND cs.partner_slug = p.slug
+            WHERE p.status = 'SIGNED'
+            ORDER BY (p.kind = 'GOV') DESC, p.sort_order, p.name->>'uz-Latn'
             LIMIT 3
             """
-        )
+        ),
+        {"number": number},
     )
     return [
-        make_signer(number, str(row["slug"]), pick(row["name"], lang), str(row["kind"]), lang)
+        Signer(
+            slug=str(row["slug"]),
+            name=pick(row["name"], lang),
+            role=t(lang, str(row["kind"]) if str(row["kind"]) in {"GOV", "EDU", "AGENCY"} else "PARTNER"),
+            signature=str(row["signature"]),
+        )
         for row in rows.mappings()
     ]
+
+
+# which cabinet roles may sign for which kind of organisation
+SIGN_ROLES = {
+    "GOV": {"superadmin", "admin"},
+    "EDU": {"education_lead"},
+    "AGENCY": {"cert_officer", "partner_viewer"},
+}
+
+
+async def signable_slugs(conn: AsyncConnection, user_id: uuid.UUID) -> set[str]:
+    roles = await _roles(conn, user_id)
+    rows = await conn.execute(text("SELECT slug, kind::text AS kind FROM partners WHERE status = 'SIGNED' AND slug IS NOT NULL"))
+    return {str(r["slug"]) for r in rows.mappings() if roles & SIGN_ROLES.get(str(r["kind"]), set())}
+
+
+@router.get("/api/v1/certificates/signing")
+async def signing_queue(request: Request) -> JSONResponse:
+    """Issued certificates with who signed and who still has to; `mine` = what the caller may sign."""
+    user_id = _user_id(request)
+    if user_id is None:
+        return problem(401, "UNAUTHORIZED", "Kirish talab qilinadi", "Avval tizimga kiring.")
+    async with _engine(request).connect() as conn:
+        mine = await signable_slugs(conn, user_id)
+        if not mine:
+            return problem(403, "FORBIDDEN", "Ruxsat yo'q", "Imzolash huquqi faqat rahbar va hamkor tashkilot vakillarida.")
+        rows = (
+            await conn.execute(
+                text(
+                    """
+                    SELECT c.number, p.first_name, p.last_name, t.name AS trade_name
+                    FROM certificates c
+                    JOIN persons p ON p.id = c.person_id
+                    JOIN trades t ON t.id = c.trade_id
+                    WHERE c.status = 'ISSUED' AND c.number IS NOT NULL
+                    ORDER BY c.issued_at DESC NULLS LAST
+                    LIMIT 100
+                    """
+                )
+            )
+        ).mappings().all()
+        items = []
+        for row in rows:
+            signers = await signers_for(conn, str(row["number"]))
+            items.append(
+                {
+                    "number": row["number"],
+                    "holder": f"{row['last_name']} {row['first_name']}",
+                    "trade": _label(row["trade_name"]),
+                    "signers": [{"slug": x.slug, "name": x.name, "signed": bool(x.signature)} for x in signers],
+                    "can_sign": any(x.slug in mine and not x.signature for x in signers),
+                }
+            )
+    return JSONResponse({"mine": sorted(mine), "items": items})
+
+
+@router.post("/api/v1/certificates/{number}/sign")
+async def sign_certificate(number: str, body: SignBody, request: Request) -> JSONResponse:
+    user_id = _user_id(request)
+    if user_id is None:
+        return problem(401, "UNAUTHORIZED", "Kirish talab qilinadi", "Avval tizimga kiring.")
+    async with _engine(request).begin() as conn:
+        mine = await signable_slugs(conn, user_id)
+        if not mine:
+            return problem(403, "FORBIDDEN", "Ruxsat yo'q", "Imzolash huquqi faqat rahbar va hamkor tashkilot vakillarida.")
+        found = (
+            await conn.execute(text("SELECT id FROM certificates WHERE number = :n AND status = 'ISSUED'"), {"n": number})
+        ).mappings().first()
+        if found is None:
+            return problem(404, "NOT_FOUND", "Topilmadi", "Berilgan sertifikat yo'q.")
+        if body.partner not in mine:
+            return problem(403, "FORBIDDEN", "Ruxsat yo'q", "Bu tashkilot nomidan imzolash huquqingiz yo'q.")
+        signed: list[str] = []
+        for signer in await signers_for(conn, number):
+            if signer.slug == body.partner and not signer.signature:
+                made = make_signer(number, signer.slug, signer.name, "PARTNER")
+                await conn.execute(
+                    text(
+                        """
+                        INSERT INTO certificate_signatures (certificate_id, partner_slug, signed_by, signature)
+                        VALUES (:cid, :slug, :uid, :sig) ON CONFLICT DO NOTHING
+                        """
+                    ),
+                    {"cid": found["id"], "slug": signer.slug, "uid": user_id, "sig": made.signature},
+                )
+                signed.append(signer.slug)
+    if not signed:
+        return problem(409, "ALREADY_SIGNED", "Allaqachon imzolangan", "Bu sertifikatni siz allaqachon imzolagansiz.")
+    return JSONResponse({"number": number, "signed": signed})
 
 
 async def _roles(conn: AsyncConnection, user_id: uuid.UUID) -> set[str]:
@@ -275,7 +379,13 @@ async def verify(number: str, request: Request) -> JSONResponse:
             },
             "holder": {"display_name": f"{item['first_name']} {item['last_name']}"},
             "signers": [
-                {"slug": signer.slug, "name": signer.name, "role": signer.role, "fingerprint": signer.fingerprint}
+                {
+                    "slug": signer.slug,
+                    "name": signer.name,
+                    "role": signer.role,
+                    "signed": bool(signer.signature),
+                    "fingerprint": signer.fingerprint,
+                }
                 for signer in signer_rows
             ],
             "checked_at": datetime.now(UTC).isoformat(),

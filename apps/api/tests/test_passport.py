@@ -137,3 +137,43 @@ async def _flow() -> None:
 
         verify = (await client.get("/api/v1/public/verify/UB-2026-000001")).json()
         assert verify["result"] == "VALID" and len(verify["signers"]) >= 1
+
+
+def test_signature_qr_appears_only_after_signing() -> None:
+    """Leader and partners sign one by one; an unsigned slot has no QR and says it is awaiting."""
+    if not os.environ.get("DATABASE_URL"):
+        pytest.skip("DATABASE_URL yo'q")
+    asyncio.run(_signing_flow())
+
+
+async def _signing_flow() -> None:
+    from sqlalchemy import text  # noqa: PLC0415
+    from sqlalchemy.ext.asyncio import create_async_engine  # noqa: PLC0415
+
+    engine = create_async_engine(os.environ["DATABASE_URL"])
+    async with engine.begin() as conn:
+        number = (await conn.execute(text("SELECT number FROM certificates WHERE status = 'ISSUED' ORDER BY number LIMIT 1"))).scalar_one()
+        await conn.execute(text("DELETE FROM certificate_signatures WHERE certificate_id = (SELECT id FROM certificates WHERE number = :n)"), {"n": number})
+    try:
+        async with httpx.AsyncClient(base_url=BASE, timeout=30) as anonymous:
+            before = (await anonymous.get(f"/api/v1/public/verify/{number}")).json()
+            assert before["signers"] and not any(x["signed"] for x in before["signers"])
+            assert (await anonymous.post(f"/api/v1/certificates/{number}/sign", json={"partner": "namdtu"})).status_code == 401
+        async with httpx.AsyncClient(base_url=BASE, timeout=30) as student:
+            await student.post("/api/v1/auth/demo", json={"role": "student"})
+            assert (await student.post(f"/api/v1/certificates/{number}/sign", json={"partner": "namdtu"})).status_code == 403
+        async with httpx.AsyncClient(base_url=BASE, timeout=30) as admin:
+            assert (await admin.post("/api/v1/auth/demo", json={"role": "hokimlik"})).status_code == 200
+            done = await admin.post(f"/api/v1/certificates/{number}/sign", json={"partner": "uychi-hokimlik"})
+            assert done.status_code == 200 and done.json()["signed"] == ["uychi-hokimlik"]
+            assert (await admin.post(f"/api/v1/certificates/{number}/sign", json={"partner": "uychi-hokimlik"})).status_code == 409
+            queue = (await admin.get("/api/v1/certificates/signing")).json()
+            assert "uychi-hokimlik" in queue["mine"]
+        async with httpx.AsyncClient(base_url=BASE, timeout=30) as anonymous:
+            after = (await anonymous.get(f"/api/v1/public/verify/{number}")).json()
+            flags = {x["slug"]: x["signed"] for x in after["signers"]}
+            assert flags["uychi-hokimlik"] is True and flags.get("namdtu") is False
+    finally:
+        async with engine.begin() as conn:
+            await conn.execute(text("DELETE FROM certificate_signatures WHERE certificate_id = (SELECT id FROM certificates WHERE number = :n)"), {"n": number})
+        await engine.dispose()

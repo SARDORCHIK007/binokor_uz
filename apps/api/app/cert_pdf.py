@@ -59,7 +59,7 @@ class Signer:
 
     @property
     def fingerprint(self) -> str:
-        return " ".join(self.signature[i : i + 4].upper() for i in range(0, 16, 4))
+        return " ".join(self.signature[i : i + 4].upper() for i in range(0, 16, 4)) if self.signature else ""
 
 
 @dataclass(frozen=True)
@@ -169,11 +169,18 @@ def render(data: CertificateData) -> bytes:
     top = 697
     for index, signer in enumerate(data.signers[:3]):
         sx = start + index * slot
-        url = f"{data.verify_url}?signer={signer.slug}&sig={signer.signature[:16]}"
-        px, py = pos(sx, top + 70)
-        pdf.drawImage(_qr(url), px, py, 70 * S, 70 * S)
         tx = sx + 80
         width = (slot - 92) * S
+        if signer.signature:  # the QR appears only after this signer has signed
+            url = f"{data.verify_url}?signer={signer.slug}&sig={signer.signature[:16]}"
+            px, py = pos(sx, top + 70)
+            pdf.drawImage(_qr(url), px, py, 70 * S, 70 * S)
+        else:
+            pdf.setStrokeColorRGB(*MUTED)
+            pdf.setDash(2, 2)
+            bx, by = pos(sx, top + 70)
+            pdf.rect(bx, by, 70 * S, 70 * S)
+            pdf.setDash()
         pdf.setFillColorRGB(*GOLD)
         pdf.setFont("DejaVu-Bold", _fit(signer.role, "DejaVu-Bold", 7.5, width))
         tpx, tpy = pos(tx, top + 14)
@@ -186,8 +193,11 @@ def render(data: CertificateData) -> bytes:
         pdf.setFillColorRGB(*MUTED)
         pdf.setFont("DejaVu", 6.5)
         fpx, fpy = pos(tx, top + 46)
-        pdf.drawString(fpx, fpy, f"Ed25519 {signer.fingerprint[:9]}")
-        pdf.drawString(fpx, fpy - 9, t(data.lang, "signed"))
+        if signer.signature:
+            pdf.drawString(fpx, fpy, f"Ed25519 {signer.fingerprint[:9]}")
+            pdf.drawString(fpx, fpy - 9, t(data.lang, "signed"))
+        else:
+            pdf.drawString(fpx, fpy, t(data.lang, "awaiting"))
 
     pdf.showPage()
     pdf.save()

@@ -101,21 +101,6 @@ export function AppSidebar({ open, onClose, user }: { open: boolean; onClose: ()
           </label>
         ) : null}
 
-        <div>
-          <span className="px-3 text-[10px] font-extrabold tracking-widest text-white/50 uppercase">{t("platform")}</span>
-          <nav className="mt-2 space-y-1" aria-label={t("platform")}>
-            {PORTAL_LINKS.map((item) => {
-              const active = item.href === "/" ? path === "/" : path.startsWith(item.href);
-              return (
-                <Link key={item.href} href={item.href} onClick={onClose} aria-current={active ? "page" : undefined} className={linkClass(active, "blue")}>
-                  <Icon name={item.icon} className="size-4 shrink-0" />
-                  {t(item.label as "home")}
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
-
         {user ? (
           <div>
             <span className="px-3 text-[10px] font-extrabold tracking-widest text-accent/80 uppercase">{t("cabinet")}</span>
@@ -132,6 +117,40 @@ export function AppSidebar({ open, onClose, user }: { open: boolean; onClose: ()
             </nav>
           </div>
         ) : null}
+        {user ? (
+          <details className="group rounded-2xl bg-navy-800 px-1 py-1">
+            <summary className="flex cursor-pointer list-none items-center justify-between px-3 py-2 text-[10px] font-extrabold tracking-widest text-white/60 uppercase">
+              {t("platform")}
+              <span aria-hidden="true" className="transition group-open:rotate-180">⌄</span>
+            </summary>
+            <nav className="space-y-1 pb-2" aria-label={t("platform")}>
+              {PORTAL_LINKS.map((item) => {
+                const active = item.href === "/" ? path === "/" : path.startsWith(item.href);
+                return (
+                  <Link key={item.href} href={item.href} onClick={onClose} aria-current={active ? "page" : undefined} className={linkClass(active, "blue")}>
+                    <Icon name={item.icon} className="size-4 shrink-0" />
+                    {t(item.label as "home")}
+                  </Link>
+                );
+              })}
+            </nav>
+          </details>
+        ) : (
+        <div>
+          <span className="px-3 text-[10px] font-extrabold tracking-widest text-white/50 uppercase">{t("platform")}</span>
+          <nav className="mt-2 space-y-1" aria-label={t("platform")}>
+            {PORTAL_LINKS.map((item) => {
+              const active = item.href === "/" ? path === "/" : path.startsWith(item.href);
+              return (
+                <Link key={item.href} href={item.href} onClick={onClose} aria-current={active ? "page" : undefined} className={linkClass(active, "blue")}>
+                  <Icon name={item.icon} className="size-4 shrink-0" />
+                  {t(item.label as "home")}
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+        )}
       </div>
 
       <div className="mt-6 space-y-3 border-t border-white/10 pt-4">
