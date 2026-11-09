@@ -1,21 +1,21 @@
-export const HERO_IMAGE = "/media/hero/hero-foreman.png";
-export const HERO_TEAM = "/media/hero/hero-team.jpg";
+export const HERO_IMAGE = "/media/hero/hero-foreman.webp";
+export const HERO_TEAM = "/media/hero/hero-team.webp";
 
 export const TRADE_IMAGES: Record<string, string> = {
-  bricklayer: "/media/trades/bricklayer.jpg",
-  carpenter: "/media/trades/carpenter.jpg",
-  concrete: "/media/trades/concrete.jpg",
-  drafting: "/media/trades/drafting.jpg",
-  electrician: "/media/trades/electrician.jpg",
-  painter: "/media/trades/painter.png",
-  plasterer: "/media/trades/plasterer.jpg",
-  plumber: "/media/trades/plumber.jpg",
-  rebar: "/media/trades/rebar.jpg",
-  roofer: "/media/trades/roofer.jpg",
-  tiler: "/media/trades/tiler.jpg",
-  welder: "/media/trades/welder.jpg",
+  bricklayer: "/media/trades/bricklayer.webp",
+  carpenter: "/media/trades/carpenter.webp",
+  concrete: "/media/trades/concrete.webp",
+  drafting: "/media/trades/drafting.webp",
+  electrician: "/media/trades/electrician.webp",
+  painter: "/media/trades/painter.webp",
+  plasterer: "/media/trades/plasterer.webp",
+  plumber: "/media/trades/plumber.webp",
+  rebar: "/media/trades/rebar.webp",
+  roofer: "/media/trades/roofer.webp",
+  tiler: "/media/trades/tiler.webp",
+  welder: "/media/trades/welder.webp",
 };
 
 export function tradeImage(code: string): string {
-  return TRADE_IMAGES[code] ?? "/media/misc/tools.jpg";
+  return TRADE_IMAGES[code] ?? "/media/misc/tools.webp";
 }

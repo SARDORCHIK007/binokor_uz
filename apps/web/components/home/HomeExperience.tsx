@@ -50,7 +50,7 @@ export function HomeExperience({ home }: { home: HomePayload }) {
       {/* 1. HERO BLOCK */}
       <section className="relative overflow-hidden bg-navy-900 text-white">
         <img
-          src="/media/hero/site.jpg"
+          src="/media/hero/site.webp"
           alt=""
           className="pointer-events-none absolute inset-y-0 right-0 hidden h-full w-[60%] object-cover object-center opacity-40 lg:block"
         />
@@ -60,7 +60,7 @@ export function HomeExperience({ home }: { home: HomePayload }) {
         <div className="pointer-events-none absolute right-0 bottom-0 hidden h-[94%] w-[44%] max-w-[560px] lg:block xl:right-6">
           <div className="absolute bottom-0 left-1/2 h-[70%] w-[85%] -translate-x-1/2 rounded-full bg-primary/25 blur-3xl" aria-hidden="true" />
           <img
-            src="/media/hero/hero-student.png"
+            src="/media/hero/hero-student.webp"
             alt="Uychi binokor ustasi"
             className="relative h-full w-full object-contain object-bottom drop-shadow-[0_20px_40px_rgba(0,0,0,0.45)]"
           />

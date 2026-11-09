@@ -26,7 +26,7 @@ export default async function EmployersPortalPage() {
       <section className="relative overflow-hidden bg-navy-900 py-16 text-white lg:py-20">
         <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 overflow-hidden opacity-60 lg:block">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/media/misc/building-apartment.jpg" alt="" className="h-full w-full object-cover object-center" />
+          <img src="/media/misc/building-apartment.webp" alt="" className="h-full w-full object-cover object-center" />
         </div>
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-navy-900 via-navy-900/95 to-navy-900/30" />
         <div className="relative mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
