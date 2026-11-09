@@ -1,5 +1,6 @@
 import json
 import uuid
+from datetime import date
 
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
@@ -23,10 +24,17 @@ class RequestBody(BaseModel):
     track: str = "DOMESTIC"
     as_brigade: bool = False
     agency_id: uuid.UUID | None = None
+    location: str = Field(default="Uychi", max_length=200)
+    start_date: date | None = None
+    duration_months: int | None = Field(default=None, ge=1, le=60)
+    salary_from: float | None = Field(default=None, ge=0)
+    salary_to: float | None = Field(default=None, ge=0)
+    conditions: str | None = Field(default=None, max_length=2000)
 
 
 class CandidateBody(BaseModel):
-    worker_user_id: uuid.UUID
+    worker_user_id: uuid.UUID | None = None
+    brigade_id: uuid.UUID | None = None
 
 
 class ReviewBody(BaseModel):
@@ -135,8 +143,14 @@ async def mine(request: Request) -> JSONResponse:
         requests = await conn.execute(
             text(
                 """
-                SELECT id::text AS id, quantity, status::text AS status, track::text AS track
-                FROM demand_requests WHERE employer_id = :id ORDER BY created_at DESC
+                SELECT r.id::text AS id, r.quantity, r.status::text AS status, r.track::text AS track,
+                       r.as_brigade, r.location, r.start_date::text AS start_date, r.duration_months,
+                       r.salary_from::float AS salary_from, r.salary_to::float AS salary_to,
+                       r.conditions, r.created_at::date::text AS created_at,
+                       t.code AS trade_code, t.name->>'uz-Latn' AS trade,
+                       (SELECT count(*) FROM request_candidates c WHERE c.request_id = r.id) AS candidates
+                FROM demand_requests r JOIN trades t ON t.id = r.trade_id
+                WHERE r.employer_id = :id ORDER BY r.created_at DESC
                 """
             ),
             {"id": employer_id},
@@ -248,6 +262,8 @@ async def create_request(body: RequestBody, request: Request) -> JSONResponse:
         trade_id = trade.scalar()
         if trade_id is None:
             return problem(404, "NOT_FOUND", "Kasb yo'q", "Kasb kodi noto'g'ri.")
+        if body.salary_from is not None and body.salary_to is not None and body.salary_from > body.salary_to:
+            return problem(422, "VALIDATION", "Maosh oralig'i noto'g'ri", "Boshlang'ich maosh yuqori chegaradan katta.")
         status = "NEW"
         if body.track == "FOREIGN" and body.agency_id is not None:
             status = "VIA_AGENCY"
@@ -258,11 +274,13 @@ async def create_request(body: RequestBody, request: Request) -> JSONResponse:
             text(
                 """
                 INSERT INTO demand_requests (
-                  id, employer_id, trade_id, quantity, as_brigade, track, status, agency_id, location
+                  id, employer_id, trade_id, quantity, as_brigade, track, status, agency_id, location,
+                  start_date, duration_months, salary_from, salary_to, salary_currency, conditions
                 )
                 VALUES (
                   :id, :employer_id, :trade_id, :quantity, :as_brigade,
-                  CAST(:track AS track_code), CAST(:status AS request_status), :agency_id, 'Uychi'
+                  CAST(:track AS track_code), CAST(:status AS request_status), :agency_id, :location,
+                  :start_date, :duration_months, :salary_from, :salary_to, :currency, :conditions
                 )
                 """
             ),
@@ -275,6 +293,13 @@ async def create_request(body: RequestBody, request: Request) -> JSONResponse:
                 "track": body.track,
                 "status": status,
                 "agency_id": body.agency_id,
+                "location": body.location.strip() or "Uychi",
+                "start_date": body.start_date,
+                "duration_months": body.duration_months,
+                "salary_from": body.salary_from,
+                "salary_to": body.salary_to,
+                "currency": None if body.salary_from is None and body.salary_to is None else "UZS",
+                "conditions": (body.conditions or "").strip() or None,
             },
         )
     return JSONResponse({"id": str(request_id), "status": status})
@@ -300,14 +325,33 @@ async def add_candidate(request_id: uuid.UUID, body: CandidateBody, request: Req
         )
         if owned.first() is None:
             return problem(403, "FORBIDDEN", "Ruxsat yo'q", "Bu so'rov sizniki emas.")
+        if (body.worker_user_id is None) == (body.brigade_id is None):
+            return problem(422, "VALIDATION", "Nomzod noto'g'ri", "Usta yoki brigadani tanlang.")
+        duplicate = await conn.execute(
+            text(
+                """
+                SELECT 1 FROM request_candidates
+                WHERE request_id = :request_id
+                  AND (worker_user_id = :worker OR brigade_id = :brigade)
+                """
+            ),
+            {"request_id": request_id, "worker": body.worker_user_id, "brigade": body.brigade_id},
+        )
+        if duplicate.first() is not None:
+            return JSONResponse({"status": "PROPOSED"})
         await conn.execute(
             text(
                 """
-                INSERT INTO request_candidates (id, request_id, worker_user_id, status)
-                VALUES (:id, :request_id, :worker_user_id, 'PROPOSED')
+                INSERT INTO request_candidates (id, request_id, worker_user_id, brigade_id, status)
+                VALUES (:id, :request_id, :worker_user_id, :brigade_id, 'PROPOSED')
                 """
             ),
-            {"id": new_id(), "request_id": request_id, "worker_user_id": body.worker_user_id},
+            {
+                "id": new_id(),
+                "request_id": request_id,
+                "worker_user_id": body.worker_user_id,
+                "brigade_id": body.brigade_id,
+            },
         )
     return JSONResponse({"status": "PROPOSED"})
 
@@ -362,3 +406,166 @@ async def review(placement_id: uuid.UUID, body: ReviewBody, request: Request) ->
             },
         )
     return JSONResponse({"saved": True})
+
+
+async def _owned_request(
+    conn: AsyncConnection, request_id: uuid.UUID, user_id: uuid.UUID
+) -> dict[str, object] | None:
+    row = await conn.execute(
+        text(
+            """
+            SELECT r.id, r.trade_id, r.quantity, r.as_brigade
+            FROM demand_requests r
+            JOIN employer_members m ON m.employer_id = r.employer_id
+            WHERE r.id = :request_id AND m.user_id = :user_id
+            """
+        ),
+        {"request_id": request_id, "user_id": user_id},
+    )
+    found = row.mappings().first()
+    return None if found is None else dict(found)
+
+
+def match_score(rating: float | None, hours: int, certified: bool, free: bool) -> tuple[float, list[str]]:
+    """Explainable rule-based ranking (FR-MATCH): every point has a stated reason."""
+    reasons: list[str] = []
+    score = 0.0
+    if certified:
+        score += 0.35
+        reasons.append("certified")
+    if free:
+        score += 0.25
+        reasons.append("available")
+    if rating is not None:
+        score += 0.25 * min(rating, 5.0) / 5.0
+        if rating >= 4.5:
+            reasons.append("top_rated")
+    score += 0.15 * min(hours, 1000) / 1000
+    if hours >= 500:
+        reasons.append("experienced")
+    return round(score, 3), reasons
+
+
+@router.get("/requests/{request_id}/matches")
+async def matches(request_id: uuid.UUID, request: Request) -> JSONResponse:
+    user_id = _user_id(request)
+    if user_id is None:
+        return problem(401, "UNAUTHORIZED", "Kirish talab qilinadi", "Avval tizimga kiring.")
+    async with _engine(request).connect() as conn:
+        found = await _owned_request(conn, request_id, user_id)
+        if found is None:
+            return problem(403, "FORBIDDEN", "Ruxsat yo'q", "Bu so'rov sizniki emas.")
+        brigades = await conn.execute(
+            text(
+                """
+                SELECT b.id::text AS id, b.name,
+                       count(m.worker_user_id) FILTER (WHERE m.left_at IS NULL) AS members,
+                       avg(wp.rating_avg)::float AS rating
+                FROM brigades b
+                LEFT JOIN brigade_members m ON m.brigade_id = b.id
+                LEFT JOIN worker_profiles wp ON wp.user_id = m.worker_user_id AND m.left_at IS NULL
+                WHERE b.trade_id = :trade AND b.status = 'READY'
+                  AND NOT EXISTS (
+                    SELECT 1 FROM request_candidates c WHERE c.request_id = :request AND c.brigade_id = b.id
+                  )
+                GROUP BY b.id
+                ORDER BY members DESC, rating DESC NULLS LAST
+                LIMIT 5
+                """
+            ),
+            {"trade": found["trade_id"], "request": request_id},
+        )
+        workers = await conn.execute(
+            text(
+                """
+                SELECT u.id::text AS user_id, wp.slug,
+                       CASE
+                         WHEN coalesce((wp.visibility->>'full_name')::boolean, false) THEN u.full_name
+                         ELSE split_part(btrim(u.full_name), ' ', 1)
+                       END AS name,
+                       wp.level::text AS level, wp.availability::text AS availability,
+                       wp.rating_avg::float AS rating, wp.verified_hours AS hours,
+                       EXISTS (
+                         SELECT 1 FROM certificates c JOIN persons p ON p.id = c.person_id
+                         WHERE p.user_id = wp.user_id AND c.status = 'ISSUED'
+                       ) AS certified
+                FROM worker_profiles wp
+                JOIN users u ON u.id = wp.user_id
+                WHERE wp.primary_trade_id = :trade
+                  AND wp.availability IN ('FREE', 'BUSY')
+                  AND NOT EXISTS (
+                    SELECT 1 FROM request_candidates c
+                    WHERE c.request_id = :request AND c.worker_user_id = wp.user_id
+                  )
+                """
+            ),
+            {"trade": found["trade_id"], "request": request_id},
+        )
+        ranked: list[dict[str, object]] = []
+        for item in workers.mappings():
+            score, reasons = match_score(
+                item["rating"], int(item["hours"] or 0), bool(item["certified"]), item["availability"] == "FREE"
+            )
+            ranked.append(
+                {
+                    "user_id": item["user_id"],
+                    "slug": item["slug"],
+                    "name": item["name"],
+                    "level": item["level"],
+                    "availability": item["availability"],
+                    "rating": item["rating"],
+                    "hours": item["hours"],
+                    "score": score,
+                    "reasons": reasons,
+                }
+            )
+        ranked.sort(key=lambda row: float(str(row["score"])), reverse=True)
+        brigade_rows = [
+            {
+                "id": item["id"],
+                "name": item["name"],
+                "members": int(item["members"]),
+                "rating": None if item["rating"] is None else round(float(item["rating"]), 1),
+                "fits": int(item["members"]) >= int(str(found["quantity"])),
+            }
+            for item in brigades.mappings()
+        ]
+    payload = {"brigades": brigade_rows, "workers": ranked[:10], "as_brigade": bool(found["as_brigade"])}
+    if "+998" in json.dumps(payload):
+        return problem(500, "PHONE_LEAK", "Xatolik", "Javobda telefon chiqib qoldi.")
+    return JSONResponse(payload)
+
+
+@router.get("/requests/{request_id}/candidates")
+async def candidates(request_id: uuid.UUID, request: Request) -> JSONResponse:
+    user_id = _user_id(request)
+    if user_id is None:
+        return problem(401, "UNAUTHORIZED", "Kirish talab qilinadi", "Avval tizimga kiring.")
+    async with _engine(request).connect() as conn:
+        if await _owned_request(conn, request_id, user_id) is None:
+            return problem(403, "FORBIDDEN", "Ruxsat yo'q", "Bu so'rov sizniki emas.")
+        rows = await conn.execute(
+            text(
+                """
+                SELECT c.id::text AS id, c.status,
+                       CASE WHEN c.brigade_id IS NOT NULL THEN 'brigade' ELSE 'worker' END AS kind,
+                       coalesce(
+                         b.name,
+                         CASE
+                           WHEN coalesce((wp.visibility->>'full_name')::boolean, false) THEN u.full_name
+                           ELSE split_part(btrim(u.full_name), ' ', 1)
+                         END
+                       ) AS name,
+                       wp.slug
+                FROM request_candidates c
+                LEFT JOIN brigades b ON b.id = c.brigade_id
+                LEFT JOIN users u ON u.id = c.worker_user_id
+                LEFT JOIN worker_profiles wp ON wp.user_id = c.worker_user_id
+                WHERE c.request_id = :id
+                ORDER BY kind, name
+                """
+            ),
+            {"id": request_id},
+        )
+        payload = [dict(item) for item in rows.mappings()]
+    return JSONResponse(payload)

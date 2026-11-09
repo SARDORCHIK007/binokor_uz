@@ -52,7 +52,7 @@ jobs:
       REDIS_URL: redis://localhost:6379/0
       MINIO_ENDPOINT: http://localhost:9000
       JWT_SECRET: ci-only-secret-0123456789abcdef0123456789
-      APP_ENV: ci
+      APP_ENV: local  # test-only: enables dev OTP codes the tests read
       DEMO_MODE: "true"
       EVIDENCE_DIR: /tmp/evidence
     steps:
