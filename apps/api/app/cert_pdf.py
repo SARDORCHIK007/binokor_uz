@@ -18,6 +18,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 
+from app.doc_i18n import t
 from app.signing import sign_payload
 
 ASSETS = Path(__file__).parent / "assets"
@@ -33,17 +34,9 @@ BLUE = (31 / 255, 85 / 255, 214 / 255)
 GOLD = (176 / 255, 124 / 255, 0)
 MUTED = (80 / 255, 92 / 255, 112 / 255)
 
-LEVELS = {
-    "APPRENTICE": "Shogird / Apprentice",
-    "ASSISTANT": "Yordamchi usta / Assistant",
-    "MASTER": "Usta / Master",
-    "FOREMAN": "Brigadir / Foreman",
-}
-ISSUERS = {
-    "UB_NAMDTU": "UYCHI BINOKOR va Namangan davlat texnika universiteti",
-    "UB": "UYCHI BINOKOR o'quv markazi",
-}
-ROLES = {"GOV": "Loyiha rahbari", "EDU": "Ta'lim hamkori", "AGENCY": "Agentlik hamkori"}
+LEVELS = {"APPRENTICE", "ASSISTANT", "MASTER", "FOREMAN"}
+ISSUERS = {"UB_NAMDTU", "UB"}
+ROLES = {"GOV", "EDU", "AGENCY"}
 
 _registered = False
 
@@ -80,6 +73,7 @@ class CertificateData:
     signature: bytes
     verify_url: str
     signers: tuple[Signer, ...] = field(default_factory=tuple)
+    lang: str = "uz-Latn"
 
 
 def fingerprint(signature: bytes) -> str:
@@ -88,10 +82,10 @@ def fingerprint(signature: bytes) -> str:
     return " ".join(digest[i : i + 4] for i in range(0, 16, 4))
 
 
-def make_signer(number: str, slug: str, name: str, kind: str) -> Signer:
+def make_signer(number: str, slug: str, name: str, kind: str, lang: str = "uz-Latn") -> Signer:
     """Deterministic Ed25519 signature over (certificate number, signer) with the platform key."""
     _, signature = sign_payload({"certificate": number, "signer": slug})
-    return Signer(slug=slug, name=name, role=ROLES.get(kind, "Hamkor"), signature=signature.hex())
+    return Signer(slug=slug, name=name, role=t(lang, kind if kind in ROLES else "PARTNER"), signature=signature.hex())
 
 
 def _qr(url: str) -> ImageReader:
@@ -111,9 +105,9 @@ def render(data: CertificateData) -> bytes:
     _fonts()
     buffer = io.BytesIO()
     pdf = canvas.Canvas(buffer, pagesize=(PAGE_W, PAGE_H))
-    pdf.setTitle(f"Sertifikat {data.number}")
+    pdf.setTitle(f"{t(data.lang, 'cert_title')} {data.number}")
     pdf.setAuthor("UYCHI BINOKOR")
-    pdf.setSubject("Malaka sertifikati")
+    pdf.setSubject(t(data.lang, "cert_title"))
     pdf.drawImage(ImageReader(str(FRAME)), 0, 0, PAGE_W, PAGE_H)
 
     def pos(x: float, y: float) -> tuple[float, float]:
@@ -127,10 +121,13 @@ def render(data: CertificateData) -> bytes:
 
     cx = 735  # centre of the inner field, left of the verification QR
     centered("UYCHI BINOKOR", cx, 255, "DejaVu-Bold", 13, NAVY)
-    centered("Uychi tumani hokimligi loyihasi · Kasbiy malaka platformasi", cx, 275, "DejaVu", 8.5, MUTED)
-    centered("MALAKA SERTIFIKATI", cx, 345, "DejaVu-Bold", 30, BLUE)
-    centered("Certificate of qualification", cx, 372, "DejaVu", 10.5, MUTED)
-    centered("Ushbu sertifikat egasi / This certifies that", cx, 425, "DejaVu", 10.5, MUTED)
+    org = t(data.lang, "cert_org")
+    centered(org, cx, 275, "DejaVu", _fit(org, "DejaVu", 8.5, 700 * S, 5.5), MUTED)
+    title = t(data.lang, "cert_title")
+    centered(title, cx, 345, "DejaVu-Bold", _fit(title, "DejaVu-Bold", 30, 700 * S, 14), BLUE)
+    sub = t(data.lang, "cert_sub")
+    centered(sub, cx, 372, "DejaVu", _fit(sub, "DejaVu", 10.5, 700 * S, 7), MUTED)
+    centered(t(data.lang, "cert_certifies"), cx, 425, "DejaVu", 10.5, MUTED)
     name_size = _fit(data.holder, "DejaVu-Bold", 25, 700 * S)
     centered(data.holder, cx, 478, "DejaVu-Bold", name_size, NAVY)
     pdf.setStrokeColorRGB(*GOLD)
@@ -140,11 +137,11 @@ def render(data: CertificateData) -> bytes:
     pdf.line(x0, y0, x1, y0)
 
     rows = [
-        ("Kasb / Trade", data.trade),
-        ("Daraja / Level", LEVELS.get(data.level, data.level)),
-        ("Beruvchi / Issuer", ISSUERS.get(data.issuer, data.issuer)),
-        ("Sana / Issued", data.issued_at.isoformat() if data.issued_at else "—"),
-        ("Raqam / Number", data.number),
+        (t(data.lang, "trade"), data.trade),
+        (t(data.lang, "level"), t(data.lang, data.level) if data.level in LEVELS else data.level),
+        (t(data.lang, "issuer"), t(data.lang, data.issuer) if data.issuer in ISSUERS else data.issuer),
+        (t(data.lang, "issued"), data.issued_at.isoformat() if data.issued_at else "—"),
+        (t(data.lang, "number"), data.number),
     ]
     y = 535
     label_x, value_x = cx - 60, cx - 30
@@ -164,7 +161,7 @@ def render(data: CertificateData) -> bytes:
     qx, qy, qs = 1168, 352, 140
     px, py = pos(qx, qy + qs)
     pdf.drawImage(_qr(data.verify_url), px, py, qs * S, qs * S)
-    centered("QR orqali tekshiring", qx + qs / 2, qy + qs + 16, "DejaVu-Bold", 7, NAVY)
+    centered(t(data.lang, "verify"), qx + qs / 2, qy + qs + 16, "DejaVu-Bold", 7, NAVY)
 
     # signatures: leader first, then partner organisations
     slot = 250
@@ -190,7 +187,7 @@ def render(data: CertificateData) -> bytes:
         pdf.setFont("DejaVu", 6.5)
         fpx, fpy = pos(tx, top + 46)
         pdf.drawString(fpx, fpy, f"Ed25519 {signer.fingerprint[:9]}")
-        pdf.drawString(fpx, fpy - 9, "raqamli imzo")
+        pdf.drawString(fpx, fpy - 9, t(data.lang, "signed"))
 
     pdf.showPage()
     pdf.save()

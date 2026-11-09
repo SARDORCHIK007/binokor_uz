@@ -925,7 +925,8 @@
       "DROPPED": "Dropped",
       "TRANSFERRED": "Transferred"
     },
-    "statusLabel": "Status"
+    "statusLabel": "Status",
+    "cardLang": "Card language"
   },
   "verifyPage": {
     "signers": "Digital signatures",

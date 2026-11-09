@@ -925,7 +925,8 @@
       "DROPPED": "Отчислен",
       "TRANSFERRED": "Переведён"
     },
-    "statusLabel": "Статус"
+    "statusLabel": "Статус",
+    "cardLang": "Язык карты"
   },
   "verifyPage": {
     "signers": "Цифровые подписи",

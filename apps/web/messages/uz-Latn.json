@@ -925,7 +925,8 @@
       "DROPPED": "Chiqib ketgan",
       "TRANSFERRED": "Ko'chirilgan"
     },
-    "statusLabel": "Holat"
+    "statusLabel": "Holat",
+    "cardLang": "Karta tili"
   },
   "verifyPage": {
     "signers": "Raqamli imzolar",

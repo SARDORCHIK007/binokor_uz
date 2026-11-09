@@ -925,7 +925,8 @@
       "DROPPED": "Чиқиб кетган",
       "TRANSFERRED": "Кўчирилган"
     },
-    "statusLabel": "Ҳолат"
+    "statusLabel": "Ҳолат",
+    "cardLang": "Карта тили"
   },
   "verifyPage": {
     "signers": "Рақамли имзолар",

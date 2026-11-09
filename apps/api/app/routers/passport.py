@@ -14,20 +14,12 @@ from fastapi.responses import JSONResponse, Response
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
+from app.doc_i18n import lang_of, pick
 from app.passport_card import PassportData, card_pdf, fingerprint_of, render_card
 from app.security import bearer_from_request, problem, read_access_token
 from app.signing import sign_payload
 
 router = APIRouter(prefix="/api/v1", tags=["passport"])
-
-STATUS_UZ = {
-    "ACTIVE": "O'qiyapti",
-    "SUSPENDED": "To'xtatilgan",
-    "COMPLETED": "O'qishni tugatgan",
-    "DROPPED": "Chiqib ketgan",
-    "TRANSFERRED": "Ko'chirilgan",
-}
-
 
 def _engine(request: Request) -> AsyncEngine:
     engine: AsyncEngine = request.app.state.engine
@@ -52,8 +44,9 @@ def passport_number(enrollment_id: uuid.UUID, enrolled: date) -> str:
     return f"UB-P-{enrolled.year}-{enrollment_id.int % 1_000_000:06d}"
 
 
-def _label(value: object) -> str:
-    return str(value.get("uz-Latn") or "") if isinstance(value, dict) else ""
+def _lang(request: Request, explicit: str | None) -> str:
+    """?lang=... wins, then the site's locale cookie, then Uzbek (Latin)."""
+    return lang_of(explicit or request.cookies.get("ub_locale"))
 
 
 _SELECT = """
@@ -76,7 +69,7 @@ async def _mine(conn: AsyncConnection, user_id: uuid.UUID) -> dict[str, object] 
     return None if row is None else dict(row)
 
 
-def _data(row: dict[str, object], base: str) -> PassportData:
+def _data(row: dict[str, object], base: str, lang: str) -> PassportData:
     enrollment = uuid.UUID(str(row["id"]))
     enrolled = row["enrolled_at"]
     assert isinstance(enrolled, date)
@@ -85,17 +78,17 @@ def _data(row: dict[str, object], base: str) -> PassportData:
     return PassportData(
         number=number,
         name=str(row["full_name"]),
-        trade=_label(row["trade_name"]),
-        group=f"Guruh {row['group_code']}",
-        status=STATUS_UZ.get(str(row["status"]), str(row["status"])),
-        enrolled=f"Qabul: {enrolled.isoformat()}",
+        trade=pick(row["trade_name"], lang),
+        group_code=str(row["group_code"]),
+        status_code=str(row["status"]),
+        enrolled_on=enrolled.isoformat(),
         fingerprint=fingerprint_of(signature),
         verify_url=f"{base}/pasport/{enrollment}",
     )
 
 
 @router.get("/me/passport")
-async def my_passport(request: Request) -> JSONResponse:
+async def my_passport(request: Request, lang: str | None = None) -> JSONResponse:
     user_id = _user_id(request)
     if user_id is None:
         return problem(401, "UNAUTHORIZED", "Kirish talab qilinadi", "Avval tizimga kiring.")
@@ -103,10 +96,12 @@ async def my_passport(request: Request) -> JSONResponse:
         row = await _mine(conn, user_id)
     if row is None:
         return JSONResponse({"enrolled": False})
-    data = _data(row, _base(request))
+    code = _lang(request, lang)
+    data = _data(row, _base(request), code)
     return JSONResponse(
         {
             "enrolled": True,
+            "lang": code,
             "id": str(row["id"]),
             "number": data.number,
             "name": data.name,
@@ -121,7 +116,7 @@ async def my_passport(request: Request) -> JSONResponse:
 
 
 @router.get("/me/passport/card.{ext}", response_model=None)
-async def my_card(ext: str, request: Request) -> Response | JSONResponse:
+async def my_card(ext: str, request: Request, lang: str | None = None) -> Response | JSONResponse:
     if ext not in {"png", "pdf"}:
         return problem(404, "NOT_FOUND", "Topilmadi", "Format png yoki pdf.")
     user_id = _user_id(request)
@@ -131,7 +126,8 @@ async def my_card(ext: str, request: Request) -> Response | JSONResponse:
         row = await _mine(conn, user_id)
     if row is None:
         return problem(404, "NOT_FOUND", "Pasport yo'q", "Pasport o'qishga qabul qilingandan keyin beriladi.")
-    png = render_card(_data(row, _base(request)))
+    code = _lang(request, lang)
+    png = render_card(_data(row, _base(request), code), lang=code)
     if ext == "png":
         return Response(png, media_type="image/png", headers={"Cache-Control": "private, max-age=300"})
     return Response(
@@ -140,7 +136,9 @@ async def my_card(ext: str, request: Request) -> Response | JSONResponse:
 
 
 @router.get("/public/passport/{enrollment_id}")
-async def public_passport(enrollment_id: uuid.UUID, request: Request) -> JSONResponse:
+async def public_passport(
+    enrollment_id: uuid.UUID, request: Request, lang: str | None = None
+) -> JSONResponse:
     """What the QR opens: first name + last initial, trade, group, status. Nothing else."""
     async with _engine(request).connect() as conn:
         row = (
@@ -150,7 +148,7 @@ async def public_passport(enrollment_id: uuid.UUID, request: Request) -> JSONRes
         return JSONResponse({"valid": False})
     parts = str(row["full_name"]).split()
     display = parts[0] + (f" {parts[-1][0]}." if len(parts) > 1 else "")
-    data = _data(dict(row), _base(request))
+    data = _data(dict(row), _base(request), _lang(request, lang))
     return JSONResponse(
         {
             "valid": str(row["status"]) in {"ACTIVE", "COMPLETED"},

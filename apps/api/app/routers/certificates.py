@@ -10,6 +10,7 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
 from app.cert_pdf import CertificateData, Signer, make_signer, render
+from app.doc_i18n import lang_of, pick
 from app.security import bearer_from_request, problem, read_access_token
 from app.signing import signature_matches
 
@@ -36,13 +37,13 @@ def _user_id(request: Request) -> uuid.UUID | None:
     return uuid.UUID(str(payload["sub"]))
 
 
-async def signers_for(conn: AsyncConnection, number: str) -> list[Signer]:
+async def signers_for(conn: AsyncConnection, number: str, lang: str = "uz-Latn") -> list[Signer]:
     """Project leader (government partner) first, then every partner with a SIGNED agreement."""
     rows = await conn.execute(
         text(
             """
             SELECT coalesce(slug, lower(regexp_replace(name->>'uz-Latn', '[^a-zA-Z0-9]+', '-', 'g'))) AS slug,
-                   name->>'uz-Latn' AS name, kind::text AS kind
+                   name AS name, kind::text AS kind
             FROM partners
             WHERE status = 'SIGNED'
             ORDER BY (kind = 'GOV') DESC, sort_order, name->>'uz-Latn'
@@ -50,7 +51,10 @@ async def signers_for(conn: AsyncConnection, number: str) -> list[Signer]:
             """
         )
     )
-    return [make_signer(number, str(row["slug"]), str(row["name"]), str(row["kind"])) for row in rows.mappings()]
+    return [
+        make_signer(number, str(row["slug"]), pick(row["name"], lang), str(row["kind"]), lang)
+        for row in rows.mappings()
+    ]
 
 
 async def _roles(conn: AsyncConnection, user_id: uuid.UUID) -> set[str]:
@@ -280,8 +284,9 @@ async def verify(number: str, request: Request) -> JSONResponse:
 
 
 @router.get("/api/v1/public/verify/{number}/pdf")
-async def verify_pdf(number: str, request: Request) -> Response:
+async def verify_pdf(number: str, request: Request, lang: str | None = None) -> Response:
     """FR-CERT-PDF: printable certificate with QR to the public verify page."""
+    code = lang_of(lang or request.cookies.get("ub_locale"))
     engine = _engine(request)
     async with engine.connect() as conn:
         row = await conn.execute(
@@ -298,20 +303,21 @@ async def verify_pdf(number: str, request: Request) -> Response:
             {"number": number},
         )
         item = row.mappings().first()
-        signers = await signers_for(conn, str(item["number"])) if item is not None else []
+        signers = await signers_for(conn, str(item["number"]), code) if item is not None else []
     if item is None:
         return problem(404, "NOT_FOUND", "Topilmadi", "Berilgan sertifikat yo'q.")
     base = str(request.headers.get("x-public-origin") or "https://uychibinokor.uz").rstrip("/")
     data = CertificateData(
         number=str(item["number"]),
         holder=f"{item['first_name']} {item['last_name']}",
-        trade=_label(item["trade_name"]),
+        trade=pick(item["trade_name"], code),
         level=str(item["level"]),
         issuer=str(item["issuer"]),
         issued_at=None if item["issued_at"] is None else item["issued_at"].date(),
         signature=bytes(item["signature"] or b""),
         verify_url=f"{base}/verify/{item['number']}",
         signers=tuple(signers),
+        lang=code,
     )
     return Response(
         content=render(data),

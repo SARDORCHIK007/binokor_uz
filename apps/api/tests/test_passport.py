@@ -19,9 +19,9 @@ def _data() -> PassportData:
         number="UB-P-2026-000123",
         name="Азиз Каримов",  # Cyrillic must render too
         trade="Santexnik",
-        group="Guruh SANT-2026-01",
-        status="O'qiyapti",
-        enrolled="Qabul: 2026-11-06",
+        group_code="SANT-2026-01",
+        status_code="ACTIVE",
+        enrolled_on="2026-11-06",
         fingerprint="A1B2 C3D4 E5F6 0718",
         verify_url="https://uychibinokor.uz/pasport/x",
     )
@@ -35,6 +35,31 @@ def test_card_is_template_sized_png_and_pdf() -> None:
     assert image.size == (1536, 1024)
     assert image.mode == "RGBA"
     assert card_pdf(png).startswith(b"%PDF")
+
+
+@pytest.mark.parametrize("lang", ["uz-Latn", "uz-Cyrl", "ru", "en"])
+def test_card_and_certificate_render_in_every_language(lang: str) -> None:
+    import io  # noqa: PLC0415
+
+    png = render_card(_data(), lang=lang)
+    assert Image.open(io.BytesIO(png)).size == (1536, 1024)
+    signer = make_signer("UB-2026-999999", "uychi-hokimlik", "Hokimlik", "GOV", lang)
+    pdf = render(
+        CertificateData(
+            number="UB-2026-999999", holder="Азиз Каримов", trade="Santexnik", level="MASTER",
+            issuer="UB_NAMDTU", issued_at=None, signature=b"" * 64,
+            verify_url="https://uychibinokor.uz/verify/UB-2026-999999", signers=(signer,), lang=lang,
+        )
+    )
+    assert pdf.startswith(b"%PDF")
+
+
+def test_languages_differ() -> None:
+    from app.doc_i18n import lang_of, t  # noqa: PLC0415
+
+    assert len({t(code, "cert_title") for code in ("uz-Latn", "uz-Cyrl", "ru", "en")}) == 4
+    assert lang_of("de") == "uz-Latn" and lang_of("ru-RU") == "ru" and lang_of(None) == "uz-Latn"
+    assert make_signer("N", "s", "x", "GOV", "en").role == "Project leader"
 
 
 def test_passport_number_is_stable() -> None:

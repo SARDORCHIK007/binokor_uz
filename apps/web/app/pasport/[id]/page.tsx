@@ -1,4 +1,4 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { PAGE } from "@/components/site/PageHeader";
 import { apiGet } from "@/lib/public";
@@ -19,9 +19,10 @@ type Public = {
 /** Opened by the QR on the passport card. Shows a first name, trade, group and status only. */
 export default async function PublicPassportPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  const locale = await getLocale();
   const t = await getTranslations("passportPage");
   const nav = await getTranslations("nav");
-  const data = await apiGet<Public>(`/api/v1/public/passport/${encodeURIComponent(id)}`);
+  const data = await apiGet<Public>(`/api/v1/public/passport/${encodeURIComponent(id)}?lang=${locale}`);
   const valid = Boolean(data?.valid);
   return (
     <div className={PAGE}>

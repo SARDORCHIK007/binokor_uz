@@ -168,7 +168,7 @@ export default async function VerifyPage({ params, searchParams }: PageProps) {
           <div className="mt-8 flex flex-wrap gap-3 justify-center">
             {valid ? (
               <a
-                href={`/api/v1/public/verify/${number}/pdf`}
+                href={`/api/v1/public/verify/${number}/pdf?lang=${lang}`}
                 target="_blank"
                 rel="noopener"
                 className="rounded-xl bg-primary px-6 py-3 text-sm font-bold text-white transition hover:bg-primary-hover"

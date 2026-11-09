@@ -13,6 +13,8 @@ from pathlib import Path
 import segno
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
+from app.doc_i18n import t
+
 ASSETS = Path(__file__).parent / "assets"
 TEMPLATE = ASSETS / "passport_card.png"
 FONT = ASSETS / "fonts" / "DejaVuSans.ttf"
@@ -36,10 +38,10 @@ NAVY = (7, 24, 51)
 class PassportData:
     number: str
     name: str
-    trade: str
-    group: str
-    status: str
-    enrolled: str
+    trade: str  # already in the card language
+    group_code: str
+    status_code: str  # ACTIVE, COMPLETED, ...
+    enrolled_on: str  # ISO date
     fingerprint: str
     verify_url: str
 
@@ -72,7 +74,7 @@ def _silhouette(size: tuple[int, int]) -> Image.Image:
     return img
 
 
-def render_card(data: PassportData, photo: bytes | None = None) -> bytes:
+def render_card(data: PassportData, photo: bytes | None = None, lang: str = "uz-Latn") -> bytes:
     card = Image.open(TEMPLATE).convert("RGBA")
     draw = ImageDraw.Draw(card)
 
@@ -99,19 +101,19 @@ def render_card(data: PassportData, photo: bytes | None = None) -> bytes:
     qr = qr.resize((side, side), Image.Resampling.NEAREST)
     card.paste(qr, (qx0 + (qx1 - qx0 - side) // 2, qy0 + 14))
     cap = _font(FONT_BOLD, 21)
-    label = "QR orqali tekshiring"
+    label = t(lang, "scan")
     draw.text((qx0 + (qx1 - qx0 - draw.textlength(label, font=cap)) / 2, qy1 - 42), label, font=cap, fill=NAVY)
 
     # header
     draw.text((660, 150), "UYCHI BINOKOR", font=_font(FONT_BOLD, 40), fill=GOLD)
-    draw.text((660, 200), "TALABA / USTA PASPORTI", font=_font(FONT, 24), fill=SOFT)
+    draw.text((660, 200), t(lang, "card_title"), font=_fit(draw, t(lang, "card_title"), FONT, 24, 335, 15), fill=SOFT)
 
     # four text lines (written just above each rule)
     rows = [
         (data.name, FONT_BOLD, 46, WHITE),
         (data.trade, FONT_BOLD, 32, GOLD),
-        (data.group, FONT, 28, WHITE),
-        (f"{data.status} · {data.enrolled}", FONT, 26, SOFT),
+        (f"{t(lang, 'group')} {data.group_code}", FONT, 28, WHITE),
+        (f"{t(lang, data.status_code)} · {t(lang, 'enrolled')}: {data.enrolled_on}", FONT, 26, SOFT),
     ]
     for (base_y, xs, xe), (text, path, font_size, color) in zip(LINES, rows, strict=True):
         font = _fit(draw, text, path, font_size, xe - xs)
