@@ -93,6 +93,9 @@ services:
       WATCHPACK_POLLING: "true"
       CHOKIDAR_USEPOLLING: "true"
       NEXT_PUBLIC_DEMO_MODE: ${DEMO_MODE:-false}
+      # prod (default): optimized build, fast page changes. dev: hot reload while coding.
+      WEB_MODE: ${WEB_MODE:-prod}
+      NEXT_TELEMETRY_DISABLED: "1"
     volumes:
       - ..:/src
       - web_modules:/src/apps/web/node_modules
@@ -100,7 +103,7 @@ services:
       [
         "sh",
         "-c",
-        "if [ ! -d node_modules/next ]; then npm ci; fi && npx next dev --hostname 0.0.0.0 --port 3000",
+        "if [ ! -d node_modules/next ]; then npm ci; fi && if [ \"$$WEB_MODE\" = dev ]; then exec npx next dev --hostname 0.0.0.0 --port 3000; else npx next build && cp -r public .next/standalone/apps/web/ && cp -r .next/static .next/standalone/apps/web/.next/ && HOSTNAME=0.0.0.0 PORT=3000 exec node .next/standalone/apps/web/server.js; fi",
       ]
     healthcheck:
       test:
@@ -113,7 +116,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 30
-      start_period: 120s
+      start_period: 600s
 
   bot:
     build:

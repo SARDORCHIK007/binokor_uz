@@ -5,13 +5,14 @@ COMPOSE := docker compose --env-file .env -f infra/compose.yml
 API     := $(COMPOSE) exec -T api
 WEB     := $(COMPOSE) exec -T web
 
-.PHONY: help up down logs ps test test-api test-web lint lint-api lint-web migrate migration seed-demo e2e api-client
+.PHONY: help up down web-dev web-prod logs ps test test-api test-web lint lint-api lint-web migrate migration seed-demo e2e api-client
 
 help:
 	@echo "make up | down | logs | ps"
 	@echo "make test | test-api | test-web"
 	@echo "make lint | lint-api | lint-web"
 	@echo "make migrate | migration m=\"message\" | seed-demo"
+	@echo "make web-prod (fast, default) | web-dev (hot reload while coding)"
 
 .env:
 	cp .env.example .env
@@ -21,6 +22,14 @@ up: .env
 
 down:
 	$(COMPOSE) down
+
+# Fast optimized site (default). Rebuild after code changes: make web-prod
+web-prod:
+	WEB_MODE=prod $(COMPOSE) up -d --no-deps --force-recreate web
+
+# Hot reload while editing code (slow page changes, large JS).
+web-dev:
+	WEB_MODE=dev $(COMPOSE) up -d --no-deps --force-recreate web
 
 logs:
 	$(COMPOSE) logs -f --tail=100
