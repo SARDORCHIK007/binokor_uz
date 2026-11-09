@@ -40,7 +40,8 @@
     "hokimlik": "District office",
     "demoTitle": "Demo sign-in",
     "demoText": "One click for the presentation.",
-    "failed": "The request failed. Try again."
+    "failed": "The request failed. Try again.",
+    "worker": "Worker"
   },
   "roles": {
     "admin": "Administrator",
@@ -116,7 +117,9 @@
     "noCourse": "Kurs yo'q",
     "noCourseText": "Siz hali guruhga yozilmagansiz.",
     "loadError": "Panel ochilmadi",
-    "loadErrorText": "Sahifani yangilang."
+    "loadErrorText": "Sahifani yangilang.",
+    "portfolio": "Portfolio",
+    "portfolioReview": "Portfolio review"
   },
   "session": {
     "title": "Cabinet",
@@ -361,5 +364,64 @@
       "WAITLIST": "We will tell you as soon as a place opens.",
       "REJECTED": "You can apply for another trade or the next intake."
     }
+  },
+  "worker": {
+    "crumb": "Workers",
+    "certified": "Certified",
+    "noRating": "No rating",
+    "trade": "Trade",
+    "hours": "Verified hours",
+    "availability": "Availability",
+    "certificate": "Certificate",
+    "yes": "Yes",
+    "no": "No",
+    "privacy": "Phone and personal documents are hidden. Contact goes through a manager.",
+    "passport": "QR worker passport",
+    "noCertificate": "No certificate yet",
+    "verify": "Verify certificate",
+    "level": {
+      "APPRENTICE": "Apprentice",
+      "ASSISTANT": "Assistant",
+      "MASTER": "Master",
+      "FOREMAN": "Foreman"
+    },
+    "status": {
+      "FREE": "Available",
+      "BUSY": "Busy",
+      "ABROAD": "Abroad",
+      "INACTIVE": "Inactive"
+    },
+    "reviews": "Employer reviews",
+    "reviewsCount": "{count} reviews",
+    "noReviews": "No reviews yet. The employer rates after the first job.",
+    "crit": {
+      "quality": "Quality",
+      "discipline": "Discipline",
+      "safety": "Safety",
+      "communication": "Communication"
+    },
+    "portfolio": "Completed work",
+    "noPortfolio": "No confirmed work photos yet.",
+    "confirmed": "Confirmed by mentor"
+  },
+  "portfolio": {
+    "title": "My portfolio",
+    "text": "Upload a photo of your work. Once a mentor confirms it, employers see it on your profile.",
+    "workTitle": "Work title",
+    "workPlaceholder": "E.g. plumbing install, 2nd floor",
+    "photo": "Photo (JPG, PNG or WebP, up to 5 MB)",
+    "upload": "Upload",
+    "uploading": "Uploading…",
+    "pending": "Awaiting confirmation",
+    "delete": "Delete",
+    "empty": "No work uploaded yet.",
+    "tooBig": "Photo is larger than 5 MB.",
+    "failed": "Upload failed. Please try again.",
+    "viewProfile": "View public profile",
+    "noProfile": "Portfolio is for worker profiles, opened after certification.",
+    "reviewTitle": "Portfolio review",
+    "reviewText": "Check that the photo really shows this worker's work, then confirm.",
+    "confirm": "Confirm",
+    "queueEmpty": "Nothing is waiting for review."
   }
 }

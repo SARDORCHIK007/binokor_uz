@@ -40,7 +40,8 @@
     "hokimlik": "Хокимият",
     "demoTitle": "Демо-вход",
     "demoText": "Один клик для показа.",
-    "failed": "So'rov bajarilmadi. Qayta urinib ko'ring."
+    "failed": "So'rov bajarilmadi. Qayta urinib ko'ring.",
+    "worker": "Мастер"
   },
   "roles": {
     "admin": "Администратор",
@@ -116,7 +117,9 @@
     "noCourse": "Kurs yo'q",
     "noCourseText": "Siz hali guruhga yozilmagansiz.",
     "loadError": "Panel ochilmadi",
-    "loadErrorText": "Sahifani yangilang."
+    "loadErrorText": "Sahifani yangilang.",
+    "portfolio": "Портфолио",
+    "portfolioReview": "Проверка портфолио"
   },
   "session": {
     "title": "Кабинет",
@@ -361,5 +364,64 @@
       "WAITLIST": "Сообщим, как только освободится место.",
       "REJECTED": "Можно подать заявку на другую профессию или в следующий набор."
     }
+  },
+  "worker": {
+    "crumb": "Мастера",
+    "certified": "Сертифицирован",
+    "noRating": "Нет рейтинга",
+    "trade": "Специальность",
+    "hours": "Подтверждённые часы",
+    "availability": "Занятость",
+    "certificate": "Сертификат",
+    "yes": "Есть",
+    "no": "Нет",
+    "privacy": "Телефон и личные документы не показываются. Связь через менеджера.",
+    "passport": "QR-паспорт работника",
+    "noCertificate": "Сертификата пока нет",
+    "verify": "Проверить сертификат",
+    "level": {
+      "APPRENTICE": "Ученик",
+      "ASSISTANT": "Помощник мастера",
+      "MASTER": "Мастер",
+      "FOREMAN": "Бригадир"
+    },
+    "status": {
+      "FREE": "Свободен",
+      "BUSY": "Занят",
+      "ABROAD": "За рубежом",
+      "INACTIVE": "Неактивен"
+    },
+    "reviews": "Оценки работодателей",
+    "reviewsCount": "Оценок: {count}",
+    "noReviews": "Оценок пока нет. Работодатель оценит после первой работы.",
+    "crit": {
+      "quality": "Качество",
+      "discipline": "Дисциплина",
+      "safety": "Безопасность",
+      "communication": "Коммуникация"
+    },
+    "portfolio": "Выполненные работы",
+    "noPortfolio": "Подтверждённых фото работ пока нет.",
+    "confirmed": "Подтверждено наставником"
+  },
+  "portfolio": {
+    "title": "Моё портфолио",
+    "text": "Загрузите фото своей работы. После подтверждения наставником его увидят работодатели.",
+    "workTitle": "Название работы",
+    "workPlaceholder": "Например: монтаж сантехники, 2 этаж",
+    "photo": "Фото (JPG, PNG или WebP, до 5 МБ)",
+    "upload": "Загрузить",
+    "uploading": "Загрузка…",
+    "pending": "Ждёт подтверждения",
+    "delete": "Удалить",
+    "empty": "Работ пока нет.",
+    "tooBig": "Фото больше 5 МБ.",
+    "failed": "Не удалось загрузить. Попробуйте ещё раз.",
+    "viewProfile": "Открыть публичный профиль",
+    "noProfile": "Портфолио доступно мастерам. Профиль открывается после сертификата.",
+    "reviewTitle": "Проверка портфолио",
+    "reviewText": "Убедитесь, что это реальная работа мастера, и подтвердите.",
+    "confirm": "Подтвердить",
+    "queueEmpty": "Нет фото на проверке."
   }
 }

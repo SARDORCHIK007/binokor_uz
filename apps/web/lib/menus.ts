@@ -11,6 +11,7 @@ export const CABINET_MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/hisobot", key: "reports" },
     { href: "/kabinet/buyurtmalar", key: "orders" },
     { href: "/kabinet/ishberuvchi", key: "employer" },
+    { href: "/kabinet/portfolio-tasdiq", key: "portfolioReview" },
   ],
   employer_local: [
     { href: "/kabinet", key: "panel" },
@@ -33,11 +34,16 @@ export const CABINET_MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/guruhlar", key: "groups" },
     { href: "/kabinet/davomat", key: "attendance" },
     { href: "/kabinet/baholar", key: "grades" },
+    { href: "/kabinet/portfolio-tasdiq", key: "portfolioReview" },
   ],
   curator: [
     { href: "/kabinet", key: "panel" },
     { href: "/kabinet/kurator", key: "curator" },
     { href: "/kabinet/lugat", key: "vocab" },
+  ],
+  worker: [
+    { href: "/kabinet/portfolio", key: "portfolio" },
+    { href: "/kabinet/arizam", key: "myApplication" },
   ],
   student: [
     { href: "/kabinet", key: "panel" },

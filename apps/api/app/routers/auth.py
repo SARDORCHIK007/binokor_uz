@@ -363,6 +363,7 @@ DEMO_NEXT = {
     "employer": "/kabinet/ishberuvchi",
     "producer": "/kabinet/mahsulotlar",
     "hokimlik": "/kabinet/hisobot",
+    "worker": "/kabinet/portfolio",
 }
 DEMO_PHONE = {
     "admin": "+998901000001",
@@ -371,6 +372,7 @@ DEMO_PHONE = {
     "hokimlik": "+998901000001",
     "employer": "+998901770010",
     "producer": "+998901770011",
+    "worker": "+998901300021",
 }
 
 

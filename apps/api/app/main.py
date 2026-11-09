@@ -19,6 +19,7 @@ from app.routers.employers import router as employers_router
 from app.routers.exams import router as exams_router
 from app.routers.jobs import router as jobs_router
 from app.routers.learning import router as learning_router
+from app.routers.portfolio import router as portfolio_router
 from app.routers.producers import router as producers_router
 from app.routers.public import router as public_router
 from app.routers.public import set_public_locale
@@ -72,6 +73,7 @@ app.include_router(exams_router)
 app.include_router(curator_router)
 app.include_router(certificates_router)
 app.include_router(public_router)
+app.include_router(portfolio_router)
 app.include_router(reports_router)
 app.include_router(vocab_router)
 app.include_router(jobs_router)

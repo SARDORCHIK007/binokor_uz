@@ -10,7 +10,7 @@ const DEMOS = [
   { phone: "+998901000003", labelKey: "student" },
 ] as const;
 
-const ONE_CLICK = ["admin", "mentor", "student", "employer", "producer", "hokimlik"] as const;
+const ONE_CLICK = ["admin", "mentor", "student", "worker", "employer", "producer", "hokimlik"] as const;
 const demoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 
 type ErrorBody = { detail?: string; title?: string };

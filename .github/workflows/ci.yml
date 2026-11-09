@@ -79,6 +79,21 @@ jobs:
           done
           cat /tmp/api.log
           exit 1
-      - run: python -m pytest -q
+      - name: Tests
+        shell: bash
+        run: |
+          set +e
+          python -m pytest -q -rfE --tb=line 2>&1 | tee /tmp/pytest.txt
+          status=${PIPESTATUS[0]}
+          # Surface failures as annotations (readable without signing in).
+          grep -E "^(FAILED|ERROR) |^/.*\.py:[0-9]+: " /tmp/pytest.txt | head -20 | while read -r line; do
+            echo "::error title=pytest::${line}"
+          done
+          exit $status
       - if: failure()
-        run: tail -n 200 /tmp/api.log || true
+        shell: bash
+        run: |
+          grep -E "Error|Traceback|error" /tmp/api.log | tail -10 | while read -r line; do
+            echo "::warning title=api.log::${line}"
+          done
+          tail -n 200 /tmp/api.log || true

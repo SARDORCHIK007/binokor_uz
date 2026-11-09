@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 
 from app.core.config import get_settings
 from app.notify import send_telegram
+from app.routers.portfolio import public_portfolio, reviews_summary
 from app.rules import public_stats
 from app.security import new_id, problem
 
@@ -191,7 +192,9 @@ async def worker(slug: str, request: Request) -> JSONResponse:
         result = await conn.execute(
             text(
                 """
-                SELECT wp.slug,
+                SELECT wp.slug, wp.user_id,
+                       coalesce((wp.visibility->>'portfolio')::boolean, true) AS show_portfolio,
+                       coalesce((wp.visibility->>'ratings')::boolean, true) AS show_ratings,
                        CASE
                          WHEN coalesce((wp.visibility->>'full_name')::boolean, false)
                            THEN u.full_name
@@ -219,6 +222,9 @@ async def worker(slug: str, request: Request) -> JSONResponse:
             {"slug": slug},
         )
         item = result.mappings().first()
+        if item is not None:
+            portfolio = await public_portfolio(conn, item["user_id"]) if item["show_portfolio"] else []
+            reviews = await reviews_summary(conn, item["user_id"]) if item["show_ratings"] else None
     if item is None:
         return problem(404, "NOT_FOUND", "Usta topilmadi", "Bu profil yo'q.")
     return JSONResponse(
@@ -231,6 +237,8 @@ async def worker(slug: str, request: Request) -> JSONResponse:
             "rating": None if item["rating_avg"] is None else float(item["rating_avg"]),
             "hours": item["verified_hours"],
             "certificate_number": item["certificate_number"],
+            "portfolio": portfolio,
+            "reviews": reviews,
         }
     )
 

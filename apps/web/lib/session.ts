@@ -44,10 +44,23 @@ export async function apiAuth<T>(path: string): Promise<T | null> {
   }
 }
 
+/** Default cabinet role when the user has several and has not picked one. */
+const ROLE_PRIORITY = [
+  "admin",
+  "education_lead",
+  "cert_officer",
+  "mentor",
+  "curator",
+  "employer_local",
+  "producer",
+  "worker",
+  "student",
+];
+
 export async function activeRole(roles: string[]): Promise<string> {
   const chosen = (await cookies()).get("ub_role")?.value;
   if (chosen && roles.includes(chosen)) {
     return chosen;
   }
-  return roles[0] ?? "student";
+  return ROLE_PRIORITY.find((role) => roles.includes(role)) ?? roles[0] ?? "student";
 }

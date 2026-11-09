@@ -40,7 +40,8 @@
     "hokimlik": "Hokimlik",
     "demoTitle": "Demo kirish",
     "demoText": "Taqdimot uchun bir bosishda kiring.",
-    "failed": "So'rov bajarilmadi. Qayta urinib ko'ring."
+    "failed": "So'rov bajarilmadi. Qayta urinib ko'ring.",
+    "worker": "Usta"
   },
   "roles": {
     "admin": "Administrator",
@@ -116,7 +117,9 @@
     "noCourse": "Kurs yo'q",
     "noCourseText": "Siz hali guruhga yozilmagansiz.",
     "loadError": "Panel ochilmadi",
-    "loadErrorText": "Sahifani yangilang."
+    "loadErrorText": "Sahifani yangilang.",
+    "portfolio": "Portfolio",
+    "portfolioReview": "Portfolio tasdiqlash"
   },
   "session": {
     "title": "Kabinet",
@@ -361,5 +364,64 @@
       "WAITLIST": "Joy bo'shashi bilan xabar beramiz.",
       "REJECTED": "Boshqa kasb yoki keyingi qabulga qayta ariza berishingiz mumkin."
     }
+  },
+  "worker": {
+    "crumb": "Ustalar",
+    "certified": "Sertifikatli",
+    "noRating": "Reyting yo'q",
+    "trade": "Mutaxassislik",
+    "hours": "Tasdiqlangan soat",
+    "availability": "Bandlik",
+    "certificate": "Malaka sertifikati",
+    "yes": "Bor",
+    "no": "Yo'q",
+    "privacy": "Telefon va shaxsiy hujjatlar ko'rsatilmaydi. Aloqa menejer orqali.",
+    "passport": "QR ishchi pasporti",
+    "noCertificate": "Sertifikat hali yo'q",
+    "verify": "Sertifikatni tekshirish",
+    "level": {
+      "APPRENTICE": "Shogird",
+      "ASSISTANT": "Yordamchi usta",
+      "MASTER": "Usta",
+      "FOREMAN": "Brigadir"
+    },
+    "status": {
+      "FREE": "Bo'sh",
+      "BUSY": "Band",
+      "ABROAD": "Xorijda",
+      "INACTIVE": "Nofaol"
+    },
+    "reviews": "Ish beruvchilar bahosi",
+    "reviewsCount": "{count} ta baho",
+    "noReviews": "Hali baho yo'q. Birinchi ishdan keyin ish beruvchi baholaydi.",
+    "crit": {
+      "quality": "Sifat",
+      "discipline": "Intizom",
+      "safety": "Xavfsizlik",
+      "communication": "Muloqot"
+    },
+    "portfolio": "Bajarilgan ishlar",
+    "noPortfolio": "Tasdiqlangan ish rasmlari hali yo'q.",
+    "confirmed": "Ustoz tasdiqlagan"
+  },
+  "portfolio": {
+    "title": "Mening portfoliom",
+    "text": "Bajargan ishingiz rasmini yuklang. Ustoz tasdiqlagach, ish beruvchilar profilingizda ko'radi.",
+    "workTitle": "Ish nomi",
+    "workPlaceholder": "Masalan: 2-qavat santexnika montaji",
+    "photo": "Rasm (JPG, PNG yoki WebP, 5 MB gacha)",
+    "upload": "Yuklash",
+    "uploading": "Yuklanmoqda…",
+    "pending": "Tasdiq kutilmoqda",
+    "delete": "O'chirish",
+    "empty": "Hali ish yuklanmagan.",
+    "tooBig": "Rasm 5 MB dan katta.",
+    "failed": "Yuklanmadi. Qayta urinib ko'ring.",
+    "viewProfile": "Ochiq profilni ko'rish",
+    "noProfile": "Portfolio usta profili uchun. Sertifikat olgach profil ochiladi.",
+    "reviewTitle": "Portfolio tasdiqlash",
+    "reviewText": "Rasm haqiqatan shu ustaning ishi ekanini tekshirib tasdiqlang.",
+    "confirm": "Tasdiqlash",
+    "queueEmpty": "Tasdiq kutayotgan rasm yo'q."
   }
 }
