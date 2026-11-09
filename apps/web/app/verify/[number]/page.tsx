@@ -19,12 +19,12 @@ type VerifyPayload = {
 };
 
 const COPY = {
-  "uz-Latn": { missing: "Sertifikat topilmadi", missingText: "Raqam bazada yo'q.", ok: "HAQIQIY", home: "Bosh sahifa", check: "Sertifikat tekshiruvi" },
-  "uz-Cyrl": { missing: "Сертификат топилмади", missingText: "Рақам базада йўқ.", ok: "ҲАҚИҚИЙ", home: "Бош саҳифа", check: "Сертификат текшируви" },
-  ru: { missing: "Сертификат не найден", missingText: "Номера нет в базе.", ok: "ДЕЙСТВИТЕЛЕН", home: "На главную", check: "Проверка сертификата" },
-  en: { missing: "Certificate not found", missingText: "This number is not in the database.", ok: "VERIFIED", home: "Home", check: "Certificate verification" },
-  de: { missing: "Zertifikat nicht gefunden", missingText: "Diese Nummer steht nicht in der Datenbank.", ok: "GÜLTIG", home: "Start", check: "Zertifikatsprüfung" },
-  ar: { missing: "الشهادة غير موجودة", missingText: "هذا الرقم غير موجود في قاعدة البيانات.", ok: "صالحة رسمياً", home: "الرئيسية", check: "التحقق من الشهادة" },
+  "uz-Latn": { missing: "Sertifikat topilmadi", missingText: "Raqam bazada yo'q.", ok: "HAQIQIY", home: "Bosh sahifa", check: "Sertifikat tekshiruvi", pdf: "Sertifikat (PDF)" },
+  "uz-Cyrl": { missing: "Сертификат топилмади", missingText: "Рақам базада йўқ.", ok: "ҲАҚИҚИЙ", home: "Бош саҳифа", check: "Сертификат текшируви", pdf: "Сертификат (PDF)" },
+  ru: { missing: "Сертификат не найден", missingText: "Номера нет в базе.", ok: "ДЕЙСТВИТЕЛЕН", home: "На главную", check: "Проверка сертификата", pdf: "Сертификат (PDF)" },
+  en: { missing: "Certificate not found", missingText: "This number is not in the database.", ok: "VERIFIED", home: "Home", check: "Certificate verification", pdf: "Certificate (PDF)" },
+  de: { missing: "Zertifikat nicht gefunden", missingText: "Diese Nummer steht nicht in der Datenbank.", ok: "GÜLTIG", home: "Start", check: "Zertifikatsprüfung", pdf: "Zertifikat (PDF)" },
+  ar: { missing: "الشهادة غير موجودة", missingText: "هذا الرقم غير موجود في قاعدة البيانات.", ok: "صالحة رسمياً", home: "الرئيسية", check: "التحقق من الشهادة", pdf: "الشهادة (PDF)" },
 } as const;
 
 type Lang = keyof typeof COPY;
@@ -69,7 +69,7 @@ export default async function VerifyPage({ params, searchParams }: PageProps) {
   const label = valid ? copy.ok : (STATUS[data.result as keyof typeof STATUS]?.[lang] ?? STATUS.TAMPERED[lang]);
 
   return (
-    <div className="bg-canvas min-h-screen px-4 py-12" dir={dir} lang={lang}>
+    <div className="px-4 py-10 sm:py-12" dir={dir} lang={lang}>
       <article className="mx-auto max-w-3xl overflow-hidden rounded-3xl bg-white shadow-sh3 border border-line">
         {/* Tillar paneli (6 tilda: TZ 22-sahifa) */}
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-surface-100 bg-canvas px-6 py-3 text-xs">
@@ -130,7 +130,7 @@ export default async function VerifyPage({ params, searchParams }: PageProps) {
             </div>
             <div className="flex justify-between">
               <span className="text-muted">Berilgan sana:</span>
-              <strong className="text-navy-900">{data.certificate?.issued_at ?? "—"}</strong>
+              <strong className="text-navy-900">{data.certificate?.issued_at?.slice(0, 10) ?? "—"}</strong>
             </div>
             <div className="flex justify-between">
               <span className="text-muted">Raqamli imzo holati:</span>
@@ -138,16 +138,26 @@ export default async function VerifyPage({ params, searchParams }: PageProps) {
             </div>
             <div className="flex justify-between">
               <span className="text-muted">QR havola holati:</span>
-              <strong className="text-navy-900">uychibinokor.uz/v/{data.certificate?.number}</strong>
+              <strong className="text-navy-900">uychibinokor.uz/verify/{data.certificate?.number}</strong>
             </div>
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-4 justify-center">
+          <div className="mt-8 flex flex-wrap gap-3 justify-center">
+            {valid ? (
+              <a
+                href={`/api/v1/public/verify/${number}/pdf`}
+                target="_blank"
+                rel="noopener"
+                className="rounded-xl bg-primary px-6 py-3 text-sm font-bold text-white transition hover:bg-primary-hover"
+              >
+                ⤓ {copy.pdf}
+              </a>
+            ) : null}
             <Link
               href="/"
-              className="rounded-xl border border-line-strong px-6 py-3 text-sm font-bold text-navy-900 hover:bg-gray-50 transition"
+              className="rounded-xl border border-line-strong px-6 py-3 text-sm font-bold text-navy-900 transition hover:bg-canvas"
             >
-              Bosh sahifa
+              {copy.home}
             </Link>
           </div>
         </div>

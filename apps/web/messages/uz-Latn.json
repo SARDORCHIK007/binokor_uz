@@ -402,7 +402,8 @@
     },
     "portfolio": "Bajarilgan ishlar",
     "noPortfolio": "Tasdiqlangan ish rasmlari hali yo'q.",
-    "confirmed": "Ustoz tasdiqlagan"
+    "confirmed": "Ustoz tasdiqlagan",
+    "pdf": "Sertifikat (PDF)"
   },
   "portfolio": {
     "title": "Mening portfoliom",

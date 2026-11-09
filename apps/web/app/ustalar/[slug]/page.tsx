@@ -103,9 +103,19 @@ export default async function WorkerPage({ params }: { params: Promise<{ slug: s
               {verifyPath ? <QrMark value={`https://uychibinokor.uz${verifyPath}`} /> : <p className="py-10 text-sm text-muted">{t("noCertificate")}</p>}
             </div>
             {verifyPath ? (
-              <Link href={verifyPath} className="mt-5 block rounded-xl bg-primary px-4 py-3 text-center text-sm font-bold text-white hover:bg-primary-hover">
-                {t("verify")}: {worker.certificate_number}
-              </Link>
+              <div className="mt-5 flex flex-col gap-2">
+                <Link href={verifyPath} className="block rounded-xl bg-primary px-4 py-3 text-center text-sm font-bold text-white hover:bg-primary-hover">
+                  {t("verify")}: {worker.certificate_number}
+                </Link>
+                <a
+                  href={`/api/v1/public/verify/${worker.certificate_number}/pdf`}
+                  target="_blank"
+                  rel="noopener"
+                  className="block rounded-xl border border-line-strong px-4 py-3 text-center text-sm font-bold text-navy-900 hover:border-primary hover:text-primary"
+                >
+                  ⤓ {t("pdf")}
+                </a>
+              </div>
             ) : null}
           </div>
         </section>

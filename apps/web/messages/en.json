@@ -402,7 +402,8 @@
     },
     "portfolio": "Completed work",
     "noPortfolio": "No confirmed work photos yet.",
-    "confirmed": "Confirmed by mentor"
+    "confirmed": "Confirmed by mentor",
+    "pdf": "Certificate (PDF)"
   },
   "portfolio": {
     "title": "My portfolio",

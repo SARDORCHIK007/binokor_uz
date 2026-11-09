@@ -12,3 +12,5 @@ structlog>=24.4
 psycopg[binary]>=3.2
 PyJWT>=2.10
 PyNaCl>=1.5
+reportlab>=4.2
+segno>=1.6
