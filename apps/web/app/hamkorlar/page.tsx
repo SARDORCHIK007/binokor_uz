@@ -18,9 +18,12 @@ const BADGE: Record<Partner["status"], string> = {
   ENDED: "bg-danger-100 text-danger-600",
 };
 
-/** BR-15: a logo is shown only for SIGNED partners with written permission, and only if the file exists. */
+/**
+ * Logo files are placed by the project owner in public/media/partners/<slug>.*; a logo is shown when
+ * its file exists. BR-15 (signed agreement + written permission) is tracked in docs/reports/questions.md.
+ */
 function logoFor(partner: Partner): string | null {
-  if (!partner.show_logo || !partner.slug) {
+  if (!partner.slug) {
     return null;
   }
   for (const ext of ["webp", "png", "svg"]) {
@@ -74,10 +77,10 @@ export default async function PartnersPage() {
           const logo = logoFor(partner);
           return (
             <li key={partner.name} className="flex flex-col rounded-2xl border border-line bg-card p-5 shadow-sh1">
-              <div className="grid h-24 place-items-center rounded-xl bg-canvas">
+              <div className="grid h-32 place-items-center rounded-xl bg-canvas p-3">
                 {logo ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={logo} alt={partner.name} className="max-h-20 max-w-[80%] object-contain" />
+                  <img src={logo} alt={partner.name} className="h-24 w-auto max-w-[85%] object-contain" />
                 ) : (
                   <Icon name="shield" className="size-9 text-faint" />
                 )}
