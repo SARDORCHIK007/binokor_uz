@@ -38,7 +38,7 @@ export default async function EmployersPortalPage() {
               Find verified construction professionals from Uzbekistan
             </h1>
             <ul className="mt-6 space-y-3">
-              {["Certificates verified by QR", "Ready-to-work brigades", "Candidates shown without contact details", "No fees for candidates"].map((item) => (
+              {["Certificates verified by QR", "Ready-to-work brigades", "Candidates shown without contact details"].map((item) => (
                 <li key={item} className="flex items-center gap-3 text-sm font-semibold text-white/95 sm:text-base">
                   <span className="grid size-5 place-items-center rounded-full bg-success-600 text-white">
                     <Icon name="check" className="size-3.5" />

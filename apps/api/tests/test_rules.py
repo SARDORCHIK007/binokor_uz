@@ -44,10 +44,13 @@ def test_domestic_no_language() -> None:
 
 
 def test_course_duration_bounds() -> None:
-    assert course_duration_ok("DOMESTIC", 79) is False
-    assert course_duration_ok("DOMESTIC", 80) is True
-    assert course_duration_ok("DOMESTIC", 190) is True
-    assert course_duration_ok("DOMESTIC", 191) is False
+    assert course_duration_ok("DOMESTIC", 169) is False
+    assert course_duration_ok("DOMESTIC", 170) is True
+    assert course_duration_ok("DOMESTIC", 380) is True
+    assert course_duration_ok("DOMESTIC", 381) is False
+    assert course_duration_ok("DOMESTIC", 90) is False
+    assert course_duration_ok("DOMESTIC", 90, accelerated=True) is True
+    assert course_duration_ok("DOMESTIC", 120, accelerated=True) is False
     assert course_duration_ok("FOREIGN", 169) is False
     assert course_duration_ok("FOREIGN", 170) is True
     assert course_duration_ok("FOREIGN", 380) is True

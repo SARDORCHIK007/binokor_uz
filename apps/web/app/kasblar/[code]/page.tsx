@@ -61,6 +61,7 @@ export default async function TradePage({ params }: { params: Promise<{ code: st
               </li>
             ))}
           </ul>
+          <p className="mt-4 rounded-xl bg-warning-100 p-3 text-sm font-semibold text-navy-900">{t("home.accelerated")}</p>
           <div className="mt-auto pt-6">
             <Link href="/ariza" className={buttonClass({ size: "lg", className: "w-full sm:w-auto" })}>
               {t("home.apply")}

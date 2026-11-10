@@ -31,7 +31,7 @@
 | `test_group_capacity_10` | 11-tinglovchi → `409 GROUP_FULL`. Ustozning barcha guruhlarida 11-faol tinglovchi → `409 MENTOR_FULL`. Bir vaqtda 2 ta so'rov kelganda ham (race condition) |
 | `test_curator_group_8_10` | 7 a'zoda ogohlantirish, 11-a'zo → 409 |
 | `test_domestic_no_language` | Ichki trek kursiga `LANGUAGE` moduli qo'shib bo'lmaydi |
-| `test_course_duration_bounds` | `DOMESTIC` 80–190 kun, `FOREIGN` 170–380 kun. Kasbda `foreign_lang_months > 0` bo'lsa yig'indi 6–12 oy |
+| `test_course_duration_bounds` | Oddiy kurs 170–380 kun (6–12 oy), tezlashtirilgan kurs 80–100 kun (≈3 oy). Kasbda `foreign_lang_months > 0` bo'lsa yig'indi 6–12 oy |
 | `test_matrix_classification` | A/B/C/D toifalarining barcha chegaraviy holatlari |
 | `test_cert_eligibility` | BR-09 dagi har bir shart alohida buzilganda qoralama yaratilmaydi |
 | `test_cert_two_distinct_approvers` | Bir shaxs ikki marta tasdiqlay olmaydi |

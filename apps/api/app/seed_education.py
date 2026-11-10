@@ -24,7 +24,7 @@ async def seed_education(conn: AsyncConnection) -> None:
     trade_id = uid("trade:plumber")
     course_id = uid("course:plumber-domestic")
     start = date(2026, 9, 1)
-    end = start + timedelta(days=110)
+    end = start + timedelta(days=180)
     await conn.execute(
         text(
             """

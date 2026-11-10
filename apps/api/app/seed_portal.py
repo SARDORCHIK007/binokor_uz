@@ -59,6 +59,7 @@ DESTINATIONS = (
 PARTNERS = (
     ("namdtu", "NamDTU", "EDU", "SIGNED", date(2026, 3, 1)),
     ("hokimlik", "Uychi tumani hokimligi", "GOV", "SIGNED", date(2026, 2, 1)),
+    ("bandlik", "Tuman bandlikka ko'maklashish bo'limi", "GOV", "PLANNED", None),
     ("agency", "Tashqi mehnat migratsiyasi agentligi", "AGENCY", "NEGOTIATING", None),
     ("producer", "Mahalliy ishlab chiqaruvchi", "PRODUCER", "PLANNED", None),
 )
@@ -159,7 +160,7 @@ async def seed_portal(conn: AsyncConnection) -> None:
             text(
                 """
                 INSERT INTO trades (id, code, name, domestic_months, foreign_lang_months)
-                VALUES (:id, :code, CAST(:name AS jsonb), 4, 3)
+                VALUES (:id, :code, CAST(:name AS jsonb), 6, 3)
                 ON CONFLICT (code) DO NOTHING
                 """
             ),
@@ -325,7 +326,7 @@ async def seed_portal(conn: AsyncConnection) -> None:
 
     for slug, title, body in (
         ("loyiha", "Loyiha", "Uychida kasb o'rgatamiz. Ichki bozor va xorijiy yo'l agentlik orqali ochiladi."),
-        ("aloqa", "Aloqa", "Uychi tumani, Amir Temur ko'chasi 62-uy. Ish izlovchidan to'lov olinmaydi."),
+        ("aloqa", "Aloqa", "Uychi tumani, Amir Temur ko'chasi 62-uy."),
     ):
         await conn.execute(
             text(

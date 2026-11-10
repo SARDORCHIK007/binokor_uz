@@ -283,8 +283,8 @@ export function HomeExperience({ home }: { home: HomePayload }) {
                     <p className="text-xs text-muted mt-1">{t("qrOpen")}</p>
                   </div>
                   <div className="rounded-xl border border-accent/40 bg-warning-100 p-4">
-                    <span className="text-2xl font-extrabold text-warning-600">{t("free")}</span>
-                    <p className="text-xs text-muted mt-1">{t("freeText")}</p>
+                    <span className="text-2xl font-extrabold text-warning-600">{t("duration")}</span>
+                    <p className="text-xs text-muted mt-1">{t("durationText")}</p>
                   </div>
                 </div>
               </div>

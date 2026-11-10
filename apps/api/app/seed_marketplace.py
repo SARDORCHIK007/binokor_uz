@@ -155,6 +155,12 @@ PARTNER_INFO: dict[str, tuple[str, dict[str, str]]] = {
         "ru": "Наманганский государственный технический университет. Совместно выдаёт учебную программу и сертификат.",
         "en": "Namangan State Technical University. Co-issues the curriculum and the qualification certificate.",
     }),
+    "Tuman bandlikka ko'maklashish bo'limi": ("tuman-bandlik", {
+        "uz-Latn": "Ish izlovchilarni ro'yxatga oladi va bitiruvchilarni ishga joylashtirishga ko'maklashadi.",
+        "uz-Cyrl": "Иш изловчиларни рўйхатга олади ва битирувчиларни ишга жойлаштиришга кўмаклашади.",
+        "ru": "Регистрирует соискателей и содействует трудоустройству выпускников.",
+        "en": "Registers job seekers and helps graduates find work.",
+    }),
     "Tashqi mehnat migratsiyasi agentligi": ("tashqi-mehnat", {
         "uz-Latn": "Xorijga ishga yuborish faqat shu agentlik va uning litsenziyali hamkorlari orqali amalga oshiriladi.",
         "uz-Cyrl": "Хорижга ишга юбориш фақат шу агентлик ва унинг лицензияли ҳамкорлари орқали амалга оширилади.",

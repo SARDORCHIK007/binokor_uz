@@ -14,7 +14,7 @@
 
 | Kim | Platforma nima beradi |
 |---|---|
-| Yosh / arizachi | Ariza berish, bepul o'qish yo'li, holatni kuzatish, sertifikat, ish takliflari |
+| Yosh / arizachi | Ariza berish, o'qish yo'li, holatni kuzatish, sertifikat, ish takliflari |
 | Usta | Tasdiqlangan profil, buyurtmalar, xorijga chiqish yo'li |
 | Ichki ish beruvchi | Malakasi tasdiqlangan usta va brigadani tez topish |
 | Xorijiy ish beruvchi | Ingliz, nemis va arab tillaridagi tekshiriladigan nomzodlar bazasi, brigada buyurtmasi |
@@ -72,8 +72,8 @@ Bitta foydalanuvchida bir nechta rol bo'lishi mumkin. Kabinetda rollar o'rtasida
 |---|---|
 | BR-01 | Bitta guruhda ko'pi bilan **10** tinglovchi va bitta ustozning barcha guruhlaridagi faol tinglovchilar jami ko'pi bilan **10**. Ikkala cheklov ham bazadagi triggerda tekshiriladi |
 | BR-02 | Kurator guruhi **8–10** tinglovchidan iborat. 8 tadan kam bo'lsa ogohlantirish chiqadi (cheklov emas). 10 tadan oshirish trigger bilan to'siladi |
-| BR-03 | Ichki trek kursining muddati **3–6 oy**, til moduli bo'lmaydi |
-| BR-04 | Tashqi trekning muddati **6–12 oy** (kasb yadrosi + til moduli). Til moduli faqat tashqi trekda bo'ladi |
+| BR-03 | Ichki trek kursining muddati **6–12 oy**, til moduli bo'lmaydi |
+| BR-04 | Tashqi trekning muddati **6–12 oy** (kasb yadrosi + til moduli). Til moduli faqat tashqi trekda bo'ladi. **Istisno:** kasbi ham, tili ham bor kishilar (D toifa) uchun tezlashtirilgan kurs — **3 oy** (80–100 kun, `courses.accelerated`) |
 | BR-05 | O'quv vaqti taqsimoti: ≈ 20% nazariya, ≈ 30% ustaxona, ≈ 50% obyekt. Kurs uchun ±5% og'ishga ruxsat bor. `SAFETY` moduli soatlari nazariya soatlari ichida hisoblanadi |
 | BR-06 | Balans matritsasi: A (kasbi bor, tili yo'q) → til; B (tili bor ≥ B1, kasbi yo'q) → faqat sertifikatlangan kasb, kurator yoki brigadir; C (ikkalasi yo'q) → ichki trek; D (ikkalasi bor) → tezlashtirilgan yo'l. Toifani tizim taklif qiladi, admin tasdiqlaydi |
 | BR-07 | Brigada: 1 boshliq (amaldagi sertifikat + til hujjati yoki B1 dan past bo'lmagan daraja) + 8–10 a'zo, bitta kasb bo'yicha. A'zolar soni 10 dan oshmaydi (trigger). `READY` ga o'tishda a'zolar soni 8–10 bo'lishi shart (servis va holat triggeri) |

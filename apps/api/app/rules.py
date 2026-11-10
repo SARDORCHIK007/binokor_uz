@@ -19,12 +19,13 @@ def language_module_allowed(track: str, kind: str) -> bool:
     return not (track == "DOMESTIC" and kind == "LANGUAGE")
 
 
-def course_duration_ok(track: str, days: int) -> bool:
-    if track == "DOMESTIC":
-        return 80 <= days <= 190
-    if track == "FOREIGN":
-        return 170 <= days <= 380
-    return False
+def course_duration_ok(track: str, days: int, *, accelerated: bool = False) -> bool:
+    """6-12 months; only an accelerated course (trade and language already held) is about 3."""
+    if track not in {"DOMESTIC", "FOREIGN"}:
+        return False
+    if accelerated:
+        return 80 <= days <= 100
+    return 170 <= days <= 380
 
 
 def cert_blockers(
