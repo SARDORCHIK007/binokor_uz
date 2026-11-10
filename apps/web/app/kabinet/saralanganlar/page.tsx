@@ -1,5 +1,5 @@
 import { EmptyState, buttonClass } from "@uychibinokor/ui";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { ActionButton } from "@/components/cabinet/ActionButton";
 import { apiAuth } from "@/lib/session";
@@ -13,7 +13,8 @@ export default async function ShortlistPage() {
   const w = await getTranslations("workerProfile");
   const shell = await getTranslations("shell");
   const states = await getTranslations("states");
-  const items = await apiAuth<Item[]>("/api/v1/employers/shortlist");
+  const locale = await getLocale();
+  const items = await apiAuth<Item[]>(`/api/v1/employers/shortlist?lang=${locale}`);
   if (!items) {
     return <EmptyState title={states("errorTitle")} text={states("errorText")} />;
   }

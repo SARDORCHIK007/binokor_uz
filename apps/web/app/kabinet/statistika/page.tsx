@@ -1,5 +1,5 @@
 import { EmptyState } from "@uychibinokor/ui";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { apiAuth } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
@@ -21,7 +21,8 @@ function money(value: number): string {
 export default async function ProducerStatsPage() {
   const t = await getTranslations("producerStats");
   const states = await getTranslations("states");
-  const stats = await apiAuth<Stats>("/api/v1/producers/stats");
+  const locale = await getLocale();
+  const stats = await apiAuth<Stats>(`/api/v1/producers/stats?lang=${locale}`);
   if (!stats) {
     return <EmptyState title={states("errorTitle")} text={states("errorText")} />;
   }

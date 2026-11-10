@@ -1,5 +1,5 @@
 import { EmptyState, buttonClass } from "@uychibinokor/ui";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { apiAuth } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
@@ -9,7 +9,8 @@ type Row = { mahalla: string; people: number; studying: number; certified: numbe
 export default async function MahallasPage() {
   const t = await getTranslations("mahallas");
   const states = await getTranslations("states");
-  const rows = await apiAuth<Row[]>("/api/v1/reports/mahallas");
+  const locale = await getLocale();
+  const rows = await apiAuth<Row[]>(`/api/v1/reports/mahallas?lang=${locale}`);
   if (!rows) {
     return <EmptyState title={states("errorTitle")} text={states("errorText")} />;
   }

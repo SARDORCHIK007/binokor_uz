@@ -1,5 +1,5 @@
 import { EmptyState } from "@uychibinokor/ui";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { ActionButton } from "@/components/cabinet/ActionButton";
 import { apiAuth } from "@/lib/session";
 
@@ -25,7 +25,8 @@ function money(value: number): string {
 export default async function OffersPage() {
   const t = await getTranslations("offers");
   const states = await getTranslations("states");
-  const offers = await apiAuth<Offer[]>("/api/v1/me/offers");
+  const locale = await getLocale();
+  const offers = await apiAuth<Offer[]>(`/api/v1/me/offers?lang=${locale}`);
   if (!offers) {
     return <EmptyState title={states("errorTitle")} text={states("errorText")} />;
   }

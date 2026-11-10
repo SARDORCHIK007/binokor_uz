@@ -51,6 +51,8 @@ const CABINET_ICONS: [string, IconName][] = [
   ["yutuqlarim", "star"],
   ["bildirishnomalar", "doc"],
   ["sozlamalar", "grid"],
+  ["jadval", "calendar"],
+  ["elonlar", "doc"],
 ];
 
 function cabinetIcon(href: string): IconName {

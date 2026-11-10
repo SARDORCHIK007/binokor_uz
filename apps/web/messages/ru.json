@@ -110,7 +110,7 @@
     "atRiskEmpty": "Xavf ostida tinglovchi yo'q",
     "atRiskEmptyText": "So'nggi haftada ko'p qoldirganlar yo'q.",
     "myCourse": "Mening kursim",
-    "schedule": "Jadval",
+    "schedule": "Расписание",
     "attendancePct": "Посещаемость",
     "remaining": "Sertifikatgacha nima qoldi",
     "remainingAttendance": "Davomat 80% dan past",
@@ -132,7 +132,8 @@
     "students": "Слушатели",
     "progress": "Мои успехи",
     "notifications": "Уведомления",
-    "settings": "Настройки"
+    "settings": "Настройки",
+    "postings": "Мои объявления"
   },
   "session": {
     "title": "Кабинет",
@@ -1116,5 +1117,45 @@
     "language": "Язык",
     "appearance": "Внешний вид",
     "privacyNote": "Ваш телефон никогда не показывается на публичных страницах."
+  },
+  "schedule": {
+    "title": "Расписание занятий",
+    "text": "Занятия на ближайшие две недели.",
+    "empty": "В ближайшие дни занятий нет",
+    "emptyText": "Расписание появится после записи в группу или назначения группы.",
+    "today": "Сегодня",
+    "tomorrow": "Завтра",
+    "group": "Группа {code}",
+    "weekdays": {
+      "Du": "Понедельник",
+      "Se": "Вторник",
+      "Ch": "Среда",
+      "Pa": "Четверг",
+      "Ju": "Пятница",
+      "Sh": "Суббота",
+      "Ya": "Воскресенье"
+    }
+  },
+  "postings": {
+    "title": "Мои объявления",
+    "text": "Ваши заявки и ответы мастеров. Чтобы подать новое объявление, перейдите на страницу «Работодатель».",
+    "empty": "Объявлений пока нет",
+    "new": "Новое объявление",
+    "quantity": "Нужно мастеров: {n}",
+    "waiting": "Ждут ответа",
+    "accepted": "Приняли",
+    "declined": "Отклонили",
+    "none": "Кандидаты ещё не предложены",
+    "status": {
+      "NEW": "Новая",
+      "IN_REVIEW": "На рассмотрении",
+      "VIA_AGENCY": "Через агентство",
+      "SHORTLIST_SENT": "Кандидаты отправлены",
+      "EMPLOYER_APPROVED": "Подтверждена",
+      "CONTRACTING": "Договор",
+      "MATCHED": "Укомплектована",
+      "CLOSED": "Закрыта",
+      "CANCELLED": "Отменена"
+    }
   }
 }

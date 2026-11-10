@@ -230,6 +230,19 @@ async def _curator_capacity() -> None:
                 group = await conn.execute(text("SELECT id FROM curator_groups LIMIT 1"))
                 group_id = group.scalar()
                 assert group_id is not None
+                have = (
+                    await conn.execute(text("SELECT count(*) FROM curator_members WHERE curator_group_id = :g"), {"g": group_id})
+                ).scalar_one()
+                for filler in range(max(0, 8 - int(have))):  # the group starts with 8 students, whatever the demo data holds
+                    filler_id = uuid.uuid4()
+                    await conn.execute(
+                        text("INSERT INTO users (id, phone, full_name, locale) VALUES (:id, :phone, 'Kurator fill', 'uz-Latn')"),
+                        {"id": filler_id, "phone": f"+99890199700{filler}"},
+                    )
+                    await conn.execute(
+                        text("INSERT INTO curator_members (curator_group_id, student_user_id) VALUES (:g, :u)"),
+                        {"g": group_id, "u": filler_id},
+                    )
                 for index in range(3):
                     user_id = uuid.uuid4()
                     await conn.execute(

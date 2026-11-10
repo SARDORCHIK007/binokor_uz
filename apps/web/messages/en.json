@@ -110,7 +110,7 @@
     "atRiskEmpty": "Xavf ostida tinglovchi yo'q",
     "atRiskEmptyText": "So'nggi haftada ko'p qoldirganlar yo'q.",
     "myCourse": "Mening kursim",
-    "schedule": "Jadval",
+    "schedule": "Schedule",
     "attendancePct": "Attendance",
     "remaining": "Sertifikatgacha nima qoldi",
     "remainingAttendance": "Davomat 80% dan past",
@@ -132,7 +132,8 @@
     "students": "Students",
     "progress": "My progress",
     "notifications": "Notifications",
-    "settings": "Settings"
+    "settings": "Settings",
+    "postings": "My postings"
   },
   "session": {
     "title": "Cabinet",
@@ -1116,5 +1117,45 @@
     "language": "Language",
     "appearance": "Appearance",
     "privacyNote": "Your phone number is never shown on public pages."
+  },
+  "schedule": {
+    "title": "Lesson schedule",
+    "text": "Lessons over the next two weeks.",
+    "empty": "No lessons in the coming days",
+    "emptyText": "The schedule appears once you are enrolled in or assigned a group.",
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "group": "Group {code}",
+    "weekdays": {
+      "Du": "Monday",
+      "Se": "Tuesday",
+      "Ch": "Wednesday",
+      "Pa": "Thursday",
+      "Ju": "Friday",
+      "Sh": "Saturday",
+      "Ya": "Sunday"
+    }
+  },
+  "postings": {
+    "title": "My postings",
+    "text": "Your requests and the craftsmen's answers. To post a new one, open the Employer page.",
+    "empty": "No postings yet",
+    "new": "New posting",
+    "quantity": "{n} craftsmen needed",
+    "waiting": "Awaiting answer",
+    "accepted": "Accepted",
+    "declined": "Declined",
+    "none": "No candidates proposed yet",
+    "status": {
+      "NEW": "New",
+      "IN_REVIEW": "In review",
+      "VIA_AGENCY": "Via agency",
+      "SHORTLIST_SENT": "Shortlist sent",
+      "EMPLOYER_APPROVED": "Approved",
+      "CONTRACTING": "Contracting",
+      "MATCHED": "Matched",
+      "CLOSED": "Closed",
+      "CANCELLED": "Cancelled"
+    }
   }
 }

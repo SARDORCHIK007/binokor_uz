@@ -5,7 +5,7 @@ import csv
 import io
 import json
 import uuid
-from datetime import date
+from datetime import date, timedelta
 from typing import Literal
 
 from fastapi import APIRouter, Request
@@ -14,7 +14,7 @@ from pydantic import BaseModel
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
-from app.doc_i18n import pick
+from app.doc_i18n import lang_of, pick
 from app.inapp import notify
 from app.security import bearer_from_request, problem, read_access_token
 
@@ -46,6 +46,11 @@ def _user_id(request: Request) -> uuid.UUID | None:
     return uuid.UUID(str(payload["sub"]))
 
 
+def _lang(request: Request, explicit: str | None) -> str:
+    """?lang=... wins, then the locale cookie, then Uzbek (Latin)."""
+    return lang_of(explicit or request.cookies.get("ub_locale"))
+
+
 def _unauth() -> JSONResponse:
     return problem(401, "UNAUTHORIZED", "Kirish talab qilinadi", "Avval tizimga kiring.")
 
@@ -63,7 +68,8 @@ async def _roles(conn: AsyncConnection, user_id: uuid.UUID) -> set[str]:
 
 
 @router.get("/me/worker")
-async def my_worker(request: Request) -> JSONResponse:
+async def my_worker(request: Request, lang: str | None = None) -> JSONResponse:
+    code = _lang(request, lang)
     user_id = _user_id(request)
     if user_id is None:
         return _unauth()
@@ -118,12 +124,12 @@ async def my_worker(request: Request) -> JSONResponse:
             "rating": None if row["rating_avg"] is None else float(row["rating_avg"]),
             "rating_count": row["rating_count"],
             "visibility": row["visibility"],
-            "trade": pick(row["trade_name"], "uz-Latn"),
+            "trade": pick(row["trade_name"], code),
             "certificates": [
                 {
                     "number": c["number"],
                     "level": c["level"],
-                    "trade": pick(c["trade_name"], "uz-Latn"),
+                    "trade": pick(c["trade_name"], code),
                     "issued_at": None if c["issued_at"] is None else c["issued_at"].date().isoformat(),
                     "signed": int(c["signed"]),
                     "expected": int(c["expected"]),
@@ -171,7 +177,8 @@ async def update_worker(body: WorkerSettings, request: Request) -> JSONResponse:
 
 
 @router.get("/me/offers")
-async def my_offers(request: Request) -> JSONResponse:
+async def my_offers(request: Request, lang: str | None = None) -> JSONResponse:
+    code = _lang(request, lang)
     user_id = _user_id(request)
     if user_id is None:
         return _unauth()
@@ -198,7 +205,7 @@ async def my_offers(request: Request) -> JSONResponse:
                 "id": r["id"],
                 "status": r["status"],
                 "employer": r["employer"],
-                "trade": pick(r["trade_name"], "uz-Latn"),
+                "trade": pick(r["trade_name"], code),
                 "location": r["location"],
                 "start_date": None if r["start_date"] is None else str(r["start_date"]),
                 "duration_months": r["duration_months"],
@@ -302,7 +309,8 @@ async def _employer(conn: AsyncConnection, user_id: uuid.UUID) -> uuid.UUID | No
 
 
 @router.get("/employers/shortlist")
-async def shortlist(request: Request) -> JSONResponse:
+async def shortlist(request: Request, lang: str | None = None) -> JSONResponse:
+    code = _lang(request, lang)
     user_id = _user_id(request)
     if user_id is None:
         return _unauth()
@@ -335,7 +343,7 @@ async def shortlist(request: Request) -> JSONResponse:
                 "availability": r["availability"],
                 "rating": None if r["rating_avg"] is None else float(r["rating_avg"]),
                 "hours": r["verified_hours"],
-                "trade": pick(r["trade_name"], "uz-Latn"),
+                "trade": pick(r["trade_name"], code),
             }
             for r in rows
         ]
@@ -500,7 +508,8 @@ async def my_progress(request: Request) -> JSONResponse:
 
 
 @router.get("/producers/stats")
-async def producer_stats(request: Request) -> JSONResponse:
+async def producer_stats(request: Request, lang: str | None = None) -> JSONResponse:
+    code = _lang(request, lang)
     user_id = _user_id(request)
     if user_id is None:
         return _unauth()
@@ -557,7 +566,7 @@ async def producer_stats(request: Request) -> JSONResponse:
             "by_status": {r["status"]: int(r["n"]) for r in by_status},
             "months": [{"month": r["month"], "orders": int(r["orders"]), "total": float(r["total"])} for r in months],
             "top": [
-                {"name": pick(r["name"], "uz-Latn"), "orders": int(r["orders"]), "quantity": float(r["quantity"]), "unit": r["unit"]}
+                {"name": pick(r["name"], code), "orders": int(r["orders"]), "quantity": float(r["quantity"]), "unit": r["unit"]}
                 for r in top
             ],
             "products": int(stock["total"]),
@@ -569,7 +578,7 @@ async def producer_stats(request: Request) -> JSONResponse:
 # ---------------------------------------------------------------- mahalla report
 
 
-async def _mahalla_rows(conn: AsyncConnection) -> list[dict[str, object]]:
+async def _mahalla_rows(conn: AsyncConnection, code: str = "uz-Latn") -> list[dict[str, object]]:
     rows = (
         await conn.execute(
             text(
@@ -588,7 +597,7 @@ async def _mahalla_rows(conn: AsyncConnection) -> list[dict[str, object]]:
     ).mappings().all()
     items = [
         {
-            "mahalla": pick(r["name"], "uz-Latn"),
+            "mahalla": pick(r["name"], code),
             "people": int(r["people"]),
             "studying": int(r["studying"]),
             "certified": int(r["certified"]),
@@ -601,14 +610,15 @@ async def _mahalla_rows(conn: AsyncConnection) -> list[dict[str, object]]:
 
 
 @router.get("/reports/mahallas")
-async def mahalla_report(request: Request) -> JSONResponse:
+async def mahalla_report(request: Request, lang: str | None = None) -> JSONResponse:
+    code = _lang(request, lang)
     user_id = _user_id(request)
     if user_id is None:
         return _unauth()
     async with _engine(request).connect() as conn:
         if not await _roles(conn, user_id) & REPORT_ROLES:
             return _forbidden("Hisobot hokimlik va admin uchun.")
-        rows = await _mahalla_rows(conn)
+        rows = await _mahalla_rows(conn, code)
     return JSONResponse(rows)
 
 
@@ -630,4 +640,84 @@ async def export_csv(request: Request) -> Response:
         "﻿" + out.getvalue(),
         media_type="text/csv; charset=utf-8",
         headers={"Content-Disposition": f'attachment; filename="uychi-binokor-{date.today().isoformat()}.csv"'},
+    )
+
+
+# ---------------------------------------------------------------- schedule and postings
+
+WEEKDAYS = ["Du", "Se", "Ch", "Pa", "Ju", "Sh", "Ya"]
+
+
+@router.get("/me/schedule")
+async def my_schedule(request: Request, days: int = 14) -> JSONResponse:
+    """Upcoming lessons of the caller's groups (student: own group, mentor: groups they teach)."""
+    user_id = _user_id(request)
+    if user_id is None:
+        return _unauth()
+    horizon = max(1, min(days, 60))
+    async with _engine(request).connect() as conn:
+        rows = (
+            await conn.execute(
+                text(
+                    """
+                    SELECT DISTINCT g.code, g.schedule FROM groups g
+                    WHERE g.mentor_user_id = :uid
+                       OR g.id IN (SELECT group_id FROM enrollments WHERE student_user_id = :uid AND status = 'ACTIVE')
+                    """
+                ),
+                {"uid": user_id},
+            )
+        ).mappings().all()
+    today = date.today()
+    lessons = []
+    for offset in range(horizon):
+        day = today + timedelta(days=offset)
+        for row in rows:
+            schedule = row["schedule"] if isinstance(row["schedule"], dict) else {}
+            if WEEKDAYS[day.weekday()] in schedule.get("days", []):
+                lessons.append(
+                    {"date": day.isoformat(), "weekday": WEEKDAYS[day.weekday()], "time": schedule.get("time", ""), "group": row["code"]}
+                )
+    return JSONResponse({"groups": [str(r["code"]) for r in rows], "lessons": lessons})
+
+
+@router.get("/employers/postings")
+async def postings(request: Request, lang: str | None = None) -> JSONResponse:
+    code = _lang(request, lang)
+    user_id = _user_id(request)
+    if user_id is None:
+        return _unauth()
+    async with _engine(request).connect() as conn:
+        employer = await _employer(conn, user_id)
+        if employer is None:
+            return _forbidden("Bu bo'lim ish beruvchilar uchun.")
+        rows = (
+            await conn.execute(
+                text(
+                    """
+                    SELECT r.id::text AS id, r.quantity, r.status::text AS status, r.location, r.created_at, t.name AS trade_name,
+                           coalesce(jsonb_object_agg(c.status, c.n) FILTER (WHERE c.status IS NOT NULL), '{}'::jsonb) AS counts
+                    FROM demand_requests r
+                    JOIN trades t ON t.id = r.trade_id
+                    LEFT JOIN (SELECT request_id, status, count(*) AS n FROM request_candidates GROUP BY 1, 2) c ON c.request_id = r.id
+                    WHERE r.employer_id = :e
+                    GROUP BY r.id, t.name ORDER BY r.created_at DESC
+                    """
+                ),
+                {"e": employer},
+            )
+        ).mappings().all()
+    return JSONResponse(
+        [
+            {
+                "id": r["id"],
+                "trade": pick(r["trade_name"], code),
+                "quantity": r["quantity"],
+                "status": r["status"],
+                "location": r["location"],
+                "created_at": r["created_at"].date().isoformat(),
+                "counts": r["counts"],
+            }
+            for r in rows
+        ]
     )

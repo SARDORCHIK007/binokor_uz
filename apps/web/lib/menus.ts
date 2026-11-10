@@ -19,6 +19,7 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet", key: "panel" },
     { href: "/kabinet/ishberuvchi", key: "employer" },
     { href: "/kabinet/saralanganlar", key: "shortlist" },
+    { href: "/kabinet/elonlar", key: "postings" },
   ],
   producer: [
     { href: "/kabinet", key: "panel" },
@@ -42,6 +43,7 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/baholar", key: "grades" },
     { href: "/kabinet/portfolio-tasdiq", key: "portfolioReview" },
     { href: "/kabinet/tinglovchilar", key: "students" },
+    { href: "/kabinet/jadval", key: "schedule" },
   ],
   curator: [
     { href: "/kabinet", key: "panel" },
@@ -64,6 +66,7 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/pasport", key: "passport" },
     { href: "/kabinet/lugat", key: "vocab" },
     { href: "/kabinet/yutuqlarim", key: "progress" },
+    { href: "/kabinet/jadval", key: "schedule" },
   ],
 };
 

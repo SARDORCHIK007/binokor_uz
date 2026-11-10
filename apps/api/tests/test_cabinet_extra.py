@@ -83,6 +83,12 @@ async def _flow() -> None:
         progress = (await student.get("/api/v1/me/progress")).json()
         assert progress["enrolled"] is True and "schedule" in progress
         assert isinstance((await mentor.get("/api/v1/mentor/students")).json(), list)
+        schedule = (await student.get("/api/v1/me/schedule?days=14")).json()
+        assert schedule["groups"] and all(x["weekday"] in {"Du", "Se", "Ch", "Pa", "Ju", "Sh", "Ya"} for x in schedule["lessons"])
+        posted = (await employer.get("/api/v1/employers/postings?lang=ru")).json()
+        mine_posting = next(x for x in posted if x["id"] == request_id)
+        assert mine_posting["trade"] == "Сантехник" and mine_posting["counts"].get("WORKER_ACCEPTED") == 1
+        assert (await student.get("/api/v1/employers/postings")).status_code == 403
         stats = (await producer.get("/api/v1/producers/stats")).json()
         assert stats["products"] >= 0 and "months" in stats
         assert isinstance((await admin.get("/api/v1/reports/mahallas")).json(), list)

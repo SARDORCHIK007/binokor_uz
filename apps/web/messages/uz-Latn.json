@@ -110,7 +110,7 @@
     "atRiskEmpty": "Xavf ostida tinglovchi yo'q",
     "atRiskEmptyText": "So'nggi haftada ko'p qoldirganlar yo'q.",
     "myCourse": "Mening kursim",
-    "schedule": "Jadval",
+    "schedule": "Dars jadvali",
     "attendancePct": "Davomat",
     "remaining": "Sertifikatgacha nima qoldi",
     "remainingAttendance": "Davomat 80% dan past",
@@ -132,7 +132,8 @@
     "students": "Tinglovchilar",
     "progress": "Yutuqlarim",
     "notifications": "Bildirishnomalar",
-    "settings": "Sozlamalar"
+    "settings": "Sozlamalar",
+    "postings": "E'lonlarim"
   },
   "session": {
     "title": "Kabinet",
@@ -1116,5 +1117,45 @@
     "language": "Til",
     "appearance": "Ko'rinish",
     "privacyNote": "Telefon raqamingiz ommaviy sahifalarda hech qachon ko'rsatilmaydi."
+  },
+  "schedule": {
+    "title": "Dars jadvali",
+    "text": "Keyingi ikki haftadagi darslar.",
+    "empty": "Yaqin kunlarda dars yo'q",
+    "emptyText": "Guruhga yozilgach yoki guruh biriktirilgach jadval shu yerda chiqadi.",
+    "today": "Bugun",
+    "tomorrow": "Ertaga",
+    "group": "Guruh {code}",
+    "weekdays": {
+      "Du": "Dushanba",
+      "Se": "Seshanba",
+      "Ch": "Chorshanba",
+      "Pa": "Payshanba",
+      "Ju": "Juma",
+      "Sh": "Shanba",
+      "Ya": "Yakshanba"
+    }
+  },
+  "postings": {
+    "title": "Mening e'lonlarim",
+    "text": "Berilgan so'rovlar va ustalarning javoblari. Yangi e'lon berish uchun \"Ish beruvchi\" sahifasiga o'ting.",
+    "empty": "Hali e'lon yo'q",
+    "new": "Yangi e'lon",
+    "quantity": "{n} ta usta kerak",
+    "waiting": "Javob kutilmoqda",
+    "accepted": "Qabul qildi",
+    "declined": "Rad etdi",
+    "none": "Hali nomzod taklif qilinmagan",
+    "status": {
+      "NEW": "Yangi",
+      "IN_REVIEW": "Ko'rib chiqilmoqda",
+      "VIA_AGENCY": "Agentlik orqali",
+      "SHORTLIST_SENT": "Nomzodlar yuborildi",
+      "EMPLOYER_APPROVED": "Tasdiqlangan",
+      "CONTRACTING": "Shartnoma",
+      "MATCHED": "Joylashtirildi",
+      "CLOSED": "Yopilgan",
+      "CANCELLED": "Bekor qilingan"
+    }
   }
 }

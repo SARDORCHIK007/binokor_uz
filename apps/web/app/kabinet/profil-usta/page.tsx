@@ -26,7 +26,7 @@ export default async function WorkerProfilePage() {
   const t = await getTranslations("workerProfile");
   const states = await getTranslations("states");
   const locale = await getLocale();
-  const me = await apiAuth<Worker>("/api/v1/me/worker");
+  const me = await apiAuth<Worker>(`/api/v1/me/worker?lang=${locale}`);
   if (!me) {
     return <EmptyState title={states("errorTitle")} text={states("errorText")} />;
   }
