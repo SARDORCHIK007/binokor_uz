@@ -20,7 +20,7 @@ export function PageHead({ title, text, actions }: { title: string; text?: strin
 const TONES = {
   blue: "bg-blue-100 text-primary",
   green: "bg-success-100 text-success-600",
-  amber: "bg-amber-100 text-warning-600",
+  amber: "bg-warning-100 text-warning-600",
   red: "bg-danger-100 text-danger-600",
   gray: "bg-surface-100 text-muted",
 } as const;

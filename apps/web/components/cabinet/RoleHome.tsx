@@ -20,7 +20,7 @@ const ICON: Record<string, IconName> = {
 async function statsFor(role: string, t: Awaited<ReturnType<typeof getTranslations>>): Promise<Stat[]> {
   const blue = "bg-blue-100 text-primary";
   const green = "bg-success-100 text-success-600";
-  const amber = "bg-amber-100 text-warning-600";
+  const amber = "bg-warning-100 text-warning-600";
   if (role === "employer_local") {
     const me = await apiAuth<{ employer: { verified: boolean } | null; requests: { candidates: number }[] }>("/api/v1/employers/me");
     if (!me?.employer) {

@@ -30,7 +30,7 @@ export default async function SettingsPage() {
       </section>
       <section className={CARD} aria-labelledby="language">
         <h2 id="language" className="text-sm font-bold text-navy-900">{t("language")}</h2>
-        <div className="mt-3 inline-flex rounded-xl bg-navy-900 p-2 text-white" data-current={locale}>
+        <div className="mt-3 inline-flex rounded-xl border border-line bg-surface-100 p-2 text-navy-900" data-current={locale}>
           <LanguageSwitcher />
         </div>
       </section>

@@ -281,7 +281,7 @@ export function HomeExperience({ home }: { home: HomePayload }) {
                     <span className="text-2xl font-extrabold text-success-600">QR</span>
                     <p className="text-xs text-muted mt-1">{t("qrOpen")}</p>
                   </div>
-                  <div className="rounded-xl border border-accent/40 bg-amber-100 p-4">
+                  <div className="rounded-xl border border-accent/40 bg-warning-100 p-4">
                     <span className="text-2xl font-extrabold text-warning-600">{t("free")}</span>
                     <p className="text-xs text-muted mt-1">{t("freeText")}</p>
                   </div>

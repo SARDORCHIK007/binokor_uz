@@ -1,6 +1,6 @@
 "use client";
 
-const COLORS = ["#2F6BFF", "#F5B400", "#1f8a4c", "#071833", "#7c5cbf", "#e07a3d"];
+const COLORS = ["#2F6BFF", "#F5B400", "#1f8a4c", "#8a9bb8", "#7c5cbf", "#e07a3d"];
 
 export function AdminCharts({
   trend,
@@ -45,15 +45,15 @@ export function AdminCharts({
                   <stop offset="100%" stopColor="#2F6BFF" stopOpacity="0" />
                 </linearGradient>
               </defs>
-              <line x1={left} y1={bottom} x2={width - 10} y2={bottom} stroke="#e5eaf2" />
+              <line x1={left} y1={bottom} x2={width - 10} y2={bottom} stroke="var(--border)" />
               <text x="4" y={top + 4} className="fill-faint text-[10px]">{max}</text>
               <text x="4" y={bottom + 4} className="fill-faint text-[10px]">0</text>
               <path d={area} fill="url(#adminArea)" />
               <path d={line} fill="none" stroke="#2F6BFF" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
               {points.map((p) => (
                 <g key={p.name}>
-                  <circle cx={p.x} cy={p.y} r="5" fill="#fff" stroke="#2F6BFF" strokeWidth="3" />
-                  <text x={p.x} y={p.y - 10} textAnchor="middle" className="fill-navy-900 text-[11px] font-bold">{p.value}</text>
+                  <circle cx={p.x} cy={p.y} r="5" fill="var(--card)" stroke="#2F6BFF" strokeWidth="3" />
+                  <text x={p.x} y={p.y - 10} textAnchor="middle" className="fill-ink text-[11px] font-bold">{p.value}</text>
                   <text x={p.x} y={205} textAnchor="middle" className="fill-muted text-[11px] font-semibold">{p.name}</text>
                 </g>
               ))}

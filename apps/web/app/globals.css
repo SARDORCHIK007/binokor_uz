@@ -39,6 +39,10 @@ select {
   }
 }
 
+[data-theme="dark"] {
+  --logo-house: #eaf0fa;
+}
+
 /* Dark theme: utilities that hard-code a light value follow the tokens (navy-900 stays a dark surface). */
 [data-theme="dark"] .text-navy-900,
 [data-theme="dark"] .text-navy-700 {

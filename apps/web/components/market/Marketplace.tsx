@@ -258,7 +258,7 @@ export function Marketplace({ initial }: { initial: MarketPage }) {
                         <p className="flex items-center gap-1.5 text-[11px] font-bold tracking-wider text-muted uppercase">
                           <span className="truncate">{item.category_name}</span>
                           {item.featured ? (
-                            <span className="shrink-0 rounded-full bg-amber-100 px-1.5 py-px text-[10px] tracking-normal text-warning-600 normal-case">★ {t("featured")}</span>
+                            <span className="shrink-0 rounded-full bg-warning-100 px-1.5 py-px text-[10px] tracking-normal text-warning-600 normal-case">★ {t("featured")}</span>
                           ) : null}
                         </p>
                         <h3 className="mt-0.5 line-clamp-2 text-base leading-snug font-bold text-navy-900">{item.name}</h3>

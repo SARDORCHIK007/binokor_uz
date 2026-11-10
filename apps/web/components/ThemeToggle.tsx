@@ -24,7 +24,7 @@ export function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-pressed={dark}
-      className="flex w-full items-center justify-between rounded-xl bg-white/5 px-3 py-2 text-sm font-semibold text-white ring-1 ring-white/10 transition hover:bg-white/10"
+      className="flex w-full items-center justify-between rounded-xl border border-line bg-surface-100 px-3 py-2 text-sm font-semibold text-navy-900 transition hover:border-primary hover:text-primary"
     >
       <span>{dark ? t("themeLight") : t("themeDark")}</span>
       <span aria-hidden="true">{dark ? "☀" : "☾"}</span>

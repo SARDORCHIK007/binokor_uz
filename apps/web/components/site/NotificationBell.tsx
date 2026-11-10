@@ -32,7 +32,7 @@ export function NotificationBell() {
     <Link
       href="/kabinet/bildirishnomalar"
       aria-label={`${t("bell")}${unread > 0 ? `: ${unread}` : ""}`}
-      className="relative grid size-10 shrink-0 place-items-center rounded-xl bg-navy-700 text-white transition hover:bg-primary"
+      className="relative grid size-10 shrink-0 place-items-center rounded-xl border border-line bg-surface-100 text-navy-900 transition hover:border-primary hover:text-primary"
     >
       <span aria-hidden="true">🔔</span>
       {unread > 0 ? (
