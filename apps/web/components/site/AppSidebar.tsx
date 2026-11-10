@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icon, type IconName } from "@/components/brand/Icon";
 import { Logo } from "@/components/brand/Logo";
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import type { ShellUser } from "@/components/site/SiteLayoutShell";
 
@@ -166,9 +165,6 @@ export function AppSidebar({ open, onClose, user }: { open: boolean; onClose: ()
       </div>
 
       <div className="mt-6 space-y-3 border-t border-line pt-4">
-        <div className="rounded-xl border border-line bg-surface-100 p-2">
-          <LanguageSwitcher />
-        </div>
         <ThemeToggle />
         {user ? (
           <div className="flex items-center gap-3 rounded-2xl border border-line bg-surface-100 p-3">

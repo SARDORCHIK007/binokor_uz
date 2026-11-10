@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { LanguageMenu } from "@/components/LanguageMenu";
 import { NotificationBell } from "@/components/site/NotificationBell";
 
 export function AppTopbar({ onToggleSidebar, signedIn }: { onToggleSidebar: () => void; signedIn: boolean }) {
@@ -27,6 +28,8 @@ export function AppTopbar({ onToggleSidebar, signedIn }: { onToggleSidebar: () =
           className="w-full rounded-xl border border-line-strong bg-surface-100 px-4 py-2 text-sm text-navy-900 placeholder:text-muted transition focus:border-primary focus:bg-card focus:outline-none focus:ring-2 focus:ring-primary/30"
         />
       </form>
+
+      <LanguageMenu />
 
       {signedIn ? <NotificationBell /> : null}
 

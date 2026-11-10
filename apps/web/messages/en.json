@@ -565,7 +565,8 @@
     "searchPlaceholder": "Worker, material or certificate number (UB-2026-000001)",
     "themeDark": "Dark mode",
     "themeLight": "Light mode",
-    "back": "Back"
+    "back": "Back",
+    "language": "Language"
   },
   "applyPage": {
     "crumb": "Apply online",
