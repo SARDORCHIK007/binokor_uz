@@ -36,6 +36,26 @@ export default async function MyApplicationPage() {
     return <EmptyState title={states("errorTitle")} text={states("errorText")} />;
   }
   if (rows.length === 0) {
+    const progress = await apiAuth<{ enrolled: boolean; group?: string; since?: string }>("/api/v1/me/progress");
+    if (progress?.enrolled) {
+      return (
+        <div className="mx-auto max-w-2xl rounded-2xl border border-success-600 bg-card p-6 text-center shadow-sh1">
+          <span className="mx-auto grid size-14 place-items-center rounded-full bg-success-100 text-2xl text-success-600" aria-hidden="true">
+            ✓
+          </span>
+          <h1 className="mt-4 text-2xl font-extrabold text-navy-900">{t("enrolledTitle")}</h1>
+          <p className="mt-2 text-muted">{t("enrolledText", { group: progress.group ?? "", since: progress.since ?? "" })}</p>
+          <div className="mt-5 flex flex-wrap justify-center gap-3">
+            <Link href="/kabinet/yutuqlarim" className={buttonClass()}>
+              {t("openProgress")}
+            </Link>
+            <Link href="/kabinet/pasport" className={buttonClass({ variant: "secondary" })}>
+              {t("openPassport")}
+            </Link>
+          </div>
+        </div>
+      );
+    }
     return (
       <EmptyState
         title={t("emptyTitle")}

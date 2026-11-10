@@ -433,7 +433,7 @@ async def mentor_students(request: Request) -> JSONResponse:
                 "lessons": int(r["lessons"]),
                 "average": None if r["average"] is None else int(r["average"]),
                 "last_lesson": None if r["last_lesson"] is None else str(r["last_lesson"]),
-                "at_risk": attendance is not None and attendance < 70,
+                "at_risk": attendance is not None and attendance < 80,
             }
         )
     return JSONResponse(items)

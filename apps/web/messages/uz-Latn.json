@@ -382,7 +382,11 @@
       "ENROLLED": "O'qish boshlandi. Davomat va baholar kabinetda.",
       "WAITLIST": "Joy bo'shashi bilan xabar beramiz.",
       "REJECTED": "Boshqa kasb yoki keyingi qabulga qayta ariza berishingiz mumkin."
-    }
+    },
+    "enrolledTitle": "Siz o'qishga qabul qilingansiz",
+    "enrolledText": "Guruhingiz: {group}. O'qish {since} dan boshlangan.",
+    "openProgress": "Yutuqlarim",
+    "openPassport": "Pasportim"
   },
   "worker": {
     "crumb": "Ustalar",
@@ -1070,7 +1074,7 @@
   },
   "students": {
     "title": "Tinglovchilarim",
-    "text": "Davomat va baholar bo'yicha holat. Davomati 70% dan past bo'lganlar belgilanadi.",
+    "text": "Davomat va baholar bo'yicha holat. Sertifikat uchun davomat kamida 80% bo'lishi kerak, past bo'lganlar belgilanadi.",
     "empty": "Tinglovchi yo'q",
     "attendance": "Davomat",
     "average": "O'rtacha ball",
@@ -1164,5 +1168,142 @@
       "CLOSED": "Yopilgan",
       "CANCELLED": "Bekor qilingan"
     }
+  },
+  "adm": {
+    "search": "Qidirish…",
+    "all": "Hammasi",
+    "noResults": "Hech narsa topilmadi",
+    "shown": "{n} ta ko'rsatilmoqda",
+    "accept": "Qabul qilish",
+    "reject": "Rad etish",
+    "confirmReject": "Rad etishni tasdiqlash",
+    "cancel": "Bekor qilish",
+    "reason": "Rad sababi (ixtiyoriy)",
+    "failed": "Bajarilmadi. Qayta urinib ko'ring.",
+    "loadError": "Ro'yxat ochilmadi",
+    "apps": {
+      "title": "Arizalar",
+      "text": "Kelgan arizalarni ko'rib chiqing: qabul qiling yoki rad eting.",
+      "empty": "Hozircha ariza yo'q",
+      "pending": "Ko'rib chiqilmoqda",
+      "accepted": "Qabul qilingan",
+      "rejected": "Rad etilgan",
+      "class": "{c} toifa"
+    },
+    "appStatus": {
+      "DRAFT": "Qoralama",
+      "SUBMITTED": "Yuborilgan",
+      "SCREENING": "Saralash",
+      "VOUCHER_CHECK": "Hujjat tekshiruvi",
+      "INTERVIEW": "Suhbat",
+      "TRIAL": "Sinov",
+      "ACCEPTED": "Qabul qilingan",
+      "ENROLLED": "Guruhga yozilgan",
+      "WAITLIST": "Kutish ro'yxati",
+      "REJECTED": "Rad etilgan",
+      "WITHDRAWN": "Qaytarib olingan"
+    },
+    "appType": {
+      "YOUTH": "Yosh (16–30)",
+      "WORKER_UPSKILL": "Usta, malaka oshirish",
+      "UNIVERSITY_GRAD": "OTM bitiruvchisi"
+    },
+    "track": {
+      "DOMESTIC": "Mahalliy",
+      "FOREIGN": "Xorij"
+    },
+    "courses": {
+      "title": "Kurslar",
+      "text": "Barcha o'quv kurslari va ularning muddati.",
+      "empty": "Kurs yo'q",
+      "period": "{from} — {to}"
+    },
+    "groups": {
+      "title": "Guruhlar",
+      "text": "Har bir guruhda ko'pi bilan 10 ta tinglovchi bo'ladi.",
+      "empty": "Guruh yo'q",
+      "students": "{n} / {max} tinglovchi",
+      "full": "To'lgan",
+      "free": "{n} ta bo'sh joy",
+      "mentor": "Ustoz"
+    },
+    "users": {
+      "title": "Foydalanuvchilar",
+      "text": "Tizimdagi hisoblar va ularning rollari. Telefon raqamlari ko'rsatilmaydi.",
+      "search": "Ism bo'yicha qidirish…"
+    },
+    "certs": {
+      "title": "Sertifikat navbati",
+      "text": "Sertifikat berish uchun ikki xodim tasdiqlashi kerak.",
+      "empty": "Navbat bo'sh",
+      "emptyText": "Tasdiq kutayotgan sertifikat yo'q.",
+      "approvals": "Tasdiq {n}/2",
+      "attendance": "Davomat",
+      "theory": "Nazariya",
+      "practice": "Amaliyot",
+      "approve": "Tasdiqlash",
+      "reject": "Rad",
+      "PENDING_APPROVAL": "Tasdiq kutilmoqda",
+      "DRAFT": "Qoralama"
+    },
+    "report": {
+      "title": "Hokimlik hisoboti",
+      "text": "Loyiha natijalari. Faqat bazadagi haqiqiy raqamlar.",
+      "funnel": "Yo'l: ariza → ishga joylashuv",
+      "byTrade": "Kasblar bo'yicha",
+      "trade": "Kasb",
+      "studying": "O'qiyapti",
+      "certified": "Sertifikatli",
+      "mahallas": "Mahallalar kesimi",
+      "empty": "Hisobot uchun ma'lumot yo'q"
+    },
+    "employers": {
+      "noPending": "Tasdiq kutayotgan kompaniya yo'q. Yangi ish beruvchilar ro'yxatdan o'tganda shu yerda ko'rinadi."
+    }
+  },
+  "att": {
+    "title": "Bugungi davomat",
+    "group": "{code} guruhi",
+    "allPresent": "Hammasi keldi",
+    "save": "Saqlash",
+    "saving": "Saqlanmoqda…",
+    "saved": "Davomat saqlandi",
+    "savedOffline": "Qurilmada saqlandi. Internet qaytsa yuboriladi.",
+    "queueSent": "Navbatdagi davomat yuborildi",
+    "saveFailed": "Saqlanmadi. Qayta urinib ko'ring.",
+    "offline": "Internet yo'q. Davomat shu qurilmada navbatga yoziladi.",
+    "loading": "Yuklanmoqda…",
+    "loadFailed": "Varaq ochilmadi",
+    "reload": "Sahifani yangilang.",
+    "noStudents": "Tinglovchi yo'q",
+    "noStudentsText": "Bu guruhda faol tinglovchi yo'q.",
+    "summary": "{present} keldi · {late} kechikdi · {absent} kelmadi",
+    "notMarked": "{n} ta belgilanmagan (\"keldi\" deb olinadi)",
+    "mineTitle": "Mening davomatim",
+    "mineEmpty": "Davomat hali yo'q",
+    "mineEmptyText": "Ustoz belgi qo'ygach shu yerda ko'rinadi.",
+    "mineRate": "Davomat foizi",
+    "hours": "{n} soat",
+    "noGroup": "Guruh yo'q",
+    "noGroupText": "Sizga hali guruh biriktirilmagan.",
+    "status": {
+      "PRESENT": "Keldi",
+      "LATE": "Kechikdi",
+      "ABSENT_EXCUSED": "Sababli",
+      "ABSENT_UNEXCUSED": "Kelmadi"
+    }
+  },
+  "gr": {
+    "title": "Mening baholarim",
+    "mentorTitle": "Baholar",
+    "group": "{code} guruhi",
+    "text": "Modullar bo'yicha ballaringiz va natijalaringiz.",
+    "empty": "Baho hali yo'q",
+    "emptyText": "Ustoz baho qo'ygach shu yerda ko'rinadi.",
+    "average": "O'rtacha ball",
+    "passed": "O'tilgan modullar",
+    "pass": "O'tdi",
+    "fail": "O'tmadi",
+    "points": "{n} / 100"
   }
 }

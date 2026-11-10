@@ -61,11 +61,13 @@ export default function EmployerPage() {
   const t = useTranslations("employerCab");
   const states = useTranslations("states");
   const workerT = useTranslations("worker");
+  const adm = useTranslations("adm");
   const [state, setState] = useState<"loading" | "ready" | "error">("loading");
   const [employer, setEmployer] = useState<Employer | null>(null);
   const [requests, setRequests] = useState<Demand[]>([]);
   const [placements, setPlacements] = useState<Placement[]>([]);
   const [pending, setPending] = useState<Employer[]>([]);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [trades, setTrades] = useState<Trade[]>([]);
   const [open, setOpen] = useState<string | null>(null);
   const [matches, setMatches] = useState<Record<string, Matches>>({});
@@ -85,6 +87,7 @@ export default function EmployerPage() {
       setState("ready");
       const admin = await fetch("/api/v1/admin/employers", { credentials: "include" });
       if (admin.ok) {
+        setIsAdmin(true);
         setPending(((await admin.json()) as Employer[]).filter((item) => !item.verified));
       }
     } catch {
@@ -207,6 +210,10 @@ export default function EmployerPage() {
             {employer.verified ? t("verified") : t("unverified")}
           </span>
         </section>
+      ) : isAdmin ? (
+        pending.length === 0 ? (
+          <p className={`${CARD} text-sm text-muted`}>{adm("employers.noPending")}</p>
+        ) : null
       ) : (
         <form onSubmit={register} className={`${CARD} grid gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end`}>
           <h2 className="text-lg font-bold text-navy-900 sm:col-span-3">{t("register")}</h2>

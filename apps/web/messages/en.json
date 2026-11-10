@@ -382,7 +382,11 @@
       "ENROLLED": "Training has started. Attendance and grades are in the cabinet.",
       "WAITLIST": "We will tell you as soon as a place opens.",
       "REJECTED": "You can apply for another trade or the next intake."
-    }
+    },
+    "enrolledTitle": "You have been accepted to study",
+    "enrolledText": "Your group: {group}. Studying since {since}.",
+    "openProgress": "My progress",
+    "openPassport": "My passport"
   },
   "worker": {
     "crumb": "Workers",
@@ -1070,7 +1074,7 @@
   },
   "students": {
     "title": "My students",
-    "text": "Attendance and grades. Students below 70% attendance are flagged.",
+    "text": "Attendance and grades. A certificate needs at least 80% attendance; students below it are flagged.",
     "empty": "No students",
     "attendance": "Attendance",
     "average": "Average score",
@@ -1164,5 +1168,142 @@
       "CLOSED": "Closed",
       "CANCELLED": "Cancelled"
     }
+  },
+  "adm": {
+    "search": "Search…",
+    "all": "All",
+    "noResults": "Nothing found",
+    "shown": "{n} shown",
+    "accept": "Accept",
+    "reject": "Reject",
+    "confirmReject": "Confirm rejection",
+    "cancel": "Cancel",
+    "reason": "Reason (optional)",
+    "failed": "Failed. Please try again.",
+    "loadError": "The list did not load",
+    "apps": {
+      "title": "Applications",
+      "text": "Review incoming applications: accept or reject.",
+      "empty": "No applications yet",
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "rejected": "Rejected",
+      "class": "Class {c}"
+    },
+    "appStatus": {
+      "DRAFT": "Draft",
+      "SUBMITTED": "Submitted",
+      "SCREENING": "Screening",
+      "VOUCHER_CHECK": "Document check",
+      "INTERVIEW": "Interview",
+      "TRIAL": "Trial",
+      "ACCEPTED": "Accepted",
+      "ENROLLED": "Enrolled",
+      "WAITLIST": "Waitlist",
+      "REJECTED": "Rejected",
+      "WITHDRAWN": "Withdrawn"
+    },
+    "appType": {
+      "YOUTH": "Youth (16–30)",
+      "WORKER_UPSKILL": "Craftsman upskilling",
+      "UNIVERSITY_GRAD": "University graduate"
+    },
+    "track": {
+      "DOMESTIC": "Domestic",
+      "FOREIGN": "Foreign"
+    },
+    "courses": {
+      "title": "Courses",
+      "text": "All training courses and their dates.",
+      "empty": "No courses",
+      "period": "{from} — {to}"
+    },
+    "groups": {
+      "title": "Groups",
+      "text": "Each group has at most 10 students.",
+      "empty": "No groups",
+      "students": "{n} / {max} students",
+      "full": "Full",
+      "free": "{n} free seats",
+      "mentor": "Mentor"
+    },
+    "users": {
+      "title": "Users",
+      "text": "Accounts and their roles. Phone numbers are not shown.",
+      "search": "Search by name…"
+    },
+    "certs": {
+      "title": "Certificate queue",
+      "text": "Two staff members must approve before a certificate is issued.",
+      "empty": "Queue is empty",
+      "emptyText": "No certificates awaiting approval.",
+      "approvals": "Approvals {n}/2",
+      "attendance": "Attendance",
+      "theory": "Theory",
+      "practice": "Practice",
+      "approve": "Approve",
+      "reject": "Reject",
+      "PENDING_APPROVAL": "Awaiting approval",
+      "DRAFT": "Draft"
+    },
+    "report": {
+      "title": "District report",
+      "text": "Project results. Real figures from the database only.",
+      "funnel": "Journey: application → job",
+      "byTrade": "By trade",
+      "trade": "Trade",
+      "studying": "Studying",
+      "certified": "Certified",
+      "mahallas": "By mahalla",
+      "empty": "No data for the report"
+    },
+    "employers": {
+      "noPending": "No companies awaiting verification. New employers appear here after they register."
+    }
+  },
+  "att": {
+    "title": "Today's attendance",
+    "group": "Group {code}",
+    "allPresent": "Everyone present",
+    "save": "Save",
+    "saving": "Saving…",
+    "saved": "Attendance saved",
+    "savedOffline": "Saved on this device. It is sent when you are back online.",
+    "queueSent": "Queued attendance was sent",
+    "saveFailed": "Not saved. Please try again.",
+    "offline": "You are offline. Attendance is queued on this device.",
+    "loading": "Loading…",
+    "loadFailed": "The sheet did not load",
+    "reload": "Reload the page.",
+    "noStudents": "No students",
+    "noStudentsText": "This group has no active students.",
+    "summary": "{present} present · {late} late · {absent} absent",
+    "notMarked": "{n} not marked (counted as present)",
+    "mineTitle": "My attendance",
+    "mineEmpty": "No attendance yet",
+    "mineEmptyText": "It appears after your mentor marks a lesson.",
+    "mineRate": "Attendance rate",
+    "hours": "{n} h",
+    "noGroup": "No group",
+    "noGroupText": "No group has been assigned to you yet.",
+    "status": {
+      "PRESENT": "Present",
+      "LATE": "Late",
+      "ABSENT_EXCUSED": "Excused",
+      "ABSENT_UNEXCUSED": "Absent"
+    }
+  },
+  "gr": {
+    "title": "My grades",
+    "mentorTitle": "Grades",
+    "group": "Group {code}",
+    "text": "Your scores and results by module.",
+    "empty": "No grades yet",
+    "emptyText": "They appear once your mentor grades a module.",
+    "average": "Average score",
+    "passed": "Modules passed",
+    "pass": "Passed",
+    "fail": "Not passed",
+    "points": "{n} / 100"
   }
 }
