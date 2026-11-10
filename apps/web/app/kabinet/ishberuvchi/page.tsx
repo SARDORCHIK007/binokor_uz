@@ -232,73 +232,6 @@ export default function EmployerPage() {
       )}
 
       {employer ? (
-        <form onSubmit={sendRequest} className={`${CARD} grid gap-4 md:grid-cols-4`}>
-          <div className="md:col-span-4">
-            <h2 className="text-xl font-bold text-navy-900">{t("newRequest")}</h2>
-            <p className="mt-1 text-sm text-muted">{employer.verified ? t("newRequestText") : t("needVerify")}</p>
-          </div>
-          <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy-900 md:col-span-2">
-            {t("trade")}
-            <select name="trade" required className={FIELD}>
-              {trades.map((trade) => (
-                <option key={trade.code} value={trade.code}>
-                  {trade.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy-900">
-            {t("quantity")}
-            <input name="quantity" type="number" min={1} max={500} defaultValue={1} required className={FIELD} />
-          </label>
-          <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy-900">
-            {t("track")}
-            <select name="track" className={FIELD} defaultValue="DOMESTIC">
-              <option value="DOMESTIC">{t("trackDomestic")}</option>
-              <option value="FOREIGN">{t("trackForeign")}</option>
-            </select>
-          </label>
-          <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy-900 md:col-span-2">
-            {t("location")}
-            <input name="location" defaultValue="Uychi" maxLength={200} className={FIELD} />
-          </label>
-          <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy-900">
-            {t("startDate")}
-            <input name="start_date" type="date" className={FIELD} />
-          </label>
-          <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy-900">
-            {t("duration")}
-            <input name="duration" type="number" min={1} max={60} className={FIELD} />
-          </label>
-          <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy-900 md:col-span-2">
-            {t("salaryFrom")}
-            <input name="salary_from" type="number" min={0} step={100000} className={FIELD} />
-          </label>
-          <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy-900 md:col-span-2">
-            {t("salaryTo")}
-            <input name="salary_to" type="number" min={0} step={100000} className={FIELD} />
-          </label>
-          <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy-900 md:col-span-4">
-            {t("conditions")}
-            <textarea name="conditions" maxLength={2000} rows={2} className={`${FIELD} py-2.5`} />
-          </label>
-          <label className="flex items-center gap-2 text-sm font-semibold text-navy-900 md:col-span-2">
-            <input name="as_brigade" type="checkbox" className="size-4 accent-primary" />
-            {t("asBrigade")}
-          </label>
-          <div className="md:col-span-2 md:text-right">
-            <button
-              type="submit"
-              disabled={!employer.verified}
-              className="min-h-11 w-full rounded-xl bg-primary px-6 text-sm font-bold text-white hover:bg-primary-hover disabled:opacity-50 md:w-auto"
-            >
-              {t("send")}
-            </button>
-          </div>
-        </form>
-      ) : null}
-
-      {employer ? (
         <section className={CARD}>
           <h2 className="text-xl font-bold text-navy-900">{t("requests")}</h2>
           {requests.length === 0 ? <p className="mt-2 text-sm text-muted">{t("noRequests")}</p> : null}
@@ -388,6 +321,78 @@ export default function EmployerPage() {
                                       {workerT(`status.${worker.availability}` as "status.BUSY")}
                                     </span>
                                   ) : null}
+      {employer ? (
+        <details open={requests.length === 0} className="group">
+          <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-xl bg-primary px-5 text-sm font-bold text-white transition hover:bg-primary-hover [&::-webkit-details-marker]:hidden">
+            <span aria-hidden="true" className="transition group-open:rotate-45">+</span>
+            {t("newRequest")}
+          </summary>
+        <form onSubmit={sendRequest} className={`${CARD} mt-3 grid gap-4 md:grid-cols-4`}>
+          <div className="md:col-span-4">
+            <h2 className="text-xl font-bold text-navy-900">{t("newRequest")}</h2>
+            <p className="mt-1 text-sm text-muted">{employer.verified ? t("newRequestText") : t("needVerify")}</p>
+          </div>
+          <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy-900 md:col-span-2">
+            {t("trade")}
+            <select name="trade" required className={FIELD}>
+              {trades.map((trade) => (
+                <option key={trade.code} value={trade.code}>
+                  {trade.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy-900">
+            {t("quantity")}
+            <input name="quantity" type="number" min={1} max={500} defaultValue={1} required className={FIELD} />
+          </label>
+          <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy-900">
+            {t("track")}
+            <select name="track" className={FIELD} defaultValue="DOMESTIC">
+              <option value="DOMESTIC">{t("trackDomestic")}</option>
+              <option value="FOREIGN">{t("trackForeign")}</option>
+            </select>
+          </label>
+          <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy-900 md:col-span-2">
+            {t("location")}
+            <input name="location" defaultValue="Uychi" maxLength={200} className={FIELD} />
+          </label>
+          <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy-900">
+            {t("startDate")}
+            <input name="start_date" type="date" className={FIELD} />
+          </label>
+          <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy-900">
+            {t("duration")}
+            <input name="duration" type="number" min={1} max={60} className={FIELD} />
+          </label>
+          <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy-900 md:col-span-2">
+            {t("salaryFrom")}
+            <input name="salary_from" type="number" min={0} step={100000} className={FIELD} />
+          </label>
+          <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy-900 md:col-span-2">
+            {t("salaryTo")}
+            <input name="salary_to" type="number" min={0} step={100000} className={FIELD} />
+          </label>
+          <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy-900 md:col-span-4">
+            {t("conditions")}
+            <textarea name="conditions" maxLength={2000} rows={2} className={`${FIELD} py-2.5`} />
+          </label>
+          <label className="flex items-center gap-2 text-sm font-semibold text-navy-900 md:col-span-2">
+            <input name="as_brigade" type="checkbox" className="size-4 accent-primary" />
+            {t("asBrigade")}
+          </label>
+          <div className="md:col-span-2 md:text-right">
+            <button
+              type="submit"
+              disabled={!employer.verified}
+              className="min-h-11 w-full rounded-xl bg-primary px-6 text-sm font-bold text-white hover:bg-primary-hover disabled:opacity-50 md:w-auto"
+            >
+              {t("send")}
+            </button>
+          </div>
+        </form>
+        </details>
+      ) : null}
                                 </span>
                               </span>
                               <button type="button" onClick={() => void propose(item.id, { worker_user_id: worker.user_id })} className="min-h-9 rounded-xl bg-blue-100 px-3 text-xs font-bold text-primary hover:bg-primary hover:text-white">

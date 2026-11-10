@@ -4,6 +4,7 @@ import { EmptyState } from "@uychibinokor/ui";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 import { Icon } from "@/components/brand/Icon";
+import { Tile } from "@/components/cabinet/kit";
 
 type Product = {
   id: string;
@@ -68,6 +69,14 @@ export default function ProductsPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [failed, setFailed] = useState(false);
   const [note, setNote] = useState<{ text: string; ok: boolean } | null>(null);
+  const [tab, setTab] = useState<"orders" | "products" | "add" | null>(null);
+  const ps = useTranslations("producerStats");
+
+  useEffect(() => {
+    if (!note) return;
+    const timer = window.setTimeout(() => setNote(null), 4000);
+    return () => window.clearTimeout(timer);
+  }, [note]);
 
   const load = useCallback(async () => {
     const response = await fetch("/api/v1/producers/products", { credentials: "include" });
@@ -157,10 +166,39 @@ export default function ProductsPage() {
   if (!products) {
     return <div className="h-64 animate-pulse rounded-2xl bg-card" aria-label={states("loading")} />;
   }
+  const openOrders = grouped.filter((lines) => lines[0].status === "NEW").length;
+  const active = tab ?? (grouped.length > 0 ? "orders" : "products");
+  const TABS: { id: "orders" | "products" | "add"; label: string; count?: number }[] = [
+    { id: "orders", label: t("tabOrders"), count: grouped.length },
+    { id: "products", label: t("tabProducts"), count: products.length },
+    { id: "add", label: t("tabAdd") },
+  ];
 
   return (
     <div className="flex flex-col gap-6">
       <h1 className="text-3xl font-extrabold tracking-tight text-navy-900">{t("title")}</h1>
+      <div className="grid gap-3 sm:grid-cols-3">
+        <Tile label={t("newOrders")} value={openOrders} tone={openOrders > 0 ? "amber" : "gray"} />
+        <Tile label={ps("products")} value={products.length} tone="blue" />
+        <Tile label={ps("outOfStock")} value={products.filter((item) => !item.in_stock).length} tone={products.some((item) => !item.in_stock) ? "red" : "gray"} />
+      </div>
+      <div role="tablist" className="flex flex-wrap gap-2">
+        {TABS.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            role="tab"
+            aria-selected={active === item.id}
+            onClick={() => setTab(item.id)}
+            className={`min-h-11 rounded-full border px-4 text-sm font-bold transition ${
+              active === item.id ? "border-primary bg-primary text-white" : "border-line bg-card text-navy-900 hover:border-primary"
+            }`}
+          >
+            {item.label}
+            {item.count !== undefined ? <span className={`ml-1.5 text-xs tabular-nums ${active === item.id ? "text-white/80" : "text-muted"}`}>{item.count}</span> : null}
+          </button>
+        ))}
+      </div>
       {note ? (
         <p role="status" className={`rounded-xl px-4 py-3 text-sm font-semibold ${note.ok ? "bg-success-100 text-success-600" : "bg-danger-100 text-danger-600"}`}>
           {note.text}
@@ -184,6 +222,7 @@ export default function ProductsPage() {
         </form>
       ) : null}
 
+      {active === "add" ? (
       <form onSubmit={create} className={`${CARD} grid gap-4 md:grid-cols-6`}>
         <h2 className="text-xl font-bold text-navy-900 md:col-span-6">{t("addTitle")}</h2>
         <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy-900 md:col-span-3">
@@ -228,17 +267,21 @@ export default function ProductsPage() {
           </button>
         </div>
       </form>
+      ) : null}
 
+      {active === "products" ? (
       <section className={CARD}>
         <h2 className="text-xl font-bold text-navy-900">{t("products")}</h2>
         {products.length === 0 ? <p className="mt-3 text-sm text-muted">{t("noProducts")}</p> : null}
         <ul className="mt-4 divide-y divide-line">
           {products.map((item) => (
-            <ProductRow key={item.id} item={item} onSave={save} onDelete={remove} t={t} />
+            <ProductRow key={item.id} item={item} categoryName={categories.find((category) => category.code === item.category)?.name ?? item.category} onSave={save} onDelete={remove} t={t} />
           ))}
         </ul>
       </section>
+      ) : null}
 
+      {active === "orders" ? (
       <section className={CARD}>
         <h2 className="text-xl font-bold text-navy-900">{t("orders")}</h2>
         {grouped.length === 0 ? <p className="mt-3 text-sm text-muted">{t("noOrders")}</p> : null}
@@ -291,29 +334,33 @@ export default function ProductsPage() {
           })}
         </ul>
       </section>
+      ) : null}
     </div>
   );
 }
 
 function ProductRow({
   item,
+  categoryName,
   onSave,
   onDelete,
   t,
 }: {
   item: Product;
+  categoryName: string;
   onSave: (product: Product, patch: Partial<Product> & { price?: string }) => Promise<void>;
   onDelete: (id: string) => Promise<void>;
   t: ReturnType<typeof useTranslations>;
 }) {
   const [price, setPrice] = useState(String(Math.round(Number(item.price ?? 0))));
   const changed = price !== String(Math.round(Number(item.price ?? 0)));
+  const [confirming, setConfirming] = useState(false);
   return (
     <li className="flex flex-wrap items-center gap-3 py-3">
       <div className="min-w-0 flex-1">
         <p className="truncate font-bold text-navy-900">{item.name}</p>
         <p className="text-xs text-muted">
-          {item.category} · {item.unit}
+          {categoryName} · {item.unit}
           {item.min_order ? ` · min ${item.min_order}` : ""}
         </p>
       </div>
@@ -333,9 +380,15 @@ function ProductRow({
         <input type="checkbox" checked={item.in_stock} onChange={(event) => void onSave(item, { in_stock: event.target.checked })} className="size-4 accent-primary" />
         {t("inStock")}
       </label>
-      <button type="button" onClick={() => void onDelete(item.id)} className="min-h-10 rounded-xl px-3 text-sm font-semibold text-muted hover:bg-danger-100 hover:text-danger-600">
-        {t("delete")}
-      </button>
+      {confirming ? (
+        <button type="button" onClick={() => void onDelete(item.id)} onBlur={() => setConfirming(false)} autoFocus className="min-h-10 rounded-xl bg-danger-600 px-3 text-sm font-bold text-white">
+          {t("confirmDelete")}
+        </button>
+      ) : (
+        <button type="button" onClick={() => setConfirming(true)} className="min-h-10 rounded-xl px-3 text-sm font-semibold text-muted hover:bg-danger-100 hover:text-danger-600">
+          {t("delete")}
+        </button>
+      )}
     </li>
   );
 }

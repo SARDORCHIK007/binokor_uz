@@ -31,6 +31,18 @@ export default function PortfolioPage() {
   const [file, setFile] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
+  const [preview, setPreview] = useState<string | null>(null);
+  const [confirming, setConfirming] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!file) {
+      setPreview(null);
+      return;
+    }
+    const url = URL.createObjectURL(file);
+    setPreview(url);
+    return () => URL.revokeObjectURL(url);
+  }, [file]);
 
   const load = useCallback(async () => {
     try {
@@ -132,15 +144,30 @@ export default function PortfolioPage() {
         <button type="submit" disabled={busy || !file} className="min-h-11 rounded-xl bg-primary px-6 text-sm font-bold text-white hover:bg-primary-hover disabled:opacity-50">
           {busy ? t("uploading") : t("upload")}
         </button>
-        {message ? <p className="text-sm font-semibold text-danger-600 md:col-span-3">{message}</p> : null}
+        {preview ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={preview} alt="" className="h-32 w-auto rounded-xl border border-line object-cover md:col-span-3" />
+        ) : null}
+        {message ? <p role="alert" className="text-sm font-semibold text-danger-600 md:col-span-3">{message}</p> : null}
       </form>
+
+      {data.items.length > 0 ? (
+        <p className="flex flex-wrap gap-2 text-sm font-semibold">
+          <span className="rounded-full bg-success-100 px-3 py-1 text-success-600">
+            {t("confirm")}: {data.items.filter((item) => item.confirmed).length}
+          </span>
+          <span className="rounded-full bg-warning-100 px-3 py-1 text-warning-600">
+            {t("pending")}: {data.items.filter((item) => !item.confirmed).length}
+          </span>
+        </p>
+      ) : null}
 
       {data.items.length === 0 ? (
         <EmptyState title={t("title")} text={t("empty")} />
       ) : (
         <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {data.items.map((item) => (
-            <li key={item.id} className="overflow-hidden rounded-2xl border border-line bg-card shadow-sh1">
+            <li key={item.id} className="overflow-hidden rounded-2xl border border-line bg-card shadow-sh1 transition duration-200 hover:-translate-y-0.5 hover:shadow-sh2">
               {item.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={item.image} alt={item.title} className="aspect-[4/3] w-full object-cover" />
@@ -152,9 +179,15 @@ export default function PortfolioPage() {
                     {item.confirmed ? <Icon name="check" className="mr-0.5 inline size-3" /> : null}
                     {item.confirmed ? t("confirm") : t("pending")}
                   </span>
-                  <button type="button" onClick={() => void remove(item.id)} className="text-xs font-semibold text-muted hover:text-danger-600">
-                    {t("delete")}
-                  </button>
+                  {confirming === item.id ? (
+                    <button type="button" autoFocus onBlur={() => setConfirming(null)} onClick={() => void remove(item.id)} className="rounded-lg bg-danger-600 px-2 py-1 text-xs font-bold text-white">
+                      {t("confirmDelete")}
+                    </button>
+                  ) : (
+                    <button type="button" onClick={() => setConfirming(item.id)} className="text-xs font-semibold text-muted hover:text-danger-600">
+                      {t("delete")}
+                    </button>
+                  )}
                 </div>
               </div>
             </li>

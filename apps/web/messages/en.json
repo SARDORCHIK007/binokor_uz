@@ -446,7 +446,8 @@
     "reviewTitle": "Portfolio review",
     "reviewText": "Check that the photo really shows this worker's work, then confirm.",
     "confirm": "Confirm",
-    "queueEmpty": "Nothing is waiting for review."
+    "queueEmpty": "Nothing is waiting for review.",
+    "confirmDelete": "Yes, delete"
   },
   "employerCab": {
     "title": "Employer cabinet",
@@ -920,7 +921,12 @@
     "markDone": "Mark done",
     "markCancel": "Cancel",
     "total": "Estimated total",
-    "comment": "Comment"
+    "comment": "Comment",
+    "tabOrders": "Orders",
+    "tabProducts": "Products",
+    "tabAdd": "New product",
+    "confirmDelete": "Yes, delete",
+    "newOrders": "New orders"
   },
   "passportPage": {
     "title": "Student and worker passport",
@@ -1305,5 +1311,24 @@
     "pass": "Passed",
     "fail": "Not passed",
     "points": "{n} / 100"
+  },
+  "grs": {
+    "loadFailed": "Grades did not load",
+    "reload": "Reload the page.",
+    "loading": "Loading…",
+    "noStudents": "No students",
+    "noStudentsText": "There is nobody to grade in this group.",
+    "saved": "Saved: {score} · {result} · {n} photos",
+    "passed": "passed",
+    "failed": "not passed",
+    "score": "Score (0–100)",
+    "comment": "Comment",
+    "evidence": "Photo evidence",
+    "save": "Save",
+    "rangeError": "The score must be between 0 and 100",
+    "savedOk": "Grade saved",
+    "saveFailed": "Not saved",
+    "photoFailed": "Photo not saved",
+    "photoAttached": "Photo attached"
   }
 }

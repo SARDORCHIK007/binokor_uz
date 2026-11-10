@@ -446,7 +446,8 @@
     "reviewTitle": "Portfolio tasdiqlash",
     "reviewText": "Rasm haqiqatan shu ustaning ishi ekanini tekshirib tasdiqlang.",
     "confirm": "Tasdiqlash",
-    "queueEmpty": "Tasdiq kutayotgan rasm yo'q."
+    "queueEmpty": "Tasdiq kutayotgan rasm yo'q.",
+    "confirmDelete": "Ha, o'chirish"
   },
   "employerCab": {
     "title": "Ish beruvchi kabineti",
@@ -920,7 +921,12 @@
     "markDone": "Bajarildi",
     "markCancel": "Bekor qilish",
     "total": "Taxminiy summa",
-    "comment": "Izoh"
+    "comment": "Izoh",
+    "tabOrders": "Buyurtmalar",
+    "tabProducts": "Mahsulotlar",
+    "tabAdd": "Yangi mahsulot",
+    "confirmDelete": "Ha, o'chirish",
+    "newOrders": "Yangi buyurtma"
   },
   "passportPage": {
     "title": "Talaba va usta pasporti",
@@ -1305,5 +1311,24 @@
     "pass": "O'tdi",
     "fail": "O'tmadi",
     "points": "{n} / 100"
+  },
+  "grs": {
+    "loadFailed": "Baholar ochilmadi",
+    "reload": "Sahifani yangilang.",
+    "loading": "Yuklanmoqda…",
+    "noStudents": "Tinglovchi yo'q",
+    "noStudentsText": "Bu guruhda baho qo'yiladigan tinglovchi yo'q.",
+    "saved": "Saqlangan: {score} · {result} · rasm {n}",
+    "passed": "o'tdi",
+    "failed": "o'tmadi",
+    "score": "Ball (0–100)",
+    "comment": "Izoh",
+    "evidence": "Rasm dalil",
+    "save": "Saqlash",
+    "rangeError": "Ball 0 dan 100 gacha bo'lsin",
+    "savedOk": "Baho saqlandi",
+    "saveFailed": "Saqlanmadi",
+    "photoFailed": "Rasm saqlanmadi",
+    "photoAttached": "Rasm biriktirildi"
   }
 }

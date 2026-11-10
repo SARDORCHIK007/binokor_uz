@@ -1,7 +1,9 @@
 "use client";
 
 import { Button, EmptyState } from "@uychibinokor/ui";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
+import { Badge, initials } from "@/components/cabinet/kit";
 
 type Criterion = { label: string; points: number };
 type Module = { id: string; title: string; rubric: { criteria?: Criterion[] } };
@@ -9,6 +11,7 @@ type Score = { score: number; passed: boolean; comment: string; evidence_count: 
 type Row = { enrollment_id: string; name: string; scores: Record<string, Score> };
 
 export function GradeSheet({ groupId }: { groupId: string }) {
+  const t = useTranslations("grs");
   const [modules, setModules] = useState<Module[]>([]);
   const [rows, setRows] = useState<Row[] | null>(null);
   const [failed, setFailed] = useState(false);
@@ -67,7 +70,7 @@ export function GradeSheet({ groupId }: { groupId: string }) {
     const value = current(enrollmentId, moduleId, criteria);
     const score = Number(value.score);
     if (!Number.isInteger(score) || score < 0 || score > 100) {
-      setNote("Ball 0 dan 100 gacha bo'lsin");
+      setNote(t("rangeError"));
       return;
     }
     const evidenceId: string | null = files[keyOf(enrollmentId, moduleId)] ?? null;
@@ -84,7 +87,7 @@ export function GradeSheet({ groupId }: { groupId: string }) {
         evidence_file_id: evidenceId,
       }),
     });
-    setNote(response.ok ? "Baho saqlandi" : "Saqlanmadi");
+    setNote(response.ok ? t("savedOk") : t("saveFailed"));
   }
 
   async function attach(enrollmentId: string, moduleId: string, file: File) {
@@ -101,39 +104,43 @@ export function GradeSheet({ groupId }: { groupId: string }) {
       body: JSON.stringify({ content_type: file.type, data_base64: btoa(binary) }),
     });
     if (!response.ok) {
-      setNote("Rasm saqlanmadi");
+      setNote(t("photoFailed"));
       return;
     }
     const payload = (await response.json()) as { id: string };
     setFiles((state) => ({ ...state, [keyOf(enrollmentId, moduleId)]: payload.id }));
-    setNote("Rasm biriktirildi");
+    setNote(t("photoAttached"));
   }
 
   if (failed) {
-    return <EmptyState title="Baholar ochilmadi" text="Sahifani yangilang." />;
+    return <EmptyState title={t("loadFailed")} text={t("reload")} />;
   }
   if (!rows) {
-    return <p className="p-4 text-sm text-muted">Yuklanmoqda</p>;
+    return <div className="flex flex-col gap-3" aria-busy="true" aria-label={t("loading")}><div className="h-32 animate-pulse rounded-2xl bg-card" /><div className="h-32 animate-pulse rounded-2xl bg-card" /></div>;
   }
   if (rows.length === 0) {
-    return <EmptyState title="Tinglovchi yo'q" text="Bu guruhda baho qo'yiladigan tinglovchi yo'q." />;
+    return <EmptyState title={t("noStudents")} text={t("noStudentsText")} />;
   }
   return (
-    <div className="flex flex-col gap-4 p-4">
+    <div className="flex flex-col gap-4">
       {rows.map((row) => (
-        <article key={row.enrollment_id} className="rounded-2xl border border-line bg-card shadow-sh1 p-3">
-          <h2 className="font-semibold">{row.name}</h2>
+        <article key={row.enrollment_id} className="rounded-2xl border border-line bg-card p-4 shadow-sh1">
+          <h2 className="flex items-center gap-3 font-bold text-navy-900">
+            <span className="grid size-10 place-items-center rounded-full bg-blue-100 text-sm text-primary" aria-hidden="true">{initials(row.name)}</span>
+            {row.name}
+          </h2>
           <ul className="mt-3 flex flex-col gap-4">
             {modules.map((module) => {
               const criteria = module.rubric.criteria ?? [];
               const value = current(row.enrollment_id, module.id, criteria);
               const saved = row.scores[module.id];
               return (
-                <li key={module.id} className="rounded-xl border border-line p-3">
-                  <p className="font-medium">{module.title}</p>
+                <li key={module.id} className="rounded-xl border border-line bg-canvas p-4">
+                  <p className="font-bold text-navy-900">{module.title}</p>
                   {saved ? (
-                    <p className="text-sm text-muted">
-                      Saqlangan: {saved.score} · {saved.passed ? "o'tdi" : "o'tmadi"} · rasm {saved.evidence_count}
+                    <p className="mt-1 flex flex-wrap items-center gap-2 text-sm text-muted">
+                      <Badge tone={saved.passed ? "green" : "red"}>{saved.passed ? t("passed") : t("failed")}</Badge>
+                      {t("saved", { score: saved.score, result: saved.passed ? t("passed") : t("failed"), n: saved.evidence_count })}
                     </p>
                   ) : null}
                   <div className="mt-2 flex flex-col gap-2">
@@ -141,6 +148,7 @@ export function GradeSheet({ groupId }: { groupId: string }) {
                       <label key={item.label} className="flex min-h-11 items-center gap-2 text-sm">
                         <input
                           type="checkbox"
+                          className="size-4 accent-[var(--primary)]"
                           checked={value.marks[index] ?? false}
                           onChange={() => {
                             const marks = [...value.marks];
@@ -153,7 +161,7 @@ export function GradeSheet({ groupId }: { groupId: string }) {
                     ))}
                   </div>
                   <label className="mt-2 block text-sm">
-                    Ball (0–100)
+                    {t("score")}
                     <input
                       type="number"
                       min={0}
@@ -169,7 +177,7 @@ export function GradeSheet({ groupId }: { groupId: string }) {
                     />
                   </label>
                   <label className="mt-2 block text-sm">
-                    Izoh
+                    {t("comment")}
                     <textarea
                       value={value.comment}
                       onChange={(event) =>
@@ -182,7 +190,7 @@ export function GradeSheet({ groupId }: { groupId: string }) {
                     />
                   </label>
                   <label className="mt-2 block text-sm">
-                    Rasm dalil
+                    {t("evidence")}
                     <input
                       type="file"
                       accept="image/jpeg,image/png,image/webp"
@@ -196,7 +204,7 @@ export function GradeSheet({ groupId }: { groupId: string }) {
                     />
                   </label>
                   <Button type="button" className="mt-3" onClick={() => void save(row.enrollment_id, module.id, criteria)}>
-                    Saqlash
+                    {t("save")}
                   </Button>
                 </li>
               );
@@ -204,7 +212,7 @@ export function GradeSheet({ groupId }: { groupId: string }) {
           </ul>
         </article>
       ))}
-      {note ? <p className="text-sm">{note}</p> : null}
+      {note ? <p role="status" className="sticky bottom-20 rounded-xl bg-navy-900 px-4 py-3 text-sm font-semibold text-white shadow-sh2 lg:bottom-4">{note}</p> : null}
     </div>
   );
 }
