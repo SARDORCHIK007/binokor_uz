@@ -1,9 +1,10 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useState, type ReactNode } from "react";
+import { Suspense, useState, type ReactNode } from "react";
 import { AppSidebar } from "@/components/site/AppSidebar";
 import { AppTopbar } from "@/components/site/AppTopbar";
+import { BackLink } from "@/components/site/BackLink";
 import { MobileTabBar } from "@/components/site/MobileTabBar";
 import { SiteFooter } from "@/components/SiteFooter";
 
@@ -30,6 +31,9 @@ export function SiteLayoutShell({ children, user }: { children: ReactNode; user:
       <div className="flex min-h-screen flex-col pb-16 lg:pb-0 lg:pl-72">
         <AppTopbar onToggleSidebar={() => setSidebarOpen(true)} signedIn={user !== null} />
         <main id="asosiy" tabIndex={-1} className="flex-1 focus:outline-none">
+          <Suspense fallback={null}>
+            <BackLink />
+          </Suspense>
           {children}
         </main>
         <SiteFooter />
