@@ -405,13 +405,42 @@ export default function EmployerPage() {
                       {list.length > 0 ? (
                         <div className="lg:col-span-2">
                           <h3 className="mb-2 text-sm font-bold text-navy-900">{t("candidates")}</h3>
-                          <ul className="flex flex-wrap gap-2">
-                            {list.map((candidate) => (
-                              <li key={candidate.id} className="inline-flex items-center gap-1.5 rounded-full bg-success-100 px-3 py-1 text-xs font-bold text-success-600">
-                                <Icon name={candidate.kind === "brigade" ? "users" : "user"} className="size-3.5" />
-                                {candidate.name}
-                              </li>
-                            ))}
+                          <ul className="grid gap-2 sm:grid-cols-2">
+                            {list.map((candidate) => {
+                              const stage =
+                                candidate.status === "HIRED" ? 3 : candidate.status === "EMPLOYER_APPROVED" ? 2 : candidate.status === "PROPOSED" ? 0 : 1;
+                              const bad = candidate.status === "WORKER_DECLINED" || candidate.status === "EMPLOYER_REJECTED";
+                              const steps = ["sent", "answer", "approved", "hired"] as const;
+                              return (
+                                <li key={candidate.id} className="rounded-xl border border-line bg-surface-100 p-3">
+                                  <div className="flex items-center justify-between gap-2">
+                                    <span className="inline-flex min-w-0 items-center gap-1.5 text-sm font-bold text-navy-900">
+                                      <Icon name={candidate.kind === "brigade" ? "users" : "user"} className="size-3.5 shrink-0" />
+                                      <span className="truncate">{candidate.name}</span>
+                                    </span>
+                                    <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold ${bad ? "bg-danger-100 text-danger-600" : stage === 3 ? "bg-success-100 text-success-600" : "bg-blue-100 text-primary"}`}>
+                                      {t(`cand.${candidate.status}` as "cand.PROPOSED")}
+                                    </span>
+                                  </div>
+                                  <ol className="mt-3 flex items-center" aria-label={t(`cand.${candidate.status}` as "cand.PROPOSED")}>
+                                    {steps.map((step, index) => (
+                                      <li key={step} className="flex flex-1 items-center last:flex-none">
+                                        <span
+                                          title={t(`step.${step}`)}
+                                          className={`size-3 shrink-0 rounded-full ${index <= stage ? (bad && index === stage ? "bg-danger-600" : "bg-primary") : "bg-line-strong"}`}
+                                        />
+                                        {index < steps.length - 1 ? <span className={`h-0.5 flex-1 ${index < stage ? "bg-primary" : "bg-line-strong"}`} /> : null}
+                                      </li>
+                                    ))}
+                                  </ol>
+                                  <div className="mt-1.5 flex justify-between text-[10px] font-semibold text-muted">
+                                    {steps.map((step) => (
+                                      <span key={step}>{t(`step.${step}`)}</span>
+                                    ))}
+                                  </div>
+                                </li>
+                              );
+                            })}
                           </ul>
                         </div>
                       ) : null}

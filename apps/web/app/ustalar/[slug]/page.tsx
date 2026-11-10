@@ -3,6 +3,7 @@ import { EmptyState } from "@uychibinokor/ui";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { Icon, type IconName } from "@/components/brand/Icon";
+import { ShareButtons } from "@/components/ShareButtons";
 import { QrMark } from "@/components/QrMark";
 import { CARD, ErrorPage, PAGE } from "@/components/site/PageHeader";
 import { apiGet } from "@/lib/public";
@@ -102,6 +103,9 @@ export default async function WorkerPage({ params }: { params: Promise<{ slug: s
           <div className="p-5">
             <div className="flex justify-center">
               {verifyPath ? <QrMark value={`https://uychibinokor.uz${verifyPath}`} /> : <p className="py-10 text-sm text-muted">{t("noCertificate")}</p>}
+            </div>
+            <div className="mt-5">
+              <ShareButtons path={`/ustalar/${slug}`} title={worker.name} />
             </div>
             {verifyPath ? (
               <div className="mt-5 flex flex-col gap-2">

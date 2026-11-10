@@ -3,6 +3,8 @@ import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { Icon, type IconName } from "@/components/brand/Icon";
 import { AdminCharts } from "@/components/cabinet/AdminCharts";
+import { CountUp } from "@/components/CountUp";
+import { OnboardingGuide } from "@/components/cabinet/OnboardingGuide";
 import { RoleHome } from "@/components/cabinet/RoleHome";
 import { activeRole, apiAuth, readSession } from "@/lib/session";
 
@@ -62,19 +64,30 @@ export default async function CabinetHome() {
   }
   const role = await activeRole(session.roles);
   if (!["admin", "mentor", "student"].includes(role)) {
-    return <RoleHome role={role} name={session.full_name} />;
+    return (
+      <div className="flex flex-col gap-6">
+        <OnboardingGuide role={role} />
+        <RoleHome role={role} name={session.full_name} />
+      </div>
+    );
   }
   const data = await apiAuth<Payload>(`/api/v1/cabinet/dashboard?role=${role}`);
   if (!data) {
     return <EmptyState title={t("loadError")} text={t("loadErrorText")} />;
   }
-  if (data.admin) {
-    return <AdminHome data={data.admin} />;
-  }
-  if (data.mentor) {
-    return <MentorHome data={data.mentor} />;
-  }
-  return <StudentHome data={data.student ?? { enrollment: null, attendance_pct: null, remaining: [] }} />;
+  const body = data.admin ? (
+    <AdminHome data={data.admin} />
+  ) : data.mentor ? (
+    <MentorHome data={data.mentor} />
+  ) : (
+    <StudentHome data={data.student ?? { enrollment: null, attendance_pct: null, remaining: [] }} />
+  );
+  return (
+    <div className="flex flex-col gap-6">
+      <OnboardingGuide role={role} />
+      {body}
+    </div>
+  );
 }
 
 async function AdminHome({ data }: { data: AdminDash }) {
@@ -96,7 +109,7 @@ async function AdminHome({ data }: { data: AdminDash }) {
               <span className="grid size-10 place-items-center rounded-full bg-white/80" style={{ color: tone.fg }}>
                 <Icon name={tone.icon} className="size-5" />
               </span>
-              <dd className="mt-3 text-4xl font-extrabold tracking-[-0.03em] text-navy-900 tabular-nums">{value}</dd>
+              <dd className="mt-3 text-4xl font-extrabold tracking-[-0.03em] text-navy-900 tabular-nums"><CountUp value={value} locale="en-US" /></dd>
               <dt className="mt-1 text-sm font-medium text-body">{t(key)}</dt>
             </div>
           );

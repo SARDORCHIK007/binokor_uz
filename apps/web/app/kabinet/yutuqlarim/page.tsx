@@ -1,5 +1,5 @@
 import { EmptyState, buttonClass } from "@uychibinokor/ui";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { apiAuth } from "@/lib/session";
 
@@ -21,6 +21,7 @@ type Progress =
       modules: number;
       average: number | null;
       vocab_days: number;
+      path: { title: string; state: "pending" | "passed" | "failed"; score: number | null }[];
     };
 
 const CARD = "rounded-2xl border border-line bg-card p-5 shadow-sh1";
@@ -28,7 +29,8 @@ const CARD = "rounded-2xl border border-line bg-card p-5 shadow-sh1";
 export default async function ProgressPage() {
   const t = await getTranslations("progress");
   const states = await getTranslations("states");
-  const data = await apiAuth<Progress>("/api/v1/me/progress");
+  const locale = await getLocale();
+  const data = await apiAuth<Progress>(`/api/v1/me/progress?lang=${locale}`);
   if (!data) {
     return <EmptyState title={states("errorTitle")} text={states("errorText")} />;
   }
@@ -52,6 +54,17 @@ export default async function ProgressPage() {
     { label: t("hours"), value: String(data.site_hours), note: "", bar: null },
     { label: t("vocab"), value: String(data.vocab_days), note: "", bar: null },
   ];
+  const best = Math.max(0, ...data.path.map((step) => step.score ?? 0));
+  const badges = [
+    { key: "firstLesson", icon: "🧱", on: data.lessons >= 1 },
+    { key: "attendance80", icon: "📅", on: data.lessons >= 3 && (data.attendance ?? 0) >= 80 },
+    { key: "firstModule", icon: "✅", on: data.passed >= 1 },
+    { key: "score90", icon: "⭐", on: best >= 90 },
+    { key: "hours20", icon: "⛑️", on: data.site_hours >= 20 },
+    { key: "vocab7", icon: "📖", on: data.vocab_days >= 7 },
+    { key: "allModules", icon: "🏆", on: data.modules > 0 && data.passed === data.modules },
+  ];
+  const current = data.path.findIndex((step) => step.state !== "passed");
   return (
     <div className="flex flex-col gap-6">
       <div>
@@ -85,6 +98,68 @@ export default async function ProgressPage() {
           </div>
         ))}
       </dl>
+
+      {data.path.length > 0 ? (
+        <section className={CARD} aria-labelledby="path">
+          <h2 id="path" className="text-sm font-bold text-navy-900">{t("path")}</h2>
+          <ol className="mt-5 flex flex-col">
+            {data.path.map((step, index) => {
+              const state = step.state === "passed" ? "done" : index === current ? "now" : "todo";
+              return (
+                <li key={`${step.title}-${index}`} className="relative flex gap-4 pb-6 last:pb-0">
+                  {index < data.path.length - 1 ? (
+                    <span className={`absolute top-8 bottom-0 left-4 w-0.5 -translate-x-1/2 ${state === "done" ? "bg-success-600" : "bg-line-strong"}`} aria-hidden="true" />
+                  ) : null}
+                  <span
+                    className={`relative z-10 grid size-8 shrink-0 place-items-center rounded-full text-sm font-extrabold ${
+                      state === "done" ? "bg-success-600 text-white" : state === "now" ? "bg-primary text-white ring-4 ring-blue-100" : "bg-surface-100 text-muted ring-1 ring-line-strong"
+                    }`}
+                    aria-hidden="true"
+                  >
+                    {state === "done" ? "✓" : index + 1}
+                  </span>
+                  <div className="min-w-0 flex-1 pt-0.5">
+                    <p className={`font-bold ${state === "todo" ? "text-muted" : "text-navy-900"}`}>{step.title}</p>
+                    <p className="text-xs text-muted">
+                      {step.state === "pending"
+                        ? state === "now"
+                          ? t("pathNow")
+                          : t("pathTodo")
+                        : step.state === "passed"
+                          ? t("pathPassed", { score: step.score ?? 0 })
+                          : t("pathFailed", { score: step.score ?? 0 })}
+                    </p>
+                  </div>
+                </li>
+              );
+            })}
+            <li className="flex gap-4 pt-6">
+              <span className={`grid size-8 shrink-0 place-items-center rounded-full ${current === -1 ? "bg-accent text-navy-900" : "bg-surface-100 text-muted ring-1 ring-line-strong"}`} aria-hidden="true">
+                🎓
+              </span>
+              <p className={`pt-1 font-bold ${current === -1 ? "text-navy-900" : "text-muted"}`}>{t("pathCert")}</p>
+            </li>
+          </ol>
+        </section>
+      ) : null}
+
+      <section className={CARD} aria-labelledby="badges">
+        <h2 id="badges" className="text-sm font-bold text-navy-900">
+          {t("badges")} <span className="font-medium text-muted">· {badges.filter((badge) => badge.on).length}/{badges.length}</span>
+        </h2>
+        <ul className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          {badges.map((badge) => (
+            <li
+              key={badge.key}
+              className={`rounded-2xl border p-4 text-center transition ${badge.on ? "border-accent/50 bg-warning-100" : "border-line bg-surface-100 opacity-60 grayscale"}`}
+            >
+              <span className="text-3xl" aria-hidden="true">{badge.icon}</span>
+              <p className="mt-2 text-sm font-bold text-navy-900">{t(`badge.${badge.key}` as "badge.firstLesson")}</p>
+              <p className="mt-0.5 text-xs text-muted">{badge.on ? t("badgeOn") : t(`badgeHow.${badge.key}` as "badgeHow.firstLesson")}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   );
 }

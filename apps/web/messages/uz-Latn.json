@@ -511,7 +511,21 @@
     "reviewSaved": "Baho saqlandi",
     "pendingCompanies": "Tasdiq kutayotgan kompaniyalar",
     "verify": "Tasdiqlash",
-    "privacy": "Ustalarning telefon raqami ko'rsatilmaydi. Aloqa menejer orqali."
+    "privacy": "Ustalarning telefon raqami ko'rsatilmaydi. Aloqa menejer orqali.",
+    "step": {
+      "sent": "Taklif yuborildi",
+      "answer": "Usta javobi",
+      "approved": "Tasdiqlandi",
+      "hired": "Ishga olindi"
+    },
+    "cand": {
+      "PROPOSED": "Javob kutilmoqda",
+      "WORKER_ACCEPTED": "Usta rozi bo'ldi",
+      "WORKER_DECLINED": "Usta rad etdi",
+      "EMPLOYER_APPROVED": "Siz tasdiqladingiz",
+      "EMPLOYER_REJECTED": "Siz rad etdingiz",
+      "HIRED": "Ishga olindi"
+    }
   },
   "vocabPage": {
     "title": "Lug'at (nemis tili)",
@@ -566,7 +580,12 @@
     "themeDark": "Qorong'i rejim",
     "themeLight": "Yorug' rejim",
     "back": "Ortga",
-    "language": "Til"
+    "language": "Til",
+    "paletteTitle": "Tez o'tish va qidiruv",
+    "palettePlaceholder": "Sahifa, usta yoki sertifikat raqamini yozing…",
+    "paletteEmpty": "Hech narsa topilmadi",
+    "paletteSearch": "“{q}” bo'yicha qidirish",
+    "paletteVerify": "{q} sertifikatini tekshirish"
   },
   "applyPage": {
     "crumb": "Onlayn ariza",
@@ -961,7 +980,8 @@
     "photoUpload": "Rasm yuklash",
     "photoChange": "Rasmni almashtirish",
     "photoRemove": "Rasmni o'chirish",
-    "photoFailed": "Rasm yuklanmadi. JPG yoki PNG, 4 MB gacha."
+    "photoFailed": "Rasm yuklanmadi. JPG yoki PNG, 4 MB gacha.",
+    "shareTitle": "UYCHI BINOKOR pasporti"
   },
   "verifyPage": {
     "signers": "Raqamli imzolar",
@@ -1048,7 +1068,20 @@
     "added": "Saralangan ✓",
     "remove": "Olib tashlash",
     "open": "Profilni ochish",
-    "hours": "{n} soat"
+    "hours": "{n} soat",
+    "compareHint": "2–3 ustani belgilab, yonma-yon solishtirishingiz mumkin.",
+    "pick": "Tanlash",
+    "pickedN": "{n} ta usta tanlandi",
+    "clear": "Bekor qilish",
+    "compare": "Solishtirish",
+    "close": "Yopish",
+    "rowTrade": "Kasb",
+    "rowLevel": "Daraja",
+    "rowStatus": "Holati",
+    "rowHours": "Obyektdagi soat",
+    "rowRating": "Reyting",
+    "noRating": "Hali yo'q",
+    "best": "Eng yuqori ko'rsatkich"
   },
   "producerStats": {
     "title": "Savdo statistikasi",
@@ -1077,7 +1110,11 @@
     "certified": "Sertifikatli",
     "workers": "Usta",
     "export": "CSV yuklash",
-    "empty": "Hozircha ma'lumot yo'q"
+    "empty": "Hozircha ma'lumot yo'q",
+    "heatTitle": "Mahallalar kesimida",
+    "heatText": "Rang qanchalik to'q bo'lsa, ko'rsatkich shunchalik yuqori. Jami: {total}",
+    "heatNote": "Bu xarita emas, mahallalarni solishtirish ko'rinishi: joylashuv ma'lumoti bazada yo'q.",
+    "print": "PDF / chop etish"
   },
   "students": {
     "title": "Tinglovchilarim",
@@ -1111,6 +1148,32 @@
       "Ju": "Ju",
       "Sh": "Sh",
       "Ya": "Ya"
+    },
+    "path": "O'qish yo'li",
+    "pathNow": "Hozir shu modul",
+    "pathTodo": "Hali boshlanmagan",
+    "pathPassed": "O'tildi · {score} ball",
+    "pathFailed": "O'tilmadi · {score} ball",
+    "pathCert": "Sertifikat va pasport",
+    "badges": "Yutuq nishonlari",
+    "badgeOn": "Qo'lga kiritildi",
+    "badge": {
+      "firstLesson": "Birinchi dars",
+      "attendance80": "Davomat 80%+",
+      "firstModule": "Birinchi modul",
+      "score90": "A'lo natija",
+      "hours20": "20 soat amaliyot",
+      "vocab7": "7 kunlik lug'at",
+      "allModules": "Barcha modullar"
+    },
+    "badgeHow": {
+      "firstLesson": "Darsga kelib, davomat belgilansa",
+      "attendance80": "Kamida 3 dars va 80% davomat",
+      "firstModule": "Bitta modulni topshiring",
+      "score90": "Modulda 90 ball va undan yuqori",
+      "hours20": "Obyektda 20 soat ishlang",
+      "vocab7": "Lug'atni 7 kun o'rganing",
+      "allModules": "Hamma modullardan o'ting"
     }
   },
   "notifications": {
@@ -1331,5 +1394,55 @@
     "saveFailed": "Saqlanmadi",
     "photoFailed": "Rasm saqlanmadi",
     "photoAttached": "Rasm biriktirildi"
+  },
+  "onb": {
+    "title": "Boshlash yo'riqnomasi",
+    "allDone": "Hammasini ko'rib chiqdingiz",
+    "sub": "{done}/{total} qadam ko'rib chiqildi",
+    "hide": "Yashirish",
+    "step": {
+      "portfolio": "Bajargan ishlaringizni rasm bilan qo'shing",
+      "workerProfile": "Profilingizni to'ldiring va ish holatini belgilang",
+      "offers": "Ish beruvchilardan kelgan takliflarni ko'ring",
+      "passport": "Pasportingizni oching va ulashing",
+      "myApplication": "Arizangiz holatini kuzating",
+      "attendance": "Davomatingizni ko'ring",
+      "grades": "Modullar bo'yicha baholarni ko'ring",
+      "schedule": "Haftalik jadvalni oching",
+      "groups": "Guruhlar va ularning to'lish holatini ko'ring",
+      "applications": "Yangi arizalarni ko'rib chiqing",
+      "certificates": "Sertifikatlar holatini tekshiring",
+      "signing": "Imzo kutayotgan sertifikatlarni ko'ring",
+      "employer": "Birinchi ish so'rovingizni yuboring",
+      "postings": "E'lonlaringizni boshqaring",
+      "shortlist": "Yoqqan ustalarni saralanganlarga qo'shing",
+      "products": "Mahsulotlaringizni kiriting",
+      "producerStats": "Buyurtmalar statistikasini ko'ring"
+    }
+  },
+  "share": {
+    "share": "Ulashish",
+    "copy": "Havolani nusxalash",
+    "copied": "Nusxalandi"
+  },
+  "calc": {
+    "title": "Material hisoblagich",
+    "text": "Maydonga qarab qancha material kerakligini hisoblang.",
+    "area": "Maydon (m²)",
+    "norm": "Sarf me'yori (1 m² ga)",
+    "reserve": "Zaxira (%)",
+    "price": "Birlik narxi (so'm)",
+    "normNote": "Sarf me'yorini mahsulot qadog'idan yoki ishlab chiqaruvchidan oling. Hisoblagich o'zi taxmin qilmaydi.",
+    "result": "Sizga kerak bo'ladi",
+    "breakdown": "{base} + {reserve}% zaxira, butun songa yaxlitlangan",
+    "total": "Taxminiy summa",
+    "empty": "Maydon va sarf me'yorini kiriting."
+  },
+  "access": {
+    "large": "Katta shrift",
+    "listen": "Sahifani o'qib berish",
+    "stop": "O'qishni to'xtatish",
+    "unsupported": "Brauzeringiz ovozli o'qishni qo'llamaydi.",
+    "noVoice": "Qurilmangizda bu til uchun ovoz o'rnatilmagan. Rus yoki ingliz tilini tanlab ko'ring."
   }
 }

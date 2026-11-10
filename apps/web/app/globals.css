@@ -61,3 +61,51 @@ select {
 [data-theme="dark"] .bg-navy-900.text-navy-900 {
   color: var(--text);
 }
+
+/* Soft page entrance and tactile buttons. */
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.page-in {
+  animation: page-in 0.32s ease-out both;
+}
+
+button:not(:disabled),
+[role="button"] {
+  transition-property: transform, background-color, border-color, color, box-shadow, opacity;
+  transition-duration: 0.15s;
+}
+
+button:not(:disabled):active {
+  transform: scale(0.98);
+}
+
+@media print {
+  aside,
+  header,
+  footer,
+  nav {
+    display: none !important;
+  }
+
+  .lg\:pl-72 {
+    padding-left: 0 !important;
+  }
+
+  body {
+    background: #fff !important;
+  }
+}
+
+/* Larger text mode: everything is rem-based, so one root size scales the whole interface. */
+html[data-font="lg"] {
+  font-size: 118%;
+}

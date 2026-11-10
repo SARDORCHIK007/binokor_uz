@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useState } from "react";
+import { CountUp } from "@/components/CountUp";
 import type { HomePayload } from "@/lib/public";
 import { TradeTile } from "@/components/home/TradeTile";
 
@@ -112,7 +113,7 @@ export function HomeExperience({ home }: { home: HomePayload }) {
               {stats.map((stat) => (
                 <div key={stat.key} className="pt-3 sm:pt-0 lg:px-4 first:pt-0">
                   <dd className="text-3xl font-extrabold text-white tracking-tight tabular-nums sm:text-4xl">
-                    {stat.value > 0 ? stat.value.toLocaleString("ru-RU") : "—"} {stat.suffix}
+                    {stat.value > 0 ? <CountUp value={stat.value} /> : "—"} {stat.suffix}
                   </dd>
                   <dt className="mt-1 text-xs font-medium text-faint uppercase tracking-wider">{stat.label}</dt>
                 </div>

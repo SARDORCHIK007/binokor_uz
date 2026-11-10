@@ -1,3 +1,4 @@
+import { PrintButton } from "@/components/PrintButton";
 import { EmptyState, buttonClass } from "@uychibinokor/ui";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
@@ -14,6 +15,7 @@ type Report = {
 export default async function ReportPage() {
   const t = await getTranslations("adm");
   const c = await getTranslations("cabinet");
+  const m = await getTranslations("mahallas");
   const report = await apiAuth<Report>("/api/v1/reports/summary");
   if (!report) {
     return <EmptyState title={t("loadError")} text="" />;
@@ -31,9 +33,12 @@ export default async function ReportPage() {
         title={t("report.title")}
         text={t("report.text")}
         actions={
-          <Link href="/kabinet/mahallalar" className={buttonClass({ variant: "secondary" })}>
-            {t("report.mahallas")} →
-          </Link>
+          <div className="flex flex-wrap gap-2">
+            <Link href="/kabinet/mahallalar" className={`${buttonClass({ variant: "secondary" })} print:hidden`}>
+              {t("report.mahallas")} →
+            </Link>
+            <PrintButton label={m("print")} />
+          </div>
         }
       />
 

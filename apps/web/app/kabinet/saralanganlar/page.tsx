@@ -1,7 +1,7 @@
 import { EmptyState, buttonClass } from "@uychibinokor/ui";
 import { getLocale, getTranslations } from "next-intl/server";
 import Link from "next/link";
-import { ActionButton } from "@/components/cabinet/ActionButton";
+import { CompareList } from "@/components/cabinet/CompareList";
 import { apiAuth } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
@@ -10,7 +10,6 @@ type Item = { slug: string; name: string; level: string; availability: string; r
 
 export default async function ShortlistPage() {
   const t = await getTranslations("shortlist");
-  const w = await getTranslations("workerProfile");
   const shell = await getTranslations("shell");
   const states = await getTranslations("states");
   const locale = await getLocale();
@@ -35,25 +34,7 @@ export default async function ShortlistPage() {
           }
         />
       ) : (
-        <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {items.map((item) => (
-            <li key={item.slug} className="rounded-2xl border border-line bg-card p-5 shadow-sh1">
-              <p className="text-lg font-bold text-navy-900">{item.name}</p>
-              <p className="text-sm font-semibold text-primary">{item.trade}</p>
-              <p className="mt-2 text-sm text-muted">
-                {w(`levels.${item.level}` as "levels.MASTER")} · {w(`availabilities.${item.availability}` as "availabilities.FREE")} ·{" "}
-                {t("hours", { n: item.hours })}
-                {item.rating !== null ? ` · ★ ${item.rating.toFixed(1)}` : ""}
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <Link href={`/ustalar/${item.slug}`} className={buttonClass({ variant: "secondary" })}>
-                  {t("open")}
-                </Link>
-                <ActionButton url={`/api/v1/employers/shortlist/${item.slug}`} method="DELETE" label={t("remove")} failed={states("errorTitle")} variant="ghost" />
-              </div>
-            </li>
-          ))}
-        </ul>
+        <CompareList items={items} />
       )}
     </div>
   );

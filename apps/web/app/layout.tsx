@@ -29,6 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const locale = await getLocale();
   const theme = (await cookies()).get("ub_theme")?.value === "dark" ? "dark" : "light";
+  const font = (await cookies()).get("ub_font")?.value === "lg" ? "lg" : "md";
   const messages = await getMessages();
   const session = await readSession();
 
@@ -49,7 +50,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   }
 
   return (
-    <html lang={locale} className={inter.variable} data-theme={theme}>
+    <html lang={locale} className={inter.variable} data-theme={theme} data-font={font}>
       <body className="min-h-screen bg-canvas font-sans text-base text-ink antialiased">
         <NextIntlClientProvider messages={messages}>
           <PwaRegister />

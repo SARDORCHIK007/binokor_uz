@@ -440,7 +440,8 @@ async def mentor_students(request: Request) -> JSONResponse:
 
 
 @router.get("/me/progress")
-async def my_progress(request: Request) -> JSONResponse:
+async def my_progress(request: Request, lang: str | None = None) -> JSONResponse:
+    code = _lang(request, lang)
     user_id = _user_id(request)
     if user_id is None:
         return _unauth()
@@ -484,6 +485,19 @@ async def my_progress(request: Request) -> JSONResponse:
             )
         ).mappings().one()
         vocab = (await conn.execute(text("SELECT count(*) FROM vocab_days WHERE user_id = :id"), {"id": user_id})).scalar_one()
+        path = (
+            await conn.execute(
+                text(
+                    """
+                    SELECT coalesce(m.title ->> :code, m.title ->> 'uz-Latn') AS title, a.score, a.passed
+                    FROM modules m
+                    LEFT JOIN assessments a ON a.module_id = m.id AND a.enrollment_id = :eid
+                    WHERE m.course_id = :cid ORDER BY m.ord
+                    """
+                ),
+                {"code": code, "eid": e["id"], "cid": e["course_id"]},
+            )
+        ).mappings().all()
     schedule = e["schedule"] if isinstance(e["schedule"], dict) else {}
     return JSONResponse(
         {
@@ -500,6 +514,14 @@ async def my_progress(request: Request) -> JSONResponse:
             "modules": int(grades["modules"]),
             "average": None if grades["average"] is None else int(grades["average"]),
             "vocab_days": int(vocab),
+            "path": [
+                {
+                    "title": str(item["title"] or ""),
+                    "state": "pending" if item["score"] is None else ("passed" if item["passed"] else "failed"),
+                    "score": item["score"],
+                }
+                for item in path
+            ],
         }
     )
 

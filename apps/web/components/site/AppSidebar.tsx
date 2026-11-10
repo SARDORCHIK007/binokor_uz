@@ -10,7 +10,7 @@ import type { ShellUser } from "@/components/site/SiteLayoutShell";
 
 type NavItem = { href: string; label: string; icon: IconName; badge?: string };
 
-const PORTAL_LINKS: NavItem[] = [
+export const PORTAL_LINKS: NavItem[] = [
   { href: "/", label: "home", icon: "grid" },
   { href: "/kasblar", label: "trades", icon: "briefcase" },
   { href: "/ariza", label: "apply", icon: "doc" },
@@ -54,7 +54,7 @@ const CABINET_ICONS: [string, IconName][] = [
   ["elonlar", "doc"],
 ];
 
-function cabinetIcon(href: string): IconName {
+export function cabinetIcon(href: string): IconName {
   return CABINET_ICONS.find(([key]) => href.includes(key))?.[1] ?? "grid";
 }
 

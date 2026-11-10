@@ -82,6 +82,8 @@ async def _flow() -> None:
         # progress, mentor, producer, reports
         progress = (await student.get("/api/v1/me/progress")).json()
         assert progress["enrolled"] is True and "schedule" in progress
+        assert progress["modules"] == len(progress["path"])
+        assert all(step["state"] in {"pending", "passed", "failed"} for step in progress["path"])
         assert isinstance((await mentor.get("/api/v1/mentor/students")).json(), list)
         schedule = (await student.get("/api/v1/me/schedule?days=14")).json()
         assert schedule["groups"] and all(x["weekday"] in {"Du", "Se", "Ch", "Pa", "Ju", "Sh", "Ya"} for x in schedule["lessons"])

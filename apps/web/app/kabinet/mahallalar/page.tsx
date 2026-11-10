@@ -1,5 +1,7 @@
 import { EmptyState, buttonClass } from "@uychibinokor/ui";
 import { getLocale, getTranslations } from "next-intl/server";
+import { MahallaHeat } from "@/components/cabinet/MahallaHeat";
+import { PrintButton } from "@/components/PrintButton";
 import { apiAuth } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
@@ -22,13 +24,18 @@ export default async function MahallasPage() {
           <h1 className="text-3xl font-extrabold tracking-tight text-navy-900">{t("title")}</h1>
           <p className="mt-2 max-w-[66ch] text-muted">{t("text")}</p>
         </div>
-        <a href="/api/v1/reports/export.csv" className={buttonClass({ variant: "secondary" })}>
-          ⤓ {t("export")}
-        </a>
+        <div className="flex flex-wrap gap-2">
+          <a href="/api/v1/reports/export.csv" className={`${buttonClass({ variant: "secondary" })} print:hidden`}>
+            ⤓ {t("export")}
+          </a>
+          <PrintButton label={t("print")} />
+        </div>
       </div>
       {active.length === 0 ? (
         <EmptyState title={t("empty")} text="" />
       ) : (
+        <>
+        <MahallaHeat rows={active} />
         <div className="overflow-x-auto rounded-2xl border border-line bg-card shadow-sh1">
           <table className="w-full min-w-[34rem] text-sm">
             <thead>
@@ -53,6 +60,7 @@ export default async function MahallasPage() {
             </tbody>
           </table>
         </div>
+        </>
       )}
     </div>
   );

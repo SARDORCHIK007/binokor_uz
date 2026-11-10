@@ -2,6 +2,7 @@ import { EmptyState } from "@uychibinokor/ui";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { Icon } from "@/components/brand/Icon";
+import { MaterialCalculator } from "@/components/market/MaterialCalculator";
 import { Marketplace, type MarketPage } from "@/components/market/Marketplace";
 import { ErrorPage } from "@/components/site/PageHeader";
 import { apiGet } from "@/lib/public";
@@ -113,6 +114,8 @@ export default async function MaterialsPage() {
           ))}
         </ul>
       </section>
+
+      <MaterialCalculator />
 
       <div className="mt-10">
         <Marketplace initial={data} />

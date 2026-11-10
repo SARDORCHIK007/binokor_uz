@@ -1,6 +1,7 @@
 import { buttonClass, EmptyState } from "@uychibinokor/ui";
 import { getLocale, getTranslations } from "next-intl/server";
 import Link from "next/link";
+import { ShareButtons } from "@/components/ShareButtons";
 import { PassportPhoto } from "@/components/cabinet/PassportPhoto";
 import { apiAuth } from "@/lib/session";
 
@@ -111,6 +112,7 @@ export default async function PassportPage({ searchParams }: { searchParams: Pro
               {t("openPublic")} →
             </Link>
           </div>
+          <ShareButtons path={`/pasport/${data.id}`} title={t("shareTitle")} imageUrl={`/api/v1/me/passport/card.png?lang=${lang}`} />
           <PassportPhoto hasPhoto={data.has_photo} />
           <p className="text-xs text-muted">{t("photoNote")}</p>
         </div>

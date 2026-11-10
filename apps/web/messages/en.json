@@ -511,7 +511,21 @@
     "reviewSaved": "Rating saved",
     "pendingCompanies": "Companies awaiting verification",
     "verify": "Verify",
-    "privacy": "Worker phone numbers are hidden. Contact goes through a manager."
+    "privacy": "Worker phone numbers are hidden. Contact goes through a manager.",
+    "step": {
+      "sent": "Offer sent",
+      "answer": "Worker's answer",
+      "approved": "Approved",
+      "hired": "Hired"
+    },
+    "cand": {
+      "PROPOSED": "Waiting for an answer",
+      "WORKER_ACCEPTED": "Worker accepted",
+      "WORKER_DECLINED": "Worker declined",
+      "EMPLOYER_APPROVED": "You approved",
+      "EMPLOYER_REJECTED": "You rejected",
+      "HIRED": "Hired"
+    }
   },
   "vocabPage": {
     "title": "Vocabulary (German)",
@@ -566,7 +580,12 @@
     "themeDark": "Dark mode",
     "themeLight": "Light mode",
     "back": "Back",
-    "language": "Language"
+    "language": "Language",
+    "paletteTitle": "Quick jump and search",
+    "palettePlaceholder": "Type a page, a worker or a certificate number…",
+    "paletteEmpty": "Nothing found",
+    "paletteSearch": "Search for “{q}”",
+    "paletteVerify": "Verify certificate {q}"
   },
   "applyPage": {
     "crumb": "Apply online",
@@ -961,7 +980,8 @@
     "photoUpload": "Upload photo",
     "photoChange": "Change photo",
     "photoRemove": "Remove photo",
-    "photoFailed": "Upload failed. JPG or PNG, up to 4 MB."
+    "photoFailed": "Upload failed. JPG or PNG, up to 4 MB.",
+    "shareTitle": "UYCHI BINOKOR passport"
   },
   "verifyPage": {
     "signers": "Digital signatures",
@@ -1048,7 +1068,20 @@
     "added": "Shortlisted ✓",
     "remove": "Remove",
     "open": "Open profile",
-    "hours": "{n} h"
+    "hours": "{n} h",
+    "compareHint": "Tick 2–3 workers to compare them side by side.",
+    "pick": "Pick",
+    "pickedN": "{n} workers picked",
+    "clear": "Clear",
+    "compare": "Compare",
+    "close": "Close",
+    "rowTrade": "Trade",
+    "rowLevel": "Level",
+    "rowStatus": "Status",
+    "rowHours": "Site hours",
+    "rowRating": "Rating",
+    "noRating": "None yet",
+    "best": "Best value"
   },
   "producerStats": {
     "title": "Sales statistics",
@@ -1077,7 +1110,11 @@
     "certified": "Certified",
     "workers": "Craftsmen",
     "export": "Download CSV",
-    "empty": "No data yet"
+    "empty": "No data yet",
+    "heatTitle": "By mahalla",
+    "heatText": "The darker the tile, the higher the figure. Total: {total}",
+    "heatNote": "This is a comparison view, not a map: the database holds no location data for mahallas.",
+    "print": "PDF / print"
   },
   "students": {
     "title": "My students",
@@ -1111,6 +1148,32 @@
       "Ju": "Fri",
       "Sh": "Sat",
       "Ya": "Sun"
+    },
+    "path": "Learning path",
+    "pathNow": "Current module",
+    "pathTodo": "Not started yet",
+    "pathPassed": "Passed · {score} points",
+    "pathFailed": "Not passed · {score} points",
+    "pathCert": "Certificate and passport",
+    "badges": "Badges",
+    "badgeOn": "Earned",
+    "badge": {
+      "firstLesson": "First lesson",
+      "attendance80": "80%+ attendance",
+      "firstModule": "First module",
+      "score90": "Top score",
+      "hours20": "20 site hours",
+      "vocab7": "7 vocabulary days",
+      "allModules": "All modules"
+    },
+    "badgeHow": {
+      "firstLesson": "Attend a lesson and get marked",
+      "attendance80": "At least 3 lessons and 80% attendance",
+      "firstModule": "Pass one module",
+      "score90": "Score 90 or more in a module",
+      "hours20": "Work 20 hours on site",
+      "vocab7": "Study vocabulary for 7 days",
+      "allModules": "Pass every module"
     }
   },
   "notifications": {
@@ -1331,5 +1394,55 @@
     "saveFailed": "Not saved",
     "photoFailed": "Photo not saved",
     "photoAttached": "Photo attached"
+  },
+  "onb": {
+    "title": "Getting started",
+    "allDone": "You have seen everything",
+    "sub": "{done} of {total} steps opened",
+    "hide": "Hide",
+    "step": {
+      "portfolio": "Add your finished work with photos",
+      "workerProfile": "Fill in your profile and set your availability",
+      "offers": "See offers from employers",
+      "passport": "Open your passport and share it",
+      "myApplication": "Follow your application status",
+      "attendance": "Check your attendance",
+      "grades": "See your grades by module",
+      "schedule": "Open the weekly schedule",
+      "groups": "See groups and how full they are",
+      "applications": "Review new applications",
+      "certificates": "Check certificate statuses",
+      "signing": "See certificates waiting for signature",
+      "employer": "Send your first request for workers",
+      "postings": "Manage your postings",
+      "shortlist": "Add workers you like to your shortlist",
+      "products": "Add your products",
+      "producerStats": "See order statistics"
+    }
+  },
+  "share": {
+    "share": "Share",
+    "copy": "Copy link",
+    "copied": "Copied"
+  },
+  "calc": {
+    "title": "Material calculator",
+    "text": "Work out how much material your area needs.",
+    "area": "Area (m²)",
+    "norm": "Consumption norm (per m²)",
+    "reserve": "Reserve (%)",
+    "price": "Unit price (UZS)",
+    "normNote": "Take the norm from the packaging or the producer. The calculator assumes nothing by itself.",
+    "result": "You will need",
+    "breakdown": "{base} + {reserve}% reserve, rounded up",
+    "total": "Estimated total",
+    "empty": "Enter the area and the norm."
+  },
+  "access": {
+    "large": "Larger text",
+    "listen": "Read the page aloud",
+    "stop": "Stop reading",
+    "unsupported": "Your browser does not support read-aloud.",
+    "noVoice": "No voice for this language is installed on your device. Try Russian or English."
   }
 }
