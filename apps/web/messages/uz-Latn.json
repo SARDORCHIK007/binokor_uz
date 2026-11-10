@@ -559,7 +559,8 @@
     "search": "Qidiruv",
     "searchPlaceholder": "Usta, material yoki sertifikat raqami (UB-2026-000001)",
     "themeDark": "Qorong'i rejim",
-    "themeLight": "Yorug' rejim"
+    "themeLight": "Yorug' rejim",
+    "back": "Ortga"
   },
   "applyPage": {
     "crumb": "Onlayn ariza",
@@ -643,7 +644,13 @@
     "months": "{count} oy",
     "groups": "{count} guruh",
     "tradesTitle": "{count} ta ustalik kasbi",
-    "tradesText": "Ichki va xorijiy mehnat bozori uchun eng talabgir qurilish kasblari"
+    "tradesText": "Ichki va xorijiy mehnat bozori uchun eng talabgir qurilish kasblari",
+    "workersPick": "Kasbni tanlang",
+    "workersPickText": "Ustalar kasb bo'yicha ko'rsatiladi. Ustaning ismi faqat kasb ichida ko'rinadi.",
+    "workersCount": "{count} usta",
+    "workersIn": "{trade} ustalari",
+    "allTrades": "Barcha kasblar",
+    "nameInTrade": "Shu kasb ichida ism bo'yicha qidirish"
   },
   "tradeAbout": {
     "bricklayer": "Devor va fasad terimi. Ichki va tashqi bozorda barqaror talab.",

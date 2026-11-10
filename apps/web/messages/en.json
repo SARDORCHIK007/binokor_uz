@@ -559,7 +559,8 @@
     "search": "Search",
     "searchPlaceholder": "Worker, material or certificate number (UB-2026-000001)",
     "themeDark": "Dark mode",
-    "themeLight": "Light mode"
+    "themeLight": "Light mode",
+    "back": "Back"
   },
   "applyPage": {
     "crumb": "Apply online",
@@ -643,7 +644,13 @@
     "months": "{count} mo",
     "groups": "{count} groups",
     "tradesTitle": "{count} construction trades",
-    "tradesText": "The most in-demand construction trades at home and abroad"
+    "tradesText": "The most in-demand construction trades at home and abroad",
+    "workersPick": "Choose a trade",
+    "workersPickText": "Craftsmen are listed by trade. A name is shown only inside its trade.",
+    "workersCount": "{count} craftsmen",
+    "workersIn": "{trade} craftsmen",
+    "allTrades": "All trades",
+    "nameInTrade": "Search by name in this trade"
   },
   "tradeAbout": {
     "bricklayer": "Walls and facades. Steady demand at home and abroad.",

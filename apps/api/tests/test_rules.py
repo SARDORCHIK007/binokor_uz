@@ -2,6 +2,8 @@ import asyncio
 import json
 import os
 import uuid
+from collections.abc import Mapping
+from typing import Any
 
 import httpx
 import pytest
@@ -24,7 +26,7 @@ from app.security import issue_access_token
 from app.signing import sign_payload, signature_matches
 from sqlalchemy import text
 from sqlalchemy.exc import DBAPIError
-from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.ext.asyncio import AsyncConnection, create_async_engine
 
 
 def test_matrix_classification() -> None:
@@ -136,6 +138,20 @@ def test_group_capacity_10() -> None:
     asyncio.run(_group_capacity())
 
 
+async def _fill_group(conn: AsyncConnection, found: Mapping[str, Any]) -> None:
+    """Fill the group to its limit inside the open transaction (rolled back by the test)."""
+    for filler in range(max(0, int(found["max_students"]) - int(found["active"]))):
+        filler_id = uuid.uuid4()
+        await conn.execute(
+            text("INSERT INTO users (id, phone, full_name, locale) VALUES (:id, :phone, 'Guruh fill', 'uz-Latn')"),
+            {"id": filler_id, "phone": f"+99890199600{filler}"},
+        )
+        await conn.execute(
+            text("INSERT INTO enrollments (id, group_id, student_user_id, status) VALUES (:id, :g, :u, 'ACTIVE')"),
+            {"id": uuid.uuid4(), "g": found["id"], "u": filler_id},
+        )
+
+
 async def _group_capacity() -> None:
     engine = create_async_engine(_database_url())
     try:
@@ -144,17 +160,15 @@ async def _group_capacity() -> None:
             group = await conn.execute(
                 text(
                     """
-                    SELECT g.id, g.mentor_user_id
-                    FROM groups g
-                    JOIN enrollments e ON e.group_id = g.id AND e.status = 'ACTIVE'
-                    GROUP BY g.id
-                    HAVING count(*) >= 10
-                    LIMIT 1
+                    SELECT g.id, g.mentor_user_id, g.max_students,
+                           (SELECT count(*) FROM enrollments e WHERE e.group_id = g.id AND e.status = 'ACTIVE') AS active
+                    FROM groups g ORDER BY 4 DESC LIMIT 1
                     """
                 )
             )
             found = group.mappings().first()
             assert found is not None
+            await _fill_group(conn, found)
             mentor_id = found["mentor_user_id"]
             user_id = uuid.uuid4()
             await conn.execute(
@@ -179,6 +193,7 @@ async def _group_capacity() -> None:
             await transaction.rollback()
             transaction = await conn.begin()
             try:
+                await _fill_group(conn, found)
                 course = await conn.execute(text("SELECT id FROM courses LIMIT 1"))
                 course_id = course.scalar()
                 extra_group = uuid.uuid4()

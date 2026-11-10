@@ -6,6 +6,7 @@ import structlog
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, Response
 from redis.asyncio import Redis
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
 from app.core.config import get_settings
@@ -54,6 +55,8 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     app.state.minio_endpoint = settings.minio_endpoint
     if settings.app_env == "production" and not settings.demo_mode:
         log.warning("demo_seed_skipped", reason="production without DEMO_MODE")
+    elif not settings.demo_data and await _has_users(engine):
+        log.info("demo_seed_skipped", reason="DEMO_DATA=false and the database already has users")
     else:
         await _seed(engine)
     try:
@@ -61,6 +64,11 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     finally:
         await redis.aclose()
         await engine.dispose()
+
+
+async def _has_users(engine: AsyncEngine) -> bool:
+    async with engine.connect() as conn:
+        return bool((await conn.execute(text("SELECT EXISTS (SELECT 1 FROM users)"))).scalar())
 
 
 async def _seed(engine: AsyncEngine) -> None:

@@ -191,6 +191,33 @@ async def workers(request: Request, trade: str | None = None, q: str | None = No
     )
 
 
+@router.get("/worker-trades")
+async def worker_trades(request: Request) -> JSONResponse:
+    """Trades with the number of craftsmen in each; the catalogue opens by trade, never by name."""
+    engine = _engine(request)
+    async with engine.connect() as conn:
+        result = await conn.execute(
+            text(
+                """
+                SELECT t.code, t.name, t.domestic_months,
+                       (SELECT count(*) FROM worker_profiles wp WHERE wp.primary_trade_id = t.id) AS workers
+                FROM trades t ORDER BY t.code
+                """
+            )
+        )
+    return JSONResponse(
+        [
+            {
+                "code": item["code"],
+                "name": _title(item["name"]),
+                "domestic_months": item["domestic_months"],
+                "workers": int(item["workers"]),
+            }
+            for item in result.mappings()
+        ]
+    )
+
+
 @router.get("/workers/{slug}")
 async def worker(slug: str, request: Request) -> JSONResponse:
     engine = _engine(request)

@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     app_env: str = "local"
     jwt_secret: str = "local-dev-change-me"
     demo_mode: bool = False
+    # False: seed only into an empty database, so a manual clean-up survives a restart.
+    demo_data: bool = True
     evidence_dir: str = "/app/data/evidence"
 
 

@@ -2,10 +2,13 @@
 
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { NotificationBell } from "@/components/site/NotificationBell";
 
 export function AppTopbar({ onToggleSidebar, signedIn }: { onToggleSidebar: () => void; signedIn: boolean }) {
   const t = useTranslations("shell");
+  const path = usePathname();
+  const router = useRouter();
   return (
     <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between gap-3 border-b border-navy-700 bg-navy-900 px-4 shadow-sh2 sm:px-6">
       <button
@@ -16,6 +19,18 @@ export function AppTopbar({ onToggleSidebar, signedIn }: { onToggleSidebar: () =
       >
         <span className="text-lg" aria-hidden="true">☰</span>
       </button>
+
+      {path !== "/" ? (
+        <button
+          type="button"
+          onClick={() => (window.history.length > 1 ? router.back() : router.push("/"))}
+          className="flex h-10 shrink-0 items-center gap-1.5 rounded-xl bg-navy-700 px-3 text-sm font-bold text-white transition hover:bg-primary"
+        >
+          <span aria-hidden="true">←</span>
+          <span className="hidden sm:inline">{t("back")}</span>
+          <span className="sr-only sm:hidden">{t("back")}</span>
+        </button>
+      ) : null}
 
       <form action="/qidiruv" method="GET" role="search" className="max-w-xl flex-1">
         <label className="sr-only" htmlFor="topbar-q">{t("search")}</label>

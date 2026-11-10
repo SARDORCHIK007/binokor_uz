@@ -2,6 +2,7 @@ import { EmptyState } from "@uychibinokor/ui";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { Icon } from "@/components/brand/Icon";
+import { tradeImage } from "@/lib/media";
 import { CARD, ErrorPage, FIELD, PAGE, PageHeader } from "@/components/site/PageHeader";
 import { apiGet } from "@/lib/public";
 
@@ -30,6 +31,8 @@ const DOT: Record<string, string> = {
   INACTIVE: "bg-faint",
 };
 
+type TradeCount = { code: string; name: string; domestic_months: number; workers: number };
+
 export default async function WorkersPage({
   searchParams,
 }: {
@@ -39,15 +42,60 @@ export default async function WorkersPage({
   const l = await getTranslations("lists");
   const w = await getTranslations("worker");
   const query = await searchParams;
-  const params = new URLSearchParams();
-  if (query.trade) {
-    params.set("trade", query.trade);
+  const trades = await apiGet<TradeCount[]>("/api/v1/public/worker-trades");
+  if (!trades) {
+    return (
+      <ErrorPage>
+        <EmptyState title={t("errorTitle")} text={t("errorText")} />
+      </ErrorPage>
+    );
   }
+
+  // 1. No trade chosen: only trades are shown, never names.
+  const chosen = trades.find((trade) => trade.code === query.trade);
+  if (!chosen) {
+    return (
+      <div className={PAGE}>
+        <PageHeader title={l("workersPick")} text={l("workersPickText")} />
+        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {trades.map((trade) => (
+            <li key={trade.code} className="min-w-0">
+              <Link
+                href={`/ustalar?trade=${trade.code}`}
+                className="group flex items-center gap-3 rounded-2xl border border-line bg-card p-3 pr-4 shadow-sh1 transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-sh2"
+              >
+                <span className="relative size-16 shrink-0 overflow-hidden rounded-xl bg-blue-50 ring-1 ring-line">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={tradeImage(trade.code)} alt="" className="size-full object-cover object-top" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate font-bold text-navy-900 group-hover:text-primary">{trade.name}</span>
+                  <span
+                    className={`mt-1 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-bold ${
+                      trade.workers > 0 ? "bg-success-100 text-success-600" : "bg-surface-100 text-muted"
+                    }`}
+                  >
+                    <Icon name="users" className="size-3.5" />
+                    {l("workersCount", { count: trade.workers })}
+                  </span>
+                </span>
+                <span className="grid size-8 shrink-0 place-items-center rounded-full bg-blue-100 text-primary transition group-hover:bg-primary group-hover:text-white">
+                  <Icon name="arrow" className="size-4" />
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
+
+  // 2. Inside a trade: names appear here, with a search limited to this trade.
+  const params = new URLSearchParams({ trade: chosen.code });
   if (query.q) {
     params.set("q", query.q);
   }
-  const suffix = params.size ? `?${params.toString()}` : "";
-  const workers = await apiGet<Worker[]>(`/api/v1/public/workers${suffix}`);
+  const workers = await apiGet<Worker[]>(`/api/v1/public/workers?${params.toString()}`);
   if (!workers) {
     return (
       <ErrorPage>
@@ -55,30 +103,23 @@ export default async function WorkersPage({
       </ErrorPage>
     );
   }
-  if (workers.length === 0) {
-    return (
-      <ErrorPage>
-        <EmptyState title={l("workersEmpty")} text={l("workersEmptyText")} />
-      </ErrorPage>
-    );
-  }
   return (
     <div className={PAGE}>
-      <PageHeader title={l("workers")} />
-      <form className={`${CARD} mb-6 grid gap-3 p-4 sm:grid-cols-[1fr_1fr_auto]`} method="get">
-        <input name="q" defaultValue={query.q ?? ""} placeholder={l("name")} aria-label={l("name")} className={FIELD} />
-        <input
-          name="trade"
-          defaultValue={query.trade ?? ""}
-          placeholder={l("tradeCode")}
-          aria-label={l("tradeCodeLabel")}
-          className={FIELD}
-        />
+      <PageHeader title={l("workersIn", { trade: chosen.name })} />
+      <Link href="/ustalar" className="-mt-4 mb-5 inline-flex items-center gap-1.5 text-sm font-bold text-primary hover:underline">
+        ← {l("allTrades")}
+      </Link>
+      <form className={`${CARD} mb-6 grid gap-3 p-4 sm:grid-cols-[1fr_auto]`} method="get">
+        <input type="hidden" name="trade" value={chosen.code} />
+        <input name="q" defaultValue={query.q ?? ""} placeholder={l("nameInTrade")} aria-label={l("nameInTrade")} className={FIELD} />
         <button type="submit" className="min-h-11 rounded-xl bg-primary px-6 text-sm font-bold text-white hover:bg-primary-hover">
           {l("search")}
         </button>
       </form>
-      <ul className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+      {workers.length === 0 ? (
+        <EmptyState title={l("workersEmpty")} text={l("workersEmptyText")} />
+      ) : (
+        <ul className="grid grid-cols-1 gap-3 lg:grid-cols-2">
         {workers.map((worker, index) => (
           <li key={worker.slug} className="min-w-0">
             <Link
@@ -120,7 +161,8 @@ export default async function WorkersPage({
             </Link>
           </li>
         ))}
-      </ul>
+        </ul>
+      )}
     </div>
   );
 }
