@@ -34,14 +34,14 @@ export function HomeExperience({ home }: { home: HomePayload }) {
   return (
     <div className="bg-surface-100 text-navy-900">
       {/* 1. HERO BLOCK */}
-      <section className="relative overflow-hidden bg-navy-900 text-white">
+      <section className="relative overflow-hidden bg-blue-50 text-navy-900">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/media/hero/site.webp"
           alt=""
-          className="pointer-events-none absolute inset-y-0 right-0 hidden h-full w-[60%] object-cover object-center opacity-40 lg:block"
+          className="pointer-events-none absolute inset-y-0 right-0 hidden h-full w-[60%] object-cover object-center opacity-30 lg:block"
         />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-navy-900 via-navy-900/95 to-navy-900/40" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-blue-50 via-blue-50/95 to-blue-50/30" />
 
         {/* Hero worker portrait — transparent PNG standing on the hero background */}
         <div className="pointer-events-none absolute right-0 bottom-0 hidden h-[94%] w-[44%] max-w-[560px] lg:block xl:right-6">
@@ -50,30 +50,30 @@ export function HomeExperience({ home }: { home: HomePayload }) {
           <img
             src="/media/hero/hero-student.webp"
             alt={t("workerAlt")}
-            className="relative h-full w-full object-contain object-bottom drop-shadow-[0_20px_40px_rgba(0,0,0,0.45)]"
+            className="relative h-full w-full object-contain object-bottom drop-shadow-[0_20px_40px_rgba(7,24,51,0.25)]"
           />
         </div>
 
         <div className="relative mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8 pt-14 pb-12 lg:pt-20 lg:pb-16">
           <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 rounded-full bg-navy-800 px-4 py-1.5 text-xs font-semibold text-accent ring-1 ring-accent/30">
+            <span className="inline-flex items-center gap-2 rounded-full bg-card px-4 py-1.5 text-xs font-semibold text-navy-900 ring-1 ring-line shadow-sh1">
               <span className="size-2 rounded-full bg-accent animate-pulse" />
               {t("badge")}
             </span>
 
             <h1 className="mt-4 text-[38px] leading-[1.08] font-extrabold tracking-[-0.03em] sm:text-[48px] lg:text-[56px]">
               {t("heroA")}{" "}
-              <span className="text-accent">{t("heroAccent")}</span>
+              <span className="text-primary">{t("heroAccent")}</span>
               {/^[!?.]/.test(t("heroB")) ? "" : " "}
               {t("heroB")}
             </h1>
 
-            <p className="mt-5 max-w-xl text-base text-white/85 sm:text-lg">
+            <p className="mt-5 max-w-xl text-base text-body sm:text-lg">
               {t("heroText")}
             </p>
 
             {/* Katta qidiruv qatori */}
-            <form action="/qidiruv" method="GET" className="mt-7 flex max-w-xl flex-col gap-2 rounded-2xl bg-navy-800 p-2 sm:flex-row ring-1 ring-white/15">
+            <form action="/qidiruv" method="GET" className="mt-7 flex max-w-xl flex-col gap-2 rounded-2xl bg-card p-2 shadow-sh2 ring-1 ring-line sm:flex-row">
               <input
                 type="text"
                 name="q"
@@ -81,7 +81,7 @@ export function HomeExperience({ home }: { home: HomePayload }) {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={t("searchPlaceholder")}
                 aria-label={t("search")}
-                className="h-12 flex-1 rounded-xl bg-white px-4 text-sm font-medium text-navy-900 placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary"
+                className="h-12 flex-1 rounded-xl border border-line-strong bg-card px-4 text-sm font-medium text-navy-900 placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary"
               />
               <button
                 type="submit"
@@ -100,7 +100,7 @@ export function HomeExperience({ home }: { home: HomePayload }) {
               </Link>
               <Link
                 href="/loyiha"
-                className="rounded-full border border-white/40 px-6 py-3.5 text-base font-semibold text-white hover:bg-white/10 transition"
+                className="rounded-full border border-line-strong bg-card px-6 py-3.5 text-base font-semibold text-navy-900 hover:border-primary hover:text-primary transition"
               >
                 {t("about")}
               </Link>
@@ -108,11 +108,11 @@ export function HomeExperience({ home }: { home: HomePayload }) {
           </div>
 
           {/* KPI tasmasi - Dizayndagi 5 ta ko'rsatkich */}
-          <div className="mt-14 rounded-2xl bg-navy-800/90 p-5 shadow-2xl ring-1 ring-white/10 backdrop-blur lg:mt-20">
-            <dl className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 divide-y sm:divide-y-0 lg:divide-x divide-white/10">
+          <div className="mt-14 rounded-2xl bg-card p-5 shadow-sh2 ring-1 ring-line lg:mt-20">
+            <dl className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 divide-y sm:divide-y-0 lg:divide-x divide-line">
               {stats.map((stat) => (
                 <div key={stat.key} className="pt-3 sm:pt-0 lg:px-4 first:pt-0">
-                  <dd className="text-3xl font-extrabold text-white tracking-tight tabular-nums sm:text-4xl">
+                  <dd className="text-3xl font-extrabold text-navy-900 tracking-tight tabular-nums sm:text-4xl">
                     {stat.value > 0 ? <CountUp value={stat.value} /> : "—"} {stat.suffix}
                   </dd>
                   <dt className="mt-1 text-xs font-medium text-faint uppercase tracking-wider">{stat.label}</dt>

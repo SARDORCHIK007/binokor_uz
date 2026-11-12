@@ -23,7 +23,7 @@ export function AppTopbar({ onToggleSidebar, onSearch, signedIn }: { onToggleSid
         type="button"
         onClick={onSearch}
         aria-label={t("paletteTitle")}
-        className="flex h-10 w-full max-w-xl flex-1 items-center gap-2 rounded-xl border border-line-strong bg-surface-100 px-3 text-left text-sm text-muted transition hover:border-primary"
+        className="flex h-10 w-full min-w-0 max-w-xl flex-1 items-center gap-2 rounded-xl border border-line-strong bg-surface-100 px-3 text-left text-sm text-muted transition hover:border-primary"
       >
         <span aria-hidden="true">⌕</span>
         <span className="min-w-0 flex-1 truncate">{t("searchPlaceholder")}</span>
@@ -36,13 +36,22 @@ export function AppTopbar({ onToggleSidebar, onSearch, signedIn }: { onToggleSid
 
       {signedIn ? <NotificationBell /> : null}
 
-      <Link
-        href="/ariza"
-        className="flex shrink-0 items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-sm font-bold text-white shadow-md shadow-primary/25 transition hover:bg-primary-hover"
-      >
-        <span aria-hidden="true">+</span>
-        <span className="hidden sm:inline">{t("apply")}</span>
-      </Link>
+      {signedIn ? null : (
+        <div className="flex shrink-0 items-center gap-2">
+          <Link
+            href="/kirish?royxat=1"
+            className="hidden rounded-xl border border-line-strong bg-card px-4 py-2 text-sm font-bold text-navy-900 transition hover:border-primary hover:text-primary xl:block"
+          >
+            {t("register")}
+          </Link>
+          <Link
+            href="/kirish"
+            className="rounded-xl bg-primary px-4 py-2 text-sm font-bold text-white shadow-md shadow-primary/25 transition hover:bg-primary-hover"
+          >
+            {t("login")}
+          </Link>
+        </div>
+      )}
     </header>
   );
 }

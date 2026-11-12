@@ -7,6 +7,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t("title") };
 }
 
-export default function LoginPage() {
-  return <LoginForm />;
+export default async function LoginPage({ searchParams }: { searchParams: Promise<{ royxat?: string }> }) {
+  const query = await searchParams;
+  return <LoginForm register={query.royxat === "1"} />;
 }

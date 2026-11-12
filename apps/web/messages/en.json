@@ -52,7 +52,9 @@
     "agency": "Migration agency",
     "republic": "Republic migration",
     "mahalla": "Mahalla deputy",
-    "foreign": "Foreign employer"
+    "foreign": "Foreign employer",
+    "registerTitle": "Create an account",
+    "registerText": "Enter your phone number and confirm it with the code from Telegram. Your account is created automatically; no password is needed."
   },
   "roles": {
     "admin": "Administrator",
@@ -606,7 +608,8 @@
     "palettePlaceholder": "Type a page, a worker or a certificate number…",
     "paletteEmpty": "Nothing found",
     "paletteSearch": "Search for “{q}”",
-    "paletteVerify": "Verify certificate {q}"
+    "paletteVerify": "Verify certificate {q}",
+    "register": "Sign up"
   },
   "applyPage": {
     "crumb": "Apply online",

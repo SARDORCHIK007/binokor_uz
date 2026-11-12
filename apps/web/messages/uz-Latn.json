@@ -52,7 +52,9 @@
     "agency": "Migratsiya agentligi",
     "republic": "Respublika migratsiya",
     "mahalla": "Mahalla yordamchisi",
-    "foreign": "Xorijiy ish beruvchi"
+    "foreign": "Xorijiy ish beruvchi",
+    "registerTitle": "Ro'yxatdan o'tish",
+    "registerText": "Telefon raqamingizni kiriting va Telegramdan kelgan kod bilan tasdiqlang. Hisobingiz avtomatik yaratiladi, parol kerak emas."
   },
   "roles": {
     "admin": "Administrator",
@@ -606,7 +608,8 @@
     "palettePlaceholder": "Sahifa, usta yoki sertifikat raqamini yozing…",
     "paletteEmpty": "Hech narsa topilmadi",
     "paletteSearch": "“{q}” bo'yicha qidirish",
-    "paletteVerify": "{q} sertifikatini tekshirish"
+    "paletteVerify": "{q} sertifikatini tekshirish",
+    "register": "Ro'yxatdan o'tish"
   },
   "applyPage": {
     "crumb": "Onlayn ariza",

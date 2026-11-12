@@ -18,7 +18,7 @@ const demoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 
 type ErrorBody = { detail?: string; title?: string };
 
-export function LoginForm() {
+export function LoginForm({ register = false }: { register?: boolean }) {
   const t = useTranslations("auth");
   const [phone, setPhone] = useState("+998901000001");
   const [code, setCode] = useState("");
@@ -108,8 +108,8 @@ export function LoginForm() {
   return (
     <div className="mx-auto flex w-full max-w-md flex-col gap-5 px-4 py-10 sm:py-14">
       <div>
-        <h1 className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">{t("title")}</h1>
-        <p className="mt-2 leading-relaxed text-muted">{t("text")}</p>
+        <h1 className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">{register ? t("registerTitle") : t("title")}</h1>
+        <p className="mt-2 leading-relaxed text-muted">{register ? t("registerText") : t("text")}</p>
       </div>
       {demoMode ? (
         <section className="rounded-2xl border border-blue-200 bg-blue-50 p-5">

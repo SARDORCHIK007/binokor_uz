@@ -105,7 +105,3 @@ button:not(:disabled):active {
   }
 }
 
-/* Larger text mode: everything is rem-based, so one root size scales the whole interface. */
-html[data-font="lg"] {
-  font-size: 118%;
-}
