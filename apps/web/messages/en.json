@@ -54,7 +54,24 @@
     "mahalla": "Mahalla deputy",
     "foreign": "Foreign employer",
     "registerTitle": "Create an account",
-    "registerText": "Enter your phone number and confirm it with the code from Telegram. Your account is created automatically; no password is needed."
+    "registerText": "Enter your phone number and confirm it with the code from Telegram. Your account is created automatically; no password is needed.",
+    "groupMain": "Platform users",
+    "d": {
+      "admin": "All sections and invitations",
+      "mentor": "Attendance, grades, groups",
+      "student": "Study, progress, passport",
+      "worker": "Portfolio, offers, profile",
+      "employer": "Requests and candidates",
+      "producer": "Products and orders",
+      "hokimlik": "Reports, mahallas, signing",
+      "director": "Reports and certificate signing",
+      "namdtu": "Certificate signing, profile",
+      "bandlik": "Job seekers and requests",
+      "agency": "Foreign vacancies, candidates",
+      "republic": "Migration oversight (read only)",
+      "mahalla": "Register candidates in the mahalla",
+      "foreign": "Post vacancies"
+    }
   },
   "roles": {
     "admin": "Administrator",

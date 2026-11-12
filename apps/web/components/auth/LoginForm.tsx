@@ -4,16 +4,8 @@ import { Button, TextField } from "@uychibinokor/ui";
 import { useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
 
-const DEMOS = [
-  { phone: "+998901000001", labelKey: "admin" },
-  { phone: "+998901000002", labelKey: "mentor" },
-  { phone: "+998901000003", labelKey: "student" },
-] as const;
-
-const ONE_CLICK = ["admin", "mentor", "student", "worker", "employer", "producer", "hokimlik"] as const;
-const STAFF = ["director", "namdtu", "bandlik", "agency", "republic", "mahalla", "foreign"] as const;
-const CHIP =
-  "rounded-full bg-card px-3.5 py-2 text-sm font-semibold text-navy-900 ring-1 ring-line transition hover:bg-primary hover:text-white hover:ring-primary";
+const MAIN = ["admin", "mentor", "student", "worker", "employer", "producer"] as const;
+const STAFF = ["hokimlik", "director", "namdtu", "bandlik", "agency", "republic", "mahalla", "foreign"] as const;
 const demoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 
 type ErrorBody = { detail?: string; title?: string };
@@ -106,47 +98,46 @@ export function LoginForm({ register = false }: { register?: boolean }) {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-md flex-col gap-5 px-4 py-10 sm:py-14">
+    <div className="mx-auto flex w-full max-w-4xl flex-col gap-5 px-4 py-10 sm:py-14">
       <div>
         <h1 className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">{register ? t("registerTitle") : t("title")}</h1>
         <p className="mt-2 leading-relaxed text-muted">{register ? t("registerText") : t("text")}</p>
       </div>
       {demoMode ? (
-        <section className="rounded-2xl border border-blue-200 bg-blue-50 p-5">
-          <h2 className="text-lg font-bold text-navy-900">{t("demoTitle")}</h2>
+        <section className="rounded-2xl border border-blue-200 bg-blue-50 p-5 sm:p-6" aria-labelledby="demo-title">
+          <h2 id="demo-title" className="text-lg font-bold text-navy-900">{t("demoTitle")}</h2>
           <p className="mt-1 text-sm text-muted">{t("demoText")}</p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {ONE_CLICK.map((role) => (
-              <button key={role} type="button" className={CHIP} onClick={() => void demo(role)}>
-                {t(role)}
-              </button>
-            ))}
-          </div>
-          <h3 className="mt-5 text-sm font-bold text-navy-900">{t("staffTitle")}</h3>
-          <p className="mt-1 text-xs text-muted">{t("staffNote")}</p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {STAFF.map((role) => (
-              <button key={role} type="button" className={CHIP} onClick={() => void demo(role)}>
-                {t(role)}
-              </button>
-            ))}
-          </div>
+          {([["groupMain", MAIN], ["staffTitle", STAFF]] as const).map(([title, roles]) => (
+            <div key={title} className="mt-5">
+              <h3 className="text-sm font-bold text-navy-900">{t(title)}</h3>
+              {title === "staffTitle" ? <p className="mt-1 text-xs text-muted">{t("staffNote")}</p> : null}
+              <ul className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {roles.map((role) => (
+                  <li key={role}>
+                    <button
+                      type="button"
+                      disabled={pending}
+                      onClick={() => void demo(role)}
+                      className="flex w-full items-center gap-3 rounded-xl bg-card p-3 text-left ring-1 ring-line transition hover:ring-2 hover:ring-primary disabled:opacity-60"
+                    >
+                      <span className="grid size-10 shrink-0 place-items-center rounded-full bg-primary text-sm font-extrabold text-white" aria-hidden="true">
+                        {t(role).charAt(0)}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block truncate text-sm font-bold text-navy-900">{t(role)}</span>
+                        <span className="block truncate text-xs text-muted">{t(`d.${role}`)}</span>
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </section>
       ) : null}
+      <div className="flex w-full max-w-md flex-col gap-5">
       <form onSubmit={requestCode} className="flex flex-col gap-4 rounded-2xl border border-line bg-card p-5 shadow-sh1 sm:p-6">
         <TextField label={t("phone")} name="phone" value={phone} onChange={(event) => setPhone(event.target.value)} autoComplete="tel" />
-        <div className="flex flex-wrap gap-2">
-          {DEMOS.map((item) => (
-            <button
-              key={item.phone}
-              type="button"
-              className={`rounded-full border px-3.5 py-1.5 text-sm font-semibold transition ${phone === item.phone ? "border-primary bg-blue-100 text-primary" : "border-line bg-canvas text-navy-900 hover:border-primary"}`}
-              onClick={() => setPhone(item.phone)}
-            >
-              {t(item.labelKey)}
-            </button>
-          ))}
-        </div>
         <Button type="submit" disabled={pending}>
           {t("send")}
         </Button>
@@ -200,6 +191,7 @@ export function LoginForm({ register = false }: { register?: boolean }) {
           </Button>
         </form>
       ) : null}
+      </div>
     </div>
   );
 }

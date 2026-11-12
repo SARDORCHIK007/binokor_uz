@@ -54,7 +54,24 @@
     "mahalla": "Mahalla yordamchisi",
     "foreign": "Xorijiy ish beruvchi",
     "registerTitle": "Ro'yxatdan o'tish",
-    "registerText": "Telefon raqamingizni kiriting va Telegramdan kelgan kod bilan tasdiqlang. Hisobingiz avtomatik yaratiladi, parol kerak emas."
+    "registerText": "Telefon raqamingizni kiriting va Telegramdan kelgan kod bilan tasdiqlang. Hisobingiz avtomatik yaratiladi, parol kerak emas.",
+    "groupMain": "Platforma foydalanuvchilari",
+    "d": {
+      "admin": "Hamma bo'limlar va taklifnomalar",
+      "mentor": "Davomat, baho, guruhlar",
+      "student": "O'qish, yutuqlar, pasport",
+      "worker": "Portfolio, takliflar, profil",
+      "employer": "So'rovlar va nomzodlar",
+      "producer": "Mahsulotlar va buyurtmalar",
+      "hokimlik": "Hisobotlar, mahallalar, imzo",
+      "director": "Hisobot va sertifikat imzolash",
+      "namdtu": "Sertifikat imzolash, profil",
+      "bandlik": "Ish izlovchilar va so'rovlar",
+      "agency": "Xorijiy vakansiyalar, nomzodlar",
+      "republic": "Migratsiya nazorati (ko'rish)",
+      "mahalla": "Mahalladan nomzod qo'shish",
+      "foreign": "Vakansiya joylash"
+    }
   },
   "roles": {
     "admin": "Administrator",
