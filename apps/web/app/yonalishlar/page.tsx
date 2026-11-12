@@ -26,7 +26,6 @@ export default async function DestinationsPage() {
               <Flag code={item.code} className="size-11" />
               <div className="min-w-0">
                 <h2 className="text-lg font-bold text-navy-900">{t.has(`countries.${item.code}`) ? t(`countries.${item.code}`) : item.name}</h2>
-                <p className="text-xs font-semibold tracking-wider text-muted uppercase">{item.language}</p>
               </div>
             </div>
             <p className="mt-4 text-sm leading-relaxed text-muted">{item.notes}</p>

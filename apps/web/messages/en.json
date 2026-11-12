@@ -874,7 +874,7 @@
     "joinText": "Contact us to learn the terms of cooperation.",
     "contact": "Contact us",
     "countriesTitle": "Partner countries",
-    "countriesText": "Countries the project works with. Placement abroad goes only through the external labour migration agency.",
+    "countriesText": "Workers are sent to these countries to work under agreements with them. Placement abroad goes only through the External Labour Migration Agency.",
     "open": "Open profile",
     "all": "All partners"
   },
@@ -1510,13 +1510,6 @@
     "DE": "Germany",
     "RU": "Russia",
     "IT": "Italy"
-  },
-  "countryLangs": {
-    "KR": "Korean",
-    "JP": "Japanese",
-    "DE": "German",
-    "RU": "Russian",
-    "IT": "Italian"
   },
   "partnerPage": {
     "signedSince": "Partner since {date}",

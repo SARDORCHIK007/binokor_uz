@@ -50,7 +50,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   }
 
   return (
-    <html lang={locale} className={inter.variable} data-theme={theme} data-font={font}>
+    <html lang={locale} className={inter.variable} data-theme={theme} data-font={font} translate="no">
       <body className="min-h-screen bg-canvas font-sans text-base text-ink antialiased">
         <NextIntlClientProvider messages={messages}>
           <PwaRegister />

@@ -21,7 +21,6 @@ const BADGE: Record<Partner["status"], string> = {
 export default async function PartnersPage() {
   const t = await getTranslations("partnersPage");
   const countries = await getTranslations("countries");
-  const countryLangs = await getTranslations("countryLangs");
   const states = await getTranslations("states");
   const home = await apiGet<HomePayload>("/api/v1/public/home");
   if (!home) {
@@ -105,9 +104,6 @@ export default async function PartnersPage() {
               <li key={item.code} className="flex flex-col items-center rounded-2xl border border-line bg-card p-5 text-center shadow-sh1">
                 <Flag code={item.code} className="size-14" />
                 <p className="mt-3 text-base font-extrabold text-navy-900">{countries.has(item.code as "KR") ? countries(item.code as "KR") : item.name}</p>
-                <p className="mt-0.5 text-xs font-semibold text-muted">
-                  {countryLangs.has(item.code as "KR") ? countryLangs(item.code as "KR") : item.language}
-                </p>
               </li>
             ))}
           </ul>

@@ -874,7 +874,7 @@
     "joinText": "Tashkilotingiz uchun hamkorlik shartlarini bilish uchun biz bilan bog'laning.",
     "contact": "Bog'lanish",
     "countriesTitle": "Hamkor davlatlar",
-    "countriesText": "Loyiha hamkorlik qiladigan davlatlar. Xorijga yuborish faqat tashqi mehnat migratsiyasi agentligi orqali amalga oshiriladi.",
+    "countriesText": "Shu davlatlar bilan kelishilgan holda ustalar ishga yuboriladi. Xorijga yuborish faqat Tashqi mehnat migratsiyasi agentligi orqali amalga oshiriladi.",
     "open": "Profilni ochish",
     "all": "Barcha hamkorlar"
   },
@@ -1510,13 +1510,6 @@
     "DE": "Germaniya",
     "RU": "Rossiya",
     "IT": "Italiya"
-  },
-  "countryLangs": {
-    "KR": "Koreys tili",
-    "JP": "Yapon tili",
-    "DE": "Nemis tili",
-    "RU": "Rus tili",
-    "IT": "Italyan tili"
   },
   "partnerPage": {
     "signedSince": "{date} dan hamkor",
