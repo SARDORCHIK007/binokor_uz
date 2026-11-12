@@ -115,8 +115,8 @@ export default async function PartnersPage() {
           <h2 className="text-lg font-bold text-navy-900">{t("join")}</h2>
           <p className="mt-1 text-sm text-muted">{t("joinText")}</p>
         </div>
-        <Link href="/aloqa" className="inline-flex min-h-11 items-center rounded-xl bg-primary px-6 text-sm font-bold text-white hover:bg-primary-hover">
-          {t("contact")}
+        <Link href="/hamkorlar/ariza" className="inline-flex min-h-11 items-center rounded-xl bg-primary px-6 text-sm font-bold text-white hover:bg-primary-hover">
+          {t("becomePartner")}
         </Link>
       </section>
     </div>

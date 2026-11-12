@@ -43,7 +43,16 @@
     "demoTitle": "Demo sign-in",
     "demoText": "One click for the presentation.",
     "failed": "The request failed. Try again.",
-    "worker": "Worker"
+    "worker": "Worker",
+    "staffTitle": "Organisation and partner accounts",
+    "staffNote": "In the live system staff of an organisation sign in through an invitation from the administrator: you log in with your phone number and the role is granted automatically.",
+    "director": "Study director",
+    "namdtu": "NamSTU",
+    "bandlik": "Employment office",
+    "agency": "Migration agency",
+    "republic": "Republic migration",
+    "mahalla": "Mahalla deputy",
+    "foreign": "Foreign employer"
   },
   "roles": {
     "admin": "Administrator",
@@ -62,7 +71,12 @@
     "producer": "Ishlab chiqaruvchi",
     "partner_viewer": "Hamkor",
     "vocab_author": "Lug'at muallifi",
-    "content_editor": "Muharrir"
+    "content_editor": "Muharrir",
+    "mahalla_assistant": "Mahalla deputy",
+    "employment_officer": "Employment office officer",
+    "agency_officer": "Migration agency officer",
+    "migration_observer": "Republic migration observer",
+    "district_official": "District administration official"
   },
   "cabinet": {
     "panel": "Dashboard",
@@ -133,7 +147,12 @@
     "progress": "My progress",
     "notifications": "Notifications",
     "settings": "Settings",
-    "postings": "My postings"
+    "postings": "My postings",
+    "mahallaPanel": "Mahalla panel",
+    "employmentPanel": "Employment panel",
+    "migrationPanel": "Migration panel",
+    "vacancies": "Vacancies",
+    "invitations": "Invitations"
   },
   "session": {
     "title": "Cabinet",
@@ -876,7 +895,8 @@
     "countriesTitle": "Partner countries",
     "countriesText": "Workers are sent to these countries to work under agreements with them. Placement abroad goes only through the External Labour Migration Agency.",
     "open": "Open profile",
-    "all": "All partners"
+    "all": "All partners",
+    "becomePartner": "Become a partner"
   },
   "roleHome": {
     "welcome": "Welcome, {name}",
@@ -1192,7 +1212,10 @@
         "yes": "A craftsman accepted your offer",
         "no": "A craftsman declined your offer"
       },
-      "other": "New message"
+      "other": "New message",
+      "invite_accepted": "An invited person has signed in",
+      "vacancy_new": "A new foreign vacancy was posted",
+      "vacancy_status": "Your vacancy status changed"
     }
   },
   "settings": {
@@ -1509,7 +1532,9 @@
     "JP": "Japan",
     "DE": "Germany",
     "RU": "Russia",
-    "IT": "Italy"
+    "IT": "Italy",
+    "UZ": "Uzbekistan",
+    "GB": "United Kingdom"
   },
   "partnerPage": {
     "signedSince": "Partner since {date}",
@@ -1584,5 +1609,226 @@
       "abroad": "Destinations",
       "materials": "Building materials"
     }
+  },
+  "mp": {
+    "title": "Mahalla panel",
+    "text": "Register young people in your mahalla who want to study and follow their applications.",
+    "mahallas": "Your mahallas",
+    "kpi": {
+      "people": "Registered",
+      "applications": "Applications",
+      "waiting": "Under review",
+      "studying": "Studying",
+      "certified": "Certified",
+      "employed": "Placed in jobs"
+    },
+    "addTitle": "Add a candidate",
+    "addText": "The phone number is kept only so the candidate can sign in; it is never shown in the list.",
+    "f": {
+      "mahalla": "Mahalla",
+      "last": "Last name",
+      "first": "First name",
+      "birth": "Date of birth",
+      "phone": "Phone (+998…)",
+      "trade": "Trade of interest",
+      "track": "Track",
+      "exp": "Experience in the trade (years)",
+      "lang": "Speaks a foreign language (B1 or higher)",
+      "consent": "Written consent to process personal data has been obtained"
+    },
+    "track": {
+      "DOMESTIC": "Home (Uychi and the region)",
+      "FOREIGN": "Abroad"
+    },
+    "save": "Register",
+    "saving": "Saving…",
+    "saved": "The candidate is registered. They can sign in with this phone number and see the application.",
+    "err409": "This person already has an active application.",
+    "errGeneric": "Not saved. Check the fields.",
+    "listTitle": "Applications in the mahalla",
+    "search": "Search by name or trade",
+    "empty": "No applications yet",
+    "emptyText": "Add the first candidate with the form above.",
+    "source": {
+      "MAHALLA": "Via mahalla",
+      "ONLINE": "Online",
+      "IMPORT": "Imported"
+    },
+    "studying": "Studying",
+    "certified": "Certified",
+    "noMahalla": "No mahalla is assigned to you yet. Contact the administrator."
+  },
+  "ep": {
+    "title": "Employment panel",
+    "text": "Match job-seeking workers with requests from local employers.",
+    "kpi": {
+      "free_workers": "Workers looking for work",
+      "open_requests": "Open requests",
+      "open_places": "Open positions",
+      "employers": "Verified employers",
+      "placements": "Placed",
+      "certified": "Certified"
+    },
+    "requestsTitle": "Employer requests",
+    "places": "{n} positions",
+    "candidates": "{n} candidates",
+    "refer": "Propose a candidate",
+    "workersTitle": "Workers looking for work",
+    "hours": "{n} h",
+    "pick": "Which worker should we propose?",
+    "referred": "Proposal sent. The worker will be notified.",
+    "failed": "Not sent. Try again.",
+    "placementsTitle": "Latest placements",
+    "board": "Placement board",
+    "emptyRequests": "No open requests",
+    "emptyWorkers": "No workers looking for work right now",
+    "close": "Close"
+  },
+  "mg": {
+    "title": "Migration panel",
+    "textAgency": "See vacancies from international partners, propose candidates and manage the process.",
+    "textObserver": "An overview of external labour migration. Read only.",
+    "readonly": "Read-only mode",
+    "kpi": {
+      "vacancies": "Vacancies",
+      "open_vacancies": "Open vacancies",
+      "open_places": "Open positions",
+      "foreign_employers": "Foreign employers",
+      "placed_abroad": "Placed abroad",
+      "brigades": "Crews"
+    },
+    "byCountry": "By country",
+    "countryRow": "{v} vacancies · {p} open positions",
+    "pipeline": "Pipeline",
+    "vacanciesTitle": "Vacancies",
+    "empty": "No vacancies yet",
+    "emptyText": "Vacancies posted by foreign employers appear here.",
+    "places": "{n} positions",
+    "candidates": "{n} candidates",
+    "salary": "{from}–{to} {cur}",
+    "salaryFrom": "from {from} {cur}",
+    "salaryNone": "Salary to be agreed",
+    "months": "{n} months",
+    "changeStatus": "Change status",
+    "refer": "Propose a candidate",
+    "pick": "Which worker should we propose?",
+    "referred": "Proposal sent.",
+    "failed": "Failed. Try again.",
+    "noAgency": "An agency organisation must be linked to your account first.",
+    "export": "Download CSV",
+    "close": "Close",
+    "hours": "{n} h",
+    "status": {
+      "NEW": "New",
+      "IN_REVIEW": "In review",
+      "VIA_AGENCY": "Via agency",
+      "SHORTLIST_SENT": "Shortlist sent",
+      "EMPLOYER_APPROVED": "Employer approved",
+      "CONTRACTING": "Contracting",
+      "MATCHED": "Filled",
+      "CLOSED": "Closed",
+      "CANCELLED": "Cancelled"
+    }
+  },
+  "fv": {
+    "title": "Vacancies",
+    "text": "Post jobs for workers from Uychi district. Vacancies go to the migration agency for review.",
+    "verified": "Company verified",
+    "unverified": "Awaiting verification",
+    "newTitle": "New vacancy",
+    "trade": "Trade",
+    "quantity": "Workers needed",
+    "country": "Country",
+    "salaryFrom": "Salary (from)",
+    "salaryTo": "Salary (to)",
+    "currency": "Currency",
+    "start": "Start date",
+    "months": "Contract length (months)",
+    "brigade": "Needs a ready crew",
+    "conditions": "Working conditions (housing, meals, visa…)",
+    "post": "Post the vacancy",
+    "posting": "Posting…",
+    "posted": "The vacancy is posted. The migration agency will review it.",
+    "failed": "Not posted. Check the fields.",
+    "notVerified": "You can post vacancies once the company is verified.",
+    "mine": "My vacancies",
+    "none": "You have not posted any vacancies yet",
+    "close": "Close",
+    "closeFailed": "Not closed."
+  },
+  "inv": {
+    "title": "Invitations",
+    "text": "Invite staff of organisations and teachers. The role is granted automatically when they sign in with their phone number.",
+    "how1": "You enter the phone number and the role",
+    "how2": "The person signs in with that number (Telegram code)",
+    "how3": "The role and organisation link are applied automatically",
+    "newTitle": "Invite one person",
+    "role": "Role",
+    "phone": "Phone (+998…)",
+    "name": "Full name",
+    "partner": "Organisation",
+    "noPartner": "No organisation",
+    "mahalla": "Mahalla",
+    "org": "Company name",
+    "country": "Country",
+    "title2": "Job title (optional)",
+    "send": "Send invitation",
+    "sending": "Sending…",
+    "sent": "Invitation created. The role is granted when the person signs in with this number.",
+    "failed": "Not sent",
+    "bulkTitle": "Add several people at once",
+    "bulkText": "One per line: phone, full name. For example: +998901234567, Karimov Aziz. Handy for a list of teachers (up to 200).",
+    "bulkSend": "Send to all",
+    "bulkResult": "{created} sent, {failed} failed",
+    "listTitle": "Sent invitations",
+    "empty": "No invitations yet",
+    "revoke": "Revoke",
+    "until": "until {date}",
+    "requestsTitle": "Partnership requests",
+    "requestsText": "Requests from the form on the partners page. After approving, send an invitation with the right role.",
+    "noRequests": "No new requests",
+    "approve": "Approve",
+    "reject": "Reject",
+    "status": {
+      "PENDING": "Pending",
+      "ACCEPTED": "Accepted",
+      "REVOKED": "Revoked",
+      "EXPIRED": "Expired",
+      "NEW": "New",
+      "APPROVED": "Approved",
+      "REJECTED": "Rejected"
+    },
+    "roleHelp": {
+      "mentor": "Teaches, marks attendance and grades",
+      "curator": "Group curator",
+      "education_lead": "Study director or NamSTU representative: reports and certificate signing",
+      "cert_officer": "Certificate officer",
+      "placement_manager": "Placement manager",
+      "district_official": "District administration: reports and mahalla figures (read only)",
+      "employment_officer": "District employment office: matches workers with requests",
+      "agency_officer": "External labour migration agency: foreign vacancies and candidates",
+      "migration_observer": "Republic migration oversight: overview (read only)",
+      "mahalla_assistant": "Mahalla deputy: registers candidates in the mahalla",
+      "employer_foreign": "Foreign employer: posts vacancies"
+    }
+  },
+  "pr": {
+    "title": "Become a partner",
+    "lead": "Want your organisation on the platform? Leave a request: an administrator reviews it and sends invitations to your staff.",
+    "step1": "You send a request",
+    "step2": "An administrator checks the organisation",
+    "step3": "Staff sign in with their phone and get their own panel",
+    "org": "Organisation name",
+    "kind": "Type of organisation",
+    "country": "Country",
+    "contact": "Contact person",
+    "phone": "Phone (international format)",
+    "email": "Email (optional)",
+    "message": "What kind of cooperation do you propose?",
+    "send": "Send the request",
+    "sending": "Sending…",
+    "thanks": "Your request was received. An administrator will contact you.",
+    "failed": "Not sent. Check the fields.",
+    "limit": "Too many attempts. Try again later."
   }
 }

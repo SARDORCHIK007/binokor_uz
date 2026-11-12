@@ -22,9 +22,15 @@ export default async function NotificationsPage() {
   function message(kind: string, payload: { accepted?: boolean }): string {
     if (kind === "offer") return t("kind.offer");
     if (kind === "offer_answer") return payload.accepted ? t("kind.offer_answer.yes") : t("kind.offer_answer.no");
+    if (kind === "invite_accepted") return t("kind.invite_accepted");
+    if (kind === "vacancy_new") return t("kind.vacancy_new");
+    if (kind === "vacancy_status") return t("kind.vacancy_status");
     return t("kind.other");
   }
   function target(kind: string): string {
+    if (kind === "invite_accepted") return "/kabinet/taklifnomalar";
+    if (kind === "vacancy_new") return "/kabinet/migratsiya";
+    if (kind === "vacancy_status") return "/kabinet/vakansiyalar";
     return kind === "offer" ? "/kabinet/takliflar" : kind === "offer_answer" ? "/kabinet/ishberuvchi" : "/kabinet";
   }
   return (

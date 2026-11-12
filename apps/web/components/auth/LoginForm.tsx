@@ -11,6 +11,9 @@ const DEMOS = [
 ] as const;
 
 const ONE_CLICK = ["admin", "mentor", "student", "worker", "employer", "producer", "hokimlik"] as const;
+const STAFF = ["director", "namdtu", "bandlik", "agency", "republic", "mahalla", "foreign"] as const;
+const CHIP =
+  "rounded-full bg-card px-3.5 py-2 text-sm font-semibold text-navy-900 ring-1 ring-line transition hover:bg-primary hover:text-white hover:ring-primary";
 const demoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 
 type ErrorBody = { detail?: string; title?: string };
@@ -25,6 +28,27 @@ export function LoginForm() {
   const [devTotp, setDevTotp] = useState("");
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
+
+  async function demo(role: string) {
+    setPending(true);
+    setError("");
+    try {
+      const response = await fetch("/api/v1/auth/demo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ role }),
+      });
+      const body = (await response.json()) as { next?: string } & ErrorBody;
+      if (!response.ok) {
+        setError(body.detail ?? t("failed"));
+        return;
+      }
+      window.location.assign(body.next ?? "/kabinet");
+    } finally {
+      setPending(false);
+    }
+  }
 
   async function requestCode(event: FormEvent) {
     event.preventDefault();
@@ -93,31 +117,16 @@ export function LoginForm() {
           <p className="mt-1 text-sm text-muted">{t("demoText")}</p>
           <div className="mt-4 flex flex-wrap gap-2">
             {ONE_CLICK.map((role) => (
-              <button
-                key={role}
-                type="button"
-                className="rounded-full bg-card px-3.5 py-2 text-sm font-semibold text-navy-900 ring-1 ring-line transition hover:bg-primary hover:text-white hover:ring-primary"
-                onClick={async () => {
-                  setPending(true);
-                  setError("");
-                  try {
-                    const response = await fetch("/api/v1/auth/demo", {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      credentials: "include",
-                      body: JSON.stringify({ role }),
-                    });
-                    const body = (await response.json()) as { next?: string } & ErrorBody;
-                    if (!response.ok) {
-                      setError(body.detail ?? t("failed"));
-                      return;
-                    }
-                    window.location.assign(body.next ?? "/kabinet");
-                  } finally {
-                    setPending(false);
-                  }
-                }}
-              >
+              <button key={role} type="button" className={CHIP} onClick={() => void demo(role)}>
+                {t(role)}
+              </button>
+            ))}
+          </div>
+          <h3 className="mt-5 text-sm font-bold text-navy-900">{t("staffTitle")}</h3>
+          <p className="mt-1 text-xs text-muted">{t("staffNote")}</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {STAFF.map((role) => (
+              <button key={role} type="button" className={CHIP} onClick={() => void demo(role)}>
                 {t(role)}
               </button>
             ))}

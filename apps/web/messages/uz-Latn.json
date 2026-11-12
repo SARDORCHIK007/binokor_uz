@@ -43,7 +43,16 @@
     "demoTitle": "Demo kirish",
     "demoText": "Taqdimot uchun bir bosishda kiring.",
     "failed": "So'rov bajarilmadi. Qayta urinib ko'ring.",
-    "worker": "Usta"
+    "worker": "Usta",
+    "staffTitle": "Tashkilot va hamkor hisoblari",
+    "staffNote": "Haqiqiy tizimda tashkilot xodimlari administrator yuborgan taklifnoma orqali kiradi: telefon raqamingiz bilan kirasiz va rol avtomatik beriladi.",
+    "director": "Loyiha o'quv direktori",
+    "namdtu": "NamDTU",
+    "bandlik": "Bandlik bo'limi",
+    "agency": "Migratsiya agentligi",
+    "republic": "Respublika migratsiya",
+    "mahalla": "Mahalla yordamchisi",
+    "foreign": "Xorijiy ish beruvchi"
   },
   "roles": {
     "admin": "Administrator",
@@ -62,7 +71,12 @@
     "producer": "Ishlab chiqaruvchi",
     "partner_viewer": "Hamkor",
     "vocab_author": "Lug'at muallifi",
-    "content_editor": "Muharrir"
+    "content_editor": "Muharrir",
+    "mahalla_assistant": "Mahalla hokim yordamchisi",
+    "employment_officer": "Bandlik bo'limi xodimi",
+    "agency_officer": "Migratsiya agentligi xodimi",
+    "migration_observer": "Respublika migratsiya nazoratchisi",
+    "district_official": "Hokimlik vakili"
   },
   "cabinet": {
     "panel": "Panel",
@@ -133,7 +147,12 @@
     "progress": "Yutuqlarim",
     "notifications": "Bildirishnomalar",
     "settings": "Sozlamalar",
-    "postings": "E'lonlarim"
+    "postings": "E'lonlarim",
+    "mahallaPanel": "Mahalla paneli",
+    "employmentPanel": "Bandlik paneli",
+    "migrationPanel": "Migratsiya paneli",
+    "vacancies": "Vakansiyalar",
+    "invitations": "Taklifnomalar"
   },
   "session": {
     "title": "Kabinet",
@@ -876,7 +895,8 @@
     "countriesTitle": "Hamkor davlatlar",
     "countriesText": "Shu davlatlar bilan kelishilgan holda ustalar ishga yuboriladi. Xorijga yuborish faqat Tashqi mehnat migratsiyasi agentligi orqali amalga oshiriladi.",
     "open": "Profilni ochish",
-    "all": "Barcha hamkorlar"
+    "all": "Barcha hamkorlar",
+    "becomePartner": "Hamkor bo'lish"
   },
   "roleHome": {
     "welcome": "Xush kelibsiz, {name}",
@@ -1192,7 +1212,10 @@
         "yes": "Usta taklifingizni qabul qildi",
         "no": "Usta taklifingizni rad etdi"
       },
-      "other": "Yangi xabar"
+      "other": "Yangi xabar",
+      "invite_accepted": "Taklif qilingan xodim tizimga kirdi",
+      "vacancy_new": "Yangi xorijiy vakansiya joylandi",
+      "vacancy_status": "Vakansiyangiz holati o'zgardi"
     }
   },
   "settings": {
@@ -1509,7 +1532,9 @@
     "JP": "Yaponiya",
     "DE": "Germaniya",
     "RU": "Rossiya",
-    "IT": "Italiya"
+    "IT": "Italiya",
+    "UZ": "O'zbekiston",
+    "GB": "Buyuk Britaniya"
   },
   "partnerPage": {
     "signedSince": "{date} dan hamkor",
@@ -1584,5 +1609,226 @@
       "abroad": "Yo'nalishlar",
       "materials": "Qurilish materiallari"
     }
+  },
+  "mp": {
+    "title": "Mahalla paneli",
+    "text": "Mahallangizdagi o'qishni istagan yoshlarni ro'yxatga oling va arizalar holatini kuzating.",
+    "mahallas": "Biriktirilgan mahallalar",
+    "kpi": {
+      "people": "Ro'yxatdagilar",
+      "applications": "Arizalar",
+      "waiting": "Ko'rib chiqilmoqda",
+      "studying": "O'qiyotganlar",
+      "certified": "Sertifikatlilar",
+      "employed": "Ishga joylashganlar"
+    },
+    "addTitle": "Yangi nomzod qo'shish",
+    "addText": "Telefon raqami faqat nomzodning o'zi kirishi uchun saqlanadi va ro'yxatda ko'rsatilmaydi.",
+    "f": {
+      "mahalla": "Mahalla",
+      "last": "Familiya",
+      "first": "Ism",
+      "birth": "Tug'ilgan sana",
+      "phone": "Telefon (+998…)",
+      "trade": "Qiziqqan kasb",
+      "track": "Yo'nalish",
+      "exp": "Kasbdagi tajriba (yil)",
+      "lang": "Chet tilini biladi (B1 va yuqori)",
+      "consent": "Shaxsiy ma'lumotlarni qayta ishlashga yozma rozilik olindi"
+    },
+    "track": {
+      "DOMESTIC": "Ichki (Uychi va viloyat)",
+      "FOREIGN": "Xorijga"
+    },
+    "save": "Ro'yxatga olish",
+    "saving": "Saqlanmoqda…",
+    "saved": "Nomzod ro'yxatga olindi. U shu telefon raqami bilan kirib arizasini ko'ra oladi.",
+    "err409": "Bu odam uchun faol ariza allaqachon mavjud.",
+    "errGeneric": "Saqlanmadi. Maydonlarni tekshiring.",
+    "listTitle": "Mahalladagi arizalar",
+    "search": "Ism yoki kasb bo'yicha qidirish",
+    "empty": "Hali ariza yo'q",
+    "emptyText": "Yuqoridagi shakl orqali birinchi nomzodni qo'shing.",
+    "source": {
+      "MAHALLA": "Mahalla orqali",
+      "ONLINE": "Onlayn",
+      "IMPORT": "Ro'yxatdan"
+    },
+    "studying": "O'qiyapti",
+    "certified": "Sertifikatli",
+    "noMahalla": "Sizga hali mahalla biriktirilmagan. Administrator bilan bog'laning."
+  },
+  "ep": {
+    "title": "Bandlik paneli",
+    "text": "Ish izlayotgan ustalarni mahalliy ish beruvchilarning so'rovlari bilan bog'lang.",
+    "kpi": {
+      "free_workers": "Ish izlayotgan ustalar",
+      "open_requests": "Ochiq so'rovlar",
+      "open_places": "Ochiq ish o'rinlari",
+      "employers": "Tasdiqlangan ish beruvchilar",
+      "placements": "Joylashganlar",
+      "certified": "Sertifikatlilar"
+    },
+    "requestsTitle": "Ish beruvchilar so'rovlari",
+    "places": "{n} o'rin",
+    "candidates": "{n} nomzod",
+    "refer": "Nomzod tavsiya qilish",
+    "workersTitle": "Ish izlayotgan ustalar",
+    "hours": "{n} soat",
+    "pick": "Qaysi ustani tavsiya qilamiz?",
+    "referred": "Tavsiya yuborildi. Usta xabar oladi.",
+    "failed": "Yuborilmadi. Qayta urinib ko'ring.",
+    "placementsTitle": "So'nggi joylashtirishlar",
+    "board": "Joylashtirish doskasi",
+    "emptyRequests": "Ochiq so'rov yo'q",
+    "emptyWorkers": "Hozir ish izlayotgan usta yo'q",
+    "close": "Yopish"
+  },
+  "mg": {
+    "title": "Migratsiya paneli",
+    "textAgency": "Xalqaro hamkorlarning vakansiyalarini ko'ring, nomzod tavsiya qiling va jarayon holatini boshqaring.",
+    "textObserver": "Tashqi mehnat migratsiyasi bo'yicha umumiy ko'rinish. Faqat ko'rish uchun.",
+    "readonly": "Faqat ko'rish rejimi",
+    "kpi": {
+      "vacancies": "Vakansiyalar",
+      "open_vacancies": "Ochiq vakansiyalar",
+      "open_places": "Ochiq o'rinlar",
+      "foreign_employers": "Xorijiy ish beruvchilar",
+      "placed_abroad": "Xorijga yuborilganlar",
+      "brigades": "Brigadalar"
+    },
+    "byCountry": "Davlatlar bo'yicha",
+    "countryRow": "{v} vakansiya · {p} ochiq o'rin",
+    "pipeline": "Jarayon bosqichlari",
+    "vacanciesTitle": "Vakansiyalar",
+    "empty": "Hali vakansiya yo'q",
+    "emptyText": "Xorijiy ish beruvchilar joylagan vakansiyalar shu yerda ko'rinadi.",
+    "places": "{n} o'rin",
+    "candidates": "{n} nomzod",
+    "salary": "{from}–{to} {cur}",
+    "salaryFrom": "{from} {cur} dan",
+    "salaryNone": "Maosh kelishiladi",
+    "months": "{n} oy",
+    "changeStatus": "Holatni o'zgartirish",
+    "refer": "Nomzod tavsiya qilish",
+    "pick": "Qaysi ustani tavsiya qilamiz?",
+    "referred": "Tavsiya yuborildi.",
+    "failed": "Bajarilmadi. Qayta urinib ko'ring.",
+    "noAgency": "Avval hisobingizga migratsiya agentligi tashkiloti biriktirilishi kerak.",
+    "export": "CSV yuklab olish",
+    "close": "Yopish",
+    "hours": "{n} soat",
+    "status": {
+      "NEW": "Yangi",
+      "IN_REVIEW": "Ko'rib chiqilmoqda",
+      "VIA_AGENCY": "Agentlik orqali",
+      "SHORTLIST_SENT": "Nomzodlar yuborildi",
+      "EMPLOYER_APPROVED": "Ish beruvchi tasdiqladi",
+      "CONTRACTING": "Shartnoma tuzilmoqda",
+      "MATCHED": "Joylashtirildi",
+      "CLOSED": "Yopilgan",
+      "CANCELLED": "Bekor qilingan"
+    }
+  },
+  "fv": {
+    "title": "Vakansiyalar",
+    "text": "Uychi tumani ustalari uchun ish o'rinlarini joylang. Vakansiyalar migratsiya agentligiga ko'rib chiqish uchun yuboriladi.",
+    "verified": "Kompaniya tasdiqlangan",
+    "unverified": "Tasdiq kutilmoqda",
+    "newTitle": "Yangi vakansiya",
+    "trade": "Kasb",
+    "quantity": "Kerakli xodimlar soni",
+    "country": "Davlat",
+    "salaryFrom": "Maosh (dan)",
+    "salaryTo": "Maosh (gacha)",
+    "currency": "Valyuta",
+    "start": "Boshlanish sanasi",
+    "months": "Shartnoma muddati (oy)",
+    "brigade": "Tayyor brigada kerak",
+    "conditions": "Ish sharoiti (yotoqxona, ovqat, viza…)",
+    "post": "Vakansiyani joylash",
+    "posting": "Yuborilmoqda…",
+    "posted": "Vakansiya joylandi. Migratsiya agentligi ko'rib chiqadi.",
+    "failed": "Joylanmadi. Maydonlarni tekshiring.",
+    "notVerified": "Kompaniya tasdiqlangandan keyin vakansiya joylash mumkin bo'ladi.",
+    "mine": "Mening vakansiyalarim",
+    "none": "Hali vakansiya joylamagansiz",
+    "close": "Yopish",
+    "closeFailed": "Yopilmadi."
+  },
+  "inv": {
+    "title": "Taklifnomalar",
+    "text": "Tashkilot va o'quv xodimlarini tizimga taklif qiling. Ular o'z telefon raqami bilan kirganda rol avtomatik beriladi.",
+    "how1": "Siz telefon raqami va rolni kiritasiz",
+    "how2": "Xodim saytga shu raqam bilan kiradi (Telegram kodi)",
+    "how3": "Rol va tashkilotga biriktirish avtomatik bajariladi",
+    "newTitle": "Bitta xodimni taklif qilish",
+    "role": "Rol",
+    "phone": "Telefon (+998…)",
+    "name": "Familiya, ism, otasining ismi",
+    "partner": "Tashkilot",
+    "noPartner": "Tashkilotsiz",
+    "mahalla": "Mahalla",
+    "org": "Kompaniya nomi",
+    "country": "Davlat",
+    "title2": "Lavozim (ixtiyoriy)",
+    "send": "Taklifnoma yuborish",
+    "sending": "Yuborilmoqda…",
+    "sent": "Taklifnoma yaratildi. Xodim shu telefon raqami bilan kirsa, rol beriladi.",
+    "failed": "Yuborilmadi",
+    "bulkTitle": "Bir nechta xodimni birdan qo'shish",
+    "bulkText": "Har bir qatorga bittadan: telefon, familiya ism. Masalan: +998901234567, Karimov Aziz. Ustozlar ro'yxati uchun qulay (200 tagacha).",
+    "bulkSend": "Hammasiga yuborish",
+    "bulkResult": "{created} ta yuborildi, {failed} ta xato",
+    "listTitle": "Yuborilgan taklifnomalar",
+    "empty": "Hali taklifnoma yo'q",
+    "revoke": "Bekor qilish",
+    "until": "{date} gacha",
+    "requestsTitle": "Hamkorlik so'rovlari",
+    "requestsText": "Hamkorlar sahifasidagi shakl orqali kelgan so'rovlar. Tasdiqlagach, tegishli rol bilan taklifnoma yuboring.",
+    "noRequests": "Yangi so'rov yo'q",
+    "approve": "Tasdiqlash",
+    "reject": "Rad etish",
+    "status": {
+      "PENDING": "Kutilmoqda",
+      "ACCEPTED": "Qabul qilindi",
+      "REVOKED": "Bekor qilingan",
+      "EXPIRED": "Muddati o'tgan",
+      "NEW": "Yangi",
+      "APPROVED": "Tasdiqlangan",
+      "REJECTED": "Rad etilgan"
+    },
+    "roleHelp": {
+      "mentor": "Dars beradi, davomat va baho qo'yadi",
+      "curator": "Guruh kuratori",
+      "education_lead": "Loyiha o'quv direktori yoki NamDTU vakili: hisobot va sertifikat imzolash",
+      "cert_officer": "Sertifikat xodimi",
+      "placement_manager": "Joylashtirish menejeri",
+      "district_official": "Hokimlik: hisobotlar va mahallalar bo'yicha ko'rsatkichlar (faqat ko'rish)",
+      "employment_officer": "Tuman bandlikka ko'maklashish bo'limi: ustalarni so'rovlar bilan bog'laydi",
+      "agency_officer": "Tashqi mehnat migratsiyasi agentligi: xorijiy vakansiyalar va nomzodlar",
+      "migration_observer": "Respublika migratsiya nazorati: umumiy ko'rinish (faqat ko'rish)",
+      "mahalla_assistant": "Mahalla hokim yordamchisi: mahalladagi nomzodlarni ro'yxatga oladi",
+      "employer_foreign": "Xorijiy ish beruvchi: vakansiya joylaydi"
+    }
+  },
+  "pr": {
+    "title": "Hamkor bo'lish",
+    "lead": "Tashkilotingiz platformaga qo'shilmoqchimi? So'rov qoldiring: administrator tekshirib, xodimlaringizga kirish uchun taklifnoma yuboradi.",
+    "step1": "So'rov yuboriladi",
+    "step2": "Administrator tashkilotni tekshiradi",
+    "step3": "Xodimlar telefon raqami bilan kiradi va panelga ega bo'ladi",
+    "org": "Tashkilot nomi",
+    "kind": "Tashkilot turi",
+    "country": "Davlat",
+    "contact": "Mas'ul shaxs (familiya, ism)",
+    "phone": "Telefon (xalqaro format)",
+    "email": "Elektron pochta (ixtiyoriy)",
+    "message": "Qanday hamkorlik taklif qilasiz?",
+    "send": "So'rov yuborish",
+    "sending": "Yuborilmoqda…",
+    "thanks": "So'rovingiz qabul qilindi. Administrator siz bilan bog'lanadi.",
+    "failed": "Yuborilmadi. Maydonlarni tekshiring.",
+    "limit": "Juda ko'p urinish. Keyinroq qayta urinib ko'ring."
   }
 }

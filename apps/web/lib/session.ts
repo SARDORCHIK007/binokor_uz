@@ -48,6 +48,12 @@ export async function apiAuth<T>(path: string): Promise<T | null> {
 const ROLE_PRIORITY = [
   "admin",
   "education_lead",
+  "district_official",
+  "employment_officer",
+  "agency_officer",
+  "migration_observer",
+  "mahalla_assistant",
+  "employer_foreign",
   "cert_officer",
   "mentor",
   "curator",

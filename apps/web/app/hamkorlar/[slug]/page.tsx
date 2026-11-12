@@ -190,7 +190,7 @@ export default async function PartnerProfilePage({ params }: { params: Promise<{
 
       <section className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-line bg-card p-5 shadow-sh1">
         <Link href="/hamkorlar" className="text-sm font-bold text-primary hover:underline">← {list("all")}</Link>
-        <Link href="/aloqa" className="inline-flex min-h-11 items-center rounded-xl bg-primary px-6 text-sm font-bold text-white hover:bg-primary-hover">
+        <Link href="/hamkorlar/ariza" className="inline-flex min-h-11 items-center rounded-xl bg-primary px-6 text-sm font-bold text-white hover:bg-primary-hover">
           {t("contact")}
         </Link>
       </section>

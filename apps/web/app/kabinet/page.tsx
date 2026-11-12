@@ -6,7 +6,18 @@ import { AdminCharts } from "@/components/cabinet/AdminCharts";
 import { CountUp } from "@/components/CountUp";
 import { OnboardingGuide } from "@/components/cabinet/OnboardingGuide";
 import { RoleHome } from "@/components/cabinet/RoleHome";
+import { redirect } from "next/navigation";
 import { activeRole, apiAuth, readSession } from "@/lib/session";
+
+/** Roles whose home is one dedicated panel. */
+const PANEL_HOME: Record<string, string> = {
+  district_official: "/kabinet/hisobot",
+  mahalla_assistant: "/kabinet/mahalla",
+  employment_officer: "/kabinet/bandlik",
+  agency_officer: "/kabinet/migratsiya",
+  migration_observer: "/kabinet/migratsiya",
+  employer_foreign: "/kabinet/vakansiyalar",
+};
 
 export const dynamic = "force-dynamic";
 
@@ -63,6 +74,9 @@ export default async function CabinetHome() {
     );
   }
   const role = await activeRole(session.roles);
+  if (PANEL_HOME[role]) {
+    redirect(PANEL_HOME[role]);
+  }
   if (!["admin", "mentor", "student"].includes(role)) {
     return (
       <div className="flex flex-col gap-6">

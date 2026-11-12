@@ -5,6 +5,7 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/kurslar", key: "courses" },
     { href: "/kabinet/guruhlar", key: "groups" },
     { href: "/kabinet/foydalanuvchilar", key: "users" },
+    { href: "/kabinet/taklifnomalar", key: "invitations" },
     { href: "/kabinet/sertifikatlar", key: "certificates" },
     { href: "/kabinet/imzolash", key: "signing" },
     { href: "/kabinet/lugat", key: "vocab" },
@@ -28,9 +29,26 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
   ],
   education_lead: [
     { href: "/kabinet", key: "panel" },
+    { href: "/kabinet/hisobot", key: "reports" },
     { href: "/kabinet/sertifikatlar", key: "certificates" },
     { href: "/kabinet/imzolash", key: "signing" },
   ],
+  district_official: [
+    { href: "/kabinet/hisobot", key: "reports" },
+    { href: "/kabinet/mahallalar", key: "mahallas" },
+    { href: "/kabinet/imzolash", key: "signing" },
+  ],
+  mahalla_assistant: [{ href: "/kabinet/mahalla", key: "mahallaPanel" }],
+  employment_officer: [
+    { href: "/kabinet/bandlik", key: "employmentPanel" },
+    { href: "/kabinet/ishlar", key: "jobs" },
+  ],
+  agency_officer: [
+    { href: "/kabinet/migratsiya", key: "migrationPanel" },
+    { href: "/kabinet/ishlar", key: "jobs" },
+  ],
+  migration_observer: [{ href: "/kabinet/migratsiya", key: "migrationPanel" }],
+  employer_foreign: [{ href: "/kabinet/vakansiyalar", key: "vacancies" }],
   cert_officer: [
     { href: "/kabinet", key: "panel" },
     { href: "/kabinet/sertifikatlar", key: "certificates" },

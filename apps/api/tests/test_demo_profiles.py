@@ -20,7 +20,7 @@ GETS = {
     "worker": ["/api/v1/me/portfolio", "/api/v1/applications/mine"],
     "employer": ["/api/v1/employers/me", "/api/v1/employers/workers"],
     "producer": ["/api/v1/producers/products", "/api/v1/producers/orders", "/api/v1/producers/categories"],
-    "hokimlik": ["/api/v1/reports/summary", "/api/v1/cabinet/dashboard?role=admin"],
+    "hokimlik": ["/api/v1/reports/summary", "/api/v1/reports/mahallas"],
 }
 
 
