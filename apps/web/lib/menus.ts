@@ -42,6 +42,7 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/hamkor-profil", key: "orgProfile" },
   ],
   district_official: [
+    { href: "/kabinet/hokimlik", key: "district" },
     { href: "/kabinet/hisobot", key: "reports" },
     { href: "/kabinet/monitoring", key: "monitoring" },
     { href: "/kabinet/mahallalar", key: "mahallas" },

@@ -23,7 +23,7 @@ STAFF_DEMOS: dict[str, tuple[str, str, str, str | None]] = {
 DEMO_NEXT = {
     "director": "/kabinet",
     "namdtu": "/kabinet/bitiruvchilar",
-    "hokimlik": "/kabinet/hisobot",
+    "hokimlik": "/kabinet/hokimlik",
     "bandlik": "/kabinet/bandlik",
     "agency": "/kabinet/migratsiya",
     "republic": "/kabinet/migratsiya",

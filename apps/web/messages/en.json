@@ -63,7 +63,7 @@
       "worker": "Portfolio, offers, profile",
       "employer": "Requests and candidates",
       "producer": "Products and orders",
-      "hokimlik": "Reports, mahallas, signing",
+      "hokimlik": "District overview, reports, signing",
       "director": "Monitoring, teacher ratings",
       "namdtu": "Graduate registry, signing",
       "bandlik": "Registry, seekers, placement",
@@ -182,7 +182,8 @@
     "migrationFirms": "Foreign firms",
     "employmentRegistry": "Registry",
     "employmentAdd": "Add people",
-    "graduates": "Graduates"
+    "graduates": "Graduates",
+    "district": "District overview"
   },
   "session": {
     "title": "Cabinet",
@@ -2298,5 +2299,72 @@
     "delete": "Delete",
     "close": "Close",
     "noteSaved": "Saved"
+  },
+  "hk": {
+    "title": "District overview",
+    "text": "One picture of the whole project in the district: who studies, how many are certified and employed, and what needs attention. Read only.",
+    "alertsTitle": "Needs attention",
+    "noAlerts": "Nothing needs attention right now.",
+    "alert": {
+      "awaiting_signature": "{n} certificates wait for the district signature",
+      "at_risk": "{n} learners have attendance below 80%",
+      "uncovered_mahallas": "{n} mahallas have no participant yet",
+      "vacancies_without_candidates": "{n} vacancies have had no candidates for over 7 days",
+      "partners_pending": "{n} partner agreements are not signed yet"
+    },
+    "kpi": {
+      "applicants": "Applicants",
+      "studying": "Studying",
+      "certified": "Certified",
+      "employed": "Placed in jobs",
+      "abroad": "Placed abroad",
+      "vacancies": "Open vacancies",
+      "vacanciesHint": "Local: {local} · foreign: {foreign}",
+      "covered": "Mahallas covered"
+    },
+    "funnelTitle": "The path: application → job",
+    "funnel": {
+      "applicants": "Applied",
+      "accepted": "Accepted",
+      "studying": "Studying",
+      "certified": "Certified",
+      "employed": "Placed in jobs"
+    },
+    "monthlyTitle": "Last 6 months",
+    "monthly": {
+      "applications": "Applications",
+      "certificates": "Certificates"
+    },
+    "mahallaTitle": "Participation by mahalla",
+    "mahallaText": "The {n} most active mahallas. The rest are on the Mahallas page.",
+    "col": {
+      "people": "Participants",
+      "studying": "Studying",
+      "certified": "Certified",
+      "employed": "Employed"
+    },
+    "qualityTitle": "Training quality",
+    "quality": {
+      "attendance": "Average attendance",
+      "score": "Average score",
+      "pass_rate": "Pass rate",
+      "teachers": "Teachers",
+      "groups": "Groups"
+    },
+    "objectsTitle": "Building sites",
+    "noObjects": "No public sites",
+    "partnersTitle": "Partners",
+    "link": {
+      "sign": "Sign certificates",
+      "report": "Report",
+      "mahallas": "Mahallas",
+      "monitoring": "Monitoring"
+    },
+    "objStatus": {
+      "IN_PROGRESS": "In progress",
+      "COMPLETED": "Completed",
+      "PLANNED": "Planned",
+      "PAUSED": "Paused"
+    }
   }
 }

@@ -18,6 +18,7 @@ from app.routers.cabinet import router as cabinet_router
 from app.routers.cabinet_extra import router as cabinet_extra_router
 from app.routers.certificates import router as certificates_router
 from app.routers.curator import router as curator_router
+from app.routers.district import router as district_router
 from app.routers.employers import router as employers_router
 from app.routers.employment import router as employment_router
 from app.routers.exams import router as exams_router
@@ -119,6 +120,7 @@ app.include_router(onboarding_router)
 app.include_router(monitoring_router)
 app.include_router(partner_profile_router)
 app.include_router(panels_router)
+app.include_router(district_router)
 app.include_router(graduates_router)
 app.include_router(employment_router)
 app.include_router(migration_router)

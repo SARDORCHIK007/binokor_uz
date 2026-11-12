@@ -13,7 +13,7 @@ import { activeRole, apiAuth, readSession } from "@/lib/session";
 const PANEL_HOME: Record<string, string> = {
   education_lead: "/kabinet/monitoring",
   university_officer: "/kabinet/bitiruvchilar",
-  district_official: "/kabinet/hisobot",
+  district_official: "/kabinet/hokimlik",
   mahalla_assistant: "/kabinet/mahalla",
   employment_officer: "/kabinet/bandlik",
   agency_officer: "/kabinet/migratsiya",

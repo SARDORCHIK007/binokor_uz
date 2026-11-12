@@ -416,3 +416,24 @@ async def _graduates_flow() -> None:
         for client in (univ, student):
             await client.aclose()
         await engine.dispose()
+
+
+def test_district_dashboard() -> None:
+    if not os.environ.get("DATABASE_URL"):
+        pytest.skip("DATABASE_URL yo'q")
+    asyncio.run(_district_flow())
+
+
+async def _district_flow() -> None:
+    hokimlik = await _login("hokimlik")
+    student = await _login("student")
+    try:
+        assert (await student.get("/api/v1/district/overview")).status_code == 403
+        data = (await hokimlik.get("/api/v1/district/overview")).json()
+        assert [step["key"] for step in data["funnel"]] == ["applicants", "accepted", "studying", "certified", "employed"]
+        assert data["kpi"]["mahallas"] == len(data["mahallas"]) and len(data["monthly"]) == 6
+        assert data["partners"] and set(data["alerts"]) >= {"uncovered_mahallas", "at_risk", "awaiting_signature"}
+        assert "phone" not in str(data).lower()
+    finally:
+        for client in (hokimlik, student):
+            await client.aclose()

@@ -63,7 +63,7 @@
       "worker": "Portfolio, takliflar, profil",
       "employer": "So'rovlar va nomzodlar",
       "producer": "Mahsulotlar va buyurtmalar",
-      "hokimlik": "Hisobotlar, mahallalar, imzo",
+      "hokimlik": "Tuman holati, hisobot, imzo",
       "director": "Monitoring, ustozlar reytingi",
       "namdtu": "Bitiruvchilar reestri, imzo",
       "bandlik": "Reestr, talabgor, joylashtirish",
@@ -182,7 +182,8 @@
     "migrationFirms": "Xorijiy firmalar",
     "employmentRegistry": "Reestr",
     "employmentAdd": "Qo'shish",
-    "graduates": "Bitiruvchilar"
+    "graduates": "Bitiruvchilar",
+    "district": "Tuman holati"
   },
   "session": {
     "title": "Kabinet",
@@ -2298,5 +2299,72 @@
     "delete": "O'chirish",
     "close": "Yopish",
     "noteSaved": "Saqlandi"
+  },
+  "hk": {
+    "title": "Tuman bo'yicha holat",
+    "text": "Loyihaning butun tuman bo'yicha yagona ko'rinishi: kimlar o'qiyapti, qanchasi sertifikat oldi, qanchasi ishga joylashdi va nimaga e'tibor kerak. Faqat ko'rish uchun.",
+    "alertsTitle": "E'tibor talab qiladi",
+    "noAlerts": "Hozircha e'tibor talab qiladigan holat yo'q.",
+    "alert": {
+      "awaiting_signature": "{n} ta sertifikat hokimlik imzosini kutmoqda",
+      "at_risk": "{n} ta tinglovchining davomati 80% dan past",
+      "uncovered_mahallas": "{n} ta mahallada hali bitta ham ishtirokchi yo'q",
+      "vacancies_without_candidates": "{n} ta vakansiya 7 kundan beri nomzodsiz",
+      "partners_pending": "{n} ta hamkor bilan shartnoma hali imzolanmagan"
+    },
+    "kpi": {
+      "applicants": "Arizachilar",
+      "studying": "O'qiyotganlar",
+      "certified": "Sertifikat olganlar",
+      "employed": "Ishga joylashganlar",
+      "abroad": "Xorijga yuborilganlar",
+      "vacancies": "Ochiq vakansiyalar",
+      "vacanciesHint": "Mahalliy: {local} · xorijiy: {foreign}",
+      "covered": "Qamrab olingan mahallalar"
+    },
+    "funnelTitle": "Yo'l: ariza → ish",
+    "funnel": {
+      "applicants": "Ariza bergan",
+      "accepted": "Qabul qilingan",
+      "studying": "O'qiyapti",
+      "certified": "Sertifikatli",
+      "employed": "Ishga joylashgan"
+    },
+    "monthlyTitle": "So'nggi 6 oy",
+    "monthly": {
+      "applications": "Arizalar",
+      "certificates": "Sertifikatlar"
+    },
+    "mahallaTitle": "Mahallalar bo'yicha ishtirok",
+    "mahallaText": "Eng faol {n} ta mahalla. Qolganlari: Mahallalar sahifasida.",
+    "col": {
+      "people": "Ishtirokchi",
+      "studying": "O'qiyapti",
+      "certified": "Sertifikatli",
+      "employed": "Ishda"
+    },
+    "qualityTitle": "O'qish sifati",
+    "quality": {
+      "attendance": "O'rtacha davomat",
+      "score": "O'rtacha ball",
+      "pass_rate": "O'tganlar ulushi",
+      "teachers": "Ustozlar",
+      "groups": "Guruhlar"
+    },
+    "objectsTitle": "Qurilish obyektlari",
+    "noObjects": "Ommaviy obyekt yo'q",
+    "partnersTitle": "Hamkorlar",
+    "link": {
+      "sign": "Sertifikat imzolash",
+      "report": "Hisobot",
+      "mahallas": "Mahallalar",
+      "monitoring": "Monitoring"
+    },
+    "objStatus": {
+      "IN_PROGRESS": "Jarayonda",
+      "COMPLETED": "Tugagan",
+      "PLANNED": "Rejalashtirilgan",
+      "PAUSED": "To'xtatilgan"
+    }
   }
 }
