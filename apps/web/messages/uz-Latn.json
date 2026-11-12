@@ -177,7 +177,9 @@
     "monitoring": "Monitoring",
     "studentRatings": "Tinglovchilar reytingi",
     "myRating": "Mening reytingim",
-    "survey": "Ustozni baholash"
+    "survey": "Ustozni baholash",
+    "migrationPool": "Nomzodlar havzasi",
+    "migrationFirms": "Xorijiy firmalar"
   },
   "session": {
     "title": "Kabinet",
@@ -2079,6 +2081,93 @@
       "POWER_OF_ATTORNEY": "Ishonchnoma",
       "CONTRACT": "Shartnoma namunasi",
       "OTHER": "Boshqa"
+    }
+  },
+  "ag": {
+    "tabOverview": "Umumiy ko'rinish",
+    "tabPool": "Nomzodlar havzasi",
+    "tabFirms": "Xorijiy firmalar",
+    "open": "Ochish",
+    "back": "Vakansiyalarga qaytish",
+    "pool": {
+      "title": "Nomzodlar havzasi",
+      "text": "Uychi Binokor o'quvchilari va ustalari orasidan xorijga yuborish uchun saralang. Telefon raqamlari ko'rsatilmaydi.",
+      "vacancy": "Vakansiyaga moslik",
+      "noVacancy": "Vakansiya tanlanmagan",
+      "trade": "Kasb",
+      "allTrades": "Hamma kasblar",
+      "certified": "Faqat sertifikatlilar",
+      "freeOnly": "Faqat ish izlayotganlar",
+      "language": "Til",
+      "anyLanguage": "Ahamiyati yo'q",
+      "minLevel": "Eng kam daraja",
+      "search": "Ism bo'yicha qidirish",
+      "found": "{n} ta nomzod",
+      "empty": "Mos nomzod topilmadi",
+      "select": "Tanlash",
+      "selected": "Vakansiyaga qo'shildi",
+      "failed": "Qo'shilmadi. Vakansiya ochiqligini tekshiring.",
+      "certifiedBadge": "Sertifikatli",
+      "proposed": "{n} vakansiyada",
+      "hours": "{n} soat",
+      "years": "{n} yil tajriba"
+    },
+    "check": {
+      "level": "Daraja",
+      "experience": "Tajriba",
+      "certificate": "Sertifikat",
+      "language": "Til"
+    },
+    "fit": "Moslik {n}%",
+    "desk": {
+      "title": "Vakansiya stoli",
+      "requirements": "Talablar",
+      "offer": "Nima taklif etiladi",
+      "duties": "Ish mazmuni",
+      "where": "Ish joyi",
+      "map": "Xaritada ko'rish",
+      "firm": "Kompaniya",
+      "firmUnverified": "Firma hali tasdiqlanmagan: taklif, viza va jo'natish bosqichlari yopiq.",
+      "firmVerified": "Kelishilgan firma",
+      "pipeline": "Nomzodlar bosqichlari",
+      "noCandidates": "Hali nomzod tanlanmagan",
+      "add": "Nomzod qo'shish",
+      "addText": "Nomzodlar talablarga moslik bo'yicha tartiblangan.",
+      "stage": "Bosqich",
+      "note": "Izoh",
+      "save": "Saqlash",
+      "saved": "Saqlandi",
+      "remove": "Olib tashlash",
+      "locked": "Bu bosqich uchun firma tasdiqlanishi kerak.",
+      "failed": "Bajarilmadi.",
+      "cannotRemove": "Faqat boshlang'ich bosqichdagi nomzodni olib tashlash mumkin."
+    },
+    "stage": {
+      "SHORTLISTED": "Tanlangan",
+      "DOCS": "Hujjatlar",
+      "LANGUAGE": "Til sinovi",
+      "INTERVIEW": "Suhbat",
+      "OFFER": "Taklif",
+      "VISA": "Viza",
+      "DEPARTED": "Jo'natildi",
+      "REJECTED": "Rad etilgan"
+    },
+    "firms": {
+      "title": "Xorijiy firmalar",
+      "text": "Firmalarning yuridik ma'lumotlari va hujjatlari. Hujjatlarni tekshirib, firmani tasdiqlang: shundan keyin ular bilan jo'natish bosqichlari ochiladi.",
+      "empty": "Hali xorijiy firma yo'q",
+      "verified": "Tasdiqlangan",
+      "unverified": "Tasdiqlanmagan",
+      "verify": "Tasdiqlash",
+      "unverify": "Tasdiqni bekor qilish",
+      "needRegistration": "Tasdiqlash uchun ro'yxatdan o'tganlik guvohnomasi kerak.",
+      "vacancies": "{v} vakansiya · {p} ochiq o'rin",
+      "docs": "Hujjatlar",
+      "noDocs": "Hujjat yuklanmagan",
+      "check": "Tekshirildi deb belgilash",
+      "checked": "Tekshirilgan",
+      "contact": "Mas'ul shaxs",
+      "reg": "Ro'yxat raqami"
     }
   }
 }

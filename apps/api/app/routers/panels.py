@@ -389,8 +389,8 @@ async def refer_worker(body: ReferIn, request: Request) -> JSONResponse:
         if duplicate.first() is not None:
             return JSONResponse({"status": "PROPOSED"})
         await conn.execute(
-            text("INSERT INTO request_candidates (id, request_id, worker_user_id, status) VALUES (:id, :r, :w, 'PROPOSED')"),
-            {"id": new_id(), "r": body.request_id, "w": body.worker_user_id},
+            text("INSERT INTO request_candidates (id, request_id, worker_user_id, status, proposed_by) VALUES (:id, :r, :w, 'PROPOSED', :by)"),
+            {"id": new_id(), "r": body.request_id, "w": body.worker_user_id, "by": user_id},
         )
         await notify(conn, body.worker_user_id, "offer", {"request_id": str(body.request_id)})
     return JSONResponse({"status": "PROPOSED"})

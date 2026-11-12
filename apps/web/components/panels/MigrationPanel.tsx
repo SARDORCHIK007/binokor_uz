@@ -2,10 +2,11 @@
 
 import { buttonClass, EmptyState } from "@uychibinokor/ui";
 import { useLocale, useTranslations } from "next-intl";
+import Link from "next/link";
 import { useState } from "react";
 import { Badge, CARD, Meter, Tile, type Tone } from "@/components/cabinet/kit";
 import { Flag } from "@/components/Flag";
-import { ReferDialog, type FreeWorker } from "@/components/panels/ReferDialog";
+import type { FreeWorker } from "@/components/panels/ReferDialog";
 import { FIELD, send } from "@/lib/clientApi";
 
 export type Vacancy = {
@@ -52,10 +53,10 @@ export function salaryText(
 
 export function MigrationPanel({ initial }: { initial: MigrationData }) {
   const t = useTranslations("mg");
+  const ag = useTranslations("ag");
   const countries = useTranslations("countries");
   const locale = useLocale();
   const [data, setData] = useState(initial);
-  const [referring, setReferring] = useState<string | null>(null);
   const [note, setNote] = useState("");
   const [filter, setFilter] = useState("");
 
@@ -182,9 +183,9 @@ export function MigrationPanel({ initial }: { initial: MigrationData }) {
                         <option key={stage} value={stage}>{t(`status.${stage}`)}</option>
                       ))}
                     </select>
-                    <button type="button" className={buttonClass()} onClick={() => setReferring(item.id)}>
-                      {t("refer")}
-                    </button>
+                    <Link href={`/kabinet/migratsiya/vakansiya/${item.id}`} className={buttonClass()}>
+                      {ag("open")} →
+                    </Link>
                   </div>
                 ) : null}
               </li>
@@ -193,15 +194,6 @@ export function MigrationPanel({ initial }: { initial: MigrationData }) {
         )}
       </section>
 
-      {referring ? (
-        <ReferDialog
-          requestId={referring}
-          workers={data.workers}
-          labels={{ title: t("pick"), ok: t("referred"), failed: t("failed"), close: t("close"), hours: (n) => t("hours", { n }), empty: t("empty") }}
-          onClose={() => setReferring(null)}
-          onDone={() => void reload()}
-        />
-      ) : null}
     </div>
   );
 }

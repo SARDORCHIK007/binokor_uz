@@ -2,6 +2,7 @@ import { EmptyState } from "@uychibinokor/ui";
 import { getLocale, getTranslations } from "next-intl/server";
 import { PageHead } from "@/components/cabinet/kit";
 import { MigrationPanel, type MigrationData } from "@/components/panels/MigrationPanel";
+import { MigrationTabs } from "@/components/panels/MigrationTabs";
 import { apiAuth } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
@@ -17,6 +18,7 @@ export default async function MigrationPage() {
   return (
     <div className="flex flex-col gap-6">
       <PageHead title={t("title")} text={data.can_manage ? t("textAgency") : t("textObserver")} />
+      {data.can_manage ? <MigrationTabs active="overview" /> : null}
       <MigrationPanel initial={data} />
     </div>
   );

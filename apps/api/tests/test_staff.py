@@ -250,3 +250,62 @@ async def _firm_flow() -> None:
             await foreign.delete(f"/api/v1/vacancies/documents/{doc_id}")
         for client in (foreign, agency, student):
             await client.aclose()
+
+
+def test_agency_pool_desk_and_pipeline() -> None:
+    """The agency picks from the pool, a fit check compares candidates with the requirements, and stages move along."""
+    if not os.environ.get("DATABASE_URL"):
+        pytest.skip("DATABASE_URL yo'q")
+    asyncio.run(_pipeline_flow())
+
+
+async def _pipeline_flow() -> None:
+    engine = create_async_engine(os.environ["DATABASE_URL"])
+    foreign = await _login("foreign")
+    agency = await _login("agency")
+    bandlik = await _login("bandlik")
+    vacancy_id = None
+    try:
+        me = (await foreign.get("/api/v1/vacancies/me")).json()
+        created = await foreign.post(
+            "/api/v1/vacancies",
+            json={"title": "Pipeline sinovi", "trade_code": me["trades"][0]["code"], "quantity": 2, "country_code": "JP", "city": "Osaka", "address": "Kita-ku 2",
+                  "requirements": {"min_level": "MASTER", "min_experience_years": 1, "certificate_required": True, "language": "ja", "language_level": 2}},
+        )
+        assert created.status_code == 200
+        vacancy_id = created.json()["id"]
+        assert (await bandlik.get("/api/v1/migration/pool")).status_code == 403
+        pool = (await agency.get(f"/api/v1/migration/pool?vacancy={vacancy_id}&free_only=false")).json()
+        assert pool["trades"] and "people" in pool
+        assert all(item["fit"] is not None for item in pool["people"])
+        assert all("phone" not in str(item).lower() for item in pool["people"])
+        if not pool["people"]:
+            return
+        person = pool["people"][0]
+        assert {c["key"] for c in person["checks"]} == {"level", "experience", "certificate", "language"}
+        assert (await agency.post("/api/v1/panels/refer", json={"request_id": vacancy_id, "worker_user_id": person["user_id"]})).status_code == 200
+        desk = (await agency.get(f"/api/v1/migration/vacancies/{vacancy_id}")).json()
+        assert desk["vacancy"]["requirements"]["language"] == "ja" and desk["firm"]["verified"]
+        mine = next(item for item in desk["candidates"] if item["user_id"] == person["user_id"])
+        assert mine["stage"] == "SHORTLISTED"
+        cid = mine["id"]
+        assert (await agency.post(f"/api/v1/migration/candidates/{cid}/stage", json={"stage": "NOPE"})).status_code == 422
+        assert (await bandlik.post(f"/api/v1/migration/candidates/{cid}/stage", json={"stage": "DOCS"})).status_code == 403
+        for stage in ("DOCS", "LANGUAGE", "INTERVIEW", "OFFER", "VISA", "DEPARTED"):
+            assert (await agency.post(f"/api/v1/migration/candidates/{cid}/stage", json={"stage": stage, "note": "sinov"})).status_code == 200
+        after = (await agency.get(f"/api/v1/migration/vacancies/{vacancy_id}")).json()
+        done = next(item for item in after["candidates"] if item["id"] == cid)
+        assert done["stage"] == "DEPARTED" and done["status"] == "HIRED"
+        async with engine.connect() as conn:
+            placed = (await conn.execute(text("SELECT count(*) FROM placements WHERE request_id = CAST(:r AS uuid) AND kind = 'ABROAD'"), {"r": vacancy_id})).scalar_one()
+        assert int(placed) == 1
+        assert (await agency.delete(f"/api/v1/migration/candidates/{cid}")).status_code == 409
+    finally:
+        if vacancy_id:
+            async with engine.begin() as conn:
+                await conn.execute(text("DELETE FROM placements WHERE request_id = CAST(:r AS uuid)"), {"r": vacancy_id})
+                await conn.execute(text("DELETE FROM request_candidates WHERE request_id = CAST(:r AS uuid)"), {"r": vacancy_id})
+                await conn.execute(text("DELETE FROM demand_requests WHERE id = CAST(:r AS uuid)"), {"r": vacancy_id})
+        for client in (foreign, agency, bandlik):
+            await client.aclose()
+        await engine.dispose()

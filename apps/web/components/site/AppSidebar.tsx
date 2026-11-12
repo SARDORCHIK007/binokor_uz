@@ -52,6 +52,8 @@ const CABINET_ICONS: [string, IconName][] = [
   ["sozlamalar", "grid"],
   ["mahalla/", "pin"],
   ["bandlik", "briefcase"],
+  ["nomzodlar", "users"],
+  ["firmalar", "briefcase"],
   ["migratsiya", "globe"],
   ["vakansiyalar", "briefcase"],
   ["taklifnomalar", "users"],

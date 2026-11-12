@@ -13,3 +13,7 @@ Aniqlashtirish kerak: tezlashtirilgan kursga faqat D toifali arizachilar yozilis
 
 ## Tuman bandlikka ko'maklashish bo'limi — 2026-11-10
 Hamkorlar ro'yxatiga qo'shildi (GOV, holati PLANNED, slug `tuman-bandlik`). Shartnoma imzolangani va logotip ruxsati haqida ma'lumot yo'q, shuning uchun SIGNED qilinmadi. Imzolangach admin holatni o'zgartirishi kerak (BR-15).
+
+## request_candidates.status uzunligi — 2026-11-12
+`request_candidates.status` ustuni `varchar(16)`, lekin CHECK ro'yxatidagi `EMPLOYER_APPROVED` va `EMPLOYER_REJECTED` 17 belgidan iborat: bu ikki qiymatni saqlab bo'lmaydi.
+Migratsiya bosqichlari uchun alohida `stage` ustuni qo'shildi (migratsiya 0012), shuning uchun bu ish to'xtamadi. Ish beruvchi tasdig'i oqimi qayta ko'rib chiqilganda ustunni `varchar(20)` ga kengaytirish kerak.

@@ -55,10 +55,15 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
   ],
   agency_officer: [
     { href: "/kabinet/migratsiya", key: "migrationPanel" },
+    { href: "/kabinet/migratsiya/nomzodlar", key: "migrationPool" },
+    { href: "/kabinet/migratsiya/firmalar", key: "migrationFirms" },
     { href: "/kabinet/ishlar", key: "jobs" },
     { href: "/kabinet/hamkor-profil", key: "orgProfile" },
   ],
-  migration_observer: [{ href: "/kabinet/migratsiya", key: "migrationPanel" }],
+  migration_observer: [
+    { href: "/kabinet/migratsiya", key: "migrationPanel" },
+    { href: "/kabinet/migratsiya/firmalar", key: "migrationFirms" },
+  ],
   employer_foreign: [{ href: "/kabinet/vakansiyalar", key: "vacancies" }],
   cert_officer: [
     { href: "/kabinet", key: "panel" },

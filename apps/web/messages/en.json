@@ -177,7 +177,9 @@
     "monitoring": "Monitoring",
     "studentRatings": "Learner ratings",
     "myRating": "My rating",
-    "survey": "Rate your teacher"
+    "survey": "Rate your teacher",
+    "migrationPool": "Candidate pool",
+    "migrationFirms": "Foreign firms"
   },
   "session": {
     "title": "Cabinet",
@@ -2079,6 +2081,93 @@
       "POWER_OF_ATTORNEY": "Power of attorney",
       "CONTRACT": "Contract sample",
       "OTHER": "Other"
+    }
+  },
+  "ag": {
+    "tabOverview": "Overview",
+    "tabPool": "Candidate pool",
+    "tabFirms": "Foreign firms",
+    "open": "Open",
+    "back": "Back to vacancies",
+    "pool": {
+      "title": "Candidate pool",
+      "text": "Select candidates for placement abroad from Uychi Binokor learners and workers. Phone numbers are never shown.",
+      "vacancy": "Match for a vacancy",
+      "noVacancy": "No vacancy selected",
+      "trade": "Trade",
+      "allTrades": "All trades",
+      "certified": "Certified only",
+      "freeOnly": "Only those looking for work",
+      "language": "Language",
+      "anyLanguage": "Any",
+      "minLevel": "Minimum level",
+      "search": "Search by name",
+      "found": "{n} candidates",
+      "empty": "No matching candidates",
+      "select": "Select",
+      "selected": "Added to the vacancy",
+      "failed": "Not added. Check that the vacancy is open.",
+      "certifiedBadge": "Certified",
+      "proposed": "In {n} vacancies",
+      "hours": "{n} h",
+      "years": "{n} years of experience"
+    },
+    "check": {
+      "level": "Level",
+      "experience": "Experience",
+      "certificate": "Certificate",
+      "language": "Language"
+    },
+    "fit": "Fit {n}%",
+    "desk": {
+      "title": "Vacancy desk",
+      "requirements": "Requirements",
+      "offer": "What is offered",
+      "duties": "The work",
+      "where": "Workplace",
+      "map": "View on the map",
+      "firm": "Company",
+      "firmUnverified": "The firm is not verified yet: the offer, visa and departure stages are locked.",
+      "firmVerified": "Agreed firm",
+      "pipeline": "Candidate pipeline",
+      "noCandidates": "No candidates selected yet",
+      "add": "Add a candidate",
+      "addText": "Candidates are sorted by how well they fit the requirements.",
+      "stage": "Stage",
+      "note": "Note",
+      "save": "Save",
+      "saved": "Saved",
+      "remove": "Remove",
+      "locked": "The firm must be verified for this stage.",
+      "failed": "Failed.",
+      "cannotRemove": "Only a candidate at the first stage can be removed."
+    },
+    "stage": {
+      "SHORTLISTED": "Shortlisted",
+      "DOCS": "Documents",
+      "LANGUAGE": "Language test",
+      "INTERVIEW": "Interview",
+      "OFFER": "Offer",
+      "VISA": "Visa",
+      "DEPARTED": "Departed",
+      "REJECTED": "Rejected"
+    },
+    "firms": {
+      "title": "Foreign firms",
+      "text": "Legal data and documents of the firms. Check the documents and verify the firm: then the departure stages open.",
+      "empty": "No foreign firms yet",
+      "verified": "Verified",
+      "unverified": "Not verified",
+      "verify": "Verify",
+      "unverify": "Remove verification",
+      "needRegistration": "A registration certificate is needed to verify.",
+      "vacancies": "{v} vacancies · {p} open positions",
+      "docs": "Documents",
+      "noDocs": "No documents uploaded",
+      "check": "Mark as checked",
+      "checked": "Checked",
+      "contact": "Contact person",
+      "reg": "Registration no."
     }
   }
 }
