@@ -2,7 +2,6 @@
 
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { AccessTools } from "@/components/site/AccessTools";
 import { LanguageMenu } from "@/components/LanguageMenu";
 import { NotificationBell } from "@/components/site/NotificationBell";
 
@@ -29,8 +28,6 @@ export function AppTopbar({ onToggleSidebar, onSearch, signedIn }: { onToggleSid
         <span className="min-w-0 flex-1 truncate">{t("searchPlaceholder")}</span>
         <kbd className="hidden rounded-md border border-line bg-card px-1.5 py-0.5 text-[11px] font-bold sm:inline">Ctrl K</kbd>
       </button>
-
-      <AccessTools />
 
       <LanguageMenu />
 

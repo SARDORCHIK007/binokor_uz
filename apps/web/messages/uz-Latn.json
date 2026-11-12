@@ -1470,13 +1470,6 @@
     "total": "Taxminiy summa",
     "empty": "Maydon va sarf me'yorini kiriting."
   },
-  "access": {
-    "large": "Katta shrift",
-    "listen": "Sahifani o'qib berish",
-    "stop": "O'qishni to'xtatish",
-    "unsupported": "Brauzeringiz ovozli o'qishni qo'llamaydi.",
-    "noVoice": "Qurilmangizda bu til uchun ovoz o'rnatilmagan. Rus yoki ingliz tilini tanlab ko'ring."
-  },
   "project": {
     "title": "Loyiha haqida",
     "lead": "UYCHI BINOKOR — Uychi tumanida qurilish kasblarini o'rgatish, malakani QR pasport bilan tasdiqlash va ustalarni ish bilan bog'lash loyihasi.",

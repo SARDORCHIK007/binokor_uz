@@ -1470,13 +1470,6 @@
     "total": "Estimated total",
     "empty": "Enter the area and the norm."
   },
-  "access": {
-    "large": "Larger text",
-    "listen": "Read the page aloud",
-    "stop": "Stop reading",
-    "unsupported": "Your browser does not support read-aloud.",
-    "noVoice": "No voice for this language is installed on your device. Try Russian or English."
-  },
   "project": {
     "title": "About the project",
     "lead": "UYCHI BINOKOR trains construction trades in Uychi district, proves skills with a QR passport and connects workers with employers.",
