@@ -37,6 +37,7 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/imzolash", key: "signing" },
   ],
   university_officer: [
+    { href: "/kabinet/bitiruvchilar", key: "graduates" },
     { href: "/kabinet/imzolash", key: "signing" },
     { href: "/kabinet/hamkor-profil", key: "orgProfile" },
   ],
@@ -50,6 +51,8 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
   mahalla_assistant: [{ href: "/kabinet/mahalla", key: "mahallaPanel" }],
   employment_officer: [
     { href: "/kabinet/bandlik", key: "employmentPanel" },
+    { href: "/kabinet/bandlik/reestr", key: "employmentRegistry" },
+    { href: "/kabinet/bandlik/qoshish", key: "employmentAdd" },
     { href: "/kabinet/ishlar", key: "jobs" },
     { href: "/kabinet/hamkor-profil", key: "orgProfile" },
   ],

@@ -64,13 +64,13 @@
       "employer": "So'rovlar va nomzodlar",
       "producer": "Mahsulotlar va buyurtmalar",
       "hokimlik": "Hisobotlar, mahallalar, imzo",
-      "director": "Hisobot va sertifikat imzolash",
-      "namdtu": "Sertifikat imzolash, profil",
-      "bandlik": "Ish izlovchilar va so'rovlar",
-      "agency": "Xorijiy vakansiyalar, nomzodlar",
+      "director": "Monitoring, ustozlar reytingi",
+      "namdtu": "Bitiruvchilar reestri, imzo",
+      "bandlik": "Reestr, talabgor, joylashtirish",
+      "agency": "Nomzodlar havzasi, vakansiyalar, firmalar",
       "republic": "Migratsiya nazorati (ko'rish)",
       "mahalla": "Mahalladan nomzod qo'shish",
-      "foreign": "Vakansiya joylash"
+      "foreign": "Vakansiya, kompaniya hujjatlari"
     }
   },
   "roles": {
@@ -179,7 +179,10 @@
     "myRating": "Mening reytingim",
     "survey": "Ustozni baholash",
     "migrationPool": "Nomzodlar havzasi",
-    "migrationFirms": "Xorijiy firmalar"
+    "migrationFirms": "Xorijiy firmalar",
+    "employmentRegistry": "Reestr",
+    "employmentAdd": "Qo'shish",
+    "graduates": "Bitiruvchilar"
   },
   "session": {
     "title": "Kabinet",
@@ -1679,7 +1682,14 @@
     },
     "studying": "O'qiyapti",
     "certified": "Sertifikatli",
-    "noMahalla": "Sizga hali mahalla biriktirilmagan. Administrator bilan bog'laning."
+    "noMahalla": "Sizga hali mahalla biriktirilmagan. Administrator bilan bog'laning.",
+    "funnel": "Mahalladagi yo'l: ariza → ish",
+    "byMahalla": "Mahallalar bo'yicha",
+    "export": "CSV yuklab olish",
+    "filterAll": "Hammasi",
+    "filterWaiting": "Ko'rib chiqilmoqda",
+    "filterAccepted": "Qabul qilingan",
+    "filterRejected": "Rad etilgan"
   },
   "ep": {
     "title": "Bandlik paneli",
@@ -1705,7 +1715,12 @@
     "board": "Joylashtirish doskasi",
     "emptyRequests": "Ochiq so'rov yo'q",
     "emptyWorkers": "Hozir ish izlayotgan usta yo'q",
-    "close": "Yopish"
+    "close": "Yopish",
+    "tab": {
+      "overview": "Umumiy ko'rinish",
+      "registry": "Loyiha reestri",
+      "add": "Talabgor va hamkor qo'shish"
+    }
   },
   "mg": {
     "title": "Migratsiya paneli",
@@ -2169,5 +2184,119 @@
       "contact": "Mas'ul shaxs",
       "reg": "Ro'yxat raqami"
     }
+  },
+  "reg": {
+    "title": "Loyiha reestri",
+    "text": "Uychi Binokorda o'qiyotgan, o'qishni tugatgan va ishlayotgan hamma bir joyda, bosqichlar bo'yicha. Telefon raqamlari ko'rsatilmaydi.",
+    "stage": {
+      "APPLIED": "Ariza bergan",
+      "ACCEPTED": "Qabul qilingan",
+      "STUDYING": "O'qiyapti",
+      "CERTIFIED": "Sertifikatli",
+      "FREE": "Ish izlayapti",
+      "WORKING": "Ishlayapti",
+      "CLOSED": "Yopilgan"
+    },
+    "all": "Hammasi",
+    "total": "Jami: {n}",
+    "search": "Ism bo'yicha qidirish",
+    "allTrades": "Hamma kasblar",
+    "col": {
+      "name": "Ism",
+      "stage": "Bosqich",
+      "trade": "Kasb",
+      "group": "Guruh",
+      "mahalla": "Mahalla",
+      "hours": "Soat",
+      "source": "Manba"
+    },
+    "export": "CSV yuklab olish",
+    "empty": "Hech kim topilmadi",
+    "place": "Ishga joylashtirish",
+    "placeTitle": "Ishga joylashtirish: {name}",
+    "employer": "Ish beruvchi",
+    "start": "Ishga kirish sanasi",
+    "salary": "Oylik maosh (so'm)",
+    "placeOk": "Joylashtirildi.",
+    "placeBusy": "Bu usta hozir band.",
+    "placeFail": "Bajarilmadi. Maydonlarni tekshiring.",
+    "noEmployers": "Tasdiqlangan mahalliy ish beruvchi yo'q.",
+    "save": "Joylashtirish",
+    "close": "Yopish"
+  },
+  "add": {
+    "seekerTitle": "Talabgor qo'shish",
+    "seekerText": "O'qishga yoki ishga yo'naltirilishi kerak bo'lgan odamni ro'yxatga oling. U shu telefon raqami bilan kirib arizasini ko'ra oladi.",
+    "noMahalla": "Mahalla ko'rsatilmagan",
+    "partnerTitle": "Hamkor yoki ish beruvchi qo'shish",
+    "partnerText": "Tashkilotni loyihaga taklif qiling. Administrator ko'rib chiqadi va xodimlariga kirish uchun taklifnoma yuboradi.",
+    "org": "Tashkilot nomi",
+    "kind": "Turi",
+    "contact": "Mas'ul shaxs",
+    "phone": "Telefon (xalqaro format)",
+    "email": "Elektron pochta (ixtiyoriy)",
+    "message": "Izoh",
+    "send": "Yuborish",
+    "sent": "So'rov administratorga yuborildi.",
+    "failed": "Yuborilmadi. Maydonlarni tekshiring.",
+    "mine": "Yuborgan so'rovlarim",
+    "none": "Hali so'rov yuborilmagan"
+  },
+  "grad": {
+    "title": "Bitiruvchilar reestri",
+    "text": "Oliy ta'limni bitirib, chet elda ishlashni istagan bitiruvchilarni Uychi Binokor o'qishiga jalb qiling: ro'yxatni kiriting, bog'laning, arizaga aylantiring.",
+    "kpi": {
+      "total": "Ro'yxatda",
+      "abroad": "Chet elga qiziqadi"
+    },
+    "status": {
+      "NEW": "Yangi",
+      "CONTACTED": "Bog'lanildi",
+      "INTERESTED": "Qiziqdi",
+      "APPLIED": "Ariza berdi",
+      "DECLINED": "Rad etdi"
+    },
+    "project": {
+      "title": "Loyihadagi {university} bitiruvchilari",
+      "people": "Loyihada",
+      "studying": "O'qiyapti",
+      "certified": "Sertifikatli"
+    },
+    "add": {
+      "title": "Bitiruvchi qo'shish",
+      "save": "Qo'shish",
+      "saved": "Bitiruvchi ro'yxatga qo'shildi.",
+      "failed": "Qo'shilmadi. Telefon formatini va takrorlanmaganini tekshiring."
+    },
+    "f": {
+      "name": "Familiya, ism",
+      "phone": "Telefon (+998…)",
+      "specialty": "Mutaxassislik",
+      "year": "Bitirgan yili",
+      "abroad": "Chet elda ishlashni istaydi",
+      "note": "Izoh"
+    },
+    "bulk": {
+      "title": "Ro'yxatni birdan kiritish",
+      "text": "Har qatorga bittadan: telefon, familiya ism, mutaxassislik, bitirgan yil. Masalan: +998901234567, Karimov Aziz, Qurilish, 2025.",
+      "send": "Hammasini qo'shish",
+      "result": "{created} ta qo'shildi, {failed} ta xato"
+    },
+    "list": {
+      "title": "Bitiruvchilar",
+      "all": "Hammasi",
+      "empty": "Hali bitiruvchi kiritilmagan",
+      "abroad": "Chet elga qiziqadi"
+    },
+    "convertButton": "Loyihaga qabul qilish",
+    "cv": {
+      "title": "Arizaga aylantirish: {name}",
+      "ok": "Ariza yaratildi. Bitiruvchi shu telefon bilan kirib ko'ra oladi.",
+      "failed": "Yaratilmadi. Maydonlarni tekshiring.",
+      "save": "Ariza yaratish"
+    },
+    "delete": "O'chirish",
+    "close": "Yopish",
+    "noteSaved": "Saqlandi"
   }
 }

@@ -20,8 +20,8 @@ from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 from app.doc_i18n import lang_of, pick
 from app.inapp import notify
 from app.ratelimit import too_many
+from app.registration import RegistrationError, register_person
 from app.routers.vacancies import VACANCY_SQL, vacancy_json
-from app.rules import matrix_class
 from app.security import bearer_from_request, new_id, problem, read_access_token
 
 router = APIRouter(prefix="/api/v1", tags=["panels"])
@@ -149,13 +149,66 @@ async def mahalla_overview(request: Request, lang: str | None = None) -> JSONRes
         ]
         trades = await conn.execute(text("SELECT code, name FROM trades WHERE is_active ORDER BY code"))
         trade_list = [{"code": r["code"], "name": pick(r["name"], code)} for r in trades.mappings()]
+        per = await conn.execute(
+            text(
+                """
+                SELECT m.id::text AS id, m.name,
+                       count(DISTINCT p.id) AS people,
+                       count(DISTINCT a.id) FILTER (WHERE a.status <> 'DRAFT') AS applications,
+                       count(DISTINCT p.id) FILTER (WHERE EXISTS (SELECT 1 FROM enrollments e WHERE e.student_user_id = p.user_id AND e.status = 'ACTIVE')) AS studying,
+                       count(DISTINCT p.id) FILTER (WHERE EXISTS (SELECT 1 FROM certificates c WHERE c.person_id = p.id AND c.status = 'ISSUED')) AS certified,
+                       count(DISTINCT p.id) FILTER (WHERE EXISTS (SELECT 1 FROM placements pl WHERE pl.worker_user_id = p.user_id)) AS employed
+                FROM mahallas m LEFT JOIN persons p ON p.mahalla_id = m.id LEFT JOIN applications a ON a.person_id = p.id
+                WHERE m.id = ANY(:ids) GROUP BY m.id, m.name ORDER BY m.name->>'uz-Latn'
+                """
+            ),
+            {"ids": ids},
+        )
+        by_mahalla = [
+            {"id": r["id"], "name": pick(r["name"], code), **{k: int(r[k]) for k in ("people", "applications", "studying", "certified", "employed")}}
+            for r in per.mappings()
+        ]
     return JSONResponse(
         {
+            "by_mahalla": by_mahalla,
             "mahallas": [{"id": r["id"], "name": pick(r["name"], code)} for r in names],
             "kpi": {key: _num(value) for key, value in kpi.items()},
             "candidates": candidates,
             "trades": trade_list,
         }
+    )
+
+
+@router.get("/mahalla/export.csv", response_model=None)
+async def mahalla_export(request: Request) -> Response:
+    """The mahalla's list as a CSV: names, trade, stage and date. No phone numbers."""
+    user_id = _user_id(request)
+    if user_id is None:
+        return _unauth()
+    async with _engine(request).connect() as conn:
+        roles = await _roles(conn, user_id)
+        if not roles & MAHALLA_ROLES:
+            return _forbidden("Bu bo'lim mahalla hokim yordamchilari uchun.")
+        ids = await _mahalla_ids(conn, user_id, roles)
+        rows = await conn.execute(
+            text(
+                """
+                SELECT p.last_name, p.first_name, t.name AS trade, a.status::text AS status, a.source, a.created_at::date::text AS day, m.name AS mahalla
+                FROM applications a JOIN persons p ON p.id = a.person_id LEFT JOIN trades t ON t.id = a.desired_trade_id LEFT JOIN mahallas m ON m.id = p.mahalla_id
+                WHERE p.mahalla_id = ANY(:ids) AND a.status <> 'DRAFT' ORDER BY a.created_at DESC
+                """
+            ),
+            {"ids": ids},
+        )
+        out = io.StringIO()
+        writer = csv.writer(out)
+        writer.writerow(["name", "mahalla", "trade", "status", "source", "date"])
+        for r in rows.mappings():
+            writer.writerow([f"{r['last_name']} {r['first_name']}", pick(r["mahalla"], "uz-Latn"), pick(r["trade"], "uz-Latn"), r["status"], r["source"], r["day"]])
+    return Response(
+        content="﻿" + out.getvalue(),
+        media_type="text/csv; charset=utf-8",
+        headers={"Content-Disposition": 'attachment; filename="mahalla.csv"'},
     )
 
 
@@ -193,68 +246,15 @@ async def mahalla_add_candidate(body: CandidateIn, request: Request) -> JSONResp
             return _forbidden("Bu amal mahalla hokim yordamchilari uchun.")
         if body.mahalla_id not in await _mahalla_ids(conn, user_id, roles):
             return _forbidden("Bu mahalla sizga biriktirilmagan.")
-        trade = (await conn.execute(text("SELECT id FROM trades WHERE code = :code AND is_active"), {"code": body.trade_code})).scalar()
-        if trade is None:
-            return problem(404, "NOT_FOUND", "Kasb topilmadi", "Kasbni qayta tanlang.")
-        resident = (await conn.execute(text("SELECT id FROM users WHERE phone = :phone AND deleted_at IS NULL"), {"phone": phone})).scalar()
-        if resident is None:
-            resident = new_id()
-            await conn.execute(
-                text("INSERT INTO users (id, phone, full_name, locale) VALUES (:id, :phone, :name, 'uz-Latn')"),
-                {"id": resident, "phone": phone, "name": f"{body.last_name.strip()} {body.first_name.strip()}"},
+        try:
+            done = await register_person(
+                conn, user_id, first_name=body.first_name, last_name=body.last_name, birth_date=body.birth_date, phone=phone,
+                trade_code=body.trade_code, track=body.track, app_type=body.type, experience_years=body.experience_years,
+                has_language=body.has_language, mahalla_id=body.mahalla_id, source="MAHALLA",
             )
-            await conn.execute(
-                text("INSERT INTO user_roles (id, user_id, role) VALUES (:id, :user_id, 'student')"),
-                {"id": new_id(), "user_id": resident},
-            )
-        person = (await conn.execute(text("SELECT id, mahalla_id FROM persons WHERE user_id = :id"), {"id": resident})).mappings().first()
-        if person is None:
-            person_id = new_id()
-            await conn.execute(
-                text(
-                    """
-                    INSERT INTO persons (id, user_id, last_name, first_name, birth_date, mahalla_id)
-                    VALUES (:id, :user_id, :last, :first, :birth, :mahalla)
-                    """
-                ),
-                {"id": person_id, "user_id": resident, "last": body.last_name.strip(), "first": body.first_name.strip(), "birth": body.birth_date, "mahalla": body.mahalla_id},
-            )
-        else:
-            person_id = person["id"]
-            if person["mahalla_id"] is None:
-                await conn.execute(text("UPDATE persons SET mahalla_id = :m WHERE id = :id"), {"m": body.mahalla_id, "id": person_id})
-        active = await conn.execute(
-            text("SELECT 1 FROM applications WHERE person_id = :id AND status NOT IN ('DRAFT', 'REJECTED', 'WITHDRAWN')"),
-            {"id": person_id},
-        )
-        if active.first() is not None:
-            return problem(409, "DUPLICATE", "Ariza bor", "Bu odam uchun faol ariza allaqachon mavjud.")
-        matrix = matrix_class(body.experience_years, body.has_language)
-        application_id = new_id()
-        await conn.execute(
-            text(
-                """
-                INSERT INTO consents (id, user_id, kind, version, granted)
-                VALUES (:a, :user_id, 'pd_processing', '2026-11', true), (:b, :user_id, 'telegram_notify', '2026-11', true)
-                """
-            ),
-            {"a": new_id(), "b": new_id(), "user_id": resident},
-        )
-        await conn.execute(
-            text(
-                """
-                INSERT INTO applications (id, person_id, type, source, desired_trade_id, desired_track,
-                                          trade_experience_years, matrix_suggested, status, created_by)
-                VALUES (:id, :person, CAST(:type AS application_type), 'MAHALLA', :trade, CAST(:track AS track_code),
-                        :experience, CAST(:matrix AS matrix_class), 'SUBMITTED', :by)
-                """
-            ),
-            {"id": application_id, "person": person_id, "type": body.type, "trade": trade, "track": body.track, "experience": body.experience_years, "matrix": matrix, "by": user_id},
-        )
-        await conn.execute(
-            text("INSERT INTO application_events (application_id, to_status, actor_id, note) VALUES (:id, 'SUBMITTED', :by, 'mahalla submit')"),
-            {"id": application_id, "by": user_id},
-        )
+        except RegistrationError as error:
+            return problem(error.status, error.code, error.title, error.detail)
+    application_id, matrix = done.application_id, done.matrix
     return JSONResponse({"id": str(application_id), "status": "SUBMITTED", "matrix": matrix})
 
 

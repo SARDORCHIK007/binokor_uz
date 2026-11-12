@@ -309,3 +309,110 @@ async def _pipeline_flow() -> None:
         for client in (foreign, agency, bandlik):
             await client.aclose()
         await engine.dispose()
+
+
+def test_employment_registry_and_intake() -> None:
+    """The employment office sees the whole project registry, adds job seekers and partners, and places workers."""
+    if not os.environ.get("DATABASE_URL"):
+        pytest.skip("DATABASE_URL yo'q")
+    asyncio.run(_employment_flow())
+
+
+async def _employment_flow() -> None:
+    engine = create_async_engine(os.environ["DATABASE_URL"])
+    bandlik = await _login("bandlik")
+    student = await _login("student")
+    suffix = str(uuid.uuid4().int)[:6]
+    phone = f"+99893{suffix}3"[:13]
+    org = f"Bandlik Org {suffix}"
+    try:
+        assert (await student.get("/api/v1/employment/people")).status_code == 403
+        registry = (await bandlik.get("/api/v1/employment/people")).json()
+        assert set(registry["counts"]) == {"APPLIED", "ACCEPTED", "STUDYING", "CERTIFIED", "FREE", "WORKING", "CLOSED"}
+        assert registry["total"] == sum(registry["counts"].values())
+        assert "phone" not in str(registry).lower()
+        assert (await bandlik.get("/api/v1/employment/people.csv")).status_code == 200
+        options = (await bandlik.get("/api/v1/employment/options")).json()
+        payload = {"first_name": "Bandlik", "last_name": "Sinov", "birth_date": "1998-02-03", "phone": phone, "trade_code": options["trades"][0]["code"], "consent_confirmed": True}
+        assert (await bandlik.post("/api/v1/employment/seekers", json={**payload, "consent_confirmed": False})).status_code == 422
+        assert (await bandlik.post("/api/v1/employment/seekers", json=payload)).status_code == 200
+        assert (await bandlik.post("/api/v1/employment/seekers", json=payload)).status_code == 409
+        after = (await bandlik.get("/api/v1/employment/people?q=Sinov")).json()
+        mine = [item for item in after["people"] if item["name"].startswith("Sinov Bandlik")]
+        assert mine and mine[0]["stage"] == "APPLIED" and mine[0]["source"] == "IMPORT"
+        partner = await bandlik.post("/api/v1/employment/partners", json={"org_name": org, "kind": "EMPLOYER", "contact_name": "Test Odam", "phone": "+998901112244"})
+        assert partner.status_code == 200
+        listed = (await bandlik.get("/api/v1/employment/partners")).json()
+        assert any(item["org_name"] == org and item["status"] == "NEW" for item in listed)
+        free = [item for item in (await bandlik.get("/api/v1/employment/people?stage=FREE")).json()["people"]]
+        if free and options["employers"]:
+            worker = free[0]["user_id"]
+            placed = await bandlik.post("/api/v1/employment/placements", json={"worker_user_id": worker, "employer_id": options["employers"][0]["id"], "start_date": "2026-12-01", "monthly_salary": 3000000})
+            assert placed.status_code == 200
+            assert (await bandlik.post("/api/v1/employment/placements", json={"worker_user_id": worker, "employer_id": options["employers"][0]["id"], "start_date": "2026-12-02"})).status_code == 409
+            now_working = (await bandlik.get("/api/v1/employment/people?stage=WORKING")).json()["people"]
+            assert any(item["user_id"] == worker for item in now_working)
+            async with engine.begin() as conn:
+                await conn.execute(text("DELETE FROM placements WHERE worker_user_id = CAST(:w AS uuid) AND start_date = '2026-12-01'"), {"w": worker})
+                await conn.execute(text("UPDATE worker_profiles SET availability = 'FREE' WHERE user_id = CAST(:w AS uuid)"), {"w": worker})
+    finally:
+        async with engine.begin() as conn:
+            await conn.execute(text("DELETE FROM partner_requests WHERE org_name = :o"), {"o": org})
+            await conn.execute(text("DELETE FROM application_events WHERE application_id IN (SELECT a.id FROM applications a JOIN persons p ON p.id = a.person_id JOIN users u ON u.id = p.user_id WHERE u.phone = :p)"), {"p": phone})
+            await conn.execute(text("DELETE FROM applications WHERE person_id IN (SELECT p.id FROM persons p JOIN users u ON u.id = p.user_id WHERE u.phone = :p)"), {"p": phone})
+            await conn.execute(text("DELETE FROM persons WHERE user_id IN (SELECT id FROM users WHERE phone = :p)"), {"p": phone})
+            await conn.execute(text("DELETE FROM consents WHERE user_id IN (SELECT id FROM users WHERE phone = :p)"), {"p": phone})
+            await conn.execute(text("DELETE FROM user_roles WHERE user_id IN (SELECT id FROM users WHERE phone = :p)"), {"p": phone})
+            await conn.execute(text("DELETE FROM users WHERE phone = :p"), {"p": phone})
+        for client in (bandlik, student):
+            await client.aclose()
+        await engine.dispose()
+
+
+def test_university_graduate_leads() -> None:
+    """The university office keeps a graduate list, follows each person and turns an interested one into an application."""
+    if not os.environ.get("DATABASE_URL"):
+        pytest.skip("DATABASE_URL yo'q")
+    asyncio.run(_graduates_flow())
+
+
+async def _graduates_flow() -> None:
+    engine = create_async_engine(os.environ["DATABASE_URL"])
+    univ = await _login("namdtu")
+    student = await _login("student")
+    suffix = str(uuid.uuid4().int)[:6]
+    phones = [f"+99894{suffix}1"[:13], f"+99895{suffix}2"[:13]]
+    try:
+        assert (await student.get("/api/v1/graduates")).status_code == 403
+        assert (await univ.post("/api/v1/graduates", json={"full_name": "Xato Telefon", "phone": "123"})).status_code == 422
+        assert (await univ.post("/api/v1/graduates", json={"full_name": "Bitiruvchi Birinchi", "phone": phones[0], "specialty": "Qurilish", "graduation_year": 2025})).status_code == 200
+        assert (await univ.post("/api/v1/graduates", json={"full_name": "Bitiruvchi Birinchi", "phone": phones[0]})).status_code == 422
+        bulk = await univ.post("/api/v1/graduates/bulk", json={"lines": f"{phones[1]}, Bitiruvchi Ikkinchi, Arxitektura, 2024\nxato"})
+        assert bulk.status_code == 200 and bulk.json()["created"] == 1 and len(bulk.json()["failed"]) == 1
+        data = (await univ.get("/api/v1/graduates")).json()
+        assert data["university"] and data["counts"]["NEW"] >= 2
+        assert "phone" not in str(data).lower()
+        first = next(item for item in data["leads"] if item["full_name"] == "Bitiruvchi Birinchi")
+        assert (await univ.post(f"/api/v1/graduates/{first['id']}/status", json={"status": "INTERESTED", "note": "Qiziqdi"})).status_code == 200
+        convert = {"trade_code": data["trades"][0]["code"], "birth_date": "1999-04-05", "consent_confirmed": True}
+        assert (await univ.post(f"/api/v1/graduates/{first['id']}/convert", json={**convert, "consent_confirmed": False})).status_code == 422
+        done = await univ.post(f"/api/v1/graduates/{first['id']}/convert", json=convert)
+        assert done.status_code == 200 and done.json()["matrix"]
+        assert (await univ.post(f"/api/v1/graduates/{first['id']}/convert", json=convert)).status_code == 409
+        after = (await univ.get("/api/v1/graduates")).json()
+        assert after["counts"]["APPLIED"] >= 1 and after["in_project"]["people"] >= 1
+        assert (await univ.delete(f"/api/v1/graduates/{first['id']}")).status_code == 409
+        second = next(item for item in after["leads"] if item["full_name"] == "Bitiruvchi Ikkinchi")
+        assert (await univ.delete(f"/api/v1/graduates/{second['id']}")).status_code == 200
+    finally:
+        async with engine.begin() as conn:
+            await conn.execute(text("DELETE FROM graduate_leads WHERE phone = ANY(:p)"), {"p": phones})
+            await conn.execute(text("DELETE FROM application_events WHERE application_id IN (SELECT a.id FROM applications a JOIN persons p ON p.id = a.person_id JOIN users u ON u.id = p.user_id WHERE u.phone = ANY(:p))"), {"p": phones})
+            await conn.execute(text("DELETE FROM applications WHERE person_id IN (SELECT p.id FROM persons p JOIN users u ON u.id = p.user_id WHERE u.phone = ANY(:p))"), {"p": phones})
+            await conn.execute(text("DELETE FROM persons WHERE user_id IN (SELECT id FROM users WHERE phone = ANY(:p))"), {"p": phones})
+            await conn.execute(text("DELETE FROM consents WHERE user_id IN (SELECT id FROM users WHERE phone = ANY(:p))"), {"p": phones})
+            await conn.execute(text("DELETE FROM user_roles WHERE user_id IN (SELECT id FROM users WHERE phone = ANY(:p))"), {"p": phones})
+            await conn.execute(text("DELETE FROM users WHERE phone = ANY(:p)"), {"p": phones})
+        for client in (univ, student):
+            await client.aclose()
+        await engine.dispose()

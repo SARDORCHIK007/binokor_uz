@@ -1,6 +1,7 @@
 import { EmptyState } from "@uychibinokor/ui";
 import { getLocale, getTranslations } from "next-intl/server";
 import { PageHead } from "@/components/cabinet/kit";
+import { EmploymentTabs } from "@/components/panels/EmploymentTabs";
 import { EmploymentPanel, type EmploymentData } from "@/components/panels/EmploymentPanel";
 import { apiAuth } from "@/lib/session";
 
@@ -17,6 +18,7 @@ export default async function EmploymentPage() {
   return (
     <div className="flex flex-col gap-6">
       <PageHead title={t("title")} text={t("text")} />
+      <EmploymentTabs active="overview" />
       <EmploymentPanel initial={data} />
     </div>
   );

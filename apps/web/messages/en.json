@@ -64,13 +64,13 @@
       "employer": "Requests and candidates",
       "producer": "Products and orders",
       "hokimlik": "Reports, mahallas, signing",
-      "director": "Reports and certificate signing",
-      "namdtu": "Certificate signing, profile",
-      "bandlik": "Job seekers and requests",
-      "agency": "Foreign vacancies, candidates",
+      "director": "Monitoring, teacher ratings",
+      "namdtu": "Graduate registry, signing",
+      "bandlik": "Registry, seekers, placement",
+      "agency": "Candidate pool, vacancies, firms",
       "republic": "Migration oversight (read only)",
       "mahalla": "Register candidates in the mahalla",
-      "foreign": "Post vacancies"
+      "foreign": "Vacancies, company documents"
     }
   },
   "roles": {
@@ -179,7 +179,10 @@
     "myRating": "My rating",
     "survey": "Rate your teacher",
     "migrationPool": "Candidate pool",
-    "migrationFirms": "Foreign firms"
+    "migrationFirms": "Foreign firms",
+    "employmentRegistry": "Registry",
+    "employmentAdd": "Add people",
+    "graduates": "Graduates"
   },
   "session": {
     "title": "Cabinet",
@@ -1679,7 +1682,14 @@
     },
     "studying": "Studying",
     "certified": "Certified",
-    "noMahalla": "No mahalla is assigned to you yet. Contact the administrator."
+    "noMahalla": "No mahalla is assigned to you yet. Contact the administrator.",
+    "funnel": "The path in the mahalla: application → job",
+    "byMahalla": "By mahalla",
+    "export": "Download CSV",
+    "filterAll": "All",
+    "filterWaiting": "Under review",
+    "filterAccepted": "Accepted",
+    "filterRejected": "Rejected"
   },
   "ep": {
     "title": "Employment panel",
@@ -1705,7 +1715,12 @@
     "board": "Placement board",
     "emptyRequests": "No open requests",
     "emptyWorkers": "No workers looking for work right now",
-    "close": "Close"
+    "close": "Close",
+    "tab": {
+      "overview": "Overview",
+      "registry": "Project registry",
+      "add": "Add seekers and partners"
+    }
   },
   "mg": {
     "title": "Migration panel",
@@ -2169,5 +2184,119 @@
       "contact": "Contact person",
       "reg": "Registration no."
     }
+  },
+  "reg": {
+    "title": "Project registry",
+    "text": "Everyone who studies, has finished and works within Uychi Binokor, in one place by stage. Phone numbers are never shown.",
+    "stage": {
+      "APPLIED": "Applied",
+      "ACCEPTED": "Accepted",
+      "STUDYING": "Studying",
+      "CERTIFIED": "Certified",
+      "FREE": "Looking for work",
+      "WORKING": "Working",
+      "CLOSED": "Closed"
+    },
+    "all": "All",
+    "total": "Total: {n}",
+    "search": "Search by name",
+    "allTrades": "All trades",
+    "col": {
+      "name": "Name",
+      "stage": "Stage",
+      "trade": "Trade",
+      "group": "Group",
+      "mahalla": "Mahalla",
+      "hours": "Hours",
+      "source": "Source"
+    },
+    "export": "Download CSV",
+    "empty": "Nobody found",
+    "place": "Place in a job",
+    "placeTitle": "Place in a job: {name}",
+    "employer": "Employer",
+    "start": "Start date",
+    "salary": "Monthly salary (UZS)",
+    "placeOk": "Placed.",
+    "placeBusy": "This worker is already placed.",
+    "placeFail": "Failed. Check the fields.",
+    "noEmployers": "There is no verified local employer.",
+    "save": "Place",
+    "close": "Close"
+  },
+  "add": {
+    "seekerTitle": "Add a job seeker",
+    "seekerText": "Register someone who should be directed to training or work. They can sign in with this number and see the application.",
+    "noMahalla": "No mahalla",
+    "partnerTitle": "Add a partner or employer",
+    "partnerText": "Propose an organisation to the project. An administrator reviews it and sends its staff invitations.",
+    "org": "Organisation name",
+    "kind": "Type",
+    "contact": "Contact person",
+    "phone": "Phone (international format)",
+    "email": "Email (optional)",
+    "message": "Note",
+    "send": "Send",
+    "sent": "The request was sent to the administrator.",
+    "failed": "Not sent. Check the fields.",
+    "mine": "My requests",
+    "none": "No requests yet"
+  },
+  "grad": {
+    "title": "Graduate registry",
+    "text": "Bring university graduates who want to work abroad into Uychi Binokor training: enter a list, contact them, turn them into applications.",
+    "kpi": {
+      "total": "On the list",
+      "abroad": "Interested in working abroad"
+    },
+    "status": {
+      "NEW": "New",
+      "CONTACTED": "Contacted",
+      "INTERESTED": "Interested",
+      "APPLIED": "Applied",
+      "DECLINED": "Declined"
+    },
+    "project": {
+      "title": "{university} graduates in the project",
+      "people": "In the project",
+      "studying": "Studying",
+      "certified": "Certified"
+    },
+    "add": {
+      "title": "Add a graduate",
+      "save": "Add",
+      "saved": "The graduate was added to the list.",
+      "failed": "Not added. Check the phone format and duplicates."
+    },
+    "f": {
+      "name": "Full name",
+      "phone": "Phone (+998…)",
+      "specialty": "Specialty",
+      "year": "Graduation year",
+      "abroad": "Wants to work abroad",
+      "note": "Note"
+    },
+    "bulk": {
+      "title": "Paste a whole list",
+      "text": "One per line: phone, full name, specialty, year. For example: +998901234567, Karimov Aziz, Construction, 2025.",
+      "send": "Add all",
+      "result": "{created} added, {failed} failed"
+    },
+    "list": {
+      "title": "Graduates",
+      "all": "All",
+      "empty": "No graduates added yet",
+      "abroad": "Interested in abroad"
+    },
+    "convertButton": "Take into the project",
+    "cv": {
+      "title": "Turn into an application: {name}",
+      "ok": "The application was created. The graduate can sign in with this number and see it.",
+      "failed": "Not created. Check the fields.",
+      "save": "Create the application"
+    },
+    "delete": "Delete",
+    "close": "Close",
+    "noteSaved": "Saved"
   }
 }
