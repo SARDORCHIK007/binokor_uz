@@ -152,7 +152,8 @@
     "employmentPanel": "Bandlik paneli",
     "migrationPanel": "Migratsiya paneli",
     "vacancies": "Vakansiyalar",
-    "invitations": "Taklifnomalar"
+    "invitations": "Taklifnomalar",
+    "orgProfile": "Tashkilot profili"
   },
   "session": {
     "title": "Kabinet",
@@ -1608,7 +1609,9 @@
       "employment": "Ustalar katalogi",
       "abroad": "Yo'nalishlar",
       "materials": "Qurilish materiallari"
-    }
+    },
+    "aboutTitle": "Tashkilot haqida",
+    "contactsTitle": "Aloqa"
   },
   "mp": {
     "title": "Mahalla paneli",
@@ -1830,5 +1833,26 @@
     "thanks": "So'rovingiz qabul qilindi. Administrator siz bilan bog'lanadi.",
     "failed": "Yuborilmadi. Maydonlarni tekshiring.",
     "limit": "Juda ko'p urinish. Keyinroq qayta urinib ko'ring."
+  },
+  "pe": {
+    "title": "Tashkilot profili",
+    "text": "Bu ma'lumotlar tashkilotingizning ommaviy sahifasida ko'rinadi. Nomi, holati va logotipni administrator boshqaradi.",
+    "noPartner": "Siz hali hech bir hamkor tashkilotga biriktirilmagansiz. Administrator taklifnomada tashkilotni ko'rsatishi kerak.",
+    "organisation": "Tashkilot",
+    "short": "Qisqa tavsif",
+    "shortHelp": "Hamkorlar ro'yxatidagi kartada ko'rinadi (300 belgigacha). Kamida o'zbekcha lotin matni kerak.",
+    "about": "Batafsil ma'lumot",
+    "aboutHelp": "Tashkilot nima qiladi va platformada qanday ishtirok etadi (2000 belgigacha).",
+    "website": "Veb-sayt",
+    "email": "Elektron pochta",
+    "phone": "Telefon (xalqaro format)",
+    "address": "Manzil",
+    "save": "Saqlash",
+    "saving": "Saqlanmoqda…",
+    "saved": "Saqlandi. O'zgarishlar ommaviy sahifada ko'rinadi.",
+    "failed": "Saqlanmadi. Maydonlarni tekshiring.",
+    "view": "Ommaviy sahifani ko'rish",
+    "updated": "Oxirgi o'zgarish: {date}",
+    "privacyNote": "Faqat tashkilotning rasmiy aloqa ma'lumotlarini kiriting. Shaxsiy telefon raqamlari va xodimlarning ma'lumotlari bu yerga yozilmaydi."
   }
 }

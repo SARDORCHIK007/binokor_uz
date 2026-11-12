@@ -136,6 +136,26 @@ async def _flow() -> None:
         listing = (await admin.get("/api/v1/admin/invitations")).json()
         assert any(item["phone"] == invited_phone and item["status"] in {"ACCEPTED", "PENDING"} for item in listing)
 
+        # partner staff edit their own organisation's profile, nobody else's
+        namdtu = await _login("namdtu")
+        mine = (await namdtu.get("/api/v1/partner/profiles")).json()
+        assert [item["slug"] for item in mine] == ["namdtu"]
+        original = mine[0]
+        edit = {"role": {"uz-Latn": "Sinov qisqa tavsif", "ru": "Тестовое описание"}, "about": {"uz-Latn": "Sinov batafsil matn"}, "website": "https://example.org", "email": "info@example.org", "phone": "+998901112233", "address": "Namangan"}
+        assert (await namdtu.put("/api/v1/partner/namdtu/profile", json=edit)).status_code == 200
+        assert (await namdtu.put("/api/v1/partner/uychi-hokimlik/profile", json=edit)).status_code == 403
+        assert (await namdtu.put("/api/v1/partner/namdtu/profile", json={**edit, "website": "javascript:alert(1)"})).status_code == 422
+        assert (await namdtu.put("/api/v1/partner/namdtu/profile", json={**edit, "role": {"de": "x"}})).status_code == 422
+        assert (await namdtu.put("/api/v1/partner/namdtu/profile", json={**edit, "role": {"ru": "faqat rus"}})).status_code == 422
+        assert (await student.put("/api/v1/partner/namdtu/profile", json=edit)).status_code == 403
+        assert (await student.get("/api/v1/partner/profiles")).status_code == 403
+        async with httpx.AsyncClient(base_url=BASE, timeout=30) as anonymous:
+            page = (await anonymous.get("/api/v1/public/partners/namdtu")).json()
+            assert page["about"] == "Sinov batafsil matn" and page["contacts"]["website"] == "https://example.org"
+        restore = {"role": {k: v for k, v in original["role"].items() if v}, "about": {k: v for k, v in original["about"].items() if v}, "website": original["website"], "email": original["email"], "phone": original["phone"], "address": original["address"]}
+        assert (await namdtu.put("/api/v1/partner/namdtu/profile", json=restore)).status_code == 200
+        await namdtu.aclose()
+
         # public partnership request and its review
         async with httpx.AsyncClient(base_url=BASE, timeout=30) as anonymous:
             sent = await anonymous.post(

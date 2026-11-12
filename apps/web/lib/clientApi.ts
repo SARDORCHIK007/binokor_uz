@@ -1,7 +1,7 @@
 /** Small fetch wrapper for the cabinet panels: JSON in, JSON out, never throws. */
 export async function send<T = unknown>(
   url: string,
-  method: "GET" | "POST" | "DELETE",
+  method: "GET" | "POST" | "PUT" | "DELETE",
   body?: unknown,
 ): Promise<{ ok: boolean; status: number; data: T | null }> {
   try {

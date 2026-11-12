@@ -152,7 +152,8 @@
     "employmentPanel": "Employment panel",
     "migrationPanel": "Migration panel",
     "vacancies": "Vacancies",
-    "invitations": "Invitations"
+    "invitations": "Invitations",
+    "orgProfile": "Organisation profile"
   },
   "session": {
     "title": "Cabinet",
@@ -1608,7 +1609,9 @@
       "employment": "Workers catalogue",
       "abroad": "Destinations",
       "materials": "Building materials"
-    }
+    },
+    "aboutTitle": "About the organisation",
+    "contactsTitle": "Contacts"
   },
   "mp": {
     "title": "Mahalla panel",
@@ -1830,5 +1833,26 @@
     "thanks": "Your request was received. An administrator will contact you.",
     "failed": "Not sent. Check the fields.",
     "limit": "Too many attempts. Try again later."
+  },
+  "pe": {
+    "title": "Organisation profile",
+    "text": "This is shown on your organisation's public page. The name, status and logo are managed by the administrator.",
+    "noPartner": "You are not linked to any partner organisation yet. The administrator must name the organisation in the invitation.",
+    "organisation": "Organisation",
+    "short": "Short description",
+    "shortHelp": "Shown on the card in the partners list (up to 300 characters). At least the Uzbek Latin text is required.",
+    "about": "About the organisation",
+    "aboutHelp": "What the organisation does and how it takes part in the platform (up to 2000 characters).",
+    "website": "Website",
+    "email": "Email",
+    "phone": "Phone (international format)",
+    "address": "Address",
+    "save": "Save",
+    "saving": "Saving…",
+    "saved": "Saved. The changes are visible on the public page.",
+    "failed": "Not saved. Check the fields.",
+    "view": "View the public page",
+    "updated": "Last changed: {date}",
+    "privacyNote": "Enter only the organisation's official contacts. No personal phone numbers or staff details go here."
   }
 }

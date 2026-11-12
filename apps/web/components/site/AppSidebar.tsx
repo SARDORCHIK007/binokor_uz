@@ -55,6 +55,7 @@ const CABINET_ICONS: [string, IconName][] = [
   ["migratsiya", "globe"],
   ["vakansiyalar", "briefcase"],
   ["taklifnomalar", "users"],
+  ["hamkor-profil", "award"],
   ["jadval", "calendar"],
   ["elonlar", "doc"],
 ];

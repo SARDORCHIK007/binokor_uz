@@ -25,6 +25,7 @@ from app.routers.learning import router as learning_router
 from app.routers.market import router as market_router
 from app.routers.onboarding import router as onboarding_router
 from app.routers.panels import router as panels_router
+from app.routers.partner_profile import router as partner_profile_router
 from app.routers.passport import router as passport_router
 from app.routers.portfolio import router as portfolio_router
 from app.routers.producers import router as producers_router
@@ -110,6 +111,7 @@ app.include_router(employers_router)
 app.include_router(producers_router)
 app.include_router(cabinet_extra_router)
 app.include_router(onboarding_router)
+app.include_router(partner_profile_router)
 app.include_router(panels_router)
 
 

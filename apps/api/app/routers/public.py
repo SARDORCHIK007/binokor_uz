@@ -178,7 +178,8 @@ async def partner_profile(slug: str, request: Request) -> JSONResponse:
                 text(
                     """
                     SELECT name, kind::text AS kind, status::text AS status, logo_permission, slug,
-                           role_description, signed_at::text AS signed_at, country_code
+                           role_description, signed_at::text AS signed_at, country_code,
+                           about, website, contact_email, contact_phone, address
                     FROM partners WHERE slug = :slug
                     """
                 ),
@@ -227,6 +228,13 @@ async def partner_profile(slug: str, request: Request) -> JSONResponse:
             "role": _title(row["role_description"]) if row["role_description"] else "",
             "signed_at": row["signed_at"],
             "show_logo": bool(row["logo_permission"]) and row["status"] == "SIGNED",
+            "about": _title(row["about"]) if row["about"] else "",
+            "contacts": {
+                "website": row["website"] or "",
+                "email": row["contact_email"] or "",
+                "phone": row["contact_phone"] or "",
+                "address": row["address"] or "",
+            },
             "function": function,
             "signs": row["status"] == "SIGNED",
             "metrics": metrics,

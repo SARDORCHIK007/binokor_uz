@@ -20,6 +20,8 @@ type Profile = {
   function: "coordination" | "education" | "employment" | "abroad" | "materials";
   signs: boolean;
   metrics: Record<string, number>;
+  about: string;
+  contacts: { website: string; email: string; phone: string; address: string };
   signed_certificates: number;
   recent_signed: { number: string; date: string }[];
   destinations: { code: string; name: string; language: string }[];
@@ -136,6 +138,45 @@ export default async function PartnerProfilePage({ params }: { params: Promise<{
           </dl>
         </section>
       </div>
+
+      {profile.about ? (
+        <section className={`${CARD} mt-5 p-6`} aria-labelledby="about">
+          <h2 id="about" className="text-xl font-extrabold text-navy-900">{t("aboutTitle")}</h2>
+          <p className="mt-3 max-w-[80ch] leading-relaxed whitespace-pre-line text-body">{profile.about}</p>
+        </section>
+      ) : null}
+
+      {Object.values(profile.contacts).some(Boolean) ? (
+        <section className={`${CARD} mt-5 p-6`} aria-labelledby="contacts">
+          <h2 id="contacts" className="text-xl font-extrabold text-navy-900">{t("contactsTitle")}</h2>
+          <dl className="mt-3 grid gap-3 text-sm sm:grid-cols-2">
+            {profile.contacts.website ? (
+              <div>
+                <dt className="text-muted">Web</dt>
+                <dd><a href={profile.contacts.website} target="_blank" rel="noopener noreferrer nofollow" className="font-bold text-primary hover:underline">{profile.contacts.website}</a></dd>
+              </div>
+            ) : null}
+            {profile.contacts.email ? (
+              <div>
+                <dt className="text-muted">Email</dt>
+                <dd><a href={`mailto:${profile.contacts.email}`} className="font-bold text-primary hover:underline">{profile.contacts.email}</a></dd>
+              </div>
+            ) : null}
+            {profile.contacts.phone ? (
+              <div>
+                <dt className="text-muted">Tel</dt>
+                <dd><a href={`tel:${profile.contacts.phone}`} className="font-bold text-navy-900 tabular-nums">{profile.contacts.phone}</a></dd>
+              </div>
+            ) : null}
+            {profile.contacts.address ? (
+              <div>
+                <dt className="text-muted">{t("contactsTitle")}</dt>
+                <dd className="font-bold text-navy-900">{profile.contacts.address}</dd>
+              </div>
+            ) : null}
+          </dl>
+        </section>
+      ) : null}
 
       <section className={`${CARD} mt-5 p-6`} aria-labelledby="signing">
         <div className="flex flex-wrap items-start justify-between gap-4">
