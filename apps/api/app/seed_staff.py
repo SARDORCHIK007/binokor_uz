@@ -11,7 +11,7 @@ from app.security import new_id
 # demo key -> (phone, full name, role, partner slug or None)
 STAFF_DEMOS: dict[str, tuple[str, str, str, str | None]] = {
     "director": ("+998901800001", "Loyiha o'quv direktori", "education_lead", None),
-    "namdtu": ("+998901800002", "NamDTU vakili", "education_lead", "namdtu"),
+    "namdtu": ("+998901800002", "NamDTU vakili", "university_officer", "namdtu"),
     "hokimlik": ("+998901800003", "Hokimlik vakili", "district_official", "uychi-hokimlik"),
     "bandlik": ("+998901800004", "Bandlik bo'limi xodimi", "employment_officer", "tuman-bandlik"),
     "agency": ("+998901800005", "Migratsiya agentligi xodimi", "agency_officer", "tashqi-mehnat"),
@@ -100,9 +100,13 @@ async def _ensure_foreign(conn: AsyncConnection, user_id: uuid.UUID) -> None:
                 text(
                     """
                     INSERT INTO demand_requests (id, employer_id, trade_id, quantity, track, status, destination_id, location,
-                                                 duration_months, salary_from, salary_to, salary_currency, conditions)
+                                                 duration_months, salary_from, salary_to, salary_currency, conditions, title,
+                                                 requirements, duties, benefits, schedule, city, address)
                     SELECT :id, :e, t.id, :quantity, 'FOREIGN', 'NEW', d.id, 'KR', 12, :low, :high, 'USD',
-                           'Yotoqxona va ovqat kompaniya hisobidan.'
+                           'Yotoqxona va ovqat kompaniya hisobidan.', t.name->>'uz-Latn' || ' (Seoul loyihasi)',
+                           CAST('{"min_level": "MASTER", "min_experience_years": 2, "certificate_required": true, "language": "ko", "language_level": 2}' AS jsonb),
+                           'Turar-joy binosida ichki montaj ishlari.', CAST('{"housing": true, "meals": true, "insurance": true, "visa_support": true}' AS jsonb),
+                           '6 kun, kuniga 8 soat', 'Seoul', 'Gangnam-gu, Teheran-ro 100'
                     FROM trades t, destinations d WHERE t.code = :trade AND d.country_code = 'KR'
                     """
                 ),

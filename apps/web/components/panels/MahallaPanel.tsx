@@ -67,7 +67,7 @@ export function MahallaPanel({ initial }: { initial: MahallaData }) {
       <p className="text-sm text-muted">
         {t("mahallas")}: <span className="font-bold text-navy-900">{data.mahallas.map((item) => item.name).join(", ")}</span>
       </p>
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-6">
+      <div className="grid grid-cols-2 gap-3 xl:grid-cols-3 2xl:grid-cols-6">
         {KPIS.map((key, index) => (
           <Tile key={key} label={t(`kpi.${key}`)} value={data.kpi[key] ?? 0} tone={TONES[index]} />
         ))}

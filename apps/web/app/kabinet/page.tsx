@@ -11,6 +11,8 @@ import { activeRole, apiAuth, readSession } from "@/lib/session";
 
 /** Roles whose home is one dedicated panel. */
 const PANEL_HOME: Record<string, string> = {
+  education_lead: "/kabinet/monitoring",
+  university_officer: "/kabinet/imzolash",
   district_official: "/kabinet/hisobot",
   mahalla_assistant: "/kabinet/mahalla",
   employment_officer: "/kabinet/bandlik",

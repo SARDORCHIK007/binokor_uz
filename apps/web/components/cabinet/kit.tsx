@@ -33,11 +33,11 @@ export function Badge({ tone = "gray", children }: { tone?: Tone; children: Reac
 
 export function Tile({ label, value, tone = "blue", hint }: { label: string; value: ReactNode; tone?: Tone; hint?: string }) {
   return (
-    <div className={`${CARD} flex items-center gap-4`}>
-      <span className={`grid size-12 shrink-0 place-items-center rounded-xl text-xl font-extrabold tabular-nums ${TONES[tone]}`}>{value}</span>
-      <div className="min-w-0">
-        <p className="text-sm font-semibold text-navy-900">{label}</p>
-        {hint ? <p className="text-xs text-muted">{hint}</p> : null}
+    <div className={`${CARD} flex min-w-0 items-center gap-3`}>
+      <span className={`grid h-12 min-w-12 shrink-0 place-items-center rounded-xl px-2 text-xl font-extrabold tabular-nums ${TONES[tone]}`}>{value}</span>
+      <div className="min-w-0 flex-1">
+        <p className="text-sm leading-snug font-semibold break-words text-navy-900">{label}</p>
+        {hint ? <p className="text-xs break-words text-muted">{hint}</p> : null}
       </div>
     </div>
   );

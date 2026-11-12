@@ -75,7 +75,7 @@ async def signers_for(conn: AsyncConnection, number: str, lang: str = "uz-Latn")
 # which cabinet roles may sign for which kind of organisation
 SIGN_ROLES = {
     "GOV": {"superadmin", "admin", "district_official"},
-    "EDU": {"education_lead"},
+    "EDU": {"education_lead", "university_officer"},
     "AGENCY": {"cert_officer", "partner_viewer", "agency_officer"},
 }
 

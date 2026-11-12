@@ -95,7 +95,8 @@
     "employment_officer": "Employment office officer",
     "agency_officer": "Migration agency officer",
     "migration_observer": "Republic migration observer",
-    "district_official": "District administration official"
+    "district_official": "District administration official",
+    "university_officer": "University representative"
   },
   "cabinet": {
     "panel": "Dashboard",
@@ -172,7 +173,11 @@
     "migrationPanel": "Migration panel",
     "vacancies": "Vacancies",
     "invitations": "Invitations",
-    "orgProfile": "Organisation profile"
+    "orgProfile": "Organisation profile",
+    "monitoring": "Monitoring",
+    "studentRatings": "Learner ratings",
+    "myRating": "My rating",
+    "survey": "Rate your teacher"
   },
   "session": {
     "title": "Cabinet",
@@ -1867,5 +1872,213 @@
     "view": "View the public page",
     "updated": "Last changed: {date}",
     "privacyNote": "Enter only the organisation's official contacts. No personal phone numbers or staff details go here."
+  },
+  "mon": {
+    "title": "Training centre monitoring",
+    "text": "Teaching quality, teacher ratings and learner results in one place.",
+    "kpi": {
+      "students": "Learners studying",
+      "teachers": "Teachers",
+      "groups": "Groups",
+      "attendance": "Average attendance",
+      "score": "Average score",
+      "pass_rate": "Pass rate",
+      "at_risk": "At risk (attendance < 80%)",
+      "survey": "Survey answers"
+    },
+    "round": "Survey round: {round}",
+    "rankTitle": "Teacher ranking",
+    "empty": "No teachers yet",
+    "col": {
+      "rank": "#",
+      "teacher": "Teacher",
+      "groups": "Groups",
+      "students": "Learners",
+      "survey": "Survey",
+      "score": "Rating",
+      "group": "Group",
+      "name": "Learner",
+      "trade": "Trade",
+      "attendance": "Attendance",
+      "avg": "Average score",
+      "place": "Place in group",
+      "hours": "Site hours"
+    },
+    "parts": {
+      "survey": "Survey",
+      "results": "Learner results",
+      "attendance": "Learner attendance",
+      "journal": "Journal activity"
+    },
+    "noData": "No data",
+    "howTitle": "How the rating is calculated",
+    "how": "The rating is 0–100: survey {a}%, learner results {b}%, attendance {c}%, journal activity {d}%. A part with no data is left out and the rest are re-weighted.",
+    "responses": "{n} answers",
+    "anonymous": "Comments are anonymous: the author is never shown.",
+    "t": {
+      "title": "Teacher activity"
+    },
+    "criteria": {
+      "expertise": "Subject knowledge",
+      "explanation": "Clarity of explanation",
+      "practice": "Focus on practice",
+      "punctuality": "Punctuality",
+      "respect": "Respect and manner",
+      "support": "Support and feedback"
+    },
+    "trend": "By round",
+    "comments": "Learner comments",
+    "noComments": "No comments yet",
+    "groups": "Groups",
+    "back": "Back to monitoring",
+    "open": "Open",
+    "students": {
+      "title": "Learner ratings",
+      "text": "Every learner in training: attendance, scores and place in the group."
+    },
+    "studentsLink": "Learner ratings",
+    "risk": "Attendance below 80%",
+    "allGroups": "All groups",
+    "search": "Search by name",
+    "mine": {
+      "title": "My rating",
+      "text": "Your rating and the anonymous comments of your learners."
+    }
+  },
+  "sv": {
+    "title": "Rate your teacher",
+    "text": "Your answer is anonymous: neither the teacher nor the management sees who wrote it. The result is used to improve teaching quality.",
+    "round": "Round: {round}",
+    "teacherOf": "{teacher} · group {group}",
+    "done": "Rated",
+    "submit": "Submit",
+    "sending": "Sending…",
+    "saved": "Thank you! Your answer was saved anonymously.",
+    "failed": "Not sent. Rate every criterion.",
+    "comment": "Your comment (optional)",
+    "none": "No teacher to rate yet",
+    "star": "{n} points"
+  },
+  "vw": {
+    "title": "Vacancies",
+    "text": "Post jobs in full: what the work is, what is required, what is offered and exactly where.",
+    "tabVacancies": "Vacancies",
+    "tabCompany": "Company details",
+    "verified": "Company verified",
+    "unverified": "Awaiting verification",
+    "notVerified": "The company must be verified before posting. Fill in the legal details and upload the registration document.",
+    "newButton": "New vacancy",
+    "cancel": "Cancel",
+    "sec": {
+      "main": "The basics",
+      "pay": "Pay",
+      "duties": "What the work is",
+      "req": "What the candidate needs",
+      "offer": "What is offered"
+    },
+    "f": {
+      "title": "Vacancy title",
+      "trade": "Trade",
+      "quantity": "Workers needed",
+      "country": "Country",
+      "city": "City / district",
+      "address": "Exact address of the workplace",
+      "map": "Map link (optional)",
+      "start": "Start date",
+      "deadline": "Applications until",
+      "months": "Contract length (months)",
+      "schedule": "Schedule (for example 6 days, 8 hours)",
+      "brigade": "Needs a ready crew",
+      "from": "Salary (from)",
+      "to": "Salary (to)",
+      "currency": "Currency",
+      "duties": "Main duties and kinds of work",
+      "level": "Minimum level",
+      "anyLevel": "Any",
+      "experience": "Minimum experience (years)",
+      "certificate": "Certificate required",
+      "language": "Language",
+      "noLanguage": "Not required",
+      "langLevel": "Language level",
+      "notes": "Other requirements",
+      "conditions": "Other conditions"
+    },
+    "level": {
+      "APPRENTICE": "Apprentice",
+      "ASSISTANT": "Assistant",
+      "MASTER": "Master",
+      "FOREMAN": "Foreman"
+    },
+    "lang": {
+      "ru": "Russian",
+      "en": "English",
+      "ko": "Korean",
+      "ja": "Japanese",
+      "de": "German",
+      "it": "Italian"
+    },
+    "benefit": {
+      "housing": "Housing",
+      "meals": "Meals",
+      "transport": "Transport",
+      "insurance": "Insurance",
+      "visa_support": "Visa support",
+      "flight": "Travel ticket"
+    },
+    "post": "Post the vacancy",
+    "posting": "Posting…",
+    "posted": "The vacancy is posted.",
+    "postFailed": "Not posted. Check the required fields (title, trade, address).",
+    "mine": "My vacancies",
+    "none": "You have not posted any vacancies yet",
+    "close": "Close",
+    "deadline": "Deadline: {date}",
+    "places": "{n} positions",
+    "candidates": "{n} candidates",
+    "reqLevel": "Level: {level}",
+    "reqYears": "Experience: {n}+ years",
+    "reqCertificate": "Certificate needed",
+    "reqLanguage": "{lang}: level {level}",
+    "company": {
+      "legal": "Legal details",
+      "legalText": "The migration agency sees this to verify the organisation; it is not shown publicly."
+    },
+    "l": {
+      "legal_name": "Legal name",
+      "registration_no": "Registration number",
+      "inn": "Tax number",
+      "license_ref": "Licence number",
+      "address": "Registered address",
+      "website": "Website",
+      "contact_person": "Contact person",
+      "contact_email": "Email",
+      "contact_phone": "Phone (international format)",
+      "description": "About the company"
+    },
+    "saveLegal": "Save",
+    "legalSaved": "Saved.",
+    "legalFailed": "Not saved. Check the fields.",
+    "docs": {
+      "title": "Documents",
+      "text": "PDF, JPG or PNG, up to 5 MB each. The registration certificate is required for verification.",
+      "kind": "Document type",
+      "file": "File",
+      "upload": "Upload",
+      "uploading": "Uploading…",
+      "uploaded": "Document uploaded.",
+      "failed": "Not uploaded. The file must be a PDF, JPG or PNG under 5 MB.",
+      "none": "No documents yet",
+      "checked": "Checked by the agency",
+      "pending": "Awaiting check",
+      "open": "Open",
+      "delete": "Delete"
+    },
+    "docKind": {
+      "REGISTRATION": "Registration certificate",
+      "LICENSE": "Licence",
+      "POWER_OF_ATTORNEY": "Power of attorney",
+      "CONTRACT": "Contract sample",
+      "OTHER": "Other"
+    }
   }
 }

@@ -20,6 +20,7 @@ from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 from app.doc_i18n import lang_of, pick
 from app.inapp import notify
 from app.ratelimit import too_many
+from app.routers.vacancies import VACANCY_SQL, vacancy_json
 from app.rules import matrix_class
 from app.security import bearer_from_request, new_id, problem, read_access_token
 
@@ -27,7 +28,6 @@ router = APIRouter(prefix="/api/v1", tags=["panels"])
 
 PHONE_RE = "^\\+998[0-9]{9}$"
 FOREIGN_STATUSES = {"IN_REVIEW", "VIA_AGENCY", "SHORTLIST_SENT", "EMPLOYER_APPROVED", "CONTRACTING", "MATCHED", "CLOSED", "CANCELLED"}
-CURRENCIES = {"USD", "EUR", "KRW", "JPY", "RUB", "UZS"}
 OPEN_STATUSES = "('CLOSED', 'CANCELLED', 'MATCHED')"
 
 
@@ -396,38 +396,6 @@ async def refer_worker(body: ReferIn, request: Request) -> JSONResponse:
     return JSONResponse({"status": "PROPOSED"})
 
 
-VACANCY_SQL = """
-    SELECT r.id::text AS id, e.name AS employer, coalesce(d.country_code, e.country_code) AS country, t.name AS trade,
-           r.quantity, r.salary_from, r.salary_to, r.salary_currency, r.start_date::text AS start, r.duration_months,
-           r.status::text AS status, r.created_at::date::text AS created, r.conditions,
-           (SELECT count(*) FROM request_candidates c WHERE c.request_id = r.id) AS candidates
-    FROM demand_requests r
-    JOIN employers e ON e.id = r.employer_id
-    JOIN trades t ON t.id = r.trade_id
-    LEFT JOIN destinations d ON d.id = r.destination_id
-"""
-
-
-def _vacancy(row: object, code: str) -> dict[str, object]:
-    r: dict[str, object] = dict(row)  # type: ignore[call-overload]
-    return {
-        "id": r["id"],
-        "employer": r["employer"],
-        "country": str(r["country"] or "").strip(),
-        "trade": pick(r["trade"], code),
-        "quantity": int(str(r["quantity"])),
-        "salary_from": None if r["salary_from"] is None else float(str(r["salary_from"])),
-        "salary_to": None if r["salary_to"] is None else float(str(r["salary_to"])),
-        "currency": r["salary_currency"],
-        "start": r["start"],
-        "months": r["duration_months"],
-        "status": r["status"],
-        "created": r["created"],
-        "conditions": r["conditions"],
-        "candidates": int(str(r["candidates"])),
-    }
-
-
 @router.get("/migration/overview")
 async def migration_overview(request: Request, lang: str | None = None) -> JSONResponse:
     """Foreign vacancies, countries and the pipeline. The republic observer sees the same figures but cannot change anything."""
@@ -466,7 +434,7 @@ async def migration_overview(request: Request, lang: str | None = None) -> JSONR
         )
         pipeline = await conn.execute(text("SELECT status::text AS status, count(*) AS n FROM demand_requests WHERE track = 'FOREIGN' GROUP BY 1"))
         vacancies = await conn.execute(text(VACANCY_SQL + " WHERE r.track = 'FOREIGN' ORDER BY r.created_at DESC LIMIT 100"))
-        vacancy_list = [_vacancy(r, code) for r in vacancies.mappings()]
+        vacancy_list = [vacancy_json(r, code) for r in vacancies.mappings()]
         can_manage = bool(roles & AGENCY_ROLES)
         workers = await _free_workers(conn, code, 30) if can_manage else []
     return JSONResponse(
@@ -544,7 +512,7 @@ async def migration_export(request: Request) -> Response:
         if not await _roles(conn, user_id) & OBSERVER_ROLES:
             return _forbidden("Bu hisobot migratsiya agentligi va respublika nazorat organi uchun.")
         rows = await conn.execute(text(VACANCY_SQL + " WHERE r.track = 'FOREIGN' ORDER BY r.created_at DESC"))
-        items = [_vacancy(r, "uz-Latn") for r in rows.mappings()]
+        items = [vacancy_json(r, "uz-Latn") for r in rows.mappings()]
     out = io.StringIO()
     writer = csv.writer(out)
     writer.writerow(["country", "employer", "trade", "places", "currency", "salary_from", "salary_to", "status", "candidates", "created"])
@@ -555,131 +523,3 @@ async def migration_export(request: Request) -> Response:
         media_type="text/csv; charset=utf-8",
         headers={"Content-Disposition": 'attachment; filename="migration-vacancies.csv"'},
     )
-
-
-# ================================================================= foreign employer
-
-
-async def _foreign_employer(conn: AsyncConnection, user_id: uuid.UUID) -> dict[str, object] | None:
-    row = (
-        await conn.execute(
-            text(
-                """
-                SELECT e.id, e.name, e.country_code, e.verified_at IS NOT NULL AS verified
-                FROM employers e JOIN employer_members m ON m.employer_id = e.id
-                WHERE m.user_id = :id AND e.kind = 'FOREIGN' LIMIT 1
-                """
-            ),
-            {"id": user_id},
-        )
-    ).mappings().first()
-    return None if row is None else dict(row)
-
-
-@router.get("/foreign/me")
-async def foreign_me(request: Request, lang: str | None = None) -> JSONResponse:
-    code = _lang(request, lang)
-    user_id = _user_id(request)
-    if user_id is None:
-        return _unauth()
-    async with _engine(request).connect() as conn:
-        employer = await _foreign_employer(conn, user_id)
-        if employer is None:
-            return _forbidden("Bu bo'lim xorijiy ish beruvchilar uchun.")
-        rows = await conn.execute(text(VACANCY_SQL + " WHERE r.employer_id = :e ORDER BY r.created_at DESC"), {"e": employer["id"]})
-        vacancies = [_vacancy(r, code) for r in rows.mappings()]
-        trades = await conn.execute(text("SELECT code, name FROM trades WHERE is_active ORDER BY code"))
-        countries = await conn.execute(text("SELECT country_code FROM destinations WHERE is_active ORDER BY country_code"))
-    return JSONResponse(
-        {
-            "employer": {"name": employer["name"], "country": str(employer["country_code"]).strip(), "verified": bool(employer["verified"])},
-            "vacancies": vacancies,
-            "trades": [{"code": r["code"], "name": pick(r["name"], code)} for r in trades.mappings()],
-            "countries": [str(r[0]).strip() for r in countries.all()],
-            "currencies": sorted(CURRENCIES),
-        }
-    )
-
-
-class VacancyIn(BaseModel):
-    trade_code: str
-    quantity: int = Field(ge=1, le=500)
-    country_code: str = Field(min_length=2, max_length=2)
-    salary_from: float | None = Field(default=None, ge=0)
-    salary_to: float | None = Field(default=None, ge=0)
-    currency: str = "USD"
-    start_date: date | None = None
-    duration_months: int | None = Field(default=None, ge=1, le=60)
-    as_brigade: bool = False
-    conditions: str | None = Field(default=None, max_length=2000)
-
-
-@router.post("/foreign/vacancies")
-async def foreign_post_vacancy(body: VacancyIn, request: Request) -> JSONResponse:
-    user_id = _user_id(request)
-    if user_id is None:
-        return _unauth()
-    if body.currency not in CURRENCIES:
-        return problem(422, "VALIDATION", "Valyuta noto'g'ri", "Ro'yxatdagi valyutani tanlang.")
-    if body.salary_from is not None and body.salary_to is not None and body.salary_from > body.salary_to:
-        return problem(422, "VALIDATION", "Maosh oralig'i noto'g'ri", "Boshlang'ich maosh yuqori chegaradan katta.")
-    async with _engine(request).begin() as conn:
-        employer = await _foreign_employer(conn, user_id)
-        if employer is None:
-            return _forbidden("Bu amal xorijiy ish beruvchilar uchun.")
-        if not employer["verified"]:
-            return problem(403, "NOT_VERIFIED", "Tekshiruv kutilmoqda", "Kompaniya tasdiqlangandan keyin vakansiya joylanadi.")
-        trade = (await conn.execute(text("SELECT id FROM trades WHERE code = :c AND is_active"), {"c": body.trade_code})).scalar()
-        if trade is None:
-            return problem(404, "NOT_FOUND", "Kasb topilmadi", "Kasbni qayta tanlang.")
-        destination = (await conn.execute(text("SELECT id FROM destinations WHERE country_code = :c AND is_active"), {"c": body.country_code.upper()})).scalar()
-        if destination is None:
-            return problem(404, "NOT_FOUND", "Davlat ro'yxatda yo'q", "Hamkor davlatni tanlang.")
-        vacancy_id = new_id()
-        await conn.execute(
-            text(
-                """
-                INSERT INTO demand_requests (id, employer_id, trade_id, quantity, as_brigade, track, status, destination_id, location,
-                                             start_date, duration_months, salary_from, salary_to, salary_currency, conditions)
-                VALUES (:id, :employer, :trade, :quantity, :brigade, 'FOREIGN', 'NEW', :destination, :location,
-                        :start, :months, :sfrom, :sto, :currency, :conditions)
-                """
-            ),
-            {
-                "id": vacancy_id,
-                "employer": employer["id"],
-                "trade": trade,
-                "quantity": body.quantity,
-                "brigade": body.as_brigade,
-                "destination": destination,
-                "location": body.country_code.upper(),
-                "start": body.start_date,
-                "months": body.duration_months,
-                "sfrom": body.salary_from,
-                "sto": body.salary_to,
-                "currency": body.currency if body.salary_from is not None or body.salary_to is not None else None,
-                "conditions": (body.conditions or "").strip() or None,
-            },
-        )
-        agents = await conn.execute(text("SELECT DISTINCT user_id FROM user_roles WHERE role = 'agency_officer'"))
-        for (agent,) in agents.all():
-            await notify(conn, agent, "vacancy_new", {"vacancy_id": str(vacancy_id), "employer": str(employer["name"])})
-    return JSONResponse({"id": str(vacancy_id), "status": "NEW"})
-
-
-@router.post("/foreign/vacancies/{vacancy_id}/close")
-async def foreign_close_vacancy(vacancy_id: uuid.UUID, request: Request) -> JSONResponse:
-    user_id = _user_id(request)
-    if user_id is None:
-        return _unauth()
-    async with _engine(request).begin() as conn:
-        employer = await _foreign_employer(conn, user_id)
-        if employer is None:
-            return _forbidden("Bu amal xorijiy ish beruvchilar uchun.")
-        done = await conn.execute(
-            text("UPDATE demand_requests SET status = 'CLOSED' WHERE id = :id AND employer_id = :e AND status <> 'CLOSED' RETURNING id"),
-            {"id": vacancy_id, "e": employer["id"]},
-        )
-        if done.first() is None:
-            return problem(404, "NOT_FOUND", "Vakansiya topilmadi", "Vakansiya yo'q yoki allaqachon yopilgan.")
-    return JSONResponse({"status": "CLOSED"})

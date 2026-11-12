@@ -21,6 +21,7 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet", key: "panel" },
     { href: "/kabinet/ishberuvchi", key: "employer" },
     { href: "/kabinet/saralanganlar", key: "shortlist" },
+    { href: "/kabinet/vakansiyalar", key: "vacancies" },
     { href: "/kabinet/elonlar", key: "postings" },
   ],
   producer: [
@@ -29,14 +30,19 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/statistika", key: "producerStats" },
   ],
   education_lead: [
-    { href: "/kabinet", key: "panel" },
+    { href: "/kabinet/monitoring", key: "monitoring" },
+    { href: "/kabinet/monitoring/tinglovchilar", key: "studentRatings" },
     { href: "/kabinet/hisobot", key: "reports" },
     { href: "/kabinet/sertifikatlar", key: "certificates" },
+    { href: "/kabinet/imzolash", key: "signing" },
+  ],
+  university_officer: [
     { href: "/kabinet/imzolash", key: "signing" },
     { href: "/kabinet/hamkor-profil", key: "orgProfile" },
   ],
   district_official: [
     { href: "/kabinet/hisobot", key: "reports" },
+    { href: "/kabinet/monitoring", key: "monitoring" },
     { href: "/kabinet/mahallalar", key: "mahallas" },
     { href: "/kabinet/imzolash", key: "signing" },
     { href: "/kabinet/hamkor-profil", key: "orgProfile" },
@@ -67,6 +73,7 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/portfolio-tasdiq", key: "portfolioReview" },
     { href: "/kabinet/tinglovchilar", key: "students" },
     { href: "/kabinet/jadval", key: "schedule" },
+    { href: "/kabinet/reytingim", key: "myRating" },
   ],
   curator: [
     { href: "/kabinet", key: "panel" },
@@ -88,6 +95,7 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/arizam", key: "myApplication" },
     { href: "/kabinet/pasport", key: "passport" },
     { href: "/kabinet/lugat", key: "vocab" },
+    { href: "/kabinet/baholash", key: "survey" },
     { href: "/kabinet/yutuqlarim", key: "progress" },
     { href: "/kabinet/jadval", key: "schedule" },
   ],

@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
 
 const MAIN = ["admin", "mentor", "student", "worker", "employer", "producer"] as const;
-const STAFF = ["hokimlik", "director", "namdtu", "bandlik", "agency", "republic", "mahalla", "foreign"] as const;
+const STAFF = ["hokimlik", "director", "namdtu", "bandlik", "agency", "mahalla", "foreign"] as const;
 const demoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 
 type ErrorBody = { detail?: string; title?: string };

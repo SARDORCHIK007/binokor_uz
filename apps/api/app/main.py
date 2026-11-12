@@ -23,6 +23,7 @@ from app.routers.exams import router as exams_router
 from app.routers.jobs import router as jobs_router
 from app.routers.learning import router as learning_router
 from app.routers.market import router as market_router
+from app.routers.monitoring import router as monitoring_router
 from app.routers.onboarding import router as onboarding_router
 from app.routers.panels import router as panels_router
 from app.routers.partner_profile import router as partner_profile_router
@@ -32,6 +33,7 @@ from app.routers.producers import router as producers_router
 from app.routers.public import router as public_router
 from app.routers.public import set_public_locale
 from app.routers.reports import router as reports_router
+from app.routers.vacancies import router as vacancies_router
 from app.routers.vocab import router as vocab_router
 from app.seed import seed_login_users
 from app.seed_certificates import seed_certificates
@@ -111,8 +113,10 @@ app.include_router(employers_router)
 app.include_router(producers_router)
 app.include_router(cabinet_extra_router)
 app.include_router(onboarding_router)
+app.include_router(monitoring_router)
 app.include_router(partner_profile_router)
 app.include_router(panels_router)
+app.include_router(vacancies_router)
 
 
 @app.middleware("http")

@@ -56,6 +56,9 @@ const CABINET_ICONS: [string, IconName][] = [
   ["vakansiyalar", "briefcase"],
   ["taklifnomalar", "users"],
   ["hamkor-profil", "award"],
+  ["monitoring", "chart"],
+  ["baholash", "star"],
+  ["reytingim", "star"],
   ["jadval", "calendar"],
   ["elonlar", "doc"],
 ];

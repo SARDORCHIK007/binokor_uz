@@ -73,16 +73,20 @@ async def _flow() -> None:
         assert "phone" not in str(after).lower()
 
         # a foreign employer posts a vacancy; the agency sees it and moves it along; the observer only reads
-        me = (await foreign.get("/api/v1/foreign/me")).json()
+        me = (await foreign.get("/api/v1/vacancies/me")).json()
         assert me["employer"]["verified"] and me["trades"] and "KR" in me["countries"]
         vacancy = await foreign.post(
-            "/api/v1/foreign/vacancies",
-            json={"trade_code": me["trades"][0]["code"], "quantity": 3, "country_code": "KR", "salary_from": 1500, "salary_to": 2000, "currency": "USD"},
+            "/api/v1/vacancies",
+            json={"title": "Test vakansiya", "trade_code": me["trades"][0]["code"], "quantity": 3, "country_code": "KR", "city": "Busan", "address": "Haeundae-gu 1", "salary_from": 1500, "salary_to": 2000, "currency": "USD", "requirements": {"min_level": "MASTER", "min_experience_years": 2}, "benefits": {"housing": True}},
         )
         assert vacancy.status_code == 200
         created_vacancy = vacancy.json()["id"]
-        bad = await foreign.post("/api/v1/foreign/vacancies", json={"trade_code": me["trades"][0]["code"], "quantity": 1, "country_code": "SA"})
+        bad = await foreign.post("/api/v1/vacancies", json={"title": "Davlat xato", "trade_code": me["trades"][0]["code"], "quantity": 1, "country_code": "SA", "city": "X", "address": "Y"})
         assert bad.status_code == 404
+        no_address = await foreign.post("/api/v1/vacancies", json={"title": "Manzilsiz", "trade_code": me["trades"][0]["code"], "quantity": 1, "country_code": "KR"})
+        assert no_address.status_code == 422
+        bad_req = await foreign.post("/api/v1/vacancies", json={"title": "Talab xato", "trade_code": me["trades"][0]["code"], "quantity": 1, "country_code": "KR", "city": "X", "address": "Y", "requirements": {"min_level": "GOD"}})
+        assert bad_req.status_code == 422
         view = (await agency.get("/api/v1/migration/overview")).json()
         assert view["can_manage"] is True
         assert any(item["id"] == created_vacancy for item in view["vacancies"])
@@ -101,7 +105,7 @@ async def _flow() -> None:
             referred = await agency.post("/api/v1/panels/refer", json={"request_id": created_vacancy, "worker_user_id": workers[0]["user_id"]})
             assert referred.status_code == 200
             assert (await bandlik.post("/api/v1/panels/refer", json={"request_id": created_vacancy, "worker_user_id": workers[0]["user_id"]})).status_code == 403
-        assert (await foreign.post(f"/api/v1/foreign/vacancies/{created_vacancy}/close")).status_code == 200
+        assert (await foreign.post(f"/api/v1/vacancies/{created_vacancy}/close")).status_code == 200
 
         # employment office dashboard
         jobs = (await bandlik.get("/api/v1/employment/overview")).json()
@@ -196,3 +200,53 @@ async def _flow() -> None:
         for client in (admin, mahalla, bandlik, agency, republic, foreign, hokimlik, student):
             await client.aclose()
         await engine.dispose()
+
+
+def test_foreign_firm_documents_and_verification() -> None:
+    """A foreign employer saves legal data and uploads a document; only the agency may verify the firm."""
+    if not os.environ.get("DATABASE_URL"):
+        pytest.skip("DATABASE_URL yo'q")
+    asyncio.run(_firm_flow())
+
+
+async def _firm_flow() -> None:
+    foreign = await _login("foreign")
+    agency = await _login("agency")
+    student = await _login("student")
+    doc_id = None
+    try:
+        legal = {"legal_name": "Seoul Build Co., Ltd.", "registration_no": "110-81-12345", "address": "Seoul, Gangnam-gu", "website": "https://example.kr", "contact_person": "Kim Min-jun", "contact_email": "hr@example.kr", "contact_phone": "+82 2 1234 5678", "description": "Qurilish kompaniyasi"}
+        assert (await foreign.put("/api/v1/vacancies/legal", json={**legal, "website": "ftp://x"})).status_code == 422
+        assert (await foreign.put("/api/v1/vacancies/legal", json=legal)).status_code == 200
+        assert (await student.put("/api/v1/vacancies/legal", json=legal)).status_code == 403
+        pdf = b"%PDF-1.4\n1 0 obj<<>>endobj\ntrailer<<>>\n%%EOF"
+        assert (await foreign.post("/api/v1/vacancies/documents?kind=REGISTRATION&filename=reg", content=b"not a document")).status_code == 422
+        assert (await foreign.post("/api/v1/vacancies/documents?kind=BAD&filename=reg", content=pdf)).status_code == 422
+        up = await foreign.post("/api/v1/vacancies/documents?kind=REGISTRATION&filename=reg", content=pdf)
+        assert up.status_code == 200 and up.json()["filename"].endswith(".pdf")
+        doc_id = up.json()["id"]
+        mine = (await foreign.get("/api/v1/vacancies/me")).json()
+        assert mine["employer"]["legal"]["legal_name"] == "Seoul Build Co., Ltd." and any(d["id"] == doc_id for d in mine["documents"])
+        assert (await foreign.get(f"/api/v1/vacancies/documents/{doc_id}/file")).content == pdf
+        assert (await student.get(f"/api/v1/vacancies/documents/{doc_id}/file")).status_code == 403
+        firms = (await agency.get("/api/v1/vacancies/firms")).json()
+        firm = next(item for item in firms if item["name"] == "Seoul Build Co.")
+        assert firm["legal"]["registration_no"] == "110-81-12345" and firm["documents"]
+        assert (await agency.get(f"/api/v1/vacancies/documents/{doc_id}/file")).status_code == 200
+        assert (await agency.post(f"/api/v1/vacancies/documents/{doc_id}/check")).status_code == 200
+        assert (await foreign.post(f"/api/v1/vacancies/firms/{firm['id']}/verify", json={"verified": False})).status_code == 403
+        assert (await agency.post(f"/api/v1/vacancies/firms/{firm['id']}/verify", json={"verified": True})).status_code == 200
+        assert (await foreign.delete(f"/api/v1/vacancies/documents/{doc_id}")).status_code == 200
+        doc_id = None
+        # without a registration document the firm cannot be (re)verified
+        assert (await agency.post(f"/api/v1/vacancies/firms/{firm['id']}/verify", json={"verified": True})).status_code == 409
+        # restore the demo company so the other tests keep a verified employer
+        engine = create_async_engine(os.environ["DATABASE_URL"])
+        async with engine.begin() as conn:
+            await conn.execute(text("UPDATE employers SET verified_at = now() WHERE id = CAST(:id AS uuid)"), {"id": firm["id"]})
+        await engine.dispose()
+    finally:
+        if doc_id:
+            await foreign.delete(f"/api/v1/vacancies/documents/{doc_id}")
+        for client in (foreign, agency, student):
+            await client.aclose()

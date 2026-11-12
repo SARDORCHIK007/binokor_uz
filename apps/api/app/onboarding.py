@@ -18,7 +18,8 @@ from app.security import new_id
 INVITABLE_ROLES: dict[str, set[str]] = {
     "mentor": set(),
     "curator": set(),
-    "education_lead": set(),  # project study director, NamDTU staff (with a partner)
+    "education_lead": set(),  # project study director
+    "university_officer": set(),  # NamDTU office: graduates and certificate signing
     "cert_officer": set(),
     "placement_manager": set(),
     "district_official": set(),  # hokimlik
@@ -30,7 +31,7 @@ INVITABLE_ROLES: dict[str, set[str]] = {
 }
 
 # roles whose holders belong to a partner organisation
-PARTNER_ROLES = {"education_lead", "district_official", "employment_officer", "agency_officer", "migration_observer"}
+PARTNER_ROLES = {"education_lead", "university_officer", "district_official", "employment_officer", "agency_officer", "migration_observer"}
 
 PLACEHOLDER_NAME = "Yangi foydalanuvchi"
 

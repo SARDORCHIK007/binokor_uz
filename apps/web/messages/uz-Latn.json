@@ -95,7 +95,8 @@
     "employment_officer": "Bandlik bo'limi xodimi",
     "agency_officer": "Migratsiya agentligi xodimi",
     "migration_observer": "Respublika migratsiya nazoratchisi",
-    "district_official": "Hokimlik vakili"
+    "district_official": "Hokimlik vakili",
+    "university_officer": "Universitet vakili"
   },
   "cabinet": {
     "panel": "Panel",
@@ -172,7 +173,11 @@
     "migrationPanel": "Migratsiya paneli",
     "vacancies": "Vakansiyalar",
     "invitations": "Taklifnomalar",
-    "orgProfile": "Tashkilot profili"
+    "orgProfile": "Tashkilot profili",
+    "monitoring": "Monitoring",
+    "studentRatings": "Tinglovchilar reytingi",
+    "myRating": "Mening reytingim",
+    "survey": "Ustozni baholash"
   },
   "session": {
     "title": "Kabinet",
@@ -1867,5 +1872,213 @@
     "view": "Ommaviy sahifani ko'rish",
     "updated": "Oxirgi o'zgarish: {date}",
     "privacyNote": "Faqat tashkilotning rasmiy aloqa ma'lumotlarini kiriting. Shaxsiy telefon raqamlari va xodimlarning ma'lumotlari bu yerga yozilmaydi."
+  },
+  "mon": {
+    "title": "Muassasa monitoringi",
+    "text": "O'qish sifati, ustozlar reytingi va tinglovchilar natijalari bir joyda.",
+    "kpi": {
+      "students": "O'qiyotgan tinglovchilar",
+      "teachers": "Ustozlar",
+      "groups": "Guruhlar",
+      "attendance": "O'rtacha davomat",
+      "score": "O'rtacha ball",
+      "pass_rate": "O'tganlar ulushi",
+      "at_risk": "Xavf ostida (davomat < 80%)",
+      "survey": "So'rovnoma javoblari"
+    },
+    "round": "So'rovnoma davri: {round}",
+    "rankTitle": "Ustozlar reytingi",
+    "empty": "Hali ustoz yo'q",
+    "col": {
+      "rank": "#",
+      "teacher": "Ustoz",
+      "groups": "Guruh",
+      "students": "Tinglovchi",
+      "survey": "So'rovnoma",
+      "score": "Reyting",
+      "group": "Guruh",
+      "name": "Tinglovchi",
+      "trade": "Kasb",
+      "attendance": "Davomat",
+      "avg": "O'rtacha ball",
+      "place": "Guruhda o'rni",
+      "hours": "Obyekt soati"
+    },
+    "parts": {
+      "survey": "So'rovnoma",
+      "results": "Tinglovchilar natijasi",
+      "attendance": "Tinglovchilar davomati",
+      "journal": "Jurnal faolligi"
+    },
+    "noData": "Ma'lumot yo'q",
+    "howTitle": "Reyting qanday hisoblanadi",
+    "how": "Reyting 0–100 ball: so'rovnoma {a}%, tinglovchilar natijasi {b}%, davomat {c}%, jurnal faolligi {d}%. Ma'lumoti yo'q ko'rsatkich hisobga olinmaydi, qolganlar teng taqsimlanadi.",
+    "responses": "{n} ta javob",
+    "anonymous": "Fikrlar anonim: kim yozgani ko'rinmaydi.",
+    "t": {
+      "title": "Ustoz faoliyati"
+    },
+    "criteria": {
+      "expertise": "Fan bilimi",
+      "explanation": "Tushuntirish aniqligi",
+      "practice": "Amaliyotga e'tibor",
+      "punctuality": "Vaqtga rioya",
+      "respect": "Muomala va hurmat",
+      "support": "Yordam va qayta aloqa"
+    },
+    "trend": "Davrlar bo'yicha",
+    "comments": "Tinglovchilar fikrlari",
+    "noComments": "Hali fikr yozilmagan",
+    "groups": "Guruhlari",
+    "back": "Monitoringga qaytish",
+    "open": "Ochish",
+    "students": {
+      "title": "Tinglovchilar reytingi",
+      "text": "Hamma o'qiyotgan tinglovchilar: davomat, ball va guruhdagi o'rni."
+    },
+    "studentsLink": "Tinglovchilar reytingi",
+    "risk": "Davomat 80% dan past",
+    "allGroups": "Hamma guruhlar",
+    "search": "Ism bo'yicha qidirish",
+    "mine": {
+      "title": "Mening reytingim",
+      "text": "Reytingingiz va tinglovchilarning anonim fikrlari."
+    }
+  },
+  "sv": {
+    "title": "Ustozni baholash",
+    "text": "Javobingiz anonim: ustozingiz ham, rahbariyat ham kim yozganini ko'rmaydi. Natija o'qish sifatini yaxshilash uchun ishlatiladi.",
+    "round": "Davr: {round}",
+    "teacherOf": "{teacher} · {group} guruhi",
+    "done": "Baholangan",
+    "submit": "Yuborish",
+    "sending": "Yuborilmoqda…",
+    "saved": "Rahmat! Javobingiz anonim saqlandi.",
+    "failed": "Yuborilmadi. Hamma mezonni baholang.",
+    "comment": "Fikringiz (ixtiyoriy)",
+    "none": "Hozircha baholaydigan ustoz yo'q",
+    "star": "{n} ball"
+  },
+  "vw": {
+    "title": "Vakansiyalar",
+    "text": "Ish o'rinlarini to'liq tavsif bilan joylang: nima ish, nimalar talab qilinadi, nimalar taklif etiladi va aniq qayerda.",
+    "tabVacancies": "Vakansiyalar",
+    "tabCompany": "Kompaniya ma'lumotlari",
+    "verified": "Kompaniya tasdiqlangan",
+    "unverified": "Tasdiq kutilmoqda",
+    "notVerified": "Vakansiya joylash uchun kompaniya tasdiqlanishi kerak. Yuridik ma'lumotlarni to'ldiring va ro'yxatdan o'tganlik hujjatini yuklang.",
+    "newButton": "Yangi vakansiya",
+    "cancel": "Bekor qilish",
+    "sec": {
+      "main": "Asosiy ma'lumot",
+      "pay": "Maosh",
+      "duties": "Ish mazmuni",
+      "req": "Nomzodga talablar",
+      "offer": "Nima taklif etiladi"
+    },
+    "f": {
+      "title": "Vakansiya nomi",
+      "trade": "Kasb",
+      "quantity": "Kerakli xodimlar soni",
+      "country": "Davlat",
+      "city": "Shahar / tuman",
+      "address": "Ish joyining aniq manzili",
+      "map": "Xarita havolasi (ixtiyoriy)",
+      "start": "Ishga kirish sanasi",
+      "deadline": "Nomzod qabul qilish muddati",
+      "months": "Shartnoma muddati (oy)",
+      "schedule": "Ish tartibi (masalan, 6 kun, 8 soat)",
+      "brigade": "Tayyor brigada kerak",
+      "from": "Maosh (dan)",
+      "to": "Maosh (gacha)",
+      "currency": "Valyuta",
+      "duties": "Asosiy vazifalar va ish turlari",
+      "level": "Eng kam daraja",
+      "anyLevel": "Ahamiyati yo'q",
+      "experience": "Eng kam tajriba (yil)",
+      "certificate": "Sertifikat majburiy",
+      "language": "Til",
+      "noLanguage": "Talab qilinmaydi",
+      "langLevel": "Til darajasi",
+      "notes": "Qo'shimcha talablar",
+      "conditions": "Qo'shimcha shartlar"
+    },
+    "level": {
+      "APPRENTICE": "Shogird",
+      "ASSISTANT": "Yordamchi",
+      "MASTER": "Usta",
+      "FOREMAN": "Brigadir"
+    },
+    "lang": {
+      "ru": "Rus tili",
+      "en": "Ingliz tili",
+      "ko": "Koreys tili",
+      "ja": "Yapon tili",
+      "de": "Nemis tili",
+      "it": "Italyan tili"
+    },
+    "benefit": {
+      "housing": "Yotoqxona",
+      "meals": "Ovqat",
+      "transport": "Transport",
+      "insurance": "Sug'urta",
+      "visa_support": "Viza yordami",
+      "flight": "Yo'l chiptasi"
+    },
+    "post": "Vakansiyani joylash",
+    "posting": "Yuborilmoqda…",
+    "posted": "Vakansiya joylandi.",
+    "postFailed": "Joylanmadi. Majburiy maydonlarni (nom, kasb, manzil) tekshiring.",
+    "mine": "Mening vakansiyalarim",
+    "none": "Hali vakansiya joylamagansiz",
+    "close": "Yopish",
+    "deadline": "Muddat: {date}",
+    "places": "{n} o'rin",
+    "candidates": "{n} nomzod",
+    "reqLevel": "Daraja: {level}",
+    "reqYears": "Tajriba: {n} yil+",
+    "reqCertificate": "Sertifikat kerak",
+    "reqLanguage": "{lang}: {level}-daraja",
+    "company": {
+      "legal": "Yuridik ma'lumotlar",
+      "legalText": "Bu ma'lumotlar tashkilotni tekshirish uchun migratsiya agentligiga ko'rinadi, ommaviy sahifada ko'rsatilmaydi."
+    },
+    "l": {
+      "legal_name": "Rasmiy nomi",
+      "registration_no": "Ro'yxatdan o'tish raqami",
+      "inn": "STIR / soliq raqami",
+      "license_ref": "Litsenziya raqami",
+      "address": "Yuridik manzil",
+      "website": "Veb-sayt",
+      "contact_person": "Mas'ul shaxs",
+      "contact_email": "Elektron pochta",
+      "contact_phone": "Telefon (xalqaro format)",
+      "description": "Kompaniya haqida"
+    },
+    "saveLegal": "Saqlash",
+    "legalSaved": "Saqlandi.",
+    "legalFailed": "Saqlanmadi. Maydonlarni tekshiring.",
+    "docs": {
+      "title": "Hujjatlar",
+      "text": "PDF, JPG yoki PNG, har biri 5 MB gacha. Tasdiqlash uchun ro'yxatdan o'tganlik guvohnomasi (Registration) majburiy.",
+      "kind": "Hujjat turi",
+      "file": "Fayl",
+      "upload": "Yuklash",
+      "uploading": "Yuklanmoqda…",
+      "uploaded": "Hujjat yuklandi.",
+      "failed": "Yuklanmadi. Fayl PDF, JPG yoki PNG bo'lishi va 5 MB dan oshmasligi kerak.",
+      "none": "Hali hujjat yuklanmagan",
+      "checked": "Agentlik tekshirgan",
+      "pending": "Tekshiruv kutilmoqda",
+      "open": "Ochish",
+      "delete": "O'chirish"
+    },
+    "docKind": {
+      "REGISTRATION": "Ro'yxatdan o'tganlik guvohnomasi",
+      "LICENSE": "Litsenziya",
+      "POWER_OF_ATTORNEY": "Ishonchnoma",
+      "CONTRACT": "Shartnoma namunasi",
+      "OTHER": "Boshqa"
+    }
   }
 }

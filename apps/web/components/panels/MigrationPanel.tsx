@@ -82,7 +82,7 @@ export function MigrationPanel({ initial }: { initial: MigrationData }) {
           {t("readonly")}
         </p>
       ) : null}
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-6">
+      <div className="grid grid-cols-2 gap-3 xl:grid-cols-3 2xl:grid-cols-6">
         {KPIS.map((key, index) => (
           <Tile key={key} label={t(`kpi.${key}`)} value={data.kpi[key] ?? 0} tone={TONES[index]} />
         ))}
