@@ -2,7 +2,16 @@ import re
 
 PHONE = re.compile(r"\+998[0-9]{9}")
 PINFL = re.compile(r"\b[0-9]{14}\b")
-PRIVILEGED_ROLES = {"superadmin", "admin", "education_lead", "cert_officer", "placement_manager"}
+PRIVILEGED_ROLES = {
+    "superadmin",
+    "admin",
+    "education_lead",
+    "cert_officer",
+    "placement_manager",
+    "employment_officer",
+    "agency_officer",
+    "district_official",
+}
 
 
 def matrix_class(experience_years: float, has_language: bool) -> str:

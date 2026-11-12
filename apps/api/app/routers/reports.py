@@ -37,7 +37,7 @@ async def _allowed(conn: AsyncConnection, user_id: uuid.UUID) -> bool:
         {"id": user_id},
     )
     roles = {str(item["role"]) for item in rows.mappings()}
-    return bool(roles.intersection({"admin", "partner_viewer", "education_lead"}))
+    return bool(roles.intersection({"admin", "partner_viewer", "education_lead", "district_official"}))
 
 
 @router.get("/summary")

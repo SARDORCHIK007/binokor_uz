@@ -21,7 +21,7 @@ from app.security import bearer_from_request, problem, read_access_token
 router = APIRouter(prefix="/api/v1", tags=["cabinet"])
 
 VISIBILITY_KEYS = {"photo", "ratings", "full_name", "languages", "portfolio"}
-REPORT_ROLES = {"admin", "superadmin", "partner_viewer", "education_lead"}
+REPORT_ROLES = {"admin", "superadmin", "partner_viewer", "education_lead", "district_official"}
 
 
 class OfferAnswer(BaseModel):

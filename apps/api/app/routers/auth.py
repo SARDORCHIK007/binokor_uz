@@ -12,6 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 
 from app.core.config import get_settings
 from app.notify import notify_phone
+from app.onboarding import apply_invites, pending_invites
 from app.ratelimit import client_ip, too_many
 from app.rules import PRIVILEGED_ROLES
 from app.security import (
@@ -22,6 +23,8 @@ from app.security import (
     problem,
     read_access_token,
 )
+from app.seed_staff import DEMO_NEXT as STAFF_NEXT
+from app.seed_staff import STAFF_DEMOS, ensure_demo_staff
 from app.totp import backup_codes, code_matches, current_code, new_secret
 
 router = APIRouter(prefix="/api/v1", tags=["auth"])
@@ -173,15 +176,16 @@ async def verify_otp(body: OtpVerify, request: Request) -> JSONResponse:
                 ),
                 {"id": user_id, "phone": body.phone, "now": now},
             )
-            await conn.execute(
-                text(
-                    """
-                    INSERT INTO user_roles (id, user_id, role)
-                    VALUES (:id, :user_id, 'student')
-                    """
-                ),
-                {"id": new_id(), "user_id": user_id},
-            )
+            if not await pending_invites(conn, body.phone):  # invited staff do not start as learners
+                await conn.execute(
+                    text(
+                        """
+                        INSERT INTO user_roles (id, user_id, role)
+                        VALUES (:id, :user_id, 'student')
+                        """
+                    ),
+                    {"id": new_id(), "user_id": user_id},
+                )
             full_name = "Yangi foydalanuvchi"
         else:
             user_id = account["id"]
@@ -190,11 +194,15 @@ async def verify_otp(body: OtpVerify, request: Request) -> JSONResponse:
                 text("UPDATE users SET last_login_at = :now WHERE id = :id"),
                 {"id": user_id, "now": now},
             )
+        granted = await apply_invites(conn, user_id, body.phone)
         roles_result = await conn.execute(
             text("SELECT role::text AS role FROM user_roles WHERE user_id = :id"),
             {"id": user_id},
         )
         roles = [str(item["role"]) for item in roles_result.mappings()]
+        if granted:
+            name_row = await conn.execute(text("SELECT full_name FROM users WHERE id = :id"), {"id": user_id})
+            full_name = str(name_row.scalar_one())
         if set(roles) & PRIVILEGED_ROLES:
             secret_row = await conn.execute(
                 text("SELECT totp_secret_enc FROM users WHERE id = :id"),
@@ -384,13 +392,16 @@ DEMO_PHONE = {
 async def demo_login(body: DemoLogin, request: Request) -> JSONResponse:
     if not get_settings().demo_mode:
         return problem(404, "NOT_FOUND", "Topilmadi", "Demo kirish o'chiq.")
-    phone = DEMO_PHONE.get(body.role)
-    nxt = DEMO_NEXT.get(body.role)
+    staff = STAFF_DEMOS.get(body.role)
+    phone = staff[0] if staff else DEMO_PHONE.get(body.role)
+    nxt = STAFF_NEXT.get(body.role) if staff else DEMO_NEXT.get(body.role)
     if phone is None or nxt is None:
         return problem(400, "BAD_ROLE", "Rol noto'g'ri", "Demo ro'yxatidagi rolni tanlang.")
     engine = _engine(request)
     now = datetime.now(UTC)
     async with engine.begin() as conn:
+        if staff:
+            await ensure_demo_staff(conn, body.role)
         if body.role == "employer":
             await _ensure_employer(conn, phone)
         if body.role == "producer":
