@@ -569,3 +569,25 @@ async def _live_stats() -> None:
         home = await client.get("/api/v1/public/home")
     assert home.status_code == 200
     assert home.json()["stats"].get("listeners") == listeners
+
+
+def test_partner_profiles_and_countries() -> None:
+    """Every partner has its own public profile; the five partner countries are listed."""
+    asyncio.run(_partner_profiles())
+
+
+async def _partner_profiles() -> None:
+    functions = {"coordination", "education", "employment", "abroad", "materials"}
+    async with httpx.AsyncClient(base_url="http://127.0.0.1:8000", timeout=10) as client:
+        home = (await client.get("/api/v1/public/home")).json()
+        assert {"KR", "JP", "DE", "RU", "IT"} <= {item["code"] for item in home["destinations"]}
+        assert home["partners"]
+        for partner in home["partners"]:
+            assert partner["slug"]
+            response = await client.get(f"/api/v1/public/partners/{partner['slug']}")
+            assert response.status_code == 200
+            body = response.json()
+            assert body["function"] in functions
+            assert body["signs"] == (body["status"] == "SIGNED")
+            assert "+998" not in response.text
+        assert (await client.get("/api/v1/public/partners/yoq-bunday")).status_code == 404

@@ -872,7 +872,11 @@
     },
     "join": "Hamkor bo'lishni istaysizmi?",
     "joinText": "Tashkilotingiz uchun hamkorlik shartlarini bilish uchun biz bilan bog'laning.",
-    "contact": "Bog'lanish"
+    "contact": "Bog'lanish",
+    "countriesTitle": "Hamkor davlatlar",
+    "countriesText": "Loyiha hamkorlik qiladigan davlatlar. Xorijga yuborish faqat tashqi mehnat migratsiyasi agentligi orqali amalga oshiriladi.",
+    "open": "Profilni ochish",
+    "all": "Barcha hamkorlar"
   },
   "roleHome": {
     "welcome": "Xush kelibsiz, {name}",
@@ -1499,5 +1503,93 @@
     "ctaTitle": "Boshlashga tayyormisiz?",
     "ctaApply": "O'qishga ariza berish",
     "ctaVerify": "Sertifikatni tekshirish"
+  },
+  "countries": {
+    "KR": "Janubiy Koreya",
+    "JP": "Yaponiya",
+    "DE": "Germaniya",
+    "RU": "Rossiya",
+    "IT": "Italiya"
+  },
+  "countryLangs": {
+    "KR": "Koreys tili",
+    "JP": "Yapon tili",
+    "DE": "Nemis tili",
+    "RU": "Rus tili",
+    "IT": "Italyan tili"
+  },
+  "partnerPage": {
+    "signedSince": "{date} dan hamkor",
+    "noDate": "Shartnoma hali imzolanmagan",
+    "functionTitle": "Platformadagi vazifasi",
+    "figuresTitle": "Raqamlarda",
+    "figuresNote": "Raqamlar platforma bazasidan olinadi.",
+    "signTitle": "Sertifikat imzolash",
+    "signYes": "Bu tashkilot sertifikatlarni o'z nomidan imzolaydi. Imzo QR kodi barcha imzolar to'plangandan keyin paydo bo'ladi.",
+    "signNo": "Imzolash huquqi shartnoma imzolangandan keyin yoqiladi.",
+    "signedCount": "Imzolangan sertifikatlar",
+    "recentTitle": "So'nggi imzolangan sertifikatlar",
+    "recentEmpty": "Hali imzolangan sertifikat yo'q.",
+    "destinationsTitle": "Yo'nalishlar",
+    "linksTitle": "Tegishli bo'limlar",
+    "contact": "Hamkorlik bo'yicha bog'lanish",
+    "fn": {
+      "coordination": {
+        "title": "Loyiha koordinatori",
+        "i1": "Mahalla ro'yxatlarini yuritadi",
+        "i2": "O'quv markazi va qurilish obyektlarini ta'minlaydi",
+        "i3": "Sertifikatni loyiha rahbari sifatida imzolaydi"
+      },
+      "education": {
+        "title": "O'quv hamkori",
+        "i1": "O'quv dasturini birgalikda yaratadi",
+        "i2": "Malaka sertifikatini birgalikda beradi",
+        "i3": "Sertifikatni o'z nomidan imzolaydi"
+      },
+      "employment": {
+        "title": "Bandlik hamkori",
+        "i1": "Ish izlovchilarni ro'yxatga oladi",
+        "i2": "Bitiruvchilarni ishga joylashtirishga ko'maklashadi",
+        "i3": "Ish beruvchilar so'rovlarini ustalar bilan bog'laydi"
+      },
+      "abroad": {
+        "title": "Xorijga yuborish",
+        "i1": "Xorijga yuborish faqat shu agentlik va uning litsenziyali hamkorlari orqali",
+        "i2": "Xorijiy ish beruvchilar bilan ishlaydi",
+        "i3": "Brigadalarni tashqi bozorga tayyorlashda qatnashadi"
+      },
+      "materials": {
+        "title": "Material yetkazib beruvchi",
+        "i1": "Qurilish materiallarini bozorga qo'yadi",
+        "i2": "Narx va qoldiqni yangilab turadi",
+        "i3": "Buyurtmalarni qabul qiladi"
+      }
+    },
+    "metric": {
+      "mahallas": "Mahallalar",
+      "objects": "Qurilish obyektlari",
+      "applicants": "Arizachilar",
+      "listeners": "Tinglovchilar",
+      "trades": "Kasblar",
+      "groups": "Guruhlar",
+      "certified": "Berilgan sertifikatlar",
+      "workers": "Usta profillari",
+      "requests": "Ish beruvchi so'rovlari",
+      "employers": "Tasdiqlangan ish beruvchilar",
+      "employed": "Ishga joylashganlar",
+      "foreign_employers": "Xorijiy ish beruvchilar",
+      "abroad": "Xorijga yuborilganlar",
+      "brigades": "Brigadalar",
+      "producers": "Ishlab chiqaruvchilar",
+      "products": "Mahsulotlar",
+      "categories": "Kategoriyalar"
+    },
+    "link": {
+      "coordination": "Qurilish obyektlari",
+      "education": "Kasblar",
+      "employment": "Ustalar katalogi",
+      "abroad": "Yo'nalishlar",
+      "materials": "Qurilish materiallari"
+    }
   }
 }

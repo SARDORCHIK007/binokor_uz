@@ -2,59 +2,16 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
+import { Flag } from "@/components/Flag";
 
 type Code = "uz-Latn" | "uz-Cyrl" | "ru" | "en";
 
-const LANGS: { code: Code; short: string; name: string }[] = [
-  { code: "uz-Latn", short: "UZ", name: "O'zbekcha" },
-  { code: "uz-Cyrl", short: "ЎЗ", name: "Ўзбекча" },
-  { code: "ru", short: "RU", name: "Русский" },
-  { code: "en", short: "EN", name: "English" },
+const LANGS: { code: Code; flag: string; short: string; name: string }[] = [
+  { code: "uz-Latn", flag: "UZ", short: "UZ", name: "O'zbekcha" },
+  { code: "uz-Cyrl", flag: "UZ", short: "ЎЗ", name: "Ўзбекча" },
+  { code: "ru", flag: "RU", short: "RU", name: "Русский" },
+  { code: "en", flag: "GB", short: "EN", name: "English" },
 ];
-
-/** Small round flags drawn as SVG (emoji flags do not render on Windows). */
-export function Flag({ code, className = "size-5" }: { code: Code; className?: string }) {
-  const id = `fl-${code}`;
-  return (
-    <svg viewBox="0 0 24 24" className={`${className} shrink-0 rounded-full ring-1 ring-black/10`} aria-hidden="true">
-      <defs>
-        <clipPath id={id}>
-          <circle cx="12" cy="12" r="12" />
-        </clipPath>
-      </defs>
-      <g clipPath={`url(#${id})`}>
-        {code === "ru" ? (
-          <>
-            <rect width="24" height="8" fill="#fff" />
-            <rect y="8" width="24" height="8" fill="#0039a6" />
-            <rect y="16" width="24" height="8" fill="#d52b1e" />
-          </>
-        ) : code === "en" ? (
-          <>
-            <rect width="24" height="24" fill="#012169" />
-            <path d="M0 0 24 24M24 0 0 24" stroke="#fff" strokeWidth="4" />
-            <path d="M0 0 24 24M24 0 0 24" stroke="#c8102e" strokeWidth="1.6" />
-            <path d="M12 0v24M0 12h24" stroke="#fff" strokeWidth="7" />
-            <path d="M12 0v24M0 12h24" stroke="#c8102e" strokeWidth="4" />
-          </>
-        ) : (
-          <>
-            <rect width="24" height="8" fill="#0099b5" />
-            <rect y="8" width="24" height="8" fill="#fff" />
-            <rect y="16" width="24" height="8" fill="#1eb53a" />
-            <rect y="7.4" width="24" height="1.1" fill="#ce1126" />
-            <rect y="15.5" width="24" height="1.1" fill="#ce1126" />
-            <circle cx="6.5" cy="4" r="2.1" fill="#fff" />
-            <circle cx="7.4" cy="4" r="1.8" fill="#0099b5" />
-            <circle cx="10.2" cy="2.6" r="0.5" fill="#fff" />
-            <circle cx="12" cy="4" r="0.5" fill="#fff" />
-            <circle cx="10.2" cy="5.4" r="0.5" fill="#fff" />
-          </>
-        )}
-      </g>
-    </svg>
-  );
-}
 
 export function LanguageMenu() {
   const t = useTranslations("shell");
@@ -94,7 +51,7 @@ export function LanguageMenu() {
         aria-label={t("language")}
         className="flex h-10 items-center gap-1.5 rounded-xl border border-line bg-surface-100 px-2.5 text-sm font-bold text-navy-900 transition hover:border-primary"
       >
-        <Flag code={current.code} />
+        <Flag code={current.flag} />
         <span className="hidden sm:inline">{current.short}</span>
         <span aria-hidden="true" className={`text-[10px] text-muted transition ${open ? "rotate-180" : ""}`}>▼</span>
       </button>
@@ -109,7 +66,7 @@ export function LanguageMenu() {
                   item.code === current.code ? "text-primary" : "text-navy-900"
                 }`}
               >
-                <Flag code={item.code} />
+                <Flag code={item.flag} />
                 <span className="flex-1">{item.name}</span>
                 {item.code === current.code ? <span aria-hidden="true">✓</span> : null}
               </a>

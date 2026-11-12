@@ -1,6 +1,6 @@
 import { EmptyState } from "@uychibinokor/ui";
 import { getTranslations } from "next-intl/server";
-import { Icon } from "@/components/brand/Icon";
+import { Flag } from "@/components/Flag";
 import { CARD, ErrorPage, PAGE, PageHeader } from "@/components/site/PageHeader";
 import { apiGet, type HomePayload } from "@/lib/public";
 
@@ -23,11 +23,9 @@ export default async function DestinationsPage() {
         {home.destinations.map((item) => (
           <li key={item.code} className={CARD}>
             <div className="flex items-center gap-3">
-              <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-blue-100 text-primary">
-                <Icon name="globe" className="size-5" />
-              </span>
+              <Flag code={item.code} className="size-11" />
               <div className="min-w-0">
-                <h2 className="text-lg font-bold text-navy-900">{item.name}</h2>
+                <h2 className="text-lg font-bold text-navy-900">{t.has(`countries.${item.code}`) ? t(`countries.${item.code}`) : item.name}</h2>
                 <p className="text-xs font-semibold tracking-wider text-muted uppercase">{item.language}</p>
               </div>
             </div>

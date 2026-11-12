@@ -120,6 +120,123 @@ async def home(request: Request) -> JSONResponse:
     )
 
 
+# What each organisation does on the platform. Known partners are matched by slug, others fall back to their kind.
+PARTNER_FUNCTIONS = {
+    "uychi-hokimlik": "coordination",
+    "namdtu": "education",
+    "tuman-bandlik": "employment",
+    "tashqi-mehnat": "abroad",
+    "mahalliy-ishlab-chiqaruvchi": "materials",
+}
+KIND_FUNCTIONS = {
+    "GOV": "coordination",
+    "EDU": "education",
+    "AGENCY": "abroad",
+    "PRODUCER": "materials",
+    "EMPLOYER": "employment",
+    "INTL": "abroad",
+}
+
+_PARTNER_METRICS = {
+    "coordination": {
+        "mahallas": "SELECT count(*) FROM mahallas",
+        "objects": "SELECT count(*) FROM construction_objects WHERE is_public",
+        "applicants": "SELECT count(*) FROM applications WHERE status <> 'DRAFT'",
+        "listeners": "SELECT count(*) FROM enrollments WHERE status = 'ACTIVE'",
+    },
+    "education": {
+        "trades": "SELECT count(*) FROM trades WHERE is_active",
+        "groups": "SELECT count(*) FROM groups",
+        "listeners": "SELECT count(*) FROM enrollments WHERE status = 'ACTIVE'",
+        "certified": "SELECT count(*) FROM certificates WHERE status = 'ISSUED'",
+    },
+    "employment": {
+        "workers": "SELECT count(*) FROM worker_profiles",
+        "requests": "SELECT count(*) FROM demand_requests",
+        "employers": "SELECT count(*) FROM employers WHERE verified_at IS NOT NULL",
+        "employed": "SELECT count(*) FROM placements",
+    },
+    "abroad": {
+        "foreign_employers": "SELECT count(*) FROM employers WHERE country_code <> 'UZ'",
+        "abroad": "SELECT count(*) FROM placements WHERE kind = 'ABROAD'",
+        "brigades": "SELECT count(*) FROM brigades",
+    },
+    "materials": {
+        "producers": "SELECT count(*) FROM producers",
+        "products": "SELECT count(*) FROM products WHERE is_published",
+        "categories": "SELECT count(*) FROM product_categories",
+    },
+}
+
+
+@router.get("/partners/{slug}")
+async def partner_profile(slug: str, request: Request) -> JSONResponse:
+    """One organisation's public page: who they are, what they do here and live figures from the database."""
+    async with _engine(request).connect() as conn:
+        row = (
+            await conn.execute(
+                text(
+                    """
+                    SELECT name, kind::text AS kind, status::text AS status, logo_permission, slug,
+                           role_description, signed_at::text AS signed_at, country_code
+                    FROM partners WHERE slug = :slug
+                    """
+                ),
+                {"slug": slug},
+            )
+        ).mappings().first()
+        if row is None:
+            return problem(404, "NOT_FOUND", "Hamkor topilmadi", "Bunday hamkor tashkilot ro'yxatda yo'q.")
+        function = PARTNER_FUNCTIONS.get(slug) or KIND_FUNCTIONS.get(str(row["kind"]), "coordination")
+        metrics: dict[str, int] = {}
+        for key, query in _PARTNER_METRICS.get(function, {}).items():
+            metrics[key] = int((await conn.execute(text(query))).scalar_one())
+        signed = int(
+            (
+                await conn.execute(
+                    text("SELECT count(*) FROM certificate_signatures WHERE partner_slug = :slug"), {"slug": slug}
+                )
+            ).scalar_one()
+        )
+        recent = (
+            await conn.execute(
+                text(
+                    """
+                    SELECT c.number, cs.signed_at::date::text AS day
+                    FROM certificate_signatures cs JOIN certificates c ON c.id = cs.certificate_id
+                    WHERE cs.partner_slug = :slug AND c.number IS NOT NULL
+                    ORDER BY cs.signed_at DESC LIMIT 5
+                    """
+                ),
+                {"slug": slug},
+            )
+        ).mappings().all()
+        destinations = []
+        if function == "abroad":
+            rows = await conn.execute(text("SELECT country_code, name, lang_code FROM destinations WHERE is_active ORDER BY country_code"))
+            destinations = [
+                {"code": str(d["country_code"]).strip(), "name": _title(d["name"]), "language": d["lang_code"]}
+                for d in rows.mappings()
+            ]
+    return JSONResponse(
+        {
+            "slug": row["slug"],
+            "name": _title(row["name"]),
+            "kind": row["kind"],
+            "status": row["status"],
+            "role": _title(row["role_description"]) if row["role_description"] else "",
+            "signed_at": row["signed_at"],
+            "show_logo": bool(row["logo_permission"]) and row["status"] == "SIGNED",
+            "function": function,
+            "signs": row["status"] == "SIGNED",
+            "metrics": metrics,
+            "signed_certificates": signed,
+            "recent_signed": [{"number": r["number"], "date": r["day"]} for r in recent],
+            "destinations": destinations,
+        }
+    )
+
+
 @router.get("/trades/{code}")
 async def trade(code: str, request: Request) -> JSONResponse:
     engine = _engine(request)

@@ -872,7 +872,11 @@
     },
     "join": "Want to partner with us?",
     "joinText": "Contact us to learn the terms of cooperation.",
-    "contact": "Contact us"
+    "contact": "Contact us",
+    "countriesTitle": "Partner countries",
+    "countriesText": "Countries the project works with. Placement abroad goes only through the external labour migration agency.",
+    "open": "Open profile",
+    "all": "All partners"
   },
   "roleHome": {
     "welcome": "Welcome, {name}",
@@ -1499,5 +1503,93 @@
     "ctaTitle": "Ready to start?",
     "ctaApply": "Apply to study",
     "ctaVerify": "Verify a certificate"
+  },
+  "countries": {
+    "KR": "South Korea",
+    "JP": "Japan",
+    "DE": "Germany",
+    "RU": "Russia",
+    "IT": "Italy"
+  },
+  "countryLangs": {
+    "KR": "Korean",
+    "JP": "Japanese",
+    "DE": "German",
+    "RU": "Russian",
+    "IT": "Italian"
+  },
+  "partnerPage": {
+    "signedSince": "Partner since {date}",
+    "noDate": "Agreement not signed yet",
+    "functionTitle": "Role on the platform",
+    "figuresTitle": "In numbers",
+    "figuresNote": "The figures come from the platform database.",
+    "signTitle": "Certificate signing",
+    "signYes": "This organisation signs certificates in its own name. The signature QR appears once every signature is in.",
+    "signNo": "Signing is switched on once the agreement is signed.",
+    "signedCount": "Certificates signed",
+    "recentTitle": "Latest signed certificates",
+    "recentEmpty": "No signed certificates yet.",
+    "destinationsTitle": "Destinations",
+    "linksTitle": "Related sections",
+    "contact": "Contact about partnership",
+    "fn": {
+      "coordination": {
+        "title": "Project coordinator",
+        "i1": "Keeps the neighbourhood lists",
+        "i2": "Provides the training centre and building sites",
+        "i3": "Signs the certificate as project leader"
+      },
+      "education": {
+        "title": "Education partner",
+        "i1": "Co-creates the curriculum",
+        "i2": "Co-issues the qualification certificate",
+        "i3": "Signs the certificate in its own name"
+      },
+      "employment": {
+        "title": "Employment partner",
+        "i1": "Registers job seekers",
+        "i2": "Helps graduates find jobs",
+        "i3": "Connects employers' requests with workers"
+      },
+      "abroad": {
+        "title": "Placement abroad",
+        "i1": "Placement abroad only through this agency and its licensed partners",
+        "i2": "Works with foreign employers",
+        "i3": "Takes part in preparing crews for foreign markets"
+      },
+      "materials": {
+        "title": "Material supplier",
+        "i1": "Lists building materials on the market",
+        "i2": "Keeps prices and stock up to date",
+        "i3": "Receives orders"
+      }
+    },
+    "metric": {
+      "mahallas": "Neighbourhoods",
+      "objects": "Building sites",
+      "applicants": "Applicants",
+      "listeners": "Learners",
+      "trades": "Trades",
+      "groups": "Groups",
+      "certified": "Certificates issued",
+      "workers": "Worker profiles",
+      "requests": "Employer requests",
+      "employers": "Verified employers",
+      "employed": "Placed in jobs",
+      "foreign_employers": "Foreign employers",
+      "abroad": "Placed abroad",
+      "brigades": "Crews",
+      "producers": "Producers",
+      "products": "Products",
+      "categories": "Categories"
+    },
+    "link": {
+      "coordination": "Building sites",
+      "education": "Trades",
+      "employment": "Workers catalogue",
+      "abroad": "Destinations",
+      "materials": "Building materials"
+    }
   }
 }

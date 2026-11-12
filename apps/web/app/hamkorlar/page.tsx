@@ -1,10 +1,10 @@
 import { EmptyState } from "@uychibinokor/ui";
-import { existsSync } from "node:fs";
-import path from "node:path";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { Icon } from "@/components/brand/Icon";
+import { Flag } from "@/components/Flag";
 import { ErrorPage, PAGE, PageHeader } from "@/components/site/PageHeader";
+import { partnerLogo } from "@/lib/partnerLogo";
 import { apiGet, type HomePayload } from "@/lib/public";
 
 export const dynamic = "force-dynamic";
@@ -18,24 +18,10 @@ const BADGE: Record<Partner["status"], string> = {
   ENDED: "bg-danger-100 text-danger-600",
 };
 
-/**
- * Logo files are placed by the project owner in public/media/partners/<slug>.*; a logo is shown when
- * its file exists. BR-15 (signed agreement + written permission) is tracked in docs/reports/questions.md.
- */
-function logoFor(partner: Partner): string | null {
-  if (!partner.slug) {
-    return null;
-  }
-  for (const ext of ["webp", "png", "svg"]) {
-    if (existsSync(path.join(process.cwd(), "public", "media", "partners", `${partner.slug}.${ext}`))) {
-      return `/media/partners/${partner.slug}.${ext}`;
-    }
-  }
-  return null;
-}
-
 export default async function PartnersPage() {
   const t = await getTranslations("partnersPage");
+  const countries = await getTranslations("countries");
+  const countryLangs = await getTranslations("countryLangs");
   const states = await getTranslations("states");
   const home = await apiGet<HomePayload>("/api/v1/public/home");
   if (!home) {
@@ -74,7 +60,7 @@ export default async function PartnersPage() {
 
       <ul className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
         {home.partners.map((partner) => {
-          const logo = logoFor(partner);
+          const logo = partnerLogo(partner.slug);
           return (
             <li key={partner.name} className="flex flex-col rounded-2xl border border-line bg-card p-5 shadow-sh1">
               <div className="grid h-32 place-items-center rounded-xl bg-canvas p-3">
@@ -86,16 +72,47 @@ export default async function PartnersPage() {
                 )}
               </div>
               <p className="mt-4 text-[11px] font-bold tracking-wider text-primary uppercase">{t(`kind.${partner.kind}`)}</p>
-              <h2 className="mt-1 text-base leading-snug font-bold text-navy-900">{partner.name}</h2>
+              <h2 className="mt-1 text-base leading-snug font-bold text-navy-900">
+                {partner.slug ? (
+                  <Link href={`/hamkorlar/${partner.slug}`} className="hover:text-primary">
+                    {partner.name}
+                  </Link>
+                ) : (
+                  partner.name
+                )}
+              </h2>
               {partner.role ? <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{partner.role}</p> : <span className="flex-1" />}
               <div className="mt-4 flex flex-wrap items-center gap-2">
                 <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${BADGE[partner.status]}`}>{t(`status.${partner.status}`)}</span>
                 {partner.signed_at ? <span className="text-xs text-muted">{t("since", { date: partner.signed_at })}</span> : null}
               </div>
+              {partner.slug ? (
+                <Link href={`/hamkorlar/${partner.slug}`} className="mt-3 text-sm font-bold text-primary hover:underline">
+                  {t("open")} →
+                </Link>
+              ) : null}
             </li>
           );
         })}
       </ul>
+
+      {home.destinations.length > 0 ? (
+        <section className="mt-10" aria-labelledby="countries">
+          <h2 id="countries" className="text-2xl font-extrabold text-navy-900">{t("countriesTitle")}</h2>
+          <p className="mt-1 max-w-[70ch] text-sm text-muted">{t("countriesText")}</p>
+          <ul className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+            {home.destinations.map((item) => (
+              <li key={item.code} className="flex flex-col items-center rounded-2xl border border-line bg-card p-5 text-center shadow-sh1">
+                <Flag code={item.code} className="size-14" />
+                <p className="mt-3 text-base font-extrabold text-navy-900">{countries.has(item.code as "KR") ? countries(item.code as "KR") : item.name}</p>
+                <p className="mt-0.5 text-xs font-semibold text-muted">
+                  {countryLangs.has(item.code as "KR") ? countryLangs(item.code as "KR") : item.language}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <section className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-line bg-card p-5 shadow-sh1 sm:p-6">
         <div>

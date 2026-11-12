@@ -48,12 +48,11 @@ LANGUAGES = (
 )
 
 DESTINATIONS = (
-    ("DE", "Germaniya", "de"),
-    ("JP", "Yaponiya", "ja"),
     ("KR", "Koreya", "ko"),
-    ("SA", "Saudiya Arabistoni", "ar"),
-    ("AE", "BAA", "en"),
-    ("TR", "Turkiya", "tr"),
+    ("JP", "Yaponiya", "ja"),
+    ("DE", "Germaniya", "de"),
+    ("RU", "Rossiya", "ru"),
+    ("IT", "Italiya", "it"),
 )
 
 PARTNERS = (

@@ -90,9 +90,8 @@ async def seed_followup(conn: AsyncConnection) -> None:
         "DE": {"en": "Germany", "ru": "Германия", "uz-Cyrl": "Германия"},
         "JP": {"en": "Japan", "ru": "Япония", "uz-Cyrl": "Япония"},
         "KR": {"en": "Korea", "ru": "Корея", "uz-Cyrl": "Корея"},
-        "SA": {"en": "Saudi Arabia", "ru": "Саудовская Аравия", "uz-Cyrl": "Саудия Арабистони"},
-        "AE": {"en": "UAE", "ru": "ОАЭ", "uz-Cyrl": "БАА"},
-        "TR": {"en": "Turkey", "ru": "Турция", "uz-Cyrl": "Туркия"},
+        "RU": {"en": "Russia", "ru": "Россия", "uz-Cyrl": "Россия"},
+        "IT": {"en": "Italy", "ru": "Италия", "uz-Cyrl": "Италия"},
     }
     for code, titles in destinations.items():
         await conn.execute(
