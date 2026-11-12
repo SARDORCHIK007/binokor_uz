@@ -17,10 +17,17 @@ down_revision: str | Sequence[str] | None = "0008"
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
 
-NOTE = "Jamoa agentlik orqali ketadi. 1000 so'z til imtihonining o'rnini bosmaydi."
+NOTE = "Jamoa agentlik orqali ketadi. 1000 so''z til imtihonining o''rnini bosmaydi."  # quotes doubled for SQL
 
 
 def upgrade() -> None:
+    op.execute(
+        """
+        INSERT INTO languages (code, name, rtl)
+        VALUES ('it', '{"uz-Latn": "Italyan tili"}'::jsonb, false)
+        ON CONFLICT (code) DO NOTHING
+        """
+    )
     for code, name, lang in (("RU", "Rossiya", "ru"), ("IT", "Italiya", "it")):
         op.execute(
             f"""

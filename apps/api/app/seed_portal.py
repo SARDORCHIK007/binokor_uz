@@ -45,6 +45,7 @@ LANGUAGES = (
     ("ko", "Koreys tili", False),
     ("tr", "Turk tili", False),
     ("ru", "Rus tili", False),
+    ("it", "Italyan tili", False),
 )
 
 DESTINATIONS = (
