@@ -70,8 +70,10 @@
       "agency": "Nomzodlar havzasi, vakansiyalar, firmalar",
       "republic": "Migratsiya nazorati (ko'rish)",
       "mahalla": "Mahalladan nomzod qo'shish",
-      "foreign": "Vakansiya, kompaniya hujjatlari"
-    }
+      "foreign": "Vakansiya, kompaniya hujjatlari",
+      "moderator": "Navbat, yangiliklar, jurnal"
+    },
+    "moderator": "Moderator"
   },
   "roles": {
     "admin": "Administrator",
@@ -96,7 +98,8 @@
     "agency_officer": "Migratsiya agentligi xodimi",
     "migration_observer": "Respublika migratsiya nazoratchisi",
     "district_official": "Hokimlik vakili",
-    "university_officer": "Universitet vakili"
+    "university_officer": "Universitet vakili",
+    "moderator": "Moderator"
   },
   "cabinet": {
     "panel": "Panel",
@@ -191,7 +194,8 @@
     "producerDesk": "Ish stoli",
     "producerProfile": "Korxona profili",
     "leadDesk": "Nazorat markazi",
-    "graduateOutcomes": "Natijalar va aloqa"
+    "graduateOutcomes": "Natijalar va aloqa",
+    "moderation": "Moderatsiya"
   },
   "session": {
     "title": "Kabinet",
@@ -1259,7 +1263,8 @@
       "vacancy_status": "Vakansiyangiz holati o'zgardi",
       "lesson_log": "Ustoz yangi dars yozuvini qo'shdi",
       "pipeline_stage": "Ish beruvchi arizangiz bosqichini o'zgartirdi",
-      "placement": "Siz ishga qabul qilindingiz"
+      "placement": "Siz ishga qabul qilindingiz",
+      "portfolio_review": "Portfolio ishingiz ko'rib chiqildi"
     }
   },
   "settings": {
@@ -1861,7 +1866,8 @@
       "agency_officer": "Tashqi mehnat migratsiyasi agentligi: xorijiy vakansiyalar va nomzodlar",
       "migration_observer": "Respublika migratsiya nazorati: umumiy ko'rinish (faqat ko'rish)",
       "mahalla_assistant": "Mahalla hokim yordamchisi: mahalladagi nomzodlarni ro'yxatga oladi",
-      "employer_foreign": "Xorijiy ish beruvchi: vakansiya joylaydi"
+      "employer_foreign": "Xorijiy ish beruvchi: vakansiya joylaydi",
+      "moderator": "Moderator: so'rovlar navbati, yangiliklar muharriri va audit jurnali"
     }
   },
   "pr": {
@@ -2824,5 +2830,70 @@
     "failed": "Bajarilmadi.",
     "results": "Natijalar",
     "noYears": "Hali bitiruvchi qo'shilmagan. Ro'yxatni «Bitiruvchilar» sahifasida to'ldiring."
+  },
+  "mod": {
+    "title": "Moderatsiya",
+    "text": "Qaror kutayotgan hamma narsa bir navbatda. Har bir qaror sababi bilan jurnalga yoziladi.",
+    "tab": {
+      "queue": "Navbat",
+      "news": "Yangiliklar",
+      "audit": "Jurnal"
+    },
+    "error": "Yuklab bo'lmadi.",
+    "all": "Hammasi",
+    "kind": {
+      "PORTFOLIO": "Portfolio ishlari",
+      "FIRM": "Firmalar",
+      "FIRM_DOC": "Firma hujjatlari",
+      "PARTNER": "Hamkor arizalari",
+      "NEWS": "Yangilik qoralamalari"
+    },
+    "empty": "Navbat bo'sh: hammasi ko'rib chiqilgan.",
+    "approve": "Tasdiqlash",
+    "checked": "Tekshirildi",
+    "reject": "Rad etish",
+    "reason": "Rad etish sababi",
+    "confirmReject": "Rad etishni tasdiqlash",
+    "cancel": "Bekor qilish",
+    "done": "Qaror yozildi.",
+    "failed": "Bajarilmadi. Sabab kamida 3 belgi bo'lsin.",
+    "photos": "{n} ta rasm",
+    "openDecision": "Qarorni ochish →",
+    "openEditor": "Muharrirda ochish →",
+    "partnerNote": "Hamkor arizasini administrator ko'rib chiqadi.",
+    "firmHint": "Hujjatlari tekshirilgan firmani tasdiqlang."
+  },
+  "news": {
+    "title": "Yangiliklar muharriri",
+    "new": "Yangi yangilik",
+    "slug": "Manzil (kichik lotin harflar, chiziqcha)",
+    "titleField": "Sarlavha",
+    "bodyField": "Matn",
+    "langNote": "O'zbekcha (lotin) majburiy, boshqa tillar ixtiyoriy.",
+    "save": "Saqlash",
+    "saved": "Saqlandi.",
+    "failed": "Saqlab bo'lmadi. Manzil, sarlavha (5+) va matn (20+) belgilarni tekshiring.",
+    "list": "Barcha yangiliklar",
+    "empty": "Hali yangilik yo'q.",
+    "draft": "Qoralama",
+    "published": "E'lon qilingan",
+    "edit": "Tahrirlash",
+    "publish": "E'lon qilish",
+    "unpublish": "Qoralamaga qaytarish",
+    "delete": "O'chirish",
+    "deleteFailed": "Faqat qoralamani o'chirish mumkin.",
+    "cancelEdit": "Tahrirlashni bekor qilish"
+  },
+  "au": {
+    "title": "Audit jurnali",
+    "entity": "Obyekt",
+    "period": "Davr",
+    "days": "{n} kun",
+    "empty": "Bu davrda yozuv yo'q.",
+    "total": "Jami: {n}",
+    "prev": "← Oldingi",
+    "next": "Keyingi →",
+    "reason": "Sabab: {text}",
+    "system": "Tizim"
   }
 }

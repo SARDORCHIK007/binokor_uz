@@ -47,6 +47,7 @@ export async function apiAuth<T>(path: string): Promise<T | null> {
 /** Default cabinet role when the user has several and has not picked one. */
 const ROLE_PRIORITY = [
   "admin",
+  "moderator",
   "education_lead",
   "university_officer",
   "district_official",

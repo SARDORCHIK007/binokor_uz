@@ -21,6 +21,7 @@ INVITABLE_ROLES: dict[str, set[str]] = {
     "education_lead": set(),  # project study director
     "university_officer": set(),  # NamDTU office: graduates and certificate signing
     "cert_officer": set(),
+    "moderator": set(),  # content and request moderation
     "placement_manager": set(),
     "district_official": set(),  # hokimlik
     "employment_officer": set(),  # district employment assistance office

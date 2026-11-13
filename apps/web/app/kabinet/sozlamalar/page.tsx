@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 
 const ROLE_IDS = [
   "admin", "mentor", "student", "worker", "employer_local", "producer", "district_official", "employment_officer",
-  "agency_officer", "migration_observer", "mahalla_assistant", "university_officer", "employer_foreign", "education_lead",
+  "agency_officer", "migration_observer", "mahalla_assistant", "university_officer", "employer_foreign", "education_lead", "moderator",
 ];
 
 export default async function SettingsPage() {

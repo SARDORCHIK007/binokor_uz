@@ -30,6 +30,7 @@ from app.routers.leadership import router as leadership_router
 from app.routers.learning import router as learning_router
 from app.routers.market import router as market_router
 from app.routers.migration import router as migration_router
+from app.routers.moderation import router as moderation_router
 from app.routers.monitoring import router as monitoring_router
 from app.routers.onboarding import router as onboarding_router
 from app.routers.panels import router as panels_router
@@ -132,6 +133,7 @@ app.include_router(people_router)
 app.include_router(classroom_router)
 app.include_router(employer_desk_router)
 app.include_router(leadership_router)
+app.include_router(moderation_router)
 app.include_router(producer_desk_router)
 app.include_router(settings_router)
 app.include_router(district_router)

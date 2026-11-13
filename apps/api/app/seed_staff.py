@@ -18,6 +18,7 @@ STAFF_DEMOS: dict[str, tuple[str, str, str, str | None]] = {
     "republic": ("+998901800006", "Respublika migratsiya nazoratchisi", "migration_observer", None),
     "mahalla": ("+998901800007", "Mahalla hokim yordamchisi", "mahalla_assistant", None),
     "foreign": ("+998901800008", "Xorijiy ish beruvchi vakili", "employer_foreign", None),
+    "moderator": ("+998901800009", "Moderator", "moderator", None),
 }
 
 DEMO_NEXT = {
@@ -29,6 +30,7 @@ DEMO_NEXT = {
     "republic": "/kabinet/migratsiya",
     "mahalla": "/kabinet/mahalla",
     "foreign": "/kabinet/vakansiyalar",
+    "moderator": "/kabinet/moderatsiya",
 }
 
 

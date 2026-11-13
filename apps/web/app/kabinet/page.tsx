@@ -19,6 +19,7 @@ const PANEL_HOME: Record<string, string> = {
   agency_officer: "/kabinet/migratsiya",
   migration_observer: "/kabinet/migratsiya",
   employer_foreign: "/kabinet/vakansiyalar",
+  moderator: "/kabinet/moderatsiya",
 };
 
 export const dynamic = "force-dynamic";

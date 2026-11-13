@@ -26,6 +26,7 @@ export default async function NotificationsPage() {
     if (kind === "vacancy_new") return t("kind.vacancy_new");
     if (kind === "vacancy_status") return t("kind.vacancy_status");
     if (kind === "lesson_log") return t("kind.lesson_log");
+    if (kind === "portfolio_review") return t("kind.portfolio_review");
     if (kind === "pipeline_stage") return t("kind.pipeline_stage");
     if (kind === "placement") return t("kind.placement");
     return t("kind.other");
@@ -35,6 +36,7 @@ export default async function NotificationsPage() {
     if (kind === "vacancy_new") return "/kabinet/migratsiya";
     if (kind === "vacancy_status") return "/kabinet/vakansiyalar";
     if (kind === "lesson_log") return "/kabinet/kundalik";
+    if (kind === "portfolio_review") return "/kabinet/portfolio";
     return kind === "offer" ? "/kabinet/takliflar" : kind === "offer_answer" ? "/kabinet/ishberuvchi" : "/kabinet";
   }
   return (

@@ -17,6 +17,7 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/ishberuvchi", key: "employer" },
     { href: "/kabinet/portfolio-tasdiq", key: "portfolioReview" },
     { href: "/kabinet/mahallalar", key: "mahallas" },
+    { href: "/kabinet/moderatsiya", key: "moderation" },
   ],
   employer_local: [
     { href: "/kabinet", key: "panel" },
@@ -92,8 +93,10 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/kundalik", key: "diary" },
     { href: "/kabinet/reytingim", key: "myRating" },
   ],
-  curator: [
-    { href: "/kabinet", key: "panel" },
+  moderator: [
+    { href: "/kabinet/moderatsiya", key: "moderation" },
+  ],
+  curator: [    { href: "/kabinet", key: "panel" },
     { href: "/kabinet/kurator", key: "curator" },
     { href: "/kabinet/lugat", key: "vocab" },
   ],

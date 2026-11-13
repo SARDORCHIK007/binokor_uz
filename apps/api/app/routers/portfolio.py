@@ -263,7 +263,7 @@ async def pending_portfolio(request: Request) -> JSONResponse:
                 FROM portfolio_items pi
                 JOIN users u ON u.id = pi.worker_user_id
                 JOIN worker_profiles wp ON wp.user_id = pi.worker_user_id
-                WHERE pi.confirmed_by IS NULL
+                WHERE pi.confirmed_by IS NULL AND pi.rejected_at IS NULL
                 ORDER BY pi.created_at
                 """
             )

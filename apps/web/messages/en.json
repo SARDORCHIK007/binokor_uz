@@ -70,8 +70,10 @@
       "agency": "Candidate pool, vacancies, firms",
       "republic": "Migration oversight (read only)",
       "mahalla": "Register candidates in the mahalla",
-      "foreign": "Vacancies, company documents"
-    }
+      "foreign": "Vacancies, company documents",
+      "moderator": "Queue, news, audit log"
+    },
+    "moderator": "Moderator"
   },
   "roles": {
     "admin": "Administrator",
@@ -96,7 +98,8 @@
     "agency_officer": "Migration agency officer",
     "migration_observer": "Republic migration observer",
     "district_official": "District administration official",
-    "university_officer": "University representative"
+    "university_officer": "University representative",
+    "moderator": "Moderator"
   },
   "cabinet": {
     "panel": "Dashboard",
@@ -191,7 +194,8 @@
     "producerDesk": "Desk",
     "producerProfile": "Company profile",
     "leadDesk": "Control centre",
-    "graduateOutcomes": "Outcomes and follow-ups"
+    "graduateOutcomes": "Outcomes and follow-ups",
+    "moderation": "Moderation"
   },
   "session": {
     "title": "Cabinet",
@@ -1259,7 +1263,8 @@
       "vacancy_status": "Your vacancy status changed",
       "lesson_log": "Your mentor added a lesson entry",
       "pipeline_stage": "An employer moved your application to a new stage",
-      "placement": "You have been hired"
+      "placement": "You have been hired",
+      "portfolio_review": "Your portfolio item was reviewed"
     }
   },
   "settings": {
@@ -1861,7 +1866,8 @@
       "agency_officer": "External labour migration agency: foreign vacancies and candidates",
       "migration_observer": "Republic migration oversight: overview (read only)",
       "mahalla_assistant": "Mahalla deputy: registers candidates in the mahalla",
-      "employer_foreign": "Foreign employer: posts vacancies"
+      "employer_foreign": "Foreign employer: posts vacancies",
+      "moderator": "Moderator: request queue, news editor and the audit log"
     }
   },
   "pr": {
@@ -2824,5 +2830,70 @@
     "failed": "Failed.",
     "results": "Outcomes",
     "noYears": "No graduates yet. Fill the list on the Graduates page."
+  },
+  "mod": {
+    "title": "Moderation",
+    "text": "Everything waiting for a decision in one queue. Every decision is logged with its reason.",
+    "tab": {
+      "queue": "Queue",
+      "news": "News",
+      "audit": "Audit log"
+    },
+    "error": "Could not load.",
+    "all": "All",
+    "kind": {
+      "PORTFOLIO": "Portfolio items",
+      "FIRM": "Firms",
+      "FIRM_DOC": "Firm documents",
+      "PARTNER": "Partner requests",
+      "NEWS": "News drafts"
+    },
+    "empty": "The queue is empty: everything is reviewed.",
+    "approve": "Approve",
+    "checked": "Checked",
+    "reject": "Reject",
+    "reason": "Reason for rejection",
+    "confirmReject": "Confirm rejection",
+    "cancel": "Cancel",
+    "done": "Decision recorded.",
+    "failed": "Failed. The reason needs 3+ characters.",
+    "photos": "{n} photos",
+    "openDecision": "Open to decide →",
+    "openEditor": "Open in the editor →",
+    "partnerNote": "A partner request is decided by an administrator.",
+    "firmHint": "Approve a firm after its documents are checked."
+  },
+  "news": {
+    "title": "News editor",
+    "new": "New article",
+    "slug": "Address (lowercase latin, hyphens)",
+    "titleField": "Title",
+    "bodyField": "Text",
+    "langNote": "Uzbek (Latin) is required, other languages are optional.",
+    "save": "Save",
+    "saved": "Saved.",
+    "failed": "Could not save. Check the address, title (5+) and text (20+).",
+    "list": "All articles",
+    "empty": "No articles yet.",
+    "draft": "Draft",
+    "published": "Published",
+    "edit": "Edit",
+    "publish": "Publish",
+    "unpublish": "Unpublish",
+    "delete": "Delete",
+    "deleteFailed": "Only a draft can be deleted.",
+    "cancelEdit": "Cancel editing"
+  },
+  "au": {
+    "title": "Audit log",
+    "entity": "Object",
+    "period": "Period",
+    "days": "{n} days",
+    "empty": "No entries in this period.",
+    "total": "Total: {n}",
+    "prev": "← Previous",
+    "next": "Next →",
+    "reason": "Reason: {text}",
+    "system": "System"
   }
 }
