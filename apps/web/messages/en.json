@@ -195,7 +195,8 @@
     "producerProfile": "Company profile",
     "leadDesk": "Control centre",
     "graduateOutcomes": "Outcomes and follow-ups",
-    "moderation": "Moderation"
+    "moderation": "Moderation",
+    "districtPlan": "Plan and instructions"
   },
   "session": {
     "title": "Cabinet",
@@ -2619,7 +2620,9 @@
     "none": "No open tasks for your team.",
     "overdue": "Overdue",
     "done": "Done",
-    "from": "from {team}"
+    "from": "from {team}",
+    "district": "District instruction",
+    "districtNote": "Completion note"
   },
   "dy": {
     "title": "Lesson diary",
@@ -2895,5 +2898,97 @@
     "next": "Next →",
     "reason": "Reason: {text}",
     "system": "System"
+  },
+  "ac": {
+    "title": "Users and system",
+    "text": "Search, manage roles, block accounts and end sessions. Phones are masked; every change is logged.",
+    "error": "Could not load.",
+    "h": {
+      "users": "Users",
+      "blocked": "Blocked",
+      "new_week": "New (7 days)",
+      "active_day": "Signed in (24 h)",
+      "sessions": "Active sessions",
+      "invites": "Pending invitations",
+      "firms": "Unverified firms",
+      "portfolio": "Unreviewed portfolio",
+      "partner_requests": "Partner requests",
+      "certificates": "Certificates waiting",
+      "audit_day": "Log entries (24 h)",
+      "db_mb": "Database size (MB)"
+    },
+    "search": "Search by name or phone",
+    "role": "Role",
+    "state": "State",
+    "any": "All",
+    "active": "Active",
+    "blocked": "Blocked",
+    "total": "Found: {n}",
+    "empty": "Nothing found.",
+    "lastLogin": "Last sign-in: {day}",
+    "never": "Never signed in",
+    "sessions": "Sessions: {n}",
+    "blockedBadge": "Blocked",
+    "addRole": "Grant a role",
+    "removeRole": "Remove",
+    "block": "Block account",
+    "unblock": "Unblock",
+    "reason": "Reason for blocking",
+    "confirmBlock": "Confirm blocking",
+    "cancel": "Cancel",
+    "endSessions": "End sessions",
+    "saved": "Saved.",
+    "failed": "Failed. A reason needs 3+ characters; you cannot block yourself or remove the last administrator.",
+    "prev": "← Previous",
+    "next": "Next →",
+    "byRole": "By role",
+    "audit": "Audit log →",
+    "invites": "Invitations →"
+  },
+  "dp": {
+    "title": "Plan and instructions",
+    "text": "The district's yearly plan and progress, and dated instructions for the employment office, agency, mahalla and training centre.",
+    "error": "Could not load.",
+    "plan": "Plan for {year}",
+    "elapsed": "{n}% of the year has passed",
+    "m": {
+      "applicants": "Applications",
+      "certified": "Certificates issued",
+      "employed": "Placed in jobs",
+      "abroad": "Sent abroad"
+    },
+    "target": "Target",
+    "actual": "Actual",
+    "noTarget": "No target set",
+    "onTrack": "On track",
+    "behind": "Behind",
+    "expected": "Expected by now: {n}",
+    "edit": "Edit the plan",
+    "save": "Save the plan",
+    "saved": "Saved.",
+    "failed": "Failed.",
+    "tasks": "Instructions",
+    "newTask": "New instruction",
+    "teamLabel": "To",
+    "team": {
+      "employment": "Employment office",
+      "agency": "Migration agency",
+      "mahalla": "Mahalla assistants",
+      "education": "Training centre"
+    },
+    "taskTitle": "Instruction (5+ characters)",
+    "detail": "Details",
+    "due": "Due date",
+    "send": "Send instruction",
+    "noTasks": "No instructions yet.",
+    "status": {
+      "OPEN": "Open",
+      "DONE": "Done",
+      "CANCELLED": "Cancelled"
+    },
+    "overdue": "Overdue",
+    "cancel": "Cancel",
+    "doneBy": "Done by {name} · {day}",
+    "back": "← District overview"
   }
 }

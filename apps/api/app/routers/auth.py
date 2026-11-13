@@ -161,10 +161,12 @@ async def verify_otp(body: OtpVerify, request: Request) -> JSONResponse:
             {"id": found["id"], "now": now},
         )
         user = await conn.execute(
-            text("SELECT id, full_name FROM users WHERE phone = :phone AND deleted_at IS NULL"),
+            text("SELECT id, full_name, is_active FROM users WHERE phone = :phone AND deleted_at IS NULL"),
             {"phone": body.phone},
         )
         account = user.mappings().first()
+        if account is not None and not account["is_active"]:
+            return problem(403, "ACCOUNT_BLOCKED", "Hisob to'xtatilgan", "Bu hisob administrator tomonidan to'xtatilgan.")
         if account is None:
             user_id = new_id()
             await conn.execute(

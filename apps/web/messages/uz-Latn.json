@@ -195,7 +195,8 @@
     "producerProfile": "Korxona profili",
     "leadDesk": "Nazorat markazi",
     "graduateOutcomes": "Natijalar va aloqa",
-    "moderation": "Moderatsiya"
+    "moderation": "Moderatsiya",
+    "districtPlan": "Reja va topshiriqlar"
   },
   "session": {
     "title": "Kabinet",
@@ -2619,7 +2620,9 @@
     "none": "Sizning jamoangizga ochiq vazifa yo'q.",
     "overdue": "Muddati o'tgan",
     "done": "Bajarildi",
-    "from": "{team} topshirgan"
+    "from": "{team} topshirgan",
+    "district": "Hokimlik topshirig'i",
+    "districtNote": "Bajarilgani haqida izoh"
   },
   "dy": {
     "title": "Dars kundaligi",
@@ -2895,5 +2898,97 @@
     "next": "Keyingi →",
     "reason": "Sabab: {text}",
     "system": "Tizim"
+  },
+  "ac": {
+    "title": "Foydalanuvchilar va tizim",
+    "text": "Qidirish, rollarni boshqarish, hisobni to'xtatish va qurilmalarni chiqarish. Telefon yashirin ko'rinadi; har bir o'zgarish jurnalga yoziladi.",
+    "error": "Yuklab bo'lmadi.",
+    "h": {
+      "users": "Foydalanuvchilar",
+      "blocked": "To'xtatilgan",
+      "new_week": "Yangi (7 kun)",
+      "active_day": "Kirgan (24 soat)",
+      "sessions": "Faol sessiyalar",
+      "invites": "Kutilayotgan taklifnomalar",
+      "firms": "Tasdiqlanmagan firmalar",
+      "portfolio": "Ko'rilmagan portfolio",
+      "partner_requests": "Hamkor arizalari",
+      "certificates": "Kutilayotgan sertifikatlar",
+      "audit_day": "Jurnal yozuvlari (24 soat)",
+      "db_mb": "Baza hajmi (MB)"
+    },
+    "search": "Ism yoki telefon bo'yicha qidirish",
+    "role": "Rol",
+    "state": "Holat",
+    "any": "Hammasi",
+    "active": "Faol",
+    "blocked": "To'xtatilgan",
+    "total": "Topildi: {n}",
+    "empty": "Hech narsa topilmadi.",
+    "lastLogin": "Oxirgi kirish: {day}",
+    "never": "Hali kirmagan",
+    "sessions": "Sessiyalar: {n}",
+    "blockedBadge": "To'xtatilgan",
+    "addRole": "Rol berish",
+    "removeRole": "Olib tashlash",
+    "block": "Hisobni to'xtatish",
+    "unblock": "Qayta yoqish",
+    "reason": "To'xtatish sababi",
+    "confirmBlock": "To'xtatishni tasdiqlash",
+    "cancel": "Bekor qilish",
+    "endSessions": "Qurilmalardan chiqarish",
+    "saved": "Saqlandi.",
+    "failed": "Bajarilmadi. Sabab kamida 3 belgi; o'zingizni to'xtata olmaysiz, oxirgi administratorni olib tashlab bo'lmaydi.",
+    "prev": "← Oldingi",
+    "next": "Keyingi →",
+    "byRole": "Rollar bo'yicha",
+    "audit": "Audit jurnali →",
+    "invites": "Taklifnomalar →"
+  },
+  "dp": {
+    "title": "Reja va topshiriqlar",
+    "text": "Tuman uchun yillik reja va uning bajarilishi, hamda bandlik, agentlik, mahalla va o'quv markaziga beriladigan muddatli topshiriqlar.",
+    "error": "Yuklab bo'lmadi.",
+    "plan": "{year}-yil rejasi",
+    "elapsed": "Yilning {n}% i o'tdi",
+    "m": {
+      "applicants": "Arizalar",
+      "certified": "Sertifikat berilganlar",
+      "employed": "Ishga joylashganlar",
+      "abroad": "Chet elga ketganlar"
+    },
+    "target": "Reja",
+    "actual": "Bajarildi",
+    "noTarget": "Reja kiritilmagan",
+    "onTrack": "Reja bo'yicha",
+    "behind": "Orqada",
+    "expected": "Hozirgacha kutilgan: {n}",
+    "edit": "Rejani o'zgartirish",
+    "save": "Rejani saqlash",
+    "saved": "Saqlandi.",
+    "failed": "Bajarilmadi.",
+    "tasks": "Topshiriqlar",
+    "newTask": "Yangi topshiriq",
+    "teamLabel": "Kimga",
+    "team": {
+      "employment": "Bandlik bo'limi",
+      "agency": "Migratsiya agentligi",
+      "mahalla": "Mahalla yordamchilari",
+      "education": "O'quv markazi"
+    },
+    "taskTitle": "Topshiriq (kamida 5 belgi)",
+    "detail": "Tafsilot",
+    "due": "Muddat",
+    "send": "Topshiriq berish",
+    "noTasks": "Hali topshiriq berilmagan.",
+    "status": {
+      "OPEN": "Ochiq",
+      "DONE": "Bajarildi",
+      "CANCELLED": "Bekor qilindi"
+    },
+    "overdue": "Muddati o'tgan",
+    "cancel": "Bekor qilish",
+    "doneBy": "Bajardi: {name} · {day}",
+    "back": "← Tuman holati"
   }
 }

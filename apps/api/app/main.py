@@ -11,6 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
 from app.core.config import get_settings
 from app.health import overall, probe_db, probe_minio, probe_redis
+from app.routers.admin_accounts import router as admin_accounts_router
 from app.routers.admin_edu import router as admin_edu_router
 from app.routers.applications import router as applications_router
 from app.routers.auth import router as auth_router
@@ -20,6 +21,7 @@ from app.routers.certificates import router as certificates_router
 from app.routers.classroom import router as classroom_router
 from app.routers.curator import router as curator_router
 from app.routers.district import router as district_router
+from app.routers.district_plan import router as district_plan_router
 from app.routers.employer_desk import router as employer_desk_router
 from app.routers.employers import router as employers_router
 from app.routers.employment import router as employment_router
@@ -133,6 +135,8 @@ app.include_router(people_router)
 app.include_router(classroom_router)
 app.include_router(employer_desk_router)
 app.include_router(leadership_router)
+app.include_router(admin_accounts_router)
+app.include_router(district_plan_router)
 app.include_router(moderation_router)
 app.include_router(producer_desk_router)
 app.include_router(settings_router)

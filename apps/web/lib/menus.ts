@@ -50,6 +50,7 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
   ],
   district_official: [
     { href: "/kabinet/hokimlik", key: "district" },
+    { href: "/kabinet/hokimlik/reja", key: "districtPlan" },
     { href: "/kabinet/hisobot", key: "reports" },
     { href: "/kabinet/monitoring", key: "monitoring" },
     { href: "/kabinet/mahallalar", key: "mahallas" },
