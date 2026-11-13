@@ -2366,5 +2366,62 @@
       "PLANNED": "Planned",
       "PAUSED": "Paused"
     }
+  },
+  "st": {
+    "title": "Settings",
+    "text": "Personal details, language, notifications, security and control of your own data.",
+    "profile": "Personal details",
+    "name": "Full name",
+    "email": "Email",
+    "phone": "Phone number",
+    "phoneNote": "Your phone number is your sign-in and cannot be changed here. Ask an administrator to replace it.",
+    "roles": "Roles",
+    "since": "Account created: {date}",
+    "lang": "Language and appearance",
+    "langHelp": "The language of the site on every page.",
+    "notifyTitle": "Notifications",
+    "notifyText": "Choose which notifications to receive. Messages from a switched-off group are not delivered.",
+    "notify": {
+      "offers": "Job offers and placement",
+      "vacancies": "Vacancies and departure stages",
+      "system": "System messages (invitations, requests)"
+    },
+    "telegram": "Telegram",
+    "telegramOn": "The Telegram bot is linked: sign-in codes arrive there.",
+    "telegramOff": "The Telegram bot is not linked. Open the bot and send your phone number: sign-in codes will arrive there.",
+    "unread": "Unread messages: {n}",
+    "security": "Security",
+    "signIn": "Sign-in is by phone number and a one-time code. There is no password, so never share the code.",
+    "lastLogin": "Last sign-in: {date}",
+    "twoFactorOn": "Two-step verification is on.",
+    "twoFactorPending": "Two-step verification is required for your role: it is set up at your first sign-in.",
+    "twoFactorNone": "Two-step verification is not required for your role.",
+    "logout": "Press “Sign out” to leave.",
+    "privacy": "Privacy and data",
+    "privacyText": "The platform uses your data only within this project. Your phone number is not shown to other users.",
+    "consents": "Consents given",
+    "consent": {
+      "pd_processing": "Personal data processing",
+      "telegram_notify": "Telegram notifications"
+    },
+    "noConsents": "No consents recorded yet.",
+    "export": "Download my data",
+    "exportText": "Everything stored about you on the platform in one JSON file (applications, training, attendance, grades, certificates, messages).",
+    "shortcuts": "Settings for your role",
+    "save": "Save",
+    "saving": "Saving…",
+    "saved": "Settings saved.",
+    "failed": "Not saved. Check the fields.",
+    "go": "Open",
+    "shortcut": {
+      "worker": "Worker profile: visibility and availability",
+      "company": "Company details and documents",
+      "organisation": "Organisation profile (public page)",
+      "schedule": "Lesson schedule",
+      "myRating": "My rating",
+      "passport": "Passport and photo",
+      "products": "Products and prices",
+      "invitations": "Invitations and users"
+    }
   }
 }

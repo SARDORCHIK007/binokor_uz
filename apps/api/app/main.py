@@ -37,6 +37,7 @@ from app.routers.producers import router as producers_router
 from app.routers.public import router as public_router
 from app.routers.public import set_public_locale
 from app.routers.reports import router as reports_router
+from app.routers.settings import router as settings_router
 from app.routers.vacancies import router as vacancies_router
 from app.routers.vocab import router as vocab_router
 from app.seed import seed_login_users
@@ -120,6 +121,7 @@ app.include_router(onboarding_router)
 app.include_router(monitoring_router)
 app.include_router(partner_profile_router)
 app.include_router(panels_router)
+app.include_router(settings_router)
 app.include_router(district_router)
 app.include_router(graduates_router)
 app.include_router(employment_router)

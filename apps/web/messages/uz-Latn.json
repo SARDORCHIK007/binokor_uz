@@ -2366,5 +2366,62 @@
       "PLANNED": "Rejalashtirilgan",
       "PAUSED": "To'xtatilgan"
     }
+  },
+  "st": {
+    "title": "Sozlamalar",
+    "text": "Shaxsiy ma'lumotlar, til, xabarnomalar, xavfsizlik va o'z ma'lumotlaringizni boshqarish.",
+    "profile": "Shaxsiy ma'lumotlar",
+    "name": "Familiya, ism, otasining ismi",
+    "email": "Elektron pochta",
+    "phone": "Telefon raqami",
+    "phoneNote": "Telefon raqami kirish uchun ishlatiladi va o'zgartirilmaydi. Uni almashtirish uchun administratorga murojaat qiling.",
+    "roles": "Rollar",
+    "since": "Hisob yaratilgan: {date}",
+    "lang": "Til va ko'rinish",
+    "langHelp": "Saytning tili hamma sahifada shu tilda bo'ladi.",
+    "notifyTitle": "Xabarnomalar",
+    "notifyText": "Qaysi xabarlarni olishni tanlang. O'chirilgan guruhdagi xabarlar sizga yetib bormaydi.",
+    "notify": {
+      "offers": "Ish takliflari va joylashtirish",
+      "vacancies": "Vakansiyalar va jo'natish bosqichlari",
+      "system": "Tizim xabarlari (taklifnomalar, so'rovlar)"
+    },
+    "telegram": "Telegram",
+    "telegramOn": "Telegram bot ulangan: kirish kodlari shu yerga keladi.",
+    "telegramOff": "Telegram bot ulanmagan. Botni oching va telefon raqamingizni yuboring: kirish kodlari shu yerga keladi.",
+    "unread": "O'qilmagan xabarlar: {n}",
+    "security": "Xavfsizlik",
+    "signIn": "Kirish usuli: telefon raqami va bir martalik kod. Parol yo'q, shuning uchun kodni hech kimga bermang.",
+    "lastLogin": "Oxirgi kirish: {date}",
+    "twoFactorOn": "Ikki bosqichli tasdiq yoqilgan.",
+    "twoFactorPending": "Sizning rolingiz uchun ikki bosqichli tasdiq majburiy: birinchi kirishda sozlanadi.",
+    "twoFactorNone": "Sizning rolingiz uchun ikki bosqichli tasdiq talab qilinmaydi.",
+    "logout": "Hamma qurilmada chiqish uchun «Chiqish» tugmasini bosing.",
+    "privacy": "Maxfiylik va ma'lumotlar",
+    "privacyText": "Platforma sizning ma'lumotlaringizni faqat shu loyiha doirasida ishlatadi. Telefon raqamingiz boshqa foydalanuvchilarga ko'rsatilmaydi.",
+    "consents": "Berilgan rozilik",
+    "consent": {
+      "pd_processing": "Shaxsiy ma'lumotlarni qayta ishlash",
+      "telegram_notify": "Telegram orqali xabar olish"
+    },
+    "noConsents": "Hali rozilik yozilmagan.",
+    "export": "Ma'lumotlarimni yuklab olish",
+    "exportText": "Platformada siz haqingizda saqlangan hamma narsa bitta JSON faylda (ariza, o'qish, davomat, baho, sertifikat, xabarlar).",
+    "shortcuts": "Rolingizga oid sozlamalar",
+    "save": "Saqlash",
+    "saving": "Saqlanmoqda…",
+    "saved": "Sozlamalar saqlandi.",
+    "failed": "Saqlanmadi. Maydonlarni tekshiring.",
+    "go": "Ochish",
+    "shortcut": {
+      "worker": "Usta profili: ko'rinish va bandlik holati",
+      "company": "Kompaniya ma'lumotlari va hujjatlar",
+      "organisation": "Tashkilot profili (ommaviy sahifa)",
+      "schedule": "Dars jadvali",
+      "myRating": "Mening reytingim",
+      "passport": "Pasport va rasm",
+      "products": "Mahsulotlar va narxlar",
+      "invitations": "Taklifnomalar va foydalanuvchilar"
+    }
   }
 }
