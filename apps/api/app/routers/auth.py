@@ -373,7 +373,7 @@ DEMO_NEXT = {
     "mentor": "/kabinet/davomat",
     "student": "/kabinet",
     "employer": "/kabinet/ish-stoli",
-    "producer": "/kabinet/mahsulotlar",
+    "producer": "/kabinet/ishlab-stoli",
     "hokimlik": "/kabinet/hisobot",
     "worker": "/kabinet/portfolio",
 }

@@ -191,6 +191,12 @@ async def update_product(product_id: uuid.UUID, body: ProductBody, request: Requ
         return problem(401, "UNAUTHORIZED", "Kirish talab qilinadi", "Avval tizimga kiring.")
     engine = _engine(request)
     async with engine.begin() as conn:
+        before = (
+            await conn.execute(
+                text("SELECT p.price FROM products p JOIN producer_members m ON m.producer_id = p.producer_id WHERE p.id = :id AND m.user_id = :u"),
+                {"id": product_id, "u": user_id},
+            )
+        ).first()
         updated = await conn.execute(
             text(
                 """
@@ -220,6 +226,11 @@ async def update_product(product_id: uuid.UUID, body: ProductBody, request: Requ
         )
         if updated.first() is None:
             return problem(404, "NOT_FOUND", "Topilmadi", "Mahsulot sizniki emas.")
+        if body.price is not None and (before is None or before[0] is None or float(before[0]) != float(body.price)):
+            await conn.execute(
+                text("INSERT INTO product_price_log (id, product_id, price) VALUES (:id, :p, :price)"),
+                {"id": new_id(), "p": product_id, "price": body.price},
+            )
     return JSONResponse({"saved": True})
 
 
@@ -320,7 +331,8 @@ async def order_status(order_id: uuid.UUID, body: OrderStatusBody, request: Requ
             text(
                 """
                 UPDATE order_requests o
-                SET status = CAST(:status AS order_status)
+                SET status = CAST(:status AS order_status),
+                    responded_at = CASE WHEN :status <> 'NEW' THEN coalesce(o.responded_at, now()) ELSE o.responded_at END
                 FROM products p
                 JOIN producer_members m ON m.producer_id = p.producer_id
                 WHERE o.id = :id AND o.product_id = p.id AND m.user_id = :user_id

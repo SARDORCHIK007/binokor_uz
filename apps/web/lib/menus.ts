@@ -28,8 +28,10 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
   ],
   producer: [
     { href: "/kabinet", key: "panel" },
+    { href: "/kabinet/ishlab-stoli", key: "producerDesk" },
     { href: "/kabinet/mahsulotlar", key: "products" },
     { href: "/kabinet/statistika", key: "producerStats" },
+    { href: "/kabinet/korxona", key: "producerProfile" },
   ],
   education_lead: [
     { href: "/kabinet/monitoring", key: "monitoring" },

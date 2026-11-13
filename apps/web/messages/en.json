@@ -187,7 +187,9 @@
     "payments": "Payments",
     "diary": "Lesson diary",
     "deskMenu": "Hiring desk",
-    "company": "Company profile"
+    "company": "Company profile",
+    "producerDesk": "Desk",
+    "producerProfile": "Company profile"
   },
   "session": {
     "title": "Cabinet",
@@ -2696,5 +2698,69 @@
       "saved": "Saved.",
       "failed": "Could not save. Check the e-mail and website address."
     }
+  },
+  "pd": {
+    "title": "Producer desk",
+    "text": "Orders awaiting an answer, stock levels, outdated prices and repeat buyers.",
+    "error": "Could not load the desk.",
+    "kpi": {
+      "new_orders": "New orders",
+      "late": "Waiting over 24 h",
+      "in_progress": "In progress",
+      "done_month": "Done this month",
+      "revenue_month": "This month's value (UZS)",
+      "response_hours": "Average response (hours)",
+      "out_of_stock": "Out of stock",
+      "low_stock": "Low stock",
+      "stale_prices": "Stale prices"
+    },
+    "complete": "Profile completeness: {n}%",
+    "fill": "Complete the profile",
+    "unverified": "The company is not verified yet: products become public after verification.",
+    "orders": "Orders awaiting an answer",
+    "noOrders": "No orders awaiting an answer right now.",
+    "late": "Late",
+    "company": "Company",
+    "person": "Individual",
+    "status": {
+      "NEW": "New",
+      "CONTACTED": "Contacted"
+    },
+    "contact": "Contacted",
+    "done": "Done",
+    "cancel": "Cancel",
+    "note": "Note",
+    "saveNote": "Save note",
+    "stock": "Stock levels",
+    "stockText": "Enter the quantity: 0 marks the product out of stock, a positive value restores it.",
+    "qty": "Quantity",
+    "lowAt": "Alert threshold",
+    "saveStock": "Save",
+    "priceAge": "Price updated: {day}",
+    "stale": "Stale price",
+    "low": "Low",
+    "out": "Out",
+    "buyers": "Repeat buyers",
+    "buyerRow": "{n} orders · {sum} UZS",
+    "saved": "Saved.",
+    "failed": "Failed.",
+    "allProducts": "Edit products →",
+    "stats": "Statistics →"
+  },
+  "pp": {
+    "title": "Company profile",
+    "text": "These details are shown on product pages and to people placing orders.",
+    "name": "Company name",
+    "inn": "Tax ID",
+    "address": "Address",
+    "phone": "Phone (+998…)",
+    "website": "Website (https://…)",
+    "contact_person": "Contact person",
+    "work_hours": "Working hours",
+    "delivery_regions": "Delivery regions",
+    "description": "About the company",
+    "save": "Save",
+    "saved": "Saved.",
+    "failed": "Could not save. The phone must start with +998 and the website with https://."
   }
 }

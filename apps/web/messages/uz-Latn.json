@@ -187,7 +187,9 @@
     "payments": "To'lovlar",
     "diary": "Dars kundaligi",
     "deskMenu": "Ish stoli",
-    "company": "Kompaniya profili"
+    "company": "Kompaniya profili",
+    "producerDesk": "Ish stoli",
+    "producerProfile": "Korxona profili"
   },
   "session": {
     "title": "Kabinet",
@@ -2696,5 +2698,69 @@
       "saved": "Saqlandi.",
       "failed": "Saqlab bo'lmadi. Pochta va sayt manzilini tekshiring."
     }
+  },
+  "pd": {
+    "title": "Ishlab chiqaruvchi ish stoli",
+    "text": "Bugun javob kutayotgan buyurtmalar, ombor qoldig'i, eskirgan narxlar va doimiy xaridorlar.",
+    "error": "Ish stolini yuklab bo'lmadi.",
+    "kpi": {
+      "new_orders": "Yangi buyurtmalar",
+      "late": "24 soatdan oshgan",
+      "in_progress": "Jarayonda",
+      "done_month": "Shu oy bajarilgan",
+      "revenue_month": "Shu oy summasi (so'm)",
+      "response_hours": "O'rtacha javob (soat)",
+      "out_of_stock": "Omborda yo'q",
+      "low_stock": "Qoldiq kam",
+      "stale_prices": "Narxi eskirgan"
+    },
+    "complete": "Profil to'liqligi: {n}%",
+    "fill": "Profilni to'ldirish",
+    "unverified": "Korxona hali tasdiqlanmagan: mahsulotlar tasdiqdan keyin ommaviy ko'rinadi.",
+    "orders": "Javob kutayotgan buyurtmalar",
+    "noOrders": "Hozir javob kutayotgan buyurtma yo'q.",
+    "late": "Kechikmoqda",
+    "company": "Tashkilot",
+    "person": "Jismoniy shaxs",
+    "status": {
+      "NEW": "Yangi",
+      "CONTACTED": "Bog'lanildi"
+    },
+    "contact": "Bog'landim",
+    "done": "Bajarildi",
+    "cancel": "Bekor qilish",
+    "note": "Izoh",
+    "saveNote": "Izohni saqlash",
+    "stock": "Ombor qoldig'i",
+    "stockText": "Qoldiqni kiriting: 0 bo'lsa mahsulot «omborda yo'q» bo'ladi, musbat bo'lsa qayta paydo bo'ladi.",
+    "qty": "Qoldiq",
+    "lowAt": "Ogohlantirish chegarasi",
+    "saveStock": "Saqlash",
+    "priceAge": "Narx yangilangan: {day}",
+    "stale": "Narx eskirgan",
+    "low": "Kam",
+    "out": "Yo'q",
+    "buyers": "Doimiy xaridorlar",
+    "buyerRow": "{n} ta buyurtma · {sum} so'm",
+    "saved": "Saqlandi.",
+    "failed": "Bajarilmadi.",
+    "allProducts": "Mahsulotlarni tahrirlash →",
+    "stats": "Statistika →"
+  },
+  "pp": {
+    "title": "Korxona profili",
+    "text": "Bu ma'lumotlar mahsulot sahifalarida va buyurtma berayotganlarga ko'rinadi.",
+    "name": "Korxona nomi",
+    "inn": "STIR",
+    "address": "Manzil",
+    "phone": "Telefon (+998…)",
+    "website": "Veb-sayt (https://…)",
+    "contact_person": "Mas'ul shaxs",
+    "work_hours": "Ish vaqti",
+    "delivery_regions": "Yetkazib berish hududlari",
+    "description": "Korxona haqida",
+    "save": "Saqlash",
+    "saved": "Saqlandi.",
+    "failed": "Saqlab bo'lmadi. Telefon +998 bilan, sayt https:// bilan boshlansin."
   }
 }
