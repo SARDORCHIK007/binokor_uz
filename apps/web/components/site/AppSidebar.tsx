@@ -54,6 +54,7 @@ const CABINET_ICONS: [string, IconName][] = [
   ["bandlik", "briefcase"],
   ["hokimlik", "grid"],
   ["bitiruvchilar", "cap"],
+  ["tolovlar", "chart"],
   ["reestr", "users"],
   ["qoshish", "doc"],
   ["nomzodlar", "users"],

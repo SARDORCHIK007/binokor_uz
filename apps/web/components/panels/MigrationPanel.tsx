@@ -3,6 +3,7 @@
 import { buttonClass, EmptyState } from "@uychibinokor/ui";
 import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
+import { TaskInbox } from "@/components/people/TaskInbox";
 import { useState } from "react";
 import { Badge, CARD, Meter, Tile, type Tone } from "@/components/cabinet/kit";
 import { Flag } from "@/components/Flag";
@@ -78,6 +79,7 @@ export function MigrationPanel({ initial }: { initial: MigrationData }) {
 
   return (
     <div className="flex flex-col gap-6">
+      {data.can_manage ? <TaskInbox /> : null}
       {!data.can_manage ? (
         <p className="rounded-xl bg-blue-50 px-4 py-2.5 text-sm font-semibold text-primary" role="note">
           {t("readonly")}

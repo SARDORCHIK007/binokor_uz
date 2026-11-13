@@ -9,6 +9,7 @@ import { FIELD, send } from "@/lib/clientApi";
 
 export type PoolPerson = {
   user_id: string;
+  person_id: string | null;
   slug: string;
   name: string;
   trade: string;
@@ -172,7 +173,7 @@ export function CandidatePool({ initial, openVacancies, fixedVacancy, onAdded }:
                 {initials(person.name)}
               </span>
               <div className="min-w-0 flex-1">
-                <Link href={`/ustalar/${person.slug}`} className="block truncate font-bold text-navy-900 hover:text-primary">
+                <Link href={person.person_id ? `/kabinet/shaxs/${person.person_id}` : `/ustalar/${person.slug}`} className="block truncate font-bold text-navy-900 hover:text-primary">
                   {person.name}
                 </Link>
                 <p className="text-sm text-muted">

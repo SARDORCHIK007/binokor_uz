@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import { useState } from "react";
 import { Badge, CARD, Tile, initials, type Tone } from "@/components/cabinet/kit";
+import { TaskInbox } from "@/components/people/TaskInbox";
 import { ReferDialog, type FreeWorker } from "@/components/panels/ReferDialog";
 import { send } from "@/lib/clientApi";
 
@@ -37,6 +38,8 @@ export function EmploymentPanel({ initial }: { initial: EmploymentData }) {
           <Tile key={key} label={t(`kpi.${key}`)} value={data.kpi[key] ?? 0} tone={TONES[index]} />
         ))}
       </div>
+
+      <TaskInbox />
 
       <div className="grid gap-6 xl:grid-cols-[1.4fr_1fr]">
         <section aria-labelledby="requests" className="flex flex-col gap-3">

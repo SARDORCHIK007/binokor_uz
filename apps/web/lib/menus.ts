@@ -54,6 +54,7 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/bandlik", key: "employmentPanel" },
     { href: "/kabinet/bandlik/reestr", key: "employmentRegistry" },
     { href: "/kabinet/bandlik/qoshish", key: "employmentAdd" },
+    { href: "/kabinet/bandlik/tolovlar", key: "payments" },
     { href: "/kabinet/ishlar", key: "jobs" },
     { href: "/kabinet/hamkor-profil", key: "orgProfile" },
   ],

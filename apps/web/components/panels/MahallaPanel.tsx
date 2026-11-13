@@ -2,14 +2,16 @@
 
 import { Button, EmptyState } from "@uychibinokor/ui";
 import { useLocale, useTranslations } from "next-intl";
+import Link from "next/link";
 import { useMemo, useState, type FormEvent } from "react";
+import { TaskInbox } from "@/components/people/TaskInbox";
 import { Badge, CARD, Tile, initials, type Tone } from "@/components/cabinet/kit";
 import { FIELD, send } from "@/lib/clientApi";
 
 export type MahallaData = {
   mahallas: { id: string; name: string }[];
   kpi: Record<string, number>;
-  candidates: { id: string; name: string; trade: string; status: string; source: string; date: string; mahalla: string; studying: boolean; certified: boolean }[];
+  candidates: { id: string; person_id: string; name: string; trade: string; status: string; source: string; date: string; mahalla: string; studying: boolean; certified: boolean }[];
   trades: { code: string; name: string }[];
   by_mahalla: { id: string; name: string; people: number; applications: number; studying: number; certified: number; employed: number }[];
 };
@@ -76,6 +78,8 @@ export function MahallaPanel({ initial }: { initial: MahallaData }) {
       <p className="text-sm text-muted">
         {t("mahallas")}: <span className="font-bold text-navy-900">{data.mahallas.map((item) => item.name).join(", ")}</span>
       </p>
+      <TaskInbox />
+
       <div className="grid grid-cols-2 gap-3 xl:grid-cols-3 2xl:grid-cols-6">
         {KPIS.map((key, index) => (
           <Tile key={key} label={t(`kpi.${key}`)} value={data.kpi[key] ?? 0} tone={TONES[index]} />
@@ -224,7 +228,7 @@ export function MahallaPanel({ initial }: { initial: MahallaData }) {
                   {initials(item.name)}
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate font-bold text-navy-900">{item.name}</p>
+                  <Link href={`/kabinet/shaxs/${item.person_id}`} className="block truncate font-bold text-navy-900 hover:text-primary">{item.name}</Link>
                   <p className="truncate text-sm text-muted">
                     {item.trade} · {item.mahalla} · {item.date}
                   </p>

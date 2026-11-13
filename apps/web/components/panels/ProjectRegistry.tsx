@@ -139,11 +139,7 @@ export function ProjectRegistry({ initial, options }: { initial: RegistryData; o
                         {initials(person.name)}
                       </span>
                       <span className="min-w-0">
-                        {person.slug ? (
-                          <Link href={`/ustalar/${person.slug}`} className="block truncate font-bold text-navy-900 hover:text-primary">{person.name}</Link>
-                        ) : (
-                          <span className="block truncate font-bold text-navy-900">{person.name}</span>
-                        )}
+                        <Link href={`/kabinet/shaxs/${person.id}`} className="block truncate font-bold text-navy-900 hover:text-primary">{person.name}</Link>
                         {person.source ? <span className="block text-xs font-normal text-muted">{mp(`source.${person.source}` as "source.MAHALLA")}</span> : null}
                       </span>
                     </span>

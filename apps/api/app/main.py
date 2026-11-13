@@ -32,6 +32,8 @@ from app.routers.onboarding import router as onboarding_router
 from app.routers.panels import router as panels_router
 from app.routers.partner_profile import router as partner_profile_router
 from app.routers.passport import router as passport_router
+from app.routers.payments import router as payments_router
+from app.routers.people import router as people_router
 from app.routers.portfolio import router as portfolio_router
 from app.routers.producers import router as producers_router
 from app.routers.public import router as public_router
@@ -121,6 +123,8 @@ app.include_router(onboarding_router)
 app.include_router(monitoring_router)
 app.include_router(partner_profile_router)
 app.include_router(panels_router)
+app.include_router(payments_router)
+app.include_router(people_router)
 app.include_router(settings_router)
 app.include_router(district_router)
 app.include_router(graduates_router)

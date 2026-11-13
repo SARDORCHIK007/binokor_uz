@@ -54,7 +54,7 @@ async def _is_agency(conn: AsyncConnection, user_id: uuid.UUID) -> bool:
 
 
 POOL_SQL = """
-    SELECT wp.user_id::text AS user_id, wp.slug, u.full_name, t.code AS trade_code, t.name AS trade, wp.level::text AS level,
+    SELECT wp.user_id::text AS user_id, p.id::text AS person_id, wp.slug, u.full_name, t.code AS trade_code, t.name AS trade, wp.level::text AS level,
            wp.verified_hours, wp.rating_avg, wp.availability::text AS availability, m.name AS mahalla,
            EXISTS (SELECT 1 FROM certificates c WHERE c.person_id = p.id AND c.status = 'ISSUED') AS certified,
            coalesce((SELECT max(a.trade_experience_years) FROM applications a WHERE a.person_id = p.id), 0) AS experience,
@@ -91,6 +91,7 @@ def person_json(r: Any, code: str, requirements: dict[str, Any] | None = None) -
     checks = fit_checks(requirements or {}, row)
     return {
         "user_id": row["user_id"],
+        "person_id": row["person_id"],
         "slug": row["slug"],
         "name": row["full_name"],
         "trade": pick(row["trade"], code),

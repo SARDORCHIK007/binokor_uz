@@ -119,7 +119,7 @@ async def mahalla_overview(request: Request, lang: str | None = None) -> JSONRes
         rows = await conn.execute(
             text(
                 """
-                SELECT a.id::text AS id, p.first_name, p.last_name, t.name AS trade, a.status::text AS status, a.source,
+                SELECT a.id::text AS id, p.id::text AS person_id, p.first_name, p.last_name, t.name AS trade, a.status::text AS status, a.source,
                        a.created_at::date::text AS day, m.name AS mahalla,
                        EXISTS (SELECT 1 FROM enrollments e WHERE e.student_user_id = p.user_id AND e.status = 'ACTIVE') AS studying,
                        EXISTS (SELECT 1 FROM certificates c WHERE c.person_id = p.id AND c.status = 'ISSUED') AS certified
@@ -136,6 +136,7 @@ async def mahalla_overview(request: Request, lang: str | None = None) -> JSONRes
         candidates = [
             {
                 "id": r["id"],
+                "person_id": r["person_id"],
                 "name": f"{r['last_name']} {r['first_name']}",
                 "trade": pick(r["trade"], code),
                 "status": r["status"],
