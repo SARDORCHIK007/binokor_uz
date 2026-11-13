@@ -189,7 +189,9 @@
     "deskMenu": "Ish stoli",
     "company": "Kompaniya profili",
     "producerDesk": "Ish stoli",
-    "producerProfile": "Korxona profili"
+    "producerProfile": "Korxona profili",
+    "leadDesk": "Nazorat markazi",
+    "graduateOutcomes": "Natijalar va aloqa"
   },
   "session": {
     "title": "Kabinet",
@@ -2762,5 +2764,65 @@
     "save": "Saqlash",
     "saved": "Saqlandi.",
     "failed": "Saqlab bo'lmadi. Telefon +998 bilan, sayt https:// bilan boshlansin."
+  },
+  "ld": {
+    "title": "Nazorat markazi",
+    "text": "Diqqat talab qiladigan narsalar: kundalik yuritilmagan darslar, davomati past tinglovchilar, guruh hajmi va kutilayotgan sertifikatlar.",
+    "error": "Ma'lumotni yuklab bo'lmadi.",
+    "kpi": {
+      "at_risk": "Davomati past tinglovchilar",
+      "diary": "Kundaligi yo'q darslar",
+      "sizes": "Hajmi noto'g'ri guruhlar",
+      "certs": "Kutilayotgan sertifikatlar"
+    },
+    "trend": "Haftalik davomat",
+    "noTrend": "So'nggi 4 haftada davomat yozilmagan.",
+    "diary": "Dars kundaligi (so'nggi 14 kun)",
+    "diaryText": "Davomat yozilgan, lekin ustoz kundalikka mavzu yozmagan kunlar.",
+    "diaryRow": "{missing} / {held} dars kundaliksiz",
+    "diaryOk": "Hammasi yozilgan",
+    "noDiary": "Oxirgi 14 kunda dars o'tilmagan.",
+    "atRisk": "Davomati {n}% dan past tinglovchilar",
+    "noRisk": "Hamma tinglovchining davomati yaxshi.",
+    "riskRow": "{group} · ustoz {mentor} · {lessons} dars",
+    "csv": "Ro'yxatni yuklab olish (CSV)",
+    "sizes": "Guruh hajmi",
+    "sizesOk": "Barcha guruhlar 8–10 oralig'ida.",
+    "under": "{code}: {n} tinglovchi (8 dan kam)",
+    "over": "{code}: {n} tinglovchi (chegaradan ko'p)",
+    "homework": "Uy vazifalarini bajarish",
+    "homeworkRow": "{done} ta belgi · {tasks} ta vazifa · {students} tinglovchi",
+    "noHomework": "Uy vazifasi berilmagan.",
+    "open": "Sertifikatlar →",
+    "monitoring": "Ustozlar monitoringi →"
+  },
+  "go": {
+    "title": "Natijalar va aloqa",
+    "text": "Bitiruvchilar loyihada qayerga yetdi: ro'yxatdan ariza, o'qish, sertifikat va ishga joylashishgacha. Bog'lanish kerak bo'lganlar ham shu yerda.",
+    "error": "Ma'lumotni yuklab bo'lmadi.",
+    "k": {
+      "leads": "Ro'yxatda",
+      "interested": "Qiziqqan",
+      "applied": "Ariza bergan",
+      "studying": "O'qiyapti/o'qigan",
+      "certified": "Sertifikatli",
+      "employed": "Ishga joylashgan",
+      "abroad": "Chet elda"
+    },
+    "byYear": "Bitirgan yili bo'yicha",
+    "year": "Yil",
+    "due": "Bog'lanish kerak",
+    "dueText": "Belgilangan sanasi kelgan yoki o'tgan bitiruvchilar.",
+    "noDue": "Bugun bog'lanish kerak bo'lgan bitiruvchi yo'q.",
+    "contacted": "Bog'landim (+7 kun)",
+    "snooze": "Ertaga",
+    "lastContact": "Oxirgi bog'lanish: {day}",
+    "never": "Hali bog'lanilmagan",
+    "csv": "Ro'yxatni yuklab olish (CSV)",
+    "back": "← Bitiruvchilar ro'yxati",
+    "saved": "Saqlandi.",
+    "failed": "Bajarilmadi.",
+    "results": "Natijalar",
+    "noYears": "Hali bitiruvchi qo'shilmagan. Ro'yxatni «Bitiruvchilar» sahifasida to'ldiring."
   }
 }

@@ -34,6 +34,7 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/korxona", key: "producerProfile" },
   ],
   education_lead: [
+    { href: "/kabinet/direktor", key: "leadDesk" },
     { href: "/kabinet/monitoring", key: "monitoring" },
     { href: "/kabinet/monitoring/tinglovchilar", key: "studentRatings" },
     { href: "/kabinet/hisobot", key: "reports" },
@@ -42,6 +43,7 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
   ],
   university_officer: [
     { href: "/kabinet/bitiruvchilar", key: "graduates" },
+    { href: "/kabinet/bitiruvchilar/natijalar", key: "graduateOutcomes" },
     { href: "/kabinet/imzolash", key: "signing" },
     { href: "/kabinet/hamkor-profil", key: "orgProfile" },
   ],

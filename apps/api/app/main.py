@@ -26,6 +26,7 @@ from app.routers.employment import router as employment_router
 from app.routers.exams import router as exams_router
 from app.routers.graduates import router as graduates_router
 from app.routers.jobs import router as jobs_router
+from app.routers.leadership import router as leadership_router
 from app.routers.learning import router as learning_router
 from app.routers.market import router as market_router
 from app.routers.migration import router as migration_router
@@ -130,6 +131,7 @@ app.include_router(payments_router)
 app.include_router(people_router)
 app.include_router(classroom_router)
 app.include_router(employer_desk_router)
+app.include_router(leadership_router)
 app.include_router(producer_desk_router)
 app.include_router(settings_router)
 app.include_router(district_router)

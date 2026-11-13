@@ -189,7 +189,9 @@
     "deskMenu": "Hiring desk",
     "company": "Company profile",
     "producerDesk": "Desk",
-    "producerProfile": "Company profile"
+    "producerProfile": "Company profile",
+    "leadDesk": "Control centre",
+    "graduateOutcomes": "Outcomes and follow-ups"
   },
   "session": {
     "title": "Cabinet",
@@ -2762,5 +2764,65 @@
     "save": "Save",
     "saved": "Saved.",
     "failed": "Could not save. The phone must start with +998 and the website with https://."
+  },
+  "ld": {
+    "title": "Control centre",
+    "text": "What needs attention: lessons without a diary entry, learners with low attendance, group sizes and certificates waiting.",
+    "error": "Could not load the data.",
+    "kpi": {
+      "at_risk": "Learners below the line",
+      "diary": "Lessons without a diary entry",
+      "sizes": "Groups out of range",
+      "certs": "Certificates waiting"
+    },
+    "trend": "Weekly attendance",
+    "noTrend": "No attendance recorded in the last 4 weeks.",
+    "diary": "Lesson diary (last 14 days)",
+    "diaryText": "Days with attendance recorded but no topic written by the mentor.",
+    "diaryRow": "{missing} of {held} lessons without an entry",
+    "diaryOk": "All recorded",
+    "noDiary": "No lessons in the last 14 days.",
+    "atRisk": "Learners with attendance below {n}%",
+    "noRisk": "Every learner is attending well.",
+    "riskRow": "{group} · mentor {mentor} · {lessons} lessons",
+    "csv": "Download the list (CSV)",
+    "sizes": "Group sizes",
+    "sizesOk": "All groups are within 8–10.",
+    "under": "{code}: {n} learners (fewer than 8)",
+    "over": "{code}: {n} learners (over the limit)",
+    "homework": "Homework completion",
+    "homeworkRow": "{done} ticks · {tasks} tasks · {students} learners",
+    "noHomework": "No homework given.",
+    "open": "Certificates →",
+    "monitoring": "Mentor monitoring →"
+  },
+  "go": {
+    "title": "Outcomes and follow-ups",
+    "text": "How graduates progress: from the call list to an application, training, a certificate and a job. Who to call next is here too.",
+    "error": "Could not load the data.",
+    "k": {
+      "leads": "On the list",
+      "interested": "Interested",
+      "applied": "Applied",
+      "studying": "Studying or studied",
+      "certified": "Certified",
+      "employed": "Employed",
+      "abroad": "Abroad"
+    },
+    "byYear": "By graduation year",
+    "year": "Year",
+    "due": "Due for contact",
+    "dueText": "Graduates whose follow-up date has come.",
+    "noDue": "Nobody is due for contact today.",
+    "contacted": "Contacted (+7 days)",
+    "snooze": "Tomorrow",
+    "lastContact": "Last contact: {day}",
+    "never": "Not contacted yet",
+    "csv": "Download the list (CSV)",
+    "back": "← Graduates list",
+    "saved": "Saved.",
+    "failed": "Failed.",
+    "results": "Outcomes",
+    "noYears": "No graduates yet. Fill the list on the Graduates page."
   }
 }
