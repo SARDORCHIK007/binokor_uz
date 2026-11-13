@@ -23,7 +23,7 @@ type Settings = {
 type Device = { id: string; agent: string; created: string; expires: string; current: boolean };
 
 const GROUPS = ["offers", "vacancies", "system"] as const;
-const LOCALES = ["uz-Latn", "uz-Cyrl", "ru", "en"];
+const LOCALES: [string, string][] = [["uz-Latn", "O'zbekcha (lotin)"], ["uz-Cyrl", "Ўзбекча (кирилл)"], ["ru", "Русский"], ["en", "English"]];
 
 function deviceName(agent: string): string {
   const os = /Windows/.test(agent) ? "Windows" : /Android/.test(agent) ? "Android" : /iPhone|iPad/.test(agent) ? "iOS" : /Mac OS/.test(agent) ? "macOS" : /Linux/.test(agent) ? "Linux" : "";
@@ -100,8 +100,8 @@ export function SettingsPanel({ roleNames }: { roleNames: Record<string, string>
             <label className={label}>
               {t("locale")}
               <select className={FIELD} value={data.locale} onChange={(event) => setData({ ...data, locale: event.target.value })}>
-                {LOCALES.map((code) => (
-                  <option key={code} value={code}>{code}</option>
+                {LOCALES.map(([code, name]) => (
+                  <option key={code} value={code}>{name}</option>
                 ))}
               </select>
             </label>
@@ -160,7 +160,7 @@ export function SettingsPanel({ roleNames }: { roleNames: Record<string, string>
             <p className="mt-2 text-sm text-muted">{t("noDevices")}</p>
           ) : (
             <ul className="mt-2 divide-y divide-line">
-              {devices.map((device) => (
+              {devices.slice(0, 8).map((device) => (
                 <li key={device.id} className="flex items-center justify-between gap-3 py-2">
                   <div className="min-w-0">
                     <p className="truncate text-sm font-bold text-navy-900">{deviceName(device.agent)} {device.current ? <Badge tone="green">{t("current")}</Badge> : null}</p>
