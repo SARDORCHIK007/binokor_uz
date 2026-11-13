@@ -20,6 +20,7 @@ from app.routers.certificates import router as certificates_router
 from app.routers.classroom import router as classroom_router
 from app.routers.curator import router as curator_router
 from app.routers.district import router as district_router
+from app.routers.employer_desk import router as employer_desk_router
 from app.routers.employers import router as employers_router
 from app.routers.employment import router as employment_router
 from app.routers.exams import router as exams_router
@@ -127,6 +128,7 @@ app.include_router(panels_router)
 app.include_router(payments_router)
 app.include_router(people_router)
 app.include_router(classroom_router)
+app.include_router(employer_desk_router)
 app.include_router(settings_router)
 app.include_router(district_router)
 app.include_router(graduates_router)

@@ -13,6 +13,7 @@ GROUP_OF_KIND = {
     "offer": "offers",
     "offer_answer": "offers",
     "placement": "offers",
+    "pipeline_stage": "offers",
     "abroad_stage": "offers",
     "vacancy_new": "vacancies",
     "vacancy_status": "vacancies",

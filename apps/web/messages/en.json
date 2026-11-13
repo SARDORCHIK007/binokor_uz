@@ -185,7 +185,9 @@
     "graduates": "Graduates",
     "district": "District overview",
     "payments": "Payments",
-    "diary": "Lesson diary"
+    "diary": "Lesson diary",
+    "deskMenu": "Hiring desk",
+    "company": "Company profile"
   },
   "session": {
     "title": "Cabinet",
@@ -1251,7 +1253,9 @@
       "invite_accepted": "An invited person has signed in",
       "vacancy_new": "A new foreign vacancy was posted",
       "vacancy_status": "Your vacancy status changed",
-      "lesson_log": "Your mentor added a lesson entry"
+      "lesson_log": "Your mentor added a lesson entry",
+      "pipeline_stage": "An employer moved your application to a new stage",
+      "placement": "You have been hired"
     }
   },
   "settings": {
@@ -2634,5 +2638,63 @@
     "by": "Mentor: {name}",
     "noHomework": "No homework",
     "error": "Could not load the diary."
+  },
+  "ed": {
+    "title": "Hiring desk",
+    "text": "Candidates for your requests, hiring stages and current staff in one place.",
+    "error": "Could not load the desk.",
+    "kpi": {
+      "open_requests": "Open requests",
+      "open_places": "Open places",
+      "in_pipeline": "Candidates in progress",
+      "interviews": "In interview",
+      "active_placements": "Active staff",
+      "rating": "Staff rating",
+      "response_hours": "First response (hours)"
+    },
+    "complete": "Profile completeness: {n}%",
+    "completeHint": "A complete profile builds candidates' trust.",
+    "fill": "Complete the profile",
+    "unverified": "The company is not verified yet: requests open after verification.",
+    "pipeline": "Candidate stages",
+    "noCandidates": "No candidates yet. Send a request and the employment office and platform will propose suitable masters.",
+    "stage": {
+      "SHORTLISTED": "Shortlisted",
+      "INTERVIEW": "Interview",
+      "OFFER": "Offer",
+      "HIRED": "Hired",
+      "REJECTED": "Rejected"
+    },
+    "moveTo": "Move to",
+    "brigade": "Brigade",
+    "moved": "Stage updated.",
+    "failed": "Failed.",
+    "note": "Note",
+    "placements": "My staff",
+    "noPlacements": "No placed staff yet.",
+    "since": "since {day}",
+    "until": "until {day}",
+    "ended": "Ended",
+    "endPlacement": "End placement",
+    "review": "Review",
+    "reviewed": "Reviewed",
+    "requests": "Requests and matching",
+    "pf": {
+      "title": "Company profile",
+      "text": "These details are seen by the employment office and chosen masters. The phone is never shown on public pages.",
+      "name": "Company name",
+      "inn": "Tax ID",
+      "legal_name": "Legal name",
+      "registration_no": "Registration number",
+      "address": "Address",
+      "website": "Website (https://…)",
+      "contact_person": "Contact person",
+      "contact_email": "Contact e-mail",
+      "contact_phone": "Contact phone",
+      "description": "About the company",
+      "save": "Save",
+      "saved": "Saved.",
+      "failed": "Could not save. Check the e-mail and website address."
+    }
   }
 }

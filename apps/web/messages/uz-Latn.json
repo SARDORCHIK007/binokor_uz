@@ -185,7 +185,9 @@
     "graduates": "Bitiruvchilar",
     "district": "Tuman holati",
     "payments": "To'lovlar",
-    "diary": "Dars kundaligi"
+    "diary": "Dars kundaligi",
+    "deskMenu": "Ish stoli",
+    "company": "Kompaniya profili"
   },
   "session": {
     "title": "Kabinet",
@@ -1251,7 +1253,9 @@
       "invite_accepted": "Taklif qilingan xodim tizimga kirdi",
       "vacancy_new": "Yangi xorijiy vakansiya joylandi",
       "vacancy_status": "Vakansiyangiz holati o'zgardi",
-      "lesson_log": "Ustoz yangi dars yozuvini qo'shdi"
+      "lesson_log": "Ustoz yangi dars yozuvini qo'shdi",
+      "pipeline_stage": "Ish beruvchi arizangiz bosqichini o'zgartirdi",
+      "placement": "Siz ishga qabul qilindingiz"
     }
   },
   "settings": {
@@ -2634,5 +2638,63 @@
     "by": "Ustoz: {name}",
     "noHomework": "Uy vazifasi yo'q",
     "error": "Kundalikni yuklab bo'lmadi."
+  },
+  "ed": {
+    "title": "Ish stoli",
+    "text": "So'rovlaringiz bo'yicha nomzodlar, ishga olish bosqichlari va hozirgi xodimlaringiz bir joyda.",
+    "error": "Ish stolini yuklab bo'lmadi.",
+    "kpi": {
+      "open_requests": "Ochiq so'rovlar",
+      "open_places": "Bo'sh o'rinlar",
+      "in_pipeline": "Jarayondagi nomzodlar",
+      "interviews": "Suhbatda",
+      "active_placements": "Ishlayotgan xodimlar",
+      "rating": "Xodimlar bahosi",
+      "response_hours": "Birinchi javob (soat)"
+    },
+    "complete": "Profil to'liqligi: {n}%",
+    "completeHint": "To'liq profil nomzodlar ishonchini oshiradi.",
+    "fill": "Profilni to'ldirish",
+    "unverified": "Kompaniya hali tasdiqlanmagan: so'rov yuborish tasdiqdan keyin ochiladi.",
+    "pipeline": "Nomzodlar bosqichlari",
+    "noCandidates": "Hali nomzod yo'q. So'rov yuboring: bandlik bo'limi va platforma mos ustalarni taklif qiladi.",
+    "stage": {
+      "SHORTLISTED": "Saralangan",
+      "INTERVIEW": "Suhbat",
+      "OFFER": "Taklif",
+      "HIRED": "Ishga olindi",
+      "REJECTED": "Rad etildi"
+    },
+    "moveTo": "O'tkazish",
+    "brigade": "Brigada",
+    "moved": "Bosqich yangilandi.",
+    "failed": "Bajarilmadi.",
+    "note": "Izoh",
+    "placements": "Xodimlarim",
+    "noPlacements": "Hali joylashtirilgan xodim yo'q.",
+    "since": "{day} dan",
+    "until": "{day} gacha",
+    "ended": "Tugagan",
+    "endPlacement": "Ishni yakunlash",
+    "review": "Baholash",
+    "reviewed": "Baholangan",
+    "requests": "So'rovlar va ustalar tanlash",
+    "pf": {
+      "title": "Kompaniya profili",
+      "text": "Bu ma'lumotlar bandlik bo'limiga va tanlangan ustalarga ko'rinadi. Telefon ommaviy sahifalarda ko'rsatilmaydi.",
+      "name": "Kompaniya nomi",
+      "inn": "STIR",
+      "legal_name": "Yuridik nomi",
+      "registration_no": "Ro'yxatdan o'tish raqami",
+      "address": "Manzil",
+      "website": "Veb-sayt (https://…)",
+      "contact_person": "Mas'ul shaxs",
+      "contact_email": "Aloqa uchun pochta",
+      "contact_phone": "Aloqa telefoni",
+      "description": "Kompaniya haqida",
+      "save": "Saqlash",
+      "saved": "Saqlandi.",
+      "failed": "Saqlab bo'lmadi. Pochta va sayt manzilini tekshiring."
+    }
   }
 }

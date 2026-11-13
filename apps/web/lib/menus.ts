@@ -13,6 +13,7 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/ishlar", key: "jobs" },
     { href: "/kabinet/hisobot", key: "reports" },
     { href: "/kabinet/buyurtmalar", key: "orders" },
+    { href: "/kabinet/ish-stoli", key: "deskMenu" },
     { href: "/kabinet/ishberuvchi", key: "employer" },
     { href: "/kabinet/portfolio-tasdiq", key: "portfolioReview" },
     { href: "/kabinet/mahallalar", key: "mahallas" },
@@ -23,6 +24,7 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/saralanganlar", key: "shortlist" },
     { href: "/kabinet/vakansiyalar", key: "vacancies" },
     { href: "/kabinet/elonlar", key: "postings" },
+    { href: "/kabinet/kompaniya", key: "company" },
   ],
   producer: [
     { href: "/kabinet", key: "panel" },

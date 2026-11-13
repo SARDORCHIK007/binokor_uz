@@ -372,7 +372,7 @@ DEMO_NEXT = {
     "admin": "/kabinet",
     "mentor": "/kabinet/davomat",
     "student": "/kabinet",
-    "employer": "/kabinet/ishberuvchi",
+    "employer": "/kabinet/ish-stoli",
     "producer": "/kabinet/mahsulotlar",
     "hokimlik": "/kabinet/hisobot",
     "worker": "/kabinet/portfolio",
