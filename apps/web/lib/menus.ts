@@ -83,6 +83,7 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/portfolio-tasdiq", key: "portfolioReview" },
     { href: "/kabinet/tinglovchilar", key: "students" },
     { href: "/kabinet/jadval", key: "schedule" },
+    { href: "/kabinet/kundalik", key: "diary" },
     { href: "/kabinet/reytingim", key: "myRating" },
   ],
   curator: [
@@ -108,6 +109,7 @@ const ROLE_MENUS: Record<string, { href: string; key: string }[]> = {
     { href: "/kabinet/baholash", key: "survey" },
     { href: "/kabinet/yutuqlarim", key: "progress" },
     { href: "/kabinet/jadval", key: "schedule" },
+    { href: "/kabinet/kundalik", key: "diary" },
   ],
 };
 

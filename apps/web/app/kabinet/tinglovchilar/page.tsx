@@ -12,6 +12,7 @@ type Student = {
   lessons: number;
   average: number | null;
   last_lesson: string | null;
+  homework: number | null;
   at_risk: boolean;
 };
 
@@ -49,6 +50,10 @@ export default async function StudentsPage() {
                 <div>
                   <dt className="text-muted">{t("average")}</dt>
                   <dd className="text-xl font-extrabold text-navy-900 tabular-nums">{s.average ?? "—"}</dd>
+                </div>
+                <div>
+                  <dt className="text-muted">{t("homework")}</dt>
+                  <dd className="text-xl font-extrabold text-navy-900 tabular-nums">{s.homework === null ? "—" : `${s.homework}%`}</dd>
                 </div>
               </dl>
               <p className="mt-3 text-xs text-muted">

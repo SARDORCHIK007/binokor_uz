@@ -184,7 +184,8 @@
     "employmentAdd": "Add people",
     "graduates": "Graduates",
     "district": "District overview",
-    "payments": "Payments"
+    "payments": "Payments",
+    "diary": "Lesson diary"
   },
   "session": {
     "title": "Cabinet",
@@ -1182,7 +1183,8 @@
     "average": "Average score",
     "last": "Last lesson",
     "risk": "Needs attention",
-    "lessons": "{n} lessons"
+    "lessons": "{n} lessons",
+    "homework": "Homework"
   },
   "progress": {
     "title": "My progress",
@@ -1248,7 +1250,8 @@
       "other": "New message",
       "invite_accepted": "An invited person has signed in",
       "vacancy_new": "A new foreign vacancy was posted",
-      "vacancy_status": "Your vacancy status changed"
+      "vacancy_status": "Your vacancy status changed",
+      "lesson_log": "Your mentor added a lesson entry"
     }
   },
   "settings": {
@@ -2603,5 +2606,33 @@
     "overdue": "Overdue",
     "done": "Done",
     "from": "from {team}"
+  },
+  "dy": {
+    "title": "Lesson diary",
+    "mentorText": "Record the topic, homework and a note for each lesson. Learners see them and tick off homework; you see who has done it here.",
+    "studentText": "Lesson topics and homework from your mentor. Tick off what you have done.",
+    "new": "New entry",
+    "group": "Group",
+    "date": "Lesson date",
+    "topic": "Lesson topic",
+    "homework": "Homework",
+    "note": "Note (optional)",
+    "announce": "Notify the learners",
+    "save": "Save",
+    "saved": "Saved.",
+    "failed": "Could not save. The topic needs 3+ characters and the date cannot be in the future.",
+    "recent": "Recent entries",
+    "empty": "No entries yet.",
+    "noGroups": "You have no groups assigned.",
+    "students": "{n} learners",
+    "doneOf": "Done: {done} of {n}",
+    "edit": "Edit",
+    "delete": "Delete",
+    "studentEmpty": "Your mentor has not written anything yet.",
+    "homeworkProgress": "Homework: {done} of {total} done",
+    "markDone": "I did it",
+    "by": "Mentor: {name}",
+    "noHomework": "No homework",
+    "error": "Could not load the diary."
   }
 }

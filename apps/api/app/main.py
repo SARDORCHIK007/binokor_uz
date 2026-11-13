@@ -17,6 +17,7 @@ from app.routers.auth import router as auth_router
 from app.routers.cabinet import router as cabinet_router
 from app.routers.cabinet_extra import router as cabinet_extra_router
 from app.routers.certificates import router as certificates_router
+from app.routers.classroom import router as classroom_router
 from app.routers.curator import router as curator_router
 from app.routers.district import router as district_router
 from app.routers.employers import router as employers_router
@@ -125,6 +126,7 @@ app.include_router(partner_profile_router)
 app.include_router(panels_router)
 app.include_router(payments_router)
 app.include_router(people_router)
+app.include_router(classroom_router)
 app.include_router(settings_router)
 app.include_router(district_router)
 app.include_router(graduates_router)

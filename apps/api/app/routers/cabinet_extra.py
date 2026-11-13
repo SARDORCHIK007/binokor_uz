@@ -410,7 +410,10 @@ async def mentor_students(request: Request) -> JSONResponse:
                               FROM attendance a WHERE a.enrollment_id = e.id) AS attendance,
                            (SELECT count(*) FROM attendance a WHERE a.enrollment_id = e.id) AS lessons,
                            (SELECT round(avg(s.score)) FROM assessments s WHERE s.enrollment_id = e.id) AS average,
-                           (SELECT max(a.date) FROM attendance a WHERE a.enrollment_id = e.id) AS last_lesson
+                           (SELECT max(a.date) FROM attendance a WHERE a.enrollment_id = e.id) AS last_lesson,
+                           (SELECT count(*) FROM lesson_logs l WHERE l.group_id = g.id AND l.homework IS NOT NULL) AS hw_total,
+                           (SELECT count(*) FROM homework_done h JOIN lesson_logs l ON l.id = h.log_id
+                              WHERE l.group_id = g.id AND h.student_user_id = e.student_user_id) AS hw_done
                     FROM enrollments e
                     JOIN groups g ON g.id = e.group_id
                     JOIN users u ON u.id = e.student_user_id
@@ -433,6 +436,7 @@ async def mentor_students(request: Request) -> JSONResponse:
                 "lessons": int(r["lessons"]),
                 "average": None if r["average"] is None else int(r["average"]),
                 "last_lesson": None if r["last_lesson"] is None else str(r["last_lesson"]),
+                "homework": None if not r["hw_total"] else int(round(100 * r["hw_done"] / r["hw_total"])),
                 "at_risk": attendance is not None and attendance < 80,
             }
         )

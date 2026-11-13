@@ -184,7 +184,8 @@
     "employmentAdd": "Qo'shish",
     "graduates": "Bitiruvchilar",
     "district": "Tuman holati",
-    "payments": "To'lovlar"
+    "payments": "To'lovlar",
+    "diary": "Dars kundaligi"
   },
   "session": {
     "title": "Kabinet",
@@ -1182,7 +1183,8 @@
     "average": "O'rtacha ball",
     "last": "Oxirgi dars",
     "risk": "Diqqat kerak",
-    "lessons": "{n} ta dars"
+    "lessons": "{n} ta dars",
+    "homework": "Uy vazifasi"
   },
   "progress": {
     "title": "Mening yutuqlarim",
@@ -1248,7 +1250,8 @@
       "other": "Yangi xabar",
       "invite_accepted": "Taklif qilingan xodim tizimga kirdi",
       "vacancy_new": "Yangi xorijiy vakansiya joylandi",
-      "vacancy_status": "Vakansiyangiz holati o'zgardi"
+      "vacancy_status": "Vakansiyangiz holati o'zgardi",
+      "lesson_log": "Ustoz yangi dars yozuvini qo'shdi"
     }
   },
   "settings": {
@@ -2603,5 +2606,33 @@
     "overdue": "Muddati o'tgan",
     "done": "Bajarildi",
     "from": "{team} topshirgan"
+  },
+  "dy": {
+    "title": "Dars kundaligi",
+    "mentorText": "Har bir dars uchun mavzu, uy vazifasi va izoh yozing. Tinglovchilar ko'radi va vazifani belgilaydi; kimlar bajarganini shu yerda ko'rasiz.",
+    "studentText": "Ustozingiz yozgan dars mavzulari va uy vazifalari. Bajargan vazifangizni belgilab boring.",
+    "new": "Yangi yozuv",
+    "group": "Guruh",
+    "date": "Dars sanasi",
+    "topic": "Dars mavzusi",
+    "homework": "Uy vazifasi",
+    "note": "Izoh (ixtiyoriy)",
+    "announce": "Tinglovchilarga xabarnoma yuborish",
+    "save": "Saqlash",
+    "saved": "Saqlandi.",
+    "failed": "Saqlab bo'lmadi. Mavzu kamida 3 belgi, sana bugundan keyin bo'lmasin.",
+    "recent": "So'nggi yozuvlar",
+    "empty": "Hali yozuv yo'q.",
+    "noGroups": "Sizga biriktirilgan guruh yo'q.",
+    "students": "{n} tinglovchi",
+    "doneOf": "Bajargan: {done} / {n}",
+    "edit": "Tahrirlash",
+    "delete": "O'chirish",
+    "studentEmpty": "Ustozingiz hali kundalik yozmagan.",
+    "homeworkProgress": "Uy vazifalari: {done} / {total} bajarildi",
+    "markDone": "Bajardim",
+    "by": "Ustoz: {name}",
+    "noHomework": "Uy vazifasi yo'q",
+    "error": "Kundalikni yuklab bo'lmadi."
   }
 }

@@ -25,12 +25,14 @@ export default async function NotificationsPage() {
     if (kind === "invite_accepted") return t("kind.invite_accepted");
     if (kind === "vacancy_new") return t("kind.vacancy_new");
     if (kind === "vacancy_status") return t("kind.vacancy_status");
+    if (kind === "lesson_log") return t("kind.lesson_log");
     return t("kind.other");
   }
   function target(kind: string): string {
     if (kind === "invite_accepted") return "/kabinet/taklifnomalar";
     if (kind === "vacancy_new") return "/kabinet/migratsiya";
     if (kind === "vacancy_status") return "/kabinet/vakansiyalar";
+    if (kind === "lesson_log") return "/kabinet/kundalik";
     return kind === "offer" ? "/kabinet/takliflar" : kind === "offer_answer" ? "/kabinet/ishberuvchi" : "/kabinet";
   }
   return (
