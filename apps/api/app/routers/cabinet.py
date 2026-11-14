@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
+from app.doc_i18n import current_lang, pick
 from app.security import bearer_from_request, problem, read_access_token
 
 router = APIRouter(prefix="/api/v1/cabinet", tags=["cabinet"])
@@ -26,9 +27,7 @@ def _user_id(request: Request) -> uuid.UUID | None:
 
 
 def _label(value: object) -> str:
-    if isinstance(value, dict):
-        return str(value.get("uz-Latn") or "")
-    return ""
+    return pick(value, current_lang())
 
 
 @router.get("/dashboard")

@@ -14,7 +14,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
-from app.doc_i18n import lang_of, pick
+from app.doc_i18n import current_lang, pick
 from app.security import bearer_from_request, new_id, problem, read_access_token
 
 router = APIRouter(prefix="/api/v1/people", tags=["people"])
@@ -113,7 +113,7 @@ async def finish_task(task_id: uuid.UUID, request: Request) -> JSONResponse:
 
 @router.get("/{person_id}")
 async def card(person_id: uuid.UUID, request: Request, lang: str | None = None) -> JSONResponse:
-    code = lang_of(lang or request.cookies.get("ub_locale"))
+    code = current_lang()
     user_id = _user_id(request)
     if user_id is None:
         return _unauth()
@@ -200,7 +200,7 @@ async def card(person_id: uuid.UUID, request: Request, lang: str | None = None) 
             cands = await conn.execute(
                 text(
                     """
-                    SELECT r.id::text AS vacancy_id, coalesce(r.title, t.name->>'uz-Latn') AS title, r.track::text AS track, coalesce(d.country_code, e.country_code) AS country,
+                    SELECT r.id::text AS vacancy_id, r.title AS own_title, t.name AS trade_name, r.track::text AS track, coalesce(d.country_code, e.country_code) AS country,
                            e.name AS employer, c.stage, c.status, c.stage_note
                     FROM request_candidates c JOIN demand_requests r ON r.id = c.request_id JOIN employers e ON e.id = r.employer_id
                     JOIN trades t ON t.id = r.trade_id LEFT JOIN destinations d ON d.id = r.destination_id WHERE c.worker_user_id = :u ORDER BY r.created_at DESC
@@ -212,7 +212,7 @@ async def card(person_id: uuid.UUID, request: Request, lang: str | None = None) 
                 "profile": None if wp is None else {"slug": wp["slug"], "level": wp["level"], "availability": wp["availability"], "hours": int(wp["verified_hours"] or 0), "rating": None if wp["rating_avg"] is None else float(wp["rating_avg"])},
                 "placements": [dict(r) for r in placements.mappings()],
                 "languages": [{"code": str(r["lang_code"]), "level": int(r["level"])} for r in langs.mappings()],
-                "candidacies": [{**dict(r), "country": str(r["country"] or "").strip()} for r in cands.mappings()],
+                "candidacies": [{**{k: v for k, v in dict(r).items() if k not in ("own_title", "trade_name")}, "title": r["own_title"] or pick(r["trade_name"], code), "country": str(r["country"] or "").strip()} for r in cands.mappings()],
             }
         if teams & {"employment", "admin"}:
             sections.append("payments")

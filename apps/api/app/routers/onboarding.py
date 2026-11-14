@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
+from app.doc_i18n import current_lang, pick
 from app.onboarding import INVITABLE_ROLES
 from app.ratelimit import client_ip, too_many
 from app.security import bearer_from_request, new_id, problem, read_access_token
@@ -49,9 +50,7 @@ async def _admin(request: Request) -> uuid.UUID | JSONResponse:
 
 
 def _label(value: object) -> str:
-    if isinstance(value, dict):
-        return str(value.get("uz-Latn") or "")
-    return ""
+    return pick(value, current_lang())
 
 
 class InviteIn(BaseModel):

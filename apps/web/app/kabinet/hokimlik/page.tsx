@@ -201,8 +201,8 @@ export default async function DistrictPage() {
         <h2 id="partners" className="text-lg font-extrabold text-navy-900">{t("partnersTitle")}</h2>
         <ul className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           {data.partners.map((partner) => (
-            <li key={partner.name} className="flex items-center justify-between gap-3 rounded-xl border border-line bg-surface-100 p-3">
-              <span className="min-w-0">
+            <li key={partner.name} className="flex min-w-0 items-center justify-between gap-3 rounded-xl border border-line bg-surface-100 p-3">
+              <span className="min-w-0 flex-1">
                 {partner.slug ? (
                   <Link href={`/hamkorlar/${partner.slug}`} className="block truncate text-sm font-bold text-navy-900 hover:text-primary">{partner.name}</Link>
                 ) : (

@@ -7,6 +7,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
+from app.doc_i18n import current_lang, pick
 from app.security import bearer_from_request, new_id, problem, read_access_token
 
 router = APIRouter(prefix="/api/v1/producers", tags=["producers"])
@@ -120,7 +121,7 @@ async def list_products(request: Request) -> JSONResponse:
         [
             {
                 "id": item["id"],
-                "name": item["name"]["uz-Latn"] if isinstance(item["name"], dict) else "",
+                "name": pick(item["name"], current_lang()),
                 "unit": item["unit"],
                 "price": None if item["price"] is None else str(item["price"]),
                 "in_stock": item["in_stock"],
@@ -311,7 +312,7 @@ async def orders(request: Request) -> JSONResponse:
                 "price": None if item["price"] is None else float(item["price"]),
                 "status": item["status"],
                 "created_at": item["created_at"].isoformat(),
-                "product": item["name"]["uz-Latn"] if isinstance(item["name"], dict) else "",
+                "product": pick(item["name"], current_lang()),
             }
             for item in rows.mappings()
         ]

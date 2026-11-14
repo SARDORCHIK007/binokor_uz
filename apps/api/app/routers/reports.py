@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
+from app.doc_i18n import current_lang, pick
 from app.security import bearer_from_request, problem, read_access_token
 
 router = APIRouter(prefix="/api/v1/reports", tags=["reports"])
@@ -25,10 +26,8 @@ def _user_id(request: Request) -> uuid.UUID | None:
     return uuid.UUID(str(payload["sub"]))
 
 
-def _label(value: object) -> str:
-    if isinstance(value, dict):
-        return str(value.get("uz-Latn") or "")
-    return ""
+def _label(value: object, lang: str = "uz-Latn") -> str:
+    return pick(value, lang)
 
 
 async def _allowed(conn: AsyncConnection, user_id: uuid.UUID) -> bool:
@@ -42,6 +41,7 @@ async def _allowed(conn: AsyncConnection, user_id: uuid.UUID) -> bool:
 
 @router.get("/summary")
 async def summary(request: Request) -> JSONResponse:
+    code = current_lang()
     user_id = _user_id(request)
     if user_id is None:
         return problem(401, "UNAUTHORIZED", "Kirish talab qilinadi", "Avval tizimga kiring.")
@@ -87,7 +87,7 @@ async def summary(request: Request) -> JSONResponse:
             },
             "trades": [
                 {
-                    "trade": _label(item["name"]),
+                    "trade": _label(item["name"], code),
                     "enrolled": int(item["enrolled"]),
                     "certified": int(item["certified"]),
                 }

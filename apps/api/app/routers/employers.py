@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
+from app.doc_i18n import current_lang, pick
 from app.inapp import notify
 from app.security import bearer_from_request, new_id, problem, read_access_token
 
@@ -62,9 +63,7 @@ def _user_id(request: Request) -> uuid.UUID | None:
 
 
 def _label(value: object) -> str:
-    if isinstance(value, dict):
-        return str(value.get("uz-Latn") or "")
-    return ""
+    return pick(value, current_lang())
 
 
 async def _employer_id(conn: AsyncConnection, user_id: uuid.UUID) -> uuid.UUID | None:
@@ -148,7 +147,7 @@ async def mine(request: Request) -> JSONResponse:
                        r.as_brigade, r.location, r.start_date::text AS start_date, r.duration_months,
                        r.salary_from::float AS salary_from, r.salary_to::float AS salary_to,
                        r.conditions, r.created_at::date::text AS created_at,
-                       t.code AS trade_code, t.name->>'uz-Latn' AS trade,
+                       t.code AS trade_code, t.name AS trade_name,
                        (SELECT count(*) FROM request_candidates c WHERE c.request_id = r.id) AS candidates
                 FROM demand_requests r JOIN trades t ON t.id = r.trade_id
                 WHERE r.employer_id = :id ORDER BY r.created_at DESC
@@ -177,7 +176,7 @@ async def mine(request: Request) -> JSONResponse:
                 "inn": item["inn"],
                 "verified": bool(item["verified"]),
             },
-            "requests": [dict(row) for row in requests.mappings()],
+            "requests": [{**{k: v for k, v in row.items() if k != "trade_name"}, "trade": pick(row["trade_name"], current_lang())} for row in requests.mappings()],
             "placements": [
                 {"id": row["id"], "name": row["full_name"]} for row in placements.mappings()
             ],

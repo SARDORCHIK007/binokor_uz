@@ -85,8 +85,8 @@ export default function EmployerPage() {
       setRequests(body.requests);
       setPlacements(body.placements ?? []);
       setState("ready");
-      const admin = await fetch("/api/v1/admin/employers", { credentials: "include" });
-      if (admin.ok) {
+      const admin = body.employer === null ? await fetch("/api/v1/admin/employers", { credentials: "include" }) : null;
+      if (admin?.ok) {
         setIsAdmin(true);
         setPending(((await admin.json()) as Employer[]).filter((item) => !item.verified));
       }

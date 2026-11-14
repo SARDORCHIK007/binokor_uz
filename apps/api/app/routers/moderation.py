@@ -15,7 +15,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
-from app.doc_i18n import lang_of, pick
+from app.doc_i18n import current_lang, pick
 from app.inapp import notify
 from app.security import bearer_from_request, new_id, problem, read_access_token
 
@@ -69,7 +69,7 @@ async def audit(conn: AsyncConnection, user_id: uuid.UUID, roles: set[str], acti
 
 @router.get("/queue")
 async def queue(request: Request, kind: str | None = None, lang: str | None = None) -> JSONResponse:
-    code = lang_of(lang or request.cookies.get("ub_locale"))
+    code = current_lang()
     user_id = _user_id(request)
     if user_id is None:
         return _unauth()

@@ -17,6 +17,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
+from app.doc_i18n import current_lang, pick
 from app.registration import RegistrationError, register_person
 from app.security import bearer_from_request, new_id, problem, read_access_token
 
@@ -109,8 +110,9 @@ async def overview(request: Request, status: str | None = None) -> JSONResponse:
             {"p": pid, "status": status if status in STATUSES else None},
         )
         leads = [dict(r) for r in rows.mappings()]
-        trades = await conn.execute(text("SELECT code, name->>'uz-Latn' AS name FROM trades WHERE is_active ORDER BY code"))
-        trade_list = [dict(r) for r in trades.mappings()]
+        trades = await conn.execute(text("SELECT code, name FROM trades WHERE is_active ORDER BY code"))
+        trade_code = current_lang()
+        trade_list = [{"code": r["code"], "name": pick(r["name"], trade_code)} for r in trades.mappings()]
     return JSONResponse(
         {
             "university": name,

@@ -13,7 +13,7 @@ export async function readSession(): Promise<SessionUser | null> {
   }
   try {
     const response = await fetch(`${process.env.API_INTERNAL_URL ?? "http://api:8000"}/api/v1/me`, {
-      headers: { authorization: `Bearer ${token}` },
+      headers: { authorization: `Bearer ${token}`, "x-locale": (await cookies()).get("ub_locale")?.value ?? "uz-Latn" },
       cache: "no-store",
     });
     if (!response.ok) {
@@ -32,7 +32,7 @@ export async function apiAuth<T>(path: string): Promise<T | null> {
   }
   try {
     const response = await fetch(`${process.env.API_INTERNAL_URL ?? "http://api:8000"}${path}`, {
-      headers: { authorization: `Bearer ${token}` },
+      headers: { authorization: `Bearer ${token}`, "x-locale": (await cookies()).get("ub_locale")?.value ?? "uz-Latn" },
       cache: "no-store",
     });
     if (!response.ok) {

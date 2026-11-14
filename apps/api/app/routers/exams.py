@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine
 
+from app.doc_i18n import current_lang, pick
 from app.security import bearer_from_request, new_id, problem, read_access_token
 
 router = APIRouter(prefix="/api/v1/learning", tags=["exams"])
@@ -41,9 +42,7 @@ def _user_id(request: Request) -> uuid.UUID | None:
 
 
 def _text(value: object) -> str:
-    if isinstance(value, dict):
-        return str(value.get("uz-Latn") or "")
-    return str(value or "")
+    return pick(value, current_lang()) if isinstance(value, dict) else str(value or "")
 
 
 @router.get("/exam")

@@ -9,6 +9,7 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
 from app.core.config import get_settings
+from app.doc_i18n import current_lang, pick
 from app.security import bearer_from_request, new_id, problem, read_access_token
 
 router = APIRouter(prefix="/api/v1/learning", tags=["learning"])
@@ -59,9 +60,7 @@ def _user_id(request: Request) -> uuid.UUID | None:
 
 
 def _label(value: object) -> str:
-    if isinstance(value, dict):
-        return str(value.get("uz-Latn") or "")
-    return ""
+    return pick(value, current_lang())
 
 
 async def _roles(conn: AsyncConnection, user_id: uuid.UUID) -> set[str]:

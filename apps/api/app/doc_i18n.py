@@ -1,5 +1,7 @@
 """Texts printed on the passport card and the certificate, in the four site languages."""
 
+from contextvars import ContextVar
+
 LANGS = ("uz-Latn", "uz-Cyrl", "ru", "en")
 DEFAULT = "uz-Latn"
 
@@ -137,6 +139,14 @@ STR: dict[str, dict[str, str]] = {
         "PARTNER": "Partner",
     },
 }
+
+
+CURRENT_LANG: ContextVar[str] = ContextVar("ub_current_lang", default="uz-Latn")
+
+
+def current_lang() -> str:
+    """Language of the request being served (query, X-Locale header or cookie)."""
+    return CURRENT_LANG.get()
 
 
 def lang_of(value: str | None) -> str:

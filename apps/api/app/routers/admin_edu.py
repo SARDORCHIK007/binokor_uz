@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine
 
+from app.doc_i18n import current_lang, pick
 from app.security import bearer_from_request, new_id, problem, read_access_token
 
 router = APIRouter(prefix="/api/v1/admin", tags=["admin-education"])
@@ -42,9 +43,7 @@ async def _require_admin(request: Request) -> uuid.UUID | JSONResponse:
 
 
 def _label(value: object) -> str:
-    if isinstance(value, dict):
-        return str(value.get("uz-Latn") or "")
-    return ""
+    return pick(value, current_lang())
 
 
 @router.get("/courses")
@@ -231,6 +230,7 @@ async def grant_role(user_id: uuid.UUID, body: RoleIn, request: Request) -> JSON
 
 @router.get("/orders")
 async def orders(request: Request) -> JSONResponse:
+    code = current_lang()
     gate = await _require_admin(request)
     if isinstance(gate, JSONResponse):
         return gate
@@ -239,8 +239,8 @@ async def orders(request: Request) -> JSONResponse:
         result = await conn.execute(
             text(
                 """
-                SELECT o.id::text AS id, o.buyer_name, o.quantity, o.status::text AS status,
-                       p.name AS product_name
+                SELECT o.id::text AS id, o.order_no, o.buyer_name, o.buyer_type, o.company_name, o.delivery, o.comment, o.quantity, o.status::text AS status,
+                       o.created_at::date::text AS created, p.unit, p.name AS product_name
                 FROM order_requests o
                 JOIN products p ON p.id = o.product_id
                 ORDER BY o.created_at DESC
@@ -252,10 +252,16 @@ async def orders(request: Request) -> JSONResponse:
         [
             {
                 "id": item["id"],
-                "buyer_name": item["buyer_name"],
+                "order_no": item["order_no"] or item["id"][:8],
+                "buyer_name": item["company_name"] or item["buyer_name"],
+                "company": item["buyer_type"] != "PERSON",
+                "delivery": item["delivery"],
+                "comment": item["comment"],
                 "quantity": float(item["quantity"]),
+                "unit": item["unit"],
                 "status": item["status"],
-                "product": item["product_name"]["uz-Latn"] if isinstance(item["product_name"], dict) else "",
+                "created": item["created"],
+                "product": pick(item["product_name"], code),
             }
             for item in result.mappings()
         ]

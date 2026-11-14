@@ -10,7 +10,7 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
 from app.cert_pdf import CertificateData, Signer, make_signer, render
-from app.doc_i18n import lang_of, pick, t
+from app.doc_i18n import current_lang, pick, t
 from app.security import bearer_from_request, problem, read_access_token
 from app.signing import signature_matches
 
@@ -222,9 +222,7 @@ async def queue(request: Request, status: str = "PENDING_APPROVAL") -> JSONRespo
 
 
 def _label(value: object) -> str:
-    if isinstance(value, dict):
-        return str(value.get("uz-Latn") or "")
-    return ""
+    return pick(value, current_lang())
 
 
 @router.post("/api/v1/certificates/{certificate_id}/decisions")
@@ -396,7 +394,7 @@ async def verify(number: str, request: Request) -> JSONResponse:
 @router.get("/api/v1/public/verify/{number}/pdf")
 async def verify_pdf(number: str, request: Request, lang: str | None = None) -> Response:
     """FR-CERT-PDF: printable certificate with QR to the public verify page."""
-    code = lang_of(lang or request.cookies.get("ub_locale"))
+    code = current_lang()
     engine = _engine(request)
     async with engine.connect() as conn:
         row = await conn.execute(

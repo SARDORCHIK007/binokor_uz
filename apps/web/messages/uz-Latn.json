@@ -196,7 +196,12 @@
     "leadDesk": "Nazorat markazi",
     "graduateOutcomes": "Natijalar va aloqa",
     "moderation": "Moderatsiya",
-    "districtPlan": "Reja va topshiriqlar"
+    "districtPlan": "Reja va topshiriqlar",
+    "totalShort": "jami",
+    "chartTrend": "Arizalar dinamikasi",
+    "chartNoData": "Ma'lumot yo'q.",
+    "chartByTrade": "Tinglovchilar kasb bo'yicha",
+    "chartShare": "Kasblar ulushi"
   },
   "session": {
     "title": "Kabinet",
@@ -410,7 +415,13 @@
     "notFoundText": "Havola eskirgan yoki noto'g'ri yozilgan bo'lishi mumkin.",
     "retry": "Qayta urinish",
     "home": "Bosh sahifa",
-    "search": "Qidiruv"
+    "search": "Qidiruv",
+    "noGroupExam": "Guruh yo'q",
+    "noGroupExamText": "Imtihon faol tinglovchi uchun ochiladi.",
+    "noQuestions": "Savol yo'q",
+    "noQuestionsText": "Bu kasb uchun savollar banki bo'sh.",
+    "noStudentsCurator": "Guruh yo'q",
+    "noStudentsCuratorText": "Kuratorga tinglovchi biriktirilmagan."
   },
   "myApp": {
     "title": "Mening arizam",
@@ -2990,5 +3001,115 @@
     "cancel": "Bekor qilish",
     "doneBy": "Bajardi: {name} · {day}",
     "back": "← Tuman holati"
+  },
+  "jb": {
+    "title": "Ishlar doskasi",
+    "text": "Ish beruvchilarning so'rovlari, brigadalar va joylashtirilganlar bir joyda. So'rovni bosqichma-bosqich yuriting va ish tugagach baholang.",
+    "error": "Doskani yuklab bo'lmadi.",
+    "tab": {
+      "requests": "So'rovlar",
+      "brigades": "Brigadalar",
+      "placements": "Joylashtirilganlar",
+      "employers": "Ish beruvchilar"
+    },
+    "s": {
+      "NEW": "Yangi",
+      "IN_REVIEW": "Ko'rilmoqda",
+      "SHORTLIST_SENT": "Ro'yxat yuborildi",
+      "EMPLOYER_APPROVED": "Ish beruvchi tasdiqladi",
+      "CONTRACTING": "Shartnoma",
+      "MATCHED": "Moslashtirildi",
+      "CLOSED": "Yopildi",
+      "CANCELLED": "Bekor qilindi",
+      "VIA_AGENCY": "Agentlik orqali"
+    },
+    "moveTo": "Keyingi bosqich",
+    "places": "{n} o'rin",
+    "candidates": "{n} nomzod",
+    "brigade": "Brigada",
+    "individual": "Alohida ustalar",
+    "domestic": "Ichki bozor",
+    "foreign": "Xorij",
+    "noRequests": "So'rov yo'q",
+    "noRequestsText": "Ish beruvchilardan yangi so'rov kelmagan.",
+    "noBrigades": "Brigada yo'q",
+    "noBrigadesText": "Hali brigada yig'ilmagan.",
+    "members": "{n} a'zo",
+    "noPlacements": "Joylashtirish yo'q",
+    "noPlacementsText": "Hali hech kim ishga biriktirilmagan.",
+    "noEmployers": "Ish beruvchi yo'q",
+    "noEmployersText": "Ro'yxat hali bo'sh.",
+    "kind": {
+      "DIRECT": "To'g'ridan-to'g'ri",
+      "OUTSTAFF": "Autstaffing",
+      "CONTRACT_WORK": "Pudrat",
+      "ABROAD": "Xorijda",
+      "LOCAL": "Mahalliy",
+      "FOREIGN": "Xorijiy"
+    },
+    "since": "{day} dan",
+    "until": "{day} gacha",
+    "review": "Baholash",
+    "reviewed": "Baholangan",
+    "q": {
+      "quality": "Sifat",
+      "discipline": "Intizom",
+      "safety": "Xavfsizlik",
+      "communication": "Muloqot"
+    },
+    "comment": "Izoh",
+    "saveReview": "Bahoni saqlash",
+    "cancel": "Bekor qilish",
+    "saved": "Saqlandi.",
+    "failed": "Bajarilmadi.",
+    "inn": "STIR {inn}"
+  },
+  "ob": {
+    "title": "Material buyurtmalari",
+    "text": "Qurilish materiallariga kelgan so'rovlar. Xaridor bilan bog'laning va holatini yangilang.",
+    "error": "Buyurtmalarni yuklab bo'lmadi.",
+    "all": "Hammasi",
+    "s": {
+      "NEW": "Yangi",
+      "CONTACTED": "Bog'lanildi",
+      "DONE": "Bajarildi",
+      "CANCELLED": "Bekor qilindi"
+    },
+    "contact": "Bog'landim",
+    "done": "Bajarildi",
+    "cancel": "Bekor qilish",
+    "empty": "Buyurtma yo'q",
+    "emptyText": "Bu holatda material buyurtmasi yo'q.",
+    "company": "Tashkilot",
+    "person": "Jismoniy shaxs",
+    "PICKUP": "Olib ketish",
+    "DELIVERY": "Yetkazib berish",
+    "no": "№ {n}",
+    "failed": "Bajarilmadi."
+  },
+  "ex": {
+    "title": "Yakuniy sinov",
+    "error": "Imtihon ochilmadi",
+    "errorText": "Sahifani yangilang. Takrorlansa, ustozga yozing.",
+    "loading": "Yuklanmoqda…",
+    "done": "Imtihon topshirildi",
+    "theory": "Nazariya",
+    "practice": "Amaliyot",
+    "practicePending": "Ustoz bahosi kutilmoqda",
+    "meta": "{n} savol · {minutes} daqiqa",
+    "left": "Qolgan vaqt",
+    "answered": "Javob berilgan: {done} / {n}",
+    "submit": "Topshirish",
+    "unanswered": "{n} ta savolga javob berilmagan. Baribir topshirasizmi?",
+    "yes": "Ha, topshirish",
+    "back": "Davom etaman",
+    "timeUp": "Vaqt tugadi. Javoblaringizni topshiring."
+  },
+  "cur": {
+    "title": "Kurator",
+    "text": "Lug'at mashqlari bo'yicha guruh a'zolarining yutuqlari.",
+    "learned": "O'rganildi: {a} / {b}",
+    "last": "Oxirgi javob: {day}",
+    "never": "Hali javob bermagan"
   }
 }

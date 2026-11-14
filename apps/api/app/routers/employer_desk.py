@@ -12,6 +12,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
+from app.doc_i18n import current_lang, pick
 from app.inapp import notify
 from app.security import bearer_from_request, new_id, problem, read_access_token
 
@@ -89,7 +90,7 @@ async def desk(request: Request) -> JSONResponse:
             await conn.execute(
                 text(
                     """
-                    SELECT rc.id::text AS id, r.id::text AS request_id, t.name->>'uz-Latn' AS trade, rc.stage, rc.stage_note, rc.stage_at::date::text AS at,
+                    SELECT rc.id::text AS id, r.id::text AS request_id, t.name AS trade_name, rc.stage, rc.stage_note, rc.stage_at::date::text AS at,
                            rc.worker_user_id IS NOT NULL AS is_worker, coalesce(u.full_name, b.name) AS name, wp.slug
                     FROM request_candidates rc
                     JOIN demand_requests r ON r.id = rc.request_id
@@ -118,7 +119,8 @@ async def desk(request: Request) -> JSONResponse:
             )
         ).mappings().all()
     filled = sum(1 for field in PROFILE_FIELDS if company[field])
-    pipeline = [dict(r) for r in rows]
+    code = current_lang()
+    pipeline = [{**{k: v for k, v in r.items() if k != "trade_name"}, "trade": pick(r["trade_name"], code)} for r in rows]
     counts = {stage: sum(1 for item in pipeline if item["stage"] == stage) for stage in STAGES}
     active = [p for p in placements if p["finish"] is None]
     return JSONResponse(

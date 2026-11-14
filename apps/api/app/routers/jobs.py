@@ -7,6 +7,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
+from app.doc_i18n import current_lang, pick
 from app.security import bearer_from_request, new_id, problem, read_access_token
 
 RequestStatus = Literal[
@@ -62,6 +63,7 @@ async def _allowed(conn: AsyncConnection, user_id: uuid.UUID) -> bool:
 
 @router.get("/board")
 async def board(request: Request) -> JSONResponse:
+    code = current_lang()
     user_id = _user_id(request)
     if user_id is None:
         return problem(401, "UNAUTHORIZED", "Kirish talab qilinadi", "Avval tizimga kiring.")
@@ -75,10 +77,13 @@ async def board(request: Request) -> JSONResponse:
         requests = await conn.execute(
             text(
                 """
-                SELECT r.id::text AS id, e.name AS employer, r.quantity, r.status::text AS status, r.as_brigade
+                SELECT r.id::text AS id, e.name AS employer, r.quantity, r.status::text AS status, r.as_brigade, r.track::text AS track,
+                       coalesce(r.city, r.location) AS place, t.name AS trade_name, r.created_at::date::text AS created,
+                       (SELECT count(*) FROM request_candidates c WHERE c.request_id = r.id) AS candidates
                 FROM demand_requests r
                 JOIN employers e ON e.id = r.employer_id
-                ORDER BY r.created_at
+                JOIN trades t ON t.id = r.trade_id
+                ORDER BY r.created_at DESC
                 """
             )
         )
@@ -97,7 +102,7 @@ async def board(request: Request) -> JSONResponse:
         placements = await conn.execute(
             text(
                 """
-                SELECT p.id::text AS id, u.full_name, e.name AS employer, p.kind::text AS kind,
+                SELECT p.id::text AS id, u.full_name, e.name AS employer, p.kind::text AS kind, p.start_date::text AS start, p.end_date::text AS finish,
                        r.score_quality, r.score_discipline, r.score_safety, r.score_communication
                 FROM placements p
                 JOIN users u ON u.id = p.worker_user_id
@@ -110,7 +115,10 @@ async def board(request: Request) -> JSONResponse:
     return JSONResponse(
         {
             "employers": [dict(item) for item in employers.mappings()],
-            "requests": [dict(item) for item in requests.mappings()],
+            "requests": [
+                {**{k: v for k, v in item.items() if k != "trade_name"}, "trade": pick(item["trade_name"], code), "candidates": int(item["candidates"])}
+                for item in requests.mappings()
+            ],
             "brigades": [
                 {**dict(item), "members": int(item["members"])} for item in brigades.mappings()
             ],
@@ -120,6 +128,8 @@ async def board(request: Request) -> JSONResponse:
                     "full_name": item["full_name"],
                     "employer": item["employer"],
                     "kind": item["kind"],
+                    "start": item["start"],
+                    "finish": item["finish"],
                     "review": None
                     if item["score_quality"] is None
                     else {

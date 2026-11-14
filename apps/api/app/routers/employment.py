@@ -15,7 +15,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
-from app.doc_i18n import lang_of, pick
+from app.doc_i18n import current_lang, pick
 from app.inapp import notify
 from app.ratelimit import too_many
 from app.registration import RegistrationError, register_person
@@ -119,7 +119,7 @@ async def registry(conn: AsyncConnection, code: str) -> list[dict[str, object]]:
 
 @router.get("/people")
 async def people(request: Request, lang: str | None = None, stage: str | None = None, trade: str | None = None, q: str | None = None) -> JSONResponse:
-    code = lang_of(lang or request.cookies.get("ub_locale"))
+    code = current_lang()
     user_id = _user_id(request)
     if user_id is None:
         return _unauth()
@@ -268,8 +268,8 @@ async def options(request: Request) -> JSONResponse:
         return JSONResponse(
             {
                 "employers": [dict(r) for r in employers.mappings()],
-                "mahallas": [{"id": r["id"], "name": pick(r["name"], "uz-Latn")} for r in mahallas.mappings()],
-                "trades": [{"code": r["code"], "name": pick(r["name"], "uz-Latn")} for r in trades.mappings()],
+                "mahallas": [{"id": r["id"], "name": pick(r["name"], current_lang())} for r in mahallas.mappings()],
+                "trades": [{"code": r["code"], "name": pick(r["name"], current_lang())} for r in trades.mappings()],
             }
         )
 

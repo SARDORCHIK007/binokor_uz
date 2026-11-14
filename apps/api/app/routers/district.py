@@ -10,7 +10,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from app.doc_i18n import lang_of, pick
+from app.doc_i18n import current_lang, pick
 from app.security import bearer_from_request, problem, read_access_token
 
 router = APIRouter(prefix="/api/v1/district", tags=["district"])
@@ -40,7 +40,7 @@ def _num(value: object) -> int:
 
 @router.get("/overview")
 async def overview(request: Request, lang: str | None = None) -> JSONResponse:
-    code = lang_of(lang or request.cookies.get("ub_locale"))
+    code = current_lang()
     user_id = _user_id(request)
     if user_id is None:
         return problem(401, "UNAUTHORIZED", "Kirish talab qilinadi", "Avval tizimga kiring.")

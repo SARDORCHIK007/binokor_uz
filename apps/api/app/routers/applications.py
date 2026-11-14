@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
+from app.doc_i18n import current_lang, pick
 from app.notify import send_telegram
 from app.ratelimit import too_many
 from app.security import bearer_from_request, new_id, problem, read_access_token
@@ -193,7 +194,7 @@ async def mine(request: Request) -> JSONResponse:
                 "status": item["status"],
                 "matrix": item["matrix"],
                 "track": item["track"],
-                "trade": item["trade_name"]["uz-Latn"] if isinstance(item["trade_name"], dict) else "",
+                "trade": pick(item["trade_name"], current_lang()),
                 "trade_code": item["trade_code"],
                 "created_at": item["created_at"].isoformat(),
                 "rejection_reason": item["rejection_reason"] if item["status"] == "REJECTED" else None,
@@ -293,7 +294,7 @@ async def admin_list(request: Request) -> JSONResponse:
                 "matrix": item["matrix"],
                 "type": item["type"],
                 "name": f"{item['last_name']} {item['first_name']}",
-                "trade": item["trade_name"]["uz-Latn"] if isinstance(item["trade_name"], dict) else "",
+                "trade": pick(item["trade_name"], current_lang()),
             }
             for item in result.mappings()
         ]

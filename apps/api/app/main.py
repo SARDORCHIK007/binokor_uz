@@ -10,6 +10,7 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
 from app.core.config import get_settings
+from app.doc_i18n import CURRENT_LANG, lang_of
 from app.health import overall, probe_db, probe_minio, probe_redis
 from app.routers.admin_accounts import router as admin_accounts_router
 from app.routers.admin_edu import router as admin_edu_router
@@ -155,6 +156,8 @@ async def request_id(
     incoming = request.headers.get("x-request-id")
     request_id_value = incoming if incoming else uuid.uuid4().hex
     set_public_locale(request.headers.get("x-locale", "uz-Latn"))
+    wanted = request.query_params.get("lang") or request.headers.get("x-locale")
+    CURRENT_LANG.set(lang_of(wanted or request.cookies.get("ub_locale")))
     response = await call_next(request)
     response.headers["X-Request-Id"] = request_id_value
     return response

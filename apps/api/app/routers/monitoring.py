@@ -15,7 +15,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
-from app.doc_i18n import lang_of, pick
+from app.doc_i18n import current_lang, pick
 from app.security import bearer_from_request, new_id, problem, read_access_token
 
 router = APIRouter(prefix="/api/v1", tags=["monitoring"])
@@ -314,7 +314,7 @@ async def my_rating(request: Request, lang: str | None = None) -> JSONResponse:
     if user_id is None:
         return _unauth()
     async with _engine(request).connect() as conn:
-        detail = await teacher_detail(conn, user_id, lang_of(lang or request.cookies.get("ub_locale")))
+        detail = await teacher_detail(conn, user_id, current_lang())
     if detail is None:
         return _forbidden("Bu bo'lim ustozlar uchun.")
     return JSONResponse(detail)
@@ -393,7 +393,7 @@ async def teacher_page(mentor_id: uuid.UUID, request: Request, lang: str | None 
     async with _engine(request).connect() as conn:
         if not await _roles(conn, user_id) & MONITOR_ROLES:
             return _forbidden("Bu bo'lim muassasa rahbariyati uchun.")
-        detail = await teacher_detail(conn, mentor_id, lang_of(lang or request.cookies.get("ub_locale")))
+        detail = await teacher_detail(conn, mentor_id, current_lang())
     if detail is None:
         return problem(404, "NOT_FOUND", "Ustoz topilmadi", "Bunday ustoz yo'q.")
     return JSONResponse(detail)
@@ -401,7 +401,7 @@ async def teacher_page(mentor_id: uuid.UUID, request: Request, lang: str | None 
 
 @router.get("/monitoring/students")
 async def student_ratings(request: Request, lang: str | None = None) -> JSONResponse:
-    code = lang_of(lang or request.cookies.get("ub_locale"))
+    code = current_lang()
     user_id = _user_id(request)
     if user_id is None:
         return _unauth()
